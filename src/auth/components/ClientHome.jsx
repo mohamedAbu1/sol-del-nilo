@@ -117,7 +117,7 @@ export default function ClientHome() {
       </div>
 
       {/* Header always visible */}
-      <div className="container absolute top-0 left-1/2 transform -translate-x-1/2 z-10">
+      <div className="container absolute top-0 left-1/2 transform -translate-x-1/2 z-50">
         <Header />
       </div>
 

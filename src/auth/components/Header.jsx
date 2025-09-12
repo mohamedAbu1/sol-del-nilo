@@ -30,7 +30,7 @@ const Header = () => {
         path === ToursPathEs ||
         path === AboutPathEn ||
         path === AboutPathEs
-          ? "container flex items-center justify-between "
+          ? "container flex items-center justify-between z-50"
           : "container flex items-center justify-around p-4 absolute top-0 z-50"
       }
     >

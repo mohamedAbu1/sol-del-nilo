@@ -1,0 +1,48 @@
+{
+  "Header": {
+    "Home": "Home",
+    "Tours": "Tours",
+    "About": "About Us",
+    "Admin": "Admin"
+  },
+  "HomeHeroPage": {
+    "title1": "Your Journey Begins Here",
+    "title2": "Discover Egypt Through Timeless Eyes",
+    "p": "Embark on a captivating journey along the Nile, uncover exceptional stories and timeless beauty through a uniquely curated experience.",
+    "btn1": "Explore Tours",
+    "btn2": "Book Now"
+  },
+  "ToursHeroPage": {
+    "titlePage": "Tours",
+    "TitleDivPic": "Discover Egypt with NiloSol",
+    "PDivPic": "Journeys that awaken the senses and soul",
+    "BtnDivPic": "Live the legend",
+    "SelectTours1": "are you looking for?",
+    "SelectTours2": "Durations",
+    "SelectTours3": "Tour Types",
+    "SelectTours4": "Group Size",
+    "SelectToursLabel1": "Boat Trips & Luxury Cruises",
+    "SelectToursLabel2": "Cultural & Historical Tours",
+    "SelectToursLabel3": "Night Tours & Entertainment",
+    "SelectToursLabel4": "1 to 4 Hours",
+    "SelectToursLabel5": "1 Day",
+    "SelectToursLabel6": "Day Trips & Excursions",
+    "SelectToursLabel7": "Group Tour"
+  },
+  "LoginForm": {
+    "LoginTitle":"Login to your trip",
+    "LoginP":"start your journey with SolDelNilo - where history meets soul",
+    "LoginBtn":"Login",
+    "account":"I want to create an account",
+    "Btn2":"Create a new account",
+    "Btn3":"Home Page"
+  },
+  "SignUnForm":{
+    "title":"Create Your Account",
+    "p":"start your journey with SolDelNilo - where nistory meets soul",
+    "btn":"Create Account",
+    "title2":"Already Have An Account ?",
+    "btn2":"login Page",
+    "btn3":"Home Page"
+  }
+}

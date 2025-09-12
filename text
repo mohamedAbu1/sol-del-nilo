@@ -1,0 +1,151 @@
+// todo هنا نقوم بكتابة العناصر الثابته في الموقع لاستخدمها في اكثر من مكان 
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+export const NameWebsite = "SolDelNilo"
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+const img1 = "/assets/pexels-axp-photography-500641970-18991590.jpg";
+const img2 = "/assets/pexels-ahmed-aziz-126288236-12607742.jpg"
+const img3 = "/assets/pexels-mert-celik-1876960105-33634565.jpg"
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+export const getHeroText = (t) => [
+  {titel:t("title1")},
+  {titel:t("title2")},
+]
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+export const getSliderToursDiv = (t) => [
+  {img:img1,title:t("TitleDivPic"),p:t("PDivPic"),btn:t("BtnDivPic")},
+  {img:img2,title:t("TitleDivPic"),p:t("PDivPic"),btn:t("BtnDivPic")},
+  {img:img3,title:t("TitleDivPic"),p:t("PDivPic"),btn:t("BtnDivPic")},
+]
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+export const getCityName = (t) => [
+  {city:t("Aswan"),value:"10"},
+  {city:t("Cairo"),value:"20"},
+  {city:t("Hurghada"),value:"30"},
+  {city:t("Luxor"),value:"40"},
+  {city:t("Mersa"),value:"50"},
+  {city:t("Marsa"),value:"60"},
+  {city:t("Sharm"),value:"70"},
+]
+
+ "Destinations":"Destinations",
+    "About":"About Us",
+    "Aswan":"Aswan",
+    "Cairo":"Cairo",
+    "Hurghada":"Hurghada",
+    "Luxor":"Luxor",
+    "Mersa":"Mersa Matruh",
+    "Marsa":"Marsa Alam",
+    "Sharm":"Sharm El Sheikh"
+
+
+     w-full flex flex-row items-center justify-around capitalize
+
+
+
+     // import { Swiper, SwiperSlide } from "swiper/react";
+// import { Autoplay } from "swiper/modules";
+// import Button from "@mui/material/Button";
+// import { useTranslations } from "next-intl";
+// import { getSliderToursDiv } from "@/lib/constants/FixedTexts";
+// import Image from "next/image";
+// // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+// const SliderDiv = () => {
+//   // ? $$$$$$$$$$$$$$$$$$$$$$
+//   const t = useTranslations("ToursHeroPage");
+//   const ToursHeroSlider = getSliderToursDiv(t);
+//   // ? $$$$$$$$$$$$$$$$$$$$$$
+//   return (
+//     <Swiper
+//       modules={[Autoplay]}
+//       spaceBetween={10}
+//       slidesPerView={1}
+//       loop={true}
+//       autoplay={{ delay: 5000, disableOnInteraction: false }}
+//     >
+//       {ToursHeroSlider.map((i, index) => {
+//         return (
+//           <SwiperSlide key={index}>
+//             <div
+//               // style={{ backgroundImage: `url(${i.img})` }}
+//               className="PhotoContainer relative"
+//             >
+//               <Image
+//                 src={i.img}
+//                 alt="SwiperSlide"
+//                 style={{ borderRadius: "28px" }}
+//                 fill
+//                 className="object-cover"
+//                 loading="eager"
+//               />
+//               <div
+//                 style={{ color: "#fff" }}
+//                 className="w-2/3 flex items-center justify-center flex-col gap-2.5 absolute"
+//               >
+//                 <h1
+//                   style={{
+//                     textTransform: "capitalize",
+//                     fontWeight: "700",
+//                   }}
+//                   className="titleDiv"
+//                 >
+//                   {i.title}
+//                 </h1>
+//                 <p className="pDiv">{i.p}</p>
+//                 <Button className="btnTours">{i.btn}</Button>
+//               </div>
+//               <div className="w-1/3"></div>
+//             </div>
+//           </SwiperSlide>
+//         );
+//       })}
+//     </Swiper>
+//   );
+// };
+
+// export default SliderDiv;
+
+// {
+//   "Header": {
+//    "Home":"Hogar",
+//     "Tours":"Excursiones",
+//     "About":"Sobre nosotros",
+//     "Admin":"Administrador"
+//   },
+//   "HomeHeroPage": {
+//     "title1": "Tu viaje comienza aquí",
+//     "title2": "Descubra Egipto a través de ojos eternos",
+//     "p": "Embárcate en un viaje cautivador a lo largo del Nilo, descubre historias excepcionales y una belleza eterna a través de una experiencia especialmente diseñada.",
+//     "btn1": "Explorar Tours",
+//     "btn2": "Reservar ahora"
+//   },
+//   "ToursHeroPage": {
+//     "titlePage": "Excursiones",
+//     "TitleDivPic": "Descubre Egipto con NiloSol",
+//     "PDivPic": "Viajes que despiertan los sentidos y el alma",
+//     "BtnDivPic": "Vive la leyenda"
+//   }
+// }
+
+
+  return (
+    // <Header
+    //   style={{
+    //     height: "120px",
+    //     color: "var(--textLithe)",
+    //     border: "1px solid #6543",
+    //     borderRadius: "22px",
+    //     marginTop: "8px",
+    //   }}
+    //   className={
+    //     path === ToursPathEn || ToursPathEs
+    //       ? "container flex items-center justify-between "
+    //       : "container flex items-center justify-around p-4 absolute top-0 z-50 inset-0 "
+    //   }
+    // >
+    //   <Logo path={path} />
+    //   <Nav path={path} />
+    //   <MobilNav />
+    //   <LeftNav path={path} />
+    // </Header>
+
+

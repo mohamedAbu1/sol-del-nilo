@@ -1,0 +1,48 @@
+{
+  "Header": {
+    "Home": "Inicio",
+    "Tours": "Excursiones",
+    "About": "Sobre Nosotros",
+    "Admin": "Administrador"
+  },
+  "HomeHeroPage": {
+    "title1": "Tu viaje comienza aquí",
+    "title2": "Descubre Egipto a través de ojos eternos",
+    "p": "Emprende un viaje cautivador por el Nilo, descubre historias excepcionales y una belleza atemporal a través de una experiencia cuidadosamente diseñada.",
+    "btn1": "Explorar Excursiones",
+    "btn2": "Reservar Ahora"
+  },
+  "ToursHeroPage": {
+    "titlePage": "Excursiones",
+    "TitleDivPic": "Descubre Egipto con NiloSol",
+    "PDivPic": "Viajes que despiertan los sentidos y el alma",
+    "BtnDivPic": "Vive la leyenda",
+    "SelectTours1": "¿Qué estás buscando?",
+    "SelectTours2": "Duraciones",
+    "SelectTours3": "Tipos de Excursión",
+    "SelectTours4": "Tamaño del Grupo",
+    "SelectToursLabel1": "Paseos en barco y cruceros de lujo",
+    "SelectToursLabel2": "Excursiones culturales e históricas",
+    "SelectToursLabel3": "Excursiones nocturnas y entretenimiento",
+    "SelectToursLabel4": "De 1 a 4 horas",
+    "SelectToursLabel5": "1 día",
+    "SelectToursLabel6": "Excursiones de un día",
+    "SelectToursLabel7": "Excursión en grupo"
+  },
+  "LoginForm": {
+    "LoginTitle": "Inicia sesión en tu viaje",
+    "LoginP": "Comienza tu aventura con SolDelNilo - donde la historia se encuentra con el alma",
+    "LoginBtn": "Iniciar sesión",
+    "account": "Quiero crear una cuenta",
+    "Btn2": "Crear una nueva cuenta",
+    "Btn3": "Página de inicio"
+  },
+  "SignUnForm": {
+    "title": "Crea tu cuenta",
+    "p": "Comienza tu aventura con SolDelNilo - donde la historia se encuentra con el alma",
+    "btn": "Crear cuenta",
+    "title2": "¿Ya tienes una cuenta?",
+    "btn2": "Página de inicio de sesión",
+    "btn3": "Página de inicio"
+  }
+}

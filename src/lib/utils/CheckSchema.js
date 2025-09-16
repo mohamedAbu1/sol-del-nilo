@@ -12,3 +12,10 @@ export const UserLoginSchema = z.object({
   password: z.string().min(6),
 });
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+export const TourSchema = z.object({
+  title: z.string().min(3),
+  description: z.string().min(10),
+  image: z.string().url(),
+  price: z.number().min(0),
+  categoryId: z.string().uuid(),
+});

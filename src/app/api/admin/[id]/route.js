@@ -1,50 +1,63 @@
-// استيراد أنواع الطلب والاستجابة من Next.js
-import { NextRequest, NextResponse } from "next/server";
+// ✅ استيراد الأدوات اللازمة
+import { NextResponse } from "next/server"; // لإنشاء ردود HTTP
+import prisma from "@/lib/utils/db"; // الاتصال بقاعدة البيانات
+import { verifyToken } from "@/lib/utils/JWToken"; // التحقق من JWT
+import { verifyCsrfToken } from "@/lib/utils/csrf"; // التحقق من رمز CSRF
 
-// استيراد اتصال Prisma بقاعدة البيانات
-import prisma from "@/lib/utils/db";
-
-// استيراد دالة التحقق من التوكن JWT
-import { verifyToken } from "@/lib/utils/JWToken";
-
-// تعريف دالة DELETE لمعالجة طلب حذف مستخدم
+// ✅ دالة DELETE لمعالجة طلب حذف مستخدم
 export async function DELETE(request, { params }) {
   try {
-    // ✅ استخراج الهيدر Authorization من الطلب
-    const authHeader = request.headers.get("authorization");
-
-    // إذا لم يتم إرسال التوكن، نرجع خطأ 401 (غير مصرح)
-    if (!authHeader) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    // ✅ استخراج رمز CSRF من الهيدر
+    const csrfToken = request.headers.get("x-csrf-token");
+    const secret = process.env.CSRF_SECRET;
+    console.log(secret);
+    if (!secret) throw new Error("CSRF_SECRET is not defined");
+    // ✅ التحقق من صحة رمز CSRF
+    if (!csrfToken || !verifyCsrfToken(secret, csrfToken)) {
+      return NextResponse.json(
+        { error: "رمز CSRF غير صالح أو مفقود" },
+        { status: 403 }
+      );
     }
 
-    // ✅ طباعة التوكن في الكونسول (لأغراض التحقق أثناء التطوير)
-    console.log(authHeader);
+    // ✅ استخراج التوكن من الهيدر Authorization
+    const authHeader = request.headers.get("authorization");
+
+    // ✅ التحقق من وجود التوكن
+    if (!authHeader) {
+      return NextResponse.json({ error: "غير مصرح" }, { status: 401 });
+    }
 
     // ✅ إزالة كلمة "Bearer " من بداية التوكن
     const token = authHeader.replace("Bearer ", "");
 
-    // ✅ فك التوكن والتحقق منه باستخدام دالة verifyToken
+    // ✅ فك التوكن والتحقق منه
     const session = await verifyToken(token);
 
     // ✅ التحقق من صلاحية المستخدم: يجب أن يكون مشرف (admin)
     if (!session || session.role?.toLowerCase() !== "admin") {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      return NextResponse.json({ error: "ممنوع الوصول" }, { status: 403 });
     }
 
     // ✅ التحقق من وجود معرف المستخدم في المسار
     if (!params?.id) {
-      return NextResponse.json({ error: "Missing user ID" }, { status: 400 });
+      return NextResponse.json(
+        { error: "معرف المستخدم مفقود" },
+        { status: 400 }
+      );
     }
 
-    // ✅ البحث عن المستخدم في قاعدة البيانات باستخدام Prisma
+    // ✅ البحث عن المستخدم في قاعدة البيانات
     const user = await prisma.user.findUnique({
-      where: { id: params.id }, // لاحظ أن id هنا من نوع string
+      where: { id: params.id },
     });
 
-    // إذا لم يتم العثور على المستخدم، نرجع خطأ 404
+    // ✅ إذا لم يتم العثور على المستخدم، نرجع خطأ 404
     if (!user) {
-      return NextResponse.json({ msg: "User not found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "المستخدم غير موجود" },
+        { status: 404 }
+      );
     }
 
     // ✅ حذف المستخدم من قاعدة البيانات
@@ -53,11 +66,16 @@ export async function DELETE(request, { params }) {
     });
 
     // ✅ إرجاع استجابة نجاح بعد الحذف
-    return NextResponse.json({ msg: "Account deleted" }, { status: 200 });
-
+    return NextResponse.json(
+      { message: "✅ تم حذف الحساب بنجاح" },
+      { status: 200 }
+    );
   } catch (error) {
-    // ❌ في حالة حدوث خطأ غير متوقع، نطبع الخطأ ونرجع استجابة 500
-    console.error("DELETE error:", error);
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
+    // ❌ في حالة حدوث خطأ غير متوقع
+    console.error("❌ خطأ في DELETE:", error);
+    return NextResponse.json(
+      { error: "خطأ داخلي في السيرفر" },
+      { status: 500 }
+    );
   }
 }

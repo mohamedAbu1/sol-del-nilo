@@ -1,6 +1,6 @@
 "use client"
 import React from "react";
-import Button from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { BiSearch } from "react-icons/bi";
 import { AiOutlineLock } from "react-icons/ai";
 import { useTranslations } from "next-intl";

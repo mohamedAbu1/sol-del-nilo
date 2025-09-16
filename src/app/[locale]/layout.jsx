@@ -6,7 +6,10 @@ import { Geist, Geist_Mono, Montserrat } from "next/font/google";
 
 // ✅ تحميل الخطوط
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
 const montserrat = Montserrat({
   subsets: ["latin"],
   weight: ["300", "400", "500", "700"],
@@ -44,7 +47,17 @@ export default async function LocaleLayout({ children, params }) {
       lang={locale}
       className={`${geistMono.className} ${montserrat.className} ${geistSans.variable}`}
     >
-      <body className="min-h-screen" style={{ margin: 0, padding: 0, width: "100vw", height: "100vh" }}>
+      <head>
+        {/* ✅ هنا تضيف العلامة الوصفية */}
+        <meta
+          name="google-site-verification"
+          content="dBf5o18SGeohsApi7D87VbsJAZiESLu6AKZ-a3F35ZE"
+        />
+      </head>
+      <body
+        className="min-h-screen"
+        style={{ margin: 0, padding: 0, width: "100vw", height: "100vh" }}
+      >
         <NextIntlClientProvider locale={locale} messages={messages}>
           {children}
         </NextIntlClientProvider>

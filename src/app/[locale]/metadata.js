@@ -3,13 +3,16 @@
 export async function generateMetadata({ params }) {
   const locale = params.locale;
 
+  const isEnglish = locale === "en";
   const isSpanish = locale === "es";
   const isFrench = locale === "fr";
   const isGerman = locale === "de";
   const isItalian = locale === "it";
 
   return {
-    title: isSpanish
+    title: isEnglish
+      ? "Discover Egypt | SolDelNilo"
+      : isSpanish
       ? "Descubre Egipto | SolDelNilo"
       : isFrench
       ? "Découvrez l'Égypte | SolDelNilo"
@@ -17,9 +20,9 @@ export async function generateMetadata({ params }) {
       ? "Entdecke Ägypten | SolDelNilo"
       : isItalian
       ? "Scopri l'Egitto | SolDelNilo"
-      : "Discover Egypt | SolDelNilo",
+      : "",
 
-    description: isSpanish
+    description: isEnglish ? "Experience the magic of Egypt with SolDelNilo..." : isSpanish
       ? "Descubre la magia de Egipto con SolDelNilo..."
       : isFrench
       ? "Découvrez la magie de l'Égypte avec SolDelNilo..."
@@ -27,7 +30,7 @@ export async function generateMetadata({ params }) {
       ? "Erlebe die Magie Ägyptens mit SolDelNilo..."
       : isItalian
       ? "Vivi la magia dell'Egitto con SolDelNilo..."
-      : "Experience the magic of Egypt with SolDelNilo...",
+      : "",
 
     openGraph: {
       title: "SolDelNilo",

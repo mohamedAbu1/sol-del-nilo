@@ -1,0 +1,48 @@
+{
+  "Header": {
+    "Home": "Accueil",
+    "Tours": "Excursions",
+    "About": "À propos de nous",
+    "Admin": "Administration"
+  },
+  "HomeHeroPage": {
+    "title1": "Votre voyage commence ici",
+    "title2": "Découvrez l'Égypte à travers des yeux intemporels",
+    "p": "Embarquez pour un voyage captivant le long du Nil, découvrez des histoires exceptionnelles et une beauté éternelle à travers une expérience soigneusement conçue.",
+    "btn1": "Explorer les excursions",
+    "btn2": "Réserver maintenant"
+  },
+  "ToursHeroPage": {
+    "titlePage": "Excursions",
+    "TitleDivPic": "Découvrez l'Égypte avec NiloSol",
+    "PDivPic": "Des voyages qui éveillent les sens et l'âme",
+    "BtnDivPic": "Vivez la légende",
+    "SelectTours1": "Que recherchez-vous ?",
+    "SelectTours2": "Durée",
+    "SelectTours3": "Types d'excursions",
+    "SelectTours4": "Taille du groupe",
+    "SelectToursLabel1": "Balades en bateau & croisières de luxe",
+    "SelectToursLabel2": "Excursions culturelles & historiques",
+    "SelectToursLabel3": "Excursions nocturnes & divertissement",
+    "SelectToursLabel4": "1 à 4 heures",
+    "SelectToursLabel5": "1 jour",
+    "SelectToursLabel6": "Excursions d'une journée",
+    "SelectToursLabel7": "Excursion en groupe"
+  },
+  "LoginForm": {
+    "LoginTitle": "Connectez-vous à votre voyage",
+    "LoginP": "Commencez votre aventure avec SolDelNilo - là où l'histoire rencontre l'âme",
+    "LoginBtn": "Connexion",
+    "account": "Je veux créer un compte",
+    "Btn2": "Créer un nouveau compte",
+    "Btn3": "Page d'accueil"
+  },
+  "SignUnForm": {
+    "title": "Créez votre compte",
+    "p": "Commencez votre aventure avec SolDelNilo - là où l'histoire rencontre l'âme",
+    "btn": "Créer un compte",
+    "title2": "Vous avez déjà un compte ?",
+    "btn2": "Page de connexion",
+    "btn3": "Page d'accueil"
+  }
+}

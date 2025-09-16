@@ -13,11 +13,11 @@ const montserrat = Montserrat({
   display: "swap",
 });
 
-// ✅ بيانات الميتا
-export const metadata = {
-  title: "SolDelNilo",
-  description: "Discover Egypt through timeless beauty",
-};
+// // ✅ بيانات الميتا
+// export const metadata = {
+//   title: "SolDelNilo",
+//   description: "Discover Egypt through timeless beauty",
+// };
 
 // ✅ توليد المسارات مسبقًا
 export function generateStaticParams() {

@@ -1,0 +1,48 @@
+{
+  "Header": {
+    "Home": "Home",
+    "Tours": "Tour",
+    "About": "Chi siamo",
+    "Admin": "Amministrazione"
+  },
+  "HomeHeroPage": {
+    "title1": "Il tuo viaggio inizia qui",
+    "title2": "Scopri l'Egitto con occhi senza tempo",
+    "p": "Intraprendi un viaggio affascinante lungo il Nilo, scopri storie eccezionali e una bellezza eterna attraverso un'esperienza curata in modo unico.",
+    "btn1": "Esplora i tour",
+    "btn2": "Prenota ora"
+  },
+  "ToursHeroPage": {
+    "titlePage": "Tour",
+    "TitleDivPic": "Scopri l'Egitto con NiloSol",
+    "PDivPic": "Viaggi che risvegliano i sensi e l'anima",
+    "BtnDivPic": "Vivi la leggenda",
+    "SelectTours1": "Cosa stai cercando?",
+    "SelectTours2": "Durata",
+    "SelectTours3": "Tipi di tour",
+    "SelectTours4": "Dimensione del gruppo",
+    "SelectToursLabel1": "Gite in barca e crociere di lusso",
+    "SelectToursLabel2": "Tour culturali e storici",
+    "SelectToursLabel3": "Tour notturni e intrattenimento",
+    "SelectToursLabel4": "Da 1 a 4 ore",
+    "SelectToursLabel5": "1 giorno",
+    "SelectToursLabel6": "Escursioni giornaliere",
+    "SelectToursLabel7": "Tour di gruppo"
+  },
+  "LoginForm": {
+    "LoginTitle": "Accedi al tuo viaggio",
+    "LoginP": "Inizia il tuo viaggio con SolDelNilo - dove la storia incontra l'anima",
+    "LoginBtn": "Accedi",
+    "account": "Voglio creare un account",
+    "Btn2": "Crea un nuovo account",
+    "Btn3": "Pagina iniziale"
+  },
+  "SignUnForm": {
+    "title": "Crea il tuo account",
+    "p": "Inizia il tuo viaggio con SolDelNilo - dove la storia incontra l'anima",
+    "btn": "Crea account",
+    "title2": "Hai già un account?",
+    "btn2": "Pagina di accesso",
+    "btn3": "Pagina iniziale"
+  }
+}

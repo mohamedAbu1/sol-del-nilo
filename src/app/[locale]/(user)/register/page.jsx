@@ -2,6 +2,8 @@
 import ImageHeroRegisterCover from "@/auth/components/user/signup/ImageHeroRegisterCover";
 import SignUnForm from "@/auth/components/user/signup/SignUnForm";
 import SignUpTextHero from "@/auth/components/user/signup/SignUpTextHero";
+import { generateMetadata } from "./metadata";
+export { generateMetadata }//todo هذه من اجل محرك البحث في جوجل SEO
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const Register = () => {
   return (

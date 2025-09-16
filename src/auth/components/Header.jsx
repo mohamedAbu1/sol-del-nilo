@@ -25,6 +25,7 @@ const Header = () => {
         borderRadius: "22px",
         marginTop: "8px",
       }}
+      
       className={
         path === ToursPathEn ||
         path === ToursPathEs ||

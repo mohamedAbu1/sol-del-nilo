@@ -3,6 +3,9 @@ import WhoWeAre from "@/auth/components/About/WhoWeAre";
 import WhySolDelNilo from "@/auth/components/About/WhySolDelNilo";
 import DecorativeBorder from "@/auth/components/About/DecorativeBorder";
 import Header from "@/auth/components/Header";
+import { generateMetadata } from "./metadata";
+export { generateMetadata }//todo هذه من اجل محرك البحث في جوجل SEO
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 export default function AboutUsPage() {
   return (
     <main

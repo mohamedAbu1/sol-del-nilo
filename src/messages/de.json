@@ -1,0 +1,48 @@
+{
+  "Header": {
+    "Home": "Startseite",
+    "Tours": "Touren",
+    "About": "Über uns",
+    "Admin": "Verwaltung"
+  },
+  "HomeHeroPage": {
+    "title1": "Deine Reise beginnt hier",
+    "title2": "Entdecke Ägypten mit zeitlosen Augen",
+    "p": "Begib dich auf eine faszinierende Reise entlang des Nils, entdecke außergewöhnliche Geschichten und zeitlose Schönheit durch ein einzigartig kuratiertes Erlebnis.",
+    "btn1": "Touren entdecken",
+    "btn2": "Jetzt buchen"
+  },
+  "ToursHeroPage": {
+    "titlePage": "Touren",
+    "TitleDivPic": "Entdecke Ägypten mit NiloSol",
+    "PDivPic": "Reisen, die Sinne und Seele erwecken",
+    "BtnDivPic": "Erlebe die Legende",
+    "SelectTours1": "Wonach suchst du?",
+    "SelectTours2": "Dauer",
+    "SelectTours3": "Tourarten",
+    "SelectTours4": "Gruppengröße",
+    "SelectToursLabel1": "Bootsausflüge & Luxuskreuzfahrten",
+    "SelectToursLabel2": "Kulturelle & historische Touren",
+    "SelectToursLabel3": "Nächtliche Touren & Unterhaltung",
+    "SelectToursLabel4": "1 bis 4 Stunden",
+    "SelectToursLabel5": "1 Tag",
+    "SelectToursLabel6": "Tagesausflüge & Exkursionen",
+    "SelectToursLabel7": "Gruppentour"
+  },
+  "LoginForm": {
+    "LoginTitle": "Melde dich für deine Reise an",
+    "LoginP": "Beginne deine Reise mit SolDelNilo – wo Geschichte die Seele berührt",
+    "LoginBtn": "Anmelden",
+    "account": "Ich möchte ein Konto erstellen",
+    "Btn2": "Neues Konto erstellen",
+    "Btn3": "Startseite"
+  },
+  "SignUnForm": {
+    "title": "Erstelle dein Konto",
+    "p": "Beginne deine Reise mit SolDelNilo – wo Geschichte die Seele berührt",
+    "btn": "Konto erstellen",
+    "title2": "Du hast bereits ein Konto?",
+    "btn2": "Anmeldeseite",
+    "btn3": "Startseite"
+  }
+}

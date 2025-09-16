@@ -1,17 +1,18 @@
-import createNextIntlPlugin from 'next-intl/plugin';
+import createNextIntlPlugin from "next-intl/plugin";
 
+/** @type {import('next').NextConfig} */
 const nextConfig = {
-  // هنا تقدر تضيف أي إعدادات إضافية مثل الصور أو إعادة التوجيه
-    images: {
+  images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'upload.wikimedia.org',
+        protocol: "https",
+        hostname: "upload.wikimedia.org",
       },
     ],
+    domains: ["your-image-domain.com"], // ← هذا داخل images فقط
   },
+  // يمكنك إضافة إعدادات أخرى هنا مثل redirects أو headers
 };
 
 const withNextIntl = createNextIntlPlugin();
 export default withNextIntl(nextConfig);
-

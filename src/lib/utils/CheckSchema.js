@@ -15,7 +15,10 @@ export const UserLoginSchema = z.object({
 export const TourSchema = z.object({
   title: z.string().min(3),
   description: z.string().min(10),
-  image: z.string().url(),
-  price: z.number().min(0),
-  categoryId: z.string().uuid(),
+  price: z.number().positive(),
+  information: z.string().optional(),
+  DayPeople: z.string().optional(),
+  image: z.array(z.string()).optional(),
+  categoryId: z.string(),
+  cityId: z.string()
 });

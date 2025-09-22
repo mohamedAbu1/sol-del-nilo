@@ -65,7 +65,56 @@
   padding: 6px !important;
   gap: 15px !important;
 }
+.css-19grb1q-MuiChip-root {
+  max-width: 50% !important;
+}
+.css-eccknh-MuiChip-label{
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   justify-content: center;
+   gap: 12px;
+}
+.image-gallery-right-nav{
+  display: none;
+}
+.image-gallery-left-nav{
+  display: none !important; 
+}
+/* إزالة الحواف الجانبية للصور */
+.image-gallery-slide {
+  width: 100% !important;
+  height: auto !important;
+  object-fit: cover;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 20px;
+}
 
+/* إزالة الحواف من الحاوية */
+.image-gallery-content {
+  padding: 0 !important;
+  margin: 0 !important;
+    border-radius: 20px;
+
+}
+
+/* إزالة المسافات الجانبية من thumbnails */
+.image-gallery-thumbnails-wrapper {
+  margin: 0 !important;
+  padding: 0 !important;
+  background-position: bottom;
+    border-radius: 20px;
+
+}
+.css-eccknh-MuiChip-label{
+  padding-left: 18px !important;
+  padding-right: 18px !important;
+  text-transform: capitalize;
+}
+.css-1xtozoh-MuiTableRow-root:nth-of-type(5) {
+  background-color: transparent !important;
+}
 body {
   /* font-family: Arial, Helvetica, sans-serif; */
   font-family: Geist_Mono, Arial, sans-serif !important;

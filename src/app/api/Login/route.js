@@ -2,32 +2,32 @@
 //todo /api/Login
 //todo Login
 //todo Public
-
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 // ✅ استيراد الأدوات اللازمة
 import { NextResponse } from "next/server"; // لإنشاء ردود HTTP
 import { UserLoginSchema } from "@/lib/utils/CheckSchema"; // للتحقق من صحة البيانات باستخدام Zod
 import prisma from "@/lib/utils/db"; // الاتصال بقاعدة البيانات
 import bcrypt from "bcryptjs"; // للتحقق من كلمة المرور المشفرة
-import { generateToken } from "@/lib/utils/JWToken"; // لإنشاء JWT
 import { verifyCsrfToken } from "@/lib/utils/csrf"; // التحقق من رمز CSRF
-
+import { setCookie } from "@/lib/utils/JWToken";
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 // ✅ دالة POST لمعالجة تسجيل الدخول
 export async function POST(req) {
   try {
-    // ✅ استخراج رمز CSRF من الهيدر
-    const csrfToken = req.headers.get("x-csrf-token");
-    const secret = process.env.CSRF_SECRET;
-    console.log(secret);
-    if (!secret) throw new Error("CSRF_SECRET is not defined");
-
-    // ✅ التحقق من صحة رمز CSRF
-    if (!csrfToken || !verifyCsrfToken(secret, csrfToken)) {
-      return NextResponse.json(
-        { error: "رمز CSRF غير صالح أو مفقود" },
-        { status: 403 }
-      );
-    }
-
+    // // ✅ استخراج رمز CSRF من الهيدر
+    // const csrfToken = req.headers.get("x-csrf-token");
+    // const secret = process.env.CSRF_SECRET;
+    // console.log(secret);
+    // if (!secret) throw new Error("CSRF_SECRET is not defined");
+    // // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+    // // ✅ التحقق من صحة رمز CSRF
+    // if (!csrfToken || !verifyCsrfToken(secret, csrfToken)) {
+    //   return NextResponse.json(
+    //     { error: "رمز CSRF غير صالح أو مفقود" },
+    //     { status: 403 }
+    //   );
+    // }
+    // // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     // ✅ قراءة البيانات القادمة من الطلب (email و password)
     const body = await req.json();
 
@@ -41,7 +41,7 @@ export async function POST(req) {
         { status: 400 }
       );
     }
-
+    // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     // ✅ استخراج البيانات بعد التحقق
     const { email, password } = parsed.data;
 
@@ -55,7 +55,7 @@ export async function POST(req) {
         { status: 404 }
       );
     }
-
+    // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     // ✅ التحقق من تطابق كلمة المرور المدخلة مع المشفرة في قاعدة البيانات
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
@@ -66,7 +66,7 @@ export async function POST(req) {
         { status: 401 }
       );
     }
-
+    // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     // ✅ إنشاء بيانات التوكن
     const payload = {
       id: user.id,
@@ -77,10 +77,16 @@ export async function POST(req) {
     };
 
     // ✅ إنشاء توكن JWT يحتوي على بيانات المستخدم
-    const token = generateToken(payload);
+    const cookie = setCookie(payload);
 
+    // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     // ✅ إرسال التوكن في الرد
-    return NextResponse.json({ token }, { status: 200 });
+    const response = NextResponse.json({ mag: "you login" }, { status: 200 });
+
+    response.headers.set("Set-Cookie", cookie);
+
+    return response;
+    // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   } catch (error) {
     // ❌ في حالة حدوث خطأ غير متوقع، نرجع خطأ 500
     console.error("❌ خطأ في تسجيل الدخول:", error);

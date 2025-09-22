@@ -1,15 +1,11 @@
-import AdminLayout from "./layout"
-import { SectionCards } from "./components/sectin-cardes"
-import { ChartAreaInteractive } from "./components/chrat-area-int"
-import { DataTable } from "./components/data-tabel"
-import data from "./data.json"
-
+import Sidebar from "./components/Sidebar";
+import VariablePages from "./components/VariablePages";
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 export default function AdminPage() {
   return (
-    <AdminLayout>
-      <SectionCards />
-      <ChartAreaInteractive />
-      {/* <DataTable  /> */}
-    </AdminLayout>
-  )
+    <main style={{ backgroundColor:"#181a1b"}} className="w-full h-fit flex flex-row">
+      <Sidebar />
+      <VariablePages />
+    </main>
+  );
 }

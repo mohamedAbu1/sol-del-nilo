@@ -3,7 +3,7 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { Geist, Geist_Mono, Montserrat } from "next/font/google";
-
+import { DashboardProvider } from "@/context/Information";
 // ✅ تحميل الخطوط
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({
@@ -58,9 +58,11 @@ export default async function LocaleLayout({ children, params }) {
         className="min-h-screen"
         style={{ margin: 0, padding: 0, width: "100vw", height: "100vh" }}
       >
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          {children}
-        </NextIntlClientProvider>
+        <DashboardProvider>
+          <NextIntlClientProvider locale={locale} messages={messages}>
+            {children}
+          </NextIntlClientProvider>
+        </DashboardProvider>
       </body>
     </html>
   );

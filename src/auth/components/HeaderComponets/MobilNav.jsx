@@ -13,15 +13,18 @@ import { getNavPath } from "@/lib/constants/FixedTexts";
 const MobilNav = () => {
   const t = useTranslations("Header");
   const CityName = getNavPath(t);
-
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const [anchorEl, setAnchorEl] = useState("");
   const open = Boolean(anchorEl);
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const handleClose = () => {
     setAnchorEl(null);
   };
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   return (
     <div className="flex items-center justify-center md:hidden">
       <Button

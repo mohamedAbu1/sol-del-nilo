@@ -3,9 +3,15 @@ import ImageHeroRegisterCover from "@/auth/components/user/signup/ImageHeroRegis
 import LoginForm from "@/auth/components/user/login/LoginForm";
 import SignUpTextHero from "@/auth/components/user/signup/SignUpTextHero";
 import { generateMetadata } from "./metadata";
-export { generateMetadata }//todo هذه من اجل محرك البحث في جوجل SEO
+export { generateMetadata }; //todo هذه من اجل محرك البحث في جوجل SEO
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-const Login = () => {
+const Login = async () => {
+  const cookieStore = await cookies(); // ✅ استخدم await
+  const token = cookieStore.get("jwttoken")?.value;
+  if (token) redirect("/");
+
   return (
     <main className="w-full h-screen flex flex-row relative overflow-hidden">
       <ImageHeroRegisterCover />

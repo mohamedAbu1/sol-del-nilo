@@ -1,5 +1,5 @@
 "use client";
-
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 // ✅ استيراد الأدوات والمكونات
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -19,27 +19,27 @@ import { useScreenSize } from "@/auth/hooks/screenSize";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
-
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 // ✅ صورة الشعار
 const logo2 = "/assets/Copilot_20250908_231423.png";
-
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const SignUnForm = () => {
   const router = useRouter(); // ✅ لإنشاء كائن التوجيه
-
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const { width } = useScreenSize();
   const t = useTranslations("SignUnForm");
-
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   // ✅ حالات الإدخال
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   // ✅ حالة إظهار/إخفاء كلمة المرور
   const [showPassword, setShowPassword] = useState(false);
-
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   // ✅ حالة رمز CSRF
   const [csrfToken, setCsrfToken] = useState("");
-
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   // ✅ جلب رمز CSRF عند تحميل المكون
   useEffect(() => {
     axios.get("/api/csrf").then((res) => {
@@ -47,7 +47,7 @@ const SignUnForm = () => {
       console.log(res.data.csrfToken);
     });
   }, []);
-
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   // ✅ إرسال بيانات التسجيل إلى الخادم
   const handleSubmit = async () => {
     try {
@@ -77,11 +77,11 @@ const SignUnForm = () => {
       console.error("Axios error:", error);
     }
   };
-
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => event.preventDefault();
   const handleMouseUpPassword = (event) => event.preventDefault();
-
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   return (
     <section className="w-full h-full lg:w-1/2 flex items-center justify-center z-20">
       <div

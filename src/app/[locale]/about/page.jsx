@@ -4,16 +4,21 @@ import WhySolDelNilo from "@/auth/components/About/WhySolDelNilo";
 import DecorativeBorder from "@/auth/components/About/DecorativeBorder";
 import Header from "@/auth/components/Header";
 import { generateMetadata } from "./metadata";
-export { generateMetadata }//todo هذه من اجل محرك البحث في جوجل SEO
+export { generateMetadata }; //todo هذه من اجل محرك البحث في جوجل SEO
+import { cookies } from "next/headers";
+import { vrefyTokenForPage } from "@/lib/utils/veryfyToken";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-export default function AboutUsPage() {
+export default async function AboutUsPage() {
+  const cookieStore = await cookies(); // ✅ استخدم await
+  const token = cookieStore.get("jwttoken")?.value;
+  const user = vrefyTokenForPage(token);
   return (
     <main
       style={{ color: "#ff9800" }}
       className="backgroundPic flex flex-col items-center justify-center font-serif min-h-screen px-6 py-16"
     >
       <div className=" container flex flex-col items-center justify-center">
-        <Header />
+        <Header user={user}/>
         <div style={{ marginTop: "22px" }} className="text-center">
           <h1 className="text-5xl font-bold tracking-wide">ABOUT US</h1>
           <div className="">
@@ -27,7 +32,11 @@ export default function AboutUsPage() {
 
               <circle cx="150" cy="120" r="40" fill="#ff9800" />
 
-              <g stroke="#ff9800" strokeWidth="4" style={{borderRadius:'10px'}}>
+              <g
+                stroke="#ff9800"
+                strokeWidth="4"
+                style={{ borderRadius: "10px" }}
+              >
                 {Array.from({ length: 16 }).map((_, i) => {
                   const spread = 120;
                   const startAngle = 180 - spread / 2; // يبدأ من 120°

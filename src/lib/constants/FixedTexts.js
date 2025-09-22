@@ -4,6 +4,7 @@ import { FaWhatsapp } from "react-icons/fa6";
 import { FaInstagram, FaLinkedin } from "react-icons/fa";
 import { BiLogoFacebook, BiLogoGmail } from "react-icons/bi";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+export const DOMAIN = "http://localhost:3000"
 export const NameWebsite = "SolDelNilo"
 export const ToursPathEn = "/en/tours"
 export const ToursPathEs =  "/es/tours"
@@ -16,7 +17,6 @@ export const getNavPath = (t) => [
   {label:t("Home"),path:"/"},
   {label:t("Tours"),path:"/tours"},
   {label:t("About"),path:"/about"},
-  {label:t("Admin"),path:"/admin"},
 ]
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 export const getHeroText = (t) => [

@@ -11,8 +11,9 @@ import {
   AboutPathEn,
   AboutPathEs,
 } from "@/lib/constants/FixedTexts";
+
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-const Header = () => {
+const Header = ({ user }) => {
   const path = usePathname();
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$
   return (
@@ -25,7 +26,6 @@ const Header = () => {
         borderRadius: "22px",
         marginTop: "8px",
       }}
-      
       className={
         path === ToursPathEn ||
         path === ToursPathEs ||
@@ -36,9 +36,9 @@ const Header = () => {
       }
     >
       <Logo path={path} />
-      <Nav path={path} />
+      <Nav path={path} user={user} />
       <MobilNav />
-      <LeftNav path={path} />
+      <LeftNav path={path} user={user} />
     </header>
   );
 };

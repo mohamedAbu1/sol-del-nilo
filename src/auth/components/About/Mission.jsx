@@ -1,5 +1,5 @@
 import SectionTitle from './SectionTitle ';
-
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const Mission = () => (
   <section className="mb-12 text-center">
     <SectionTitle title="OUR MISSION" />

@@ -1,7 +1,6 @@
 import LinksMidea from "./LinksMidea";
 import BtnHero from "./BtnHero";
 import TextHero from "./TextHero";
-import ImageMopilSize from "./ImageMopilSize";
 // ? $$$$$$$$$$$$$$$$$$$$$$
 const Hero = ({ handleReplay }) => {
   return (

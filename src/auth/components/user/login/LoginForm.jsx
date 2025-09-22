@@ -19,32 +19,31 @@ import { useScreenSize } from "@/auth/hooks/screenSize";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
-
 const logo2 = "/assets/Copilot_20250908_231423.png";
-
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const LoginForm = () => {
   const router = useRouter(); // ✅ لإنشاء كائن التوجيه
-
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const { width } = useScreenSize();
   const t = useTranslations("LoginForm");
-
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   // ✅ حالات الإدخال
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   // ✅ حالة إظهار/إخفاء كلمة المرور
   const [showPassword, setShowPassword] = useState(false);
-
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   // ✅ حالة رمز CSRF
   const [csrfToken, setCsrfToken] = useState("");
-
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   // ✅ جلب رمز CSRF عند تحميل المكون
   useEffect(() => {
     axios.get("/api/csrf").then((res) => {
       setCsrfToken(res.data.csrfToken);
     });
   }, []);
-
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   // ✅ إرسال بيانات تسجيل الدخول إلى الخادم
   const handleLogin = async () => {
     try {
@@ -79,11 +78,11 @@ const LoginForm = () => {
       console.error("Axios error:", error);
     }
   };
-
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => event.preventDefault();
   const handleMouseUpPassword = (event) => event.preventDefault();
-
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   return (
     <section className="w-full h-full lg:w-1/2 flex items-center justify-center z-20">
       <div

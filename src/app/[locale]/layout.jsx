@@ -2,39 +2,24 @@ import "../../styles/globals.css";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
-import { Geist, Geist_Mono, Montserrat } from "next/font/google";
 import { DashboardProvider } from "@/context/Information";
-// ✅ تحميل الخطوط
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "700"],
-  display: "swap",
-});
+import { ThemeProvider } from "next-themes";
 
-// // ✅ بيانات الميتا
-// export const metadata = {
-//   title: "SolDelNilo",
-//   description: "Discover Egypt through timeless beauty",
-// };
-
-// ✅ توليد المسارات مسبقًا
+// ✅ تحميل الرسائل حسب اللغة
 export function generateStaticParams() {
-  return ["en", "es", "ar"].map((locale) => ({ locale }));
+  return ["en", "es", "fs","de","it"].map((locale) => ({ locale }));
 }
 
-// ✅ دالة التخطيط الرئيسية
+// ✅ التخطيط المحلي بدون عناصر html/head/body
 export default async function LocaleLayout({ children, params }) {
   const locale = params.locale;
 
+  // ✅ التحقق من اللغة المدعومة
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
 
+  // ✅ تحميل ملفات الترجمة
   let messages;
   try {
     messages = (await import(`../../messages/${locale}.json`)).default;
@@ -42,28 +27,14 @@ export default async function LocaleLayout({ children, params }) {
     notFound();
   }
 
+  // ✅ إرجاع التخطيط بدون عناصر html/head/body
   return (
-    <html
-      lang={locale}
-      className={`${geistMono.className} ${montserrat.className} ${geistSans.variable}`}
-    >
-      <head>
-        {/* ✅ هنا تضيف العلامة الوصفية */}
-        <meta
-          name="google-site-verification"
-          content="dBf5o18SGeohsApi7D87VbsJAZiESLu6AKZ-a3F35ZE"
-        />
-      </head>
-      <body
-        className="min-h-screen"
-        style={{ margin: 0, padding: 0, width: "100vw", height: "100vh" }}
-      >
-        <DashboardProvider>
-          <NextIntlClientProvider locale={locale} messages={messages}>
-            {children}
-          </NextIntlClientProvider>
-        </DashboardProvider>
-      </body>
-    </html>
+    <DashboardProvider>
+      <NextIntlClientProvider locale={locale} messages={messages}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          {children}
+        </ThemeProvider>
+      </NextIntlClientProvider>
+    </DashboardProvider>
   );
 }

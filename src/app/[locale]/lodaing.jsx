@@ -1,11 +1,7 @@
 import React from 'react'
-
+import PharaonicLoader from '@/auth/components/PharaonicLoader';
 const Lodaing = () => {
-  return (
-    <div>
-      mohamed
-    </div>
-  )
+  return <PharaonicLoader />
 }
 
 export default Lodaing

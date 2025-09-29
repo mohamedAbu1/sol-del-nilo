@@ -10,7 +10,7 @@ import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { getNavPath } from "@/lib/constants/FixedTexts";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-const MobilNav = () => {
+const MobilNav = ({ slug }) => {
   const t = useTranslations("Header");
   const CityName = getNavPath(t);
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
@@ -26,7 +26,7 @@ const MobilNav = () => {
   };
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   return (
-    <div className="flex items-center justify-center md:hidden">
+    <div className="flex items-center justify-center lg:hidden">
       <Button
         id="fade-button"
         aria-controls={open ? "fade-menu" : undefined}
@@ -34,7 +34,7 @@ const MobilNav = () => {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
-        <AiOutlineMenu className="text-2xl text-amber-50 hover:scale-110 transition-all" />
+        <AiOutlineMenu className="text-2xl  hover:scale-110 transition-all" />
       </Button>
       <Menu
         id="fade-menu"
@@ -50,7 +50,11 @@ const MobilNav = () => {
       >
         {CityName.map((i, index) => {
           return (
-            <Link href={i.path} key={index}>
+            <Link
+              href={i.path}
+              key={index}
+              style={{ color: slug === i.path ? "#ff9800" : "#000" }}
+            >
               <MenuItem onClick={handleClose}>{i.label}</MenuItem>
             </Link>
           );

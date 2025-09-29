@@ -1,15 +1,24 @@
 "use client";
-// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-import { Link } from "@/i18n/navigation";
-import { RegisterPathEn, RegisterPathEs } from "@/lib/constants/FixedTexts";
+import { motion } from "framer-motion";
 import Image from "next/image";
 const logo2 = "/assets/Copilot_20250908_231423.png";
-// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
 const SignUpTextHero = () => {
   return (
-    <section className="hidden lg:flex w-1/2 h-full items-center justify-center flex-col z-20">
-      <Image src={logo2} alt="Logo" width={500} height={200} loading="eager" />
-    </section>
+    <motion.section
+      initial={{ opacity: 0, x: -100 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+      className="hidden lg:flex w-1/2 h-full items-center justify-center flex-col z-20"
+    >
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ delay: 0.5, duration: 0.6 }}
+      >
+        <Image src={logo2} alt="Logo" width={500} height={200} loading="eager" />
+      </motion.div>
+    </motion.section>
   );
 };
 

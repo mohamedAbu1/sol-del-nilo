@@ -13,6 +13,7 @@ const LogoutBtn = () => {
       await axios.get(`${DOMAIN}/api/logout`);
       router.push("/");
       router.refresh();
+      localStorage.setItem("user", undefined);
     } catch (error) {
       toast.warning("في حاجه غلط ياد");
       console.log(error);
@@ -21,7 +22,8 @@ const LogoutBtn = () => {
   return (
     <>
       <Button
-        className="flex items-center justify-center gap-2 flex-row link bg-none text-gray-400"
+        style={{ color: "grey" }}
+        className="flex items-center justify-center gap-2 flex-row link bg-none"
         onClick={LogoutHnadler}
       >
         logout <BsDoorOpenFill />

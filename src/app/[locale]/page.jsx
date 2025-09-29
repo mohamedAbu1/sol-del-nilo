@@ -1,15 +1,21 @@
 import ClientHome from "@/auth/components/ClientHome";
 import { generateMetadata } from "./metadata";
-export { generateMetadata }; //todo هذه من اجل تحسين SEO في محرك البحث
+export { generateMetadata };
 import { cookies } from "next/headers";
 import { vrefyTokenForPage } from "@/lib/utils/veryfyToken";
-// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+import LoadingScreen from "./lodaing";
+import { Suspense } from "react";
+
 const HomePage = async () => {
-  const cookieStore = await cookies(); // ✅ استخدم await
+  const cookieStore = await cookies();
   const token = cookieStore.get("jwttoken")?.value;
   const user = vrefyTokenForPage(token);
-  console.log(user);
-  return <ClientHome user={user}/>;
+
+  return (
+    <Suspense fallback={<LoadingScreen />}>
+      <ClientHome user={user} />
+    </Suspense>
+  );
 };
 
 export default HomePage;

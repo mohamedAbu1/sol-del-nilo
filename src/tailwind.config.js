@@ -1,11 +1,11 @@
-/** @type {import('tailwindcss').Config} */
-export const content = ["./app/**/*.{js,ts,jsx,tsx}"];
-export const theme = {
-  extend: {
-    colors: {
-      orangeCustom: "#ff9800",
-      darkBg: "#181a1b",
-    },
+module.exports = {
+  darkMode: "class", // ✅ هذا يتيح التحكم بالدارك مود عبر class
+  content: [
+    "./app/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {},
   },
+  plugins: [],
 };
-export const plugins = [];

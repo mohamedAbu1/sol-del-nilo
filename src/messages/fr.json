@@ -3,14 +3,14 @@
     "Home": "Accueil",
     "Tours": "Excursions",
     "About": "À propos de nous",
-    "Admin": "Administration"
+    "Admin": "Admin"
   },
   "HomeHeroPage": {
     "title1": "Votre voyage commence ici",
     "title2": "Découvrez l'Égypte à travers des yeux intemporels",
-    "p": "Embarquez pour un voyage captivant le long du Nil, découvrez des histoires exceptionnelles et une beauté éternelle à travers une expérience soigneusement conçue.",
+    "p": "Embarquez pour un voyage captivant le long du Nil, découvrez des histoires exceptionnelles et une beauté intemporelle à travers une expérience soigneusement conçue.",
     "btn1": "Explorer les excursions",
-    "btn2": "Réserver maintenant"
+    "btn2": "Visa pour l'Égypte"
   },
   "ToursHeroPage": {
     "titlePage": "Excursions",
@@ -18,8 +18,8 @@
     "PDivPic": "Des voyages qui éveillent les sens et l'âme",
     "BtnDivPic": "Vivez la légende",
     "SelectTours1": "Que recherchez-vous ?",
-    "SelectTours2": "Durée",
-    "SelectTours3": "Types d'excursions",
+    "SelectTours2": "Durées",
+    "SelectTours3": "Types d'excursion",
     "SelectTours4": "Taille du groupe",
     "SelectToursLabel1": "Balades en bateau & croisières de luxe",
     "SelectToursLabel2": "Excursions culturelles & historiques",
@@ -31,7 +31,7 @@
   },
   "LoginForm": {
     "LoginTitle": "Connectez-vous à votre voyage",
-    "LoginP": "Commencez votre aventure avec SolDelNilo - là où l'histoire rencontre l'âme",
+    "LoginP": "Commencez votre aventure avec SolDelNilo – là où l'histoire rencontre l'âme",
     "LoginBtn": "Connexion",
     "account": "Je veux créer un compte",
     "Btn2": "Créer un nouveau compte",
@@ -39,10 +39,65 @@
   },
   "SignUnForm": {
     "title": "Créez votre compte",
-    "p": "Commencez votre aventure avec SolDelNilo - là où l'histoire rencontre l'âme",
+    "p": "Commencez votre aventure avec SolDelNilo – là où l'histoire rencontre l'âme",
     "btn": "Créer un compte",
     "title2": "Vous avez déjà un compte ?",
     "btn2": "Page de connexion",
     "btn3": "Page d'accueil"
+  },
+  "NotFoundPage": {
+    "btn": "EXPLORER LES EXCURSIONS",
+    "p": "Il semble que vous vous soyez perdu dans les sables du temps..."
+  },
+  "Error": {
+    "btn": "EXPLORER LES EXCURSIONS",
+    "p": "Un imprévu inattendu dans votre aventure..."
+  },
+  "Visa": {
+    "VISA": "VISA POUR L'ÉGYPTE",
+    "VISA_P": "Découvrez l'Égypte – Demandez votre visa touristique maintenant",
+    "title1": "Qui peut postuler ?",
+    "p2": "Les citoyens de plus de 70 pays sont éligibles à une eVisa, y compris : États-Unis, Canada, pays de l'Union européenne, pays du Golfe, Japon et Australie.",
+    "title2": "Types de visa",
+    "th": "Type",
+    "th2": "Description",
+    "th3": "Durée",
+    "th4": "eVisa (entrée unique)",
+    "th5": "Demandez en ligne avant le voyage",
+    "th6": "Jusqu'à 30 jours",
+    "th7": "Visa à entrées multiples",
+    "th8": "Visites multiples sur 6 mois",
+    "th9": "30 jours par visite",
+    "th10": "Visa à l'arrivée",
+    "th11": "Disponible dans les aéroports pour certaines nationalités",
+    "th12": "Variable",
+    "title3": "Conditions de base",
+    "li": "Passeport valide au moins 6 mois",
+    "li2": "Photo récente au format passeport",
+    "li3": "Détails du voyage (date d'arrivée, hébergement)",
+    "li4": "Adresse e-mail active",
+    "li5": "Carte Visa ou Mastercard pour le paiement",
+    "title4": "Frais",
+    "th13": "Type de visa",
+    "th14": "Frais (USD)",
+    "th15": "Entrée unique",
+    "th16": "$25",
+    "th17": "Entrées multiples",
+    "th18": "$60",
+    "title5": "Étapes de la demande électronique",
+    "li6": "Inscrivez-vous sur le portail officiel",
+    "li7": "Remplissez le formulaire de demande",
+    "li8": "Téléchargez le passeport et la photo",
+    "li9": "Payez les frais en ligne",
+    "li10": "Recevez le visa par e-mail sous 7 jours ouvrables",
+    "link1": "Demander via le portail officiel",
+    "link2": "Lire l'article de la présidence égyptienne",
+    "title6": "Notes importantes",
+    "li11": "Demandez au moins 7 jours avant le voyage",
+    "li12": "L'eVisa ne permet pas de travailler ou d'étudier",
+    "li13": "Les agents de passeport peuvent refuser l'entrée sans explication",
+    "li14": "Ayez toujours une copie imprimée de votre visa",
+    "title7": "Contactez-nous",
+    "p3": "Ministère du Tourisme et des Antiquités"
   }
 }

@@ -2,12 +2,11 @@
 // ? $$$$$$$$$$$$
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
-// import { getNavPath } from "@/lib/constants/FixedTexts";
 import { motion } from "framer-motion";
 import { ToursPathEn, ToursPathEs } from "@/lib/constants/FixedTexts";
 import { useScreenSize } from "../../hooks/screenSize";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-const Nav = ({ path, user }) => {
+const Nav = ({ path, user ,slug}) => {
   const { width, height } = useScreenSize();
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const t = useTranslations("Header");
@@ -19,11 +18,12 @@ const Nav = ({ path, user }) => {
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
   return (
-    <div className="hidden md:flex w-3/6 justify-start ">
+    <div className="hidden lg:flex w-2/5 justify-start">
       <ul className="w-full flex flex-row items-center justify-around capitalize gap-2">
         <motion.li
           style={{
             fontWeight: "600",
+
             fontSize:
               width <= 1297
                 ? path === ToursPathEs
@@ -37,10 +37,10 @@ const Nav = ({ path, user }) => {
           initial="hidden"
           animate="visible"
           transition={{ delay: 0.5, duration: 0.5 }}
-          className={"text-gray-400"}
+          className={slug === "" ? "text-[#d4a85f]" : "text-gray-400"}
         >
-          <Link href={"/"} className="link">
-          {t("Home")}
+          <Link href={"/"} className="hover:text-[#d4a85f]">
+            {t("Home")}
           </Link>
         </motion.li>
         <motion.li
@@ -59,10 +59,10 @@ const Nav = ({ path, user }) => {
           initial="hidden"
           animate="visible"
           transition={{ delay: 0.5, duration: 0.5 }}
-          className={"text-gray-400"}
+          className={slug === "tours" ? "text-[#d4a85f]" : "text-gray-400"}
         >
-          <Link href={"/tours"} className="link">
-          {t("Tours")}
+          <Link href={"/tours"} className="hover:text-[#d4a85f]">
+            {t("Tours")}
           </Link>
         </motion.li>
         <motion.li
@@ -81,35 +81,40 @@ const Nav = ({ path, user }) => {
           initial="hidden"
           animate="visible"
           transition={{ delay: 0.5, duration: 0.5 }}
-          className={"text-gray-400"}
+          className={slug === "about" ? "text-[#d4a85f]" : "text-gray-400"}
         >
-          <Link href={"/about"} className="link">
-          {t("About")}
+          <Link href={"/about"} className="hover:text-[#d4a85f]">
+            {t("About")}
           </Link>
         </motion.li>
-        {!user || user.role !== "ADMIN" ?  "": width <= 1279 ? "":  <motion.li
-          style={{
-            fontWeight: "600",
-            fontSize:
-              width <= 1297
-                ? path === ToursPathEs
-                  ? "15px"
-                  : "19px"
-                : path === ToursPathEn
-                ? "19px"
-                : "19px",
-          }}
-          variants={boxVariants}
-          initial="hidden"
-          animate="visible"
-          transition={{ delay: 0.5, duration: 0.5 }}
-          className={"text-gray-400"}
-        >
-          <Link href={"/admin"} className="link">
-          {t("Admin")}
-          </Link>
-        </motion.li> }
-      
+        {!user || user.role !== "ADMIN" ? (
+          ""
+        ) : width <= 1279 ? (
+          ""
+        ) : (
+          <motion.li
+            style={{
+              fontWeight: "600",
+              fontSize:
+                width <= 1297
+                  ? path === ToursPathEs
+                    ? "15px"
+                    : "19px"
+                  : path === ToursPathEn
+                  ? "19px"
+                  : "19px",
+            }}
+            variants={boxVariants}
+            initial="hidden"
+            animate="visible"
+            transition={{ delay: 0.5, duration: 0.5 }}
+          className={slug === "admin" ? "text-[#d4a85f]" : "text-gray-400"}
+          >
+            <Link href={"/admin"} className="hover:text-[#d4a85f]">
+              {t("Admin")}
+            </Link>
+          </motion.li>
+        )}
       </ul>
     </div>
   );

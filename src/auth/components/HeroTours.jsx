@@ -1,25 +1,71 @@
 "use client";
-// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useInView } from "react-intersection-observer";
+import { useAnimation } from "framer-motion";
+import { useScreenSize } from "@/auth/hooks/screenSize";
+import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 import Card from "./HeroToursComponets/CardDiv";
 import HeroSlider from "./HeroToursComponets/SliderDiv";
+import SelectTours from "./HeroToursComponets/SelectTours";
+import { toast } from "react-toastify";
+import { ToursPathEn } from "@/lib/constants/FixedTexts";
 import { Box } from "@mui/material";
-import { useTranslations } from "next-intl";
-import { usePathname } from "next/navigation";
-import { ToursPathEn, ToursPathEs } from "@/lib/constants/FixedTexts";
-import { useScreenSize } from "@/auth/hooks/screenSize";
-// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+import { supabase } from "@/lib/supabaseClient";
+
 const HeroTours = () => {
   const path = usePathname();
   const t = useTranslations("ToursHeroPage");
   const { width } = useScreenSize();
-  // const [hover, setHover] = useState(false);
-// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-  // const cards = Array.from({ length: 9 }, (_, i) => ({ id: i + 1 }));
-// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  const [toursData, setToursData] = useState([]);
+  const [hoverIndex, setHoverIndex] = useState(null);
+  const [ref, inView] = useInView({ threshold: 0.4 });
+  const controls = useAnimation();
+  const WidthCard = width === 540 ? 300 : 360;
+  useEffect(() => {
+    const fetchTours = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("tour")
+          .select(
+            `
+            *,
+            category(*),
+            city(*),
+            tripProgram(*),
+            Includes(*)
+          `
+          )
+          .order("created_at", { ascending: false });
+
+        if (error) {
+          console.error("❌ خطأ في جلب الرحلات:", error.message);
+          toast.error("❌ فشل في تحميل الرحلات");
+          setToursData([]);
+          return;
+        }
+
+        setToursData(data || []);
+      } catch (err) {
+        console.error("❌ فشل في الاتصال بـ Supabase:", err.message);
+        toast.error("❌ فشل في تحميل الرحلات");
+        setToursData([]);
+      }
+    };
+
+    fetchTours();
+  }, []);
+
+  useEffect(() => {
+    if (inView) {
+      controls.start("visible");
+    }
+  }, [inView]);
+
   return (
     <section
-      style={{ width: width <= 1023 ? "100%" : width * 0.85 }}
+      style={{ width: width <= 1023 ? "100%" : width * 0.9 }}
       className="container flex flex-col items-start justify-center"
     >
       <h1
@@ -38,6 +84,7 @@ const HeroTours = () => {
       <Box
         sx={{
           width: "100%",
+          height: "60%",
           mx: "auto",
           display: "flex",
           flexDirection: "row",
@@ -47,13 +94,26 @@ const HeroTours = () => {
         <HeroSlider />
       </Box>
 
+      <SelectTours />
+
       <Box
         sx={{ marginTop: "40px", marginBottom: "40px" }}
         className="w-full flex flex-wrap gap-6 items-center justify-center"
       >
-        
-          <Card />
-       
+        {toursData.length > 0 ? (
+          <Card
+            toursData={toursData}
+            hoverIndex={hoverIndex}
+            setHoverIndex={setHoverIndex}
+            controls={controls}
+            WidthCard={WidthCard}
+            ref={ref}
+          />
+        ) : (
+          <p className="text-gray-400 text-lg font-semibold">
+            لا توجد رحلات متاحة حاليًا.
+          </p>
+        )}
       </Box>
     </section>
   );

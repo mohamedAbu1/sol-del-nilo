@@ -44,7 +44,7 @@ const BtnHero = () => {
         transition={{ delay: 0.2, duration: 0.5 }}
         onClick={() => router.push("/visaInfo")}
       >
-        <Button className={"BtnHero2"}>
+        <Button className={"BtnHero2 dark:text-white"}>
           <AiOutlineLock />
           {t("btn2")}
         </Button>

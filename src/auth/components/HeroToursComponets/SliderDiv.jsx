@@ -16,7 +16,7 @@ export default function HeroSlider() {
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
   return (
-    <div className="w-full h-2/4 overflow-hidden">
+    <div className="w-full h-2/3 overflow-hidden">
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
         navigation
@@ -25,7 +25,7 @@ export default function HeroSlider() {
         loop={true}
         slidesPerView={1}
         centeredSlides={true}
-        className="h-2/4"
+        className="h-2/3"
       >
         {ToursHeroSlider.map((slide, index) => (
           <SwiperSlide key={index}>

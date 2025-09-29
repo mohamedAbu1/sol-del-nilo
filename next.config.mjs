@@ -9,7 +9,10 @@ const nextConfig = {
         hostname: "upload.wikimedia.org",
       },
     ],
-    domains: ["your-image-domain.com"], // ← هذا داخل images فقط
+    domains: ["i.imgur.com"],
+  },
+  experimental: {
+    serverActions: {},
   },
   // يمكنك إضافة إعدادات أخرى هنا مثل redirects أو headers
 };

@@ -5,14 +5,14 @@ import Header from "./Header";
 import Hero from "./HeroComponets/Hero";
 import Image from "next/image";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-export default function ClientHome({user}) {
+export default function ClientHome({ user }) {
   const [showVideo, setShowVideo] = useState(false);
   const [videoEnded, setVideoEnded] = useState(false);
   const [startTransition, setStartTransition] = useState(false);
   const [showContent, setShowContent] = useState(false);
   const [animateImage, setAnimateImage] = useState(false);
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-  const videoSrc = "/videos/This-is-Egypt.mp4"; // ✅ مسار ثابت من مجلد public
+  const videoSrc = ""; // ✅ مسار ثابت من مجلد public
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   useEffect(() => {
     const hasSeenVideo = localStorage.getItem("hasSeenIntroVideo");
@@ -83,7 +83,7 @@ export default function ClientHome({user}) {
               onEnded={() => setVideoEnded(true)}
               className="absolute top-0 left-0 w-full h-full object-cover z-0"
             >
-              <source src={videoSrc} type="video/mp4" />
+              <source src="/videos/This-is-Egypt.mp4" type="video/mp4" />
             </video>
 
             {/* Skip button */}
@@ -118,7 +118,7 @@ export default function ClientHome({user}) {
 
       {/* Header always visible */}
       <div className="container absolute top-0 left-1/2 transform -translate-x-1/2 z-50">
-        <Header user={user}/>
+        <Header user={user} />
       </div>
 
       {/* Mobile Hero + Replay button */}

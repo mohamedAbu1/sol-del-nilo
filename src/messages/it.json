@@ -3,14 +3,14 @@
     "Home": "Home",
     "Tours": "Tour",
     "About": "Chi siamo",
-    "Admin": "Amministrazione"
+    "Admin": "Amministratore"
   },
   "HomeHeroPage": {
     "title1": "Il tuo viaggio inizia qui",
     "title2": "Scopri l'Egitto con occhi senza tempo",
-    "p": "Intraprendi un viaggio affascinante lungo il Nilo, scopri storie eccezionali e una bellezza eterna attraverso un'esperienza curata in modo unico.",
+    "p": "Intraprendi un viaggio affascinante lungo il Nilo, scopri storie eccezionali e una bellezza senza tempo attraverso un'esperienza curata in modo unico.",
     "btn1": "Esplora i tour",
-    "btn2": "Prenota ora"
+    "btn2": "Visto per l'Egitto"
   },
   "ToursHeroPage": {
     "titlePage": "Tour",
@@ -31,7 +31,7 @@
   },
   "LoginForm": {
     "LoginTitle": "Accedi al tuo viaggio",
-    "LoginP": "Inizia il tuo viaggio con SolDelNilo - dove la storia incontra l'anima",
+    "LoginP": "Inizia il tuo viaggio con SolDelNilo – dove la storia incontra l'anima",
     "LoginBtn": "Accedi",
     "account": "Voglio creare un account",
     "Btn2": "Crea un nuovo account",
@@ -39,10 +39,65 @@
   },
   "SignUnForm": {
     "title": "Crea il tuo account",
-    "p": "Inizia il tuo viaggio con SolDelNilo - dove la storia incontra l'anima",
+    "p": "Inizia il tuo viaggio con SolDelNilo – dove la storia incontra l'anima",
     "btn": "Crea account",
     "title2": "Hai già un account?",
     "btn2": "Pagina di accesso",
     "btn3": "Pagina iniziale"
+  },
+  "NotFoundPage": {
+    "btn": "ESPLORA I TOUR",
+    "p": "Sembra che ti sia perso tra le sabbie del tempo..."
+  },
+  "Error": {
+    "btn": "ESPLORA I TOUR",
+    "p": "Un inconveniente inaspettato nella tua avventura..."
+  },
+  "Visa": {
+    "VISA": "VISTO PER L'EGITTO",
+    "VISA_P": "Scopri l'Egitto – Richiedi ora il tuo visto turistico",
+    "title1": "Chi può fare domanda?",
+    "p2": "I cittadini di oltre 70 paesi sono idonei per un eVisa, tra cui: Stati Uniti, Canada, paesi dell'Unione Europea, nazioni del Golfo, Giappone e Australia.",
+    "title2": "Tipi di visto",
+    "th": "Tipo",
+    "th2": "Descrizione",
+    "th3": "Durata",
+    "th4": "eVisa (Ingresso singolo)",
+    "th5": "Richiedi online prima del viaggio",
+    "th6": "Fino a 30 giorni",
+    "th7": "Visto a ingressi multipli",
+    "th8": "Visite multiple entro 6 mesi",
+    "th9": "30 giorni per visita",
+    "th10": "Visto all'arrivo",
+    "th11": "Disponibile negli aeroporti per alcune nazionalità",
+    "th12": "Variabile",
+    "title3": "Requisiti di base",
+    "li": "Passaporto valido per almeno 6 mesi",
+    "li2": "Foto recente formato passaporto",
+    "li3": "Dettagli del viaggio (data di arrivo, alloggio)",
+    "li4": "Indirizzo email attivo",
+    "li5": "Carta Visa o Mastercard per il pagamento",
+    "title4": "Tariffe",
+    "th13": "Tipo di visto",
+    "th14": "Costo (USD)",
+    "th15": "Ingresso singolo",
+    "th16": "$25",
+    "th17": "Ingressi multipli",
+    "th18": "$60",
+    "title5": "Passaggi per la richiesta elettronica",
+    "li6": "Registrati sul portale ufficiale",
+    "li7": "Compila il modulo di richiesta",
+    "li8": "Carica passaporto e foto",
+    "li9": "Paga le tariffe online",
+    "li10": "Ricevi il visto via email entro 7 giorni lavorativi",
+    "link1": "Richiedi tramite il portale ufficiale",
+    "link2": "Leggi l'articolo della presidenza egiziana",
+    "title6": "Note importanti",
+    "li11": "Richiedi almeno 7 giorni prima del viaggio",
+    "li12": "L'eVisa non consente lavoro o studio",
+    "li13": "Gli ufficiali di frontiera possono negare l'ingresso senza spiegazioni",
+    "li14": "Porta sempre una copia stampata del tuo visto",
+    "title7": "Contattaci",
+    "p3": "Ministero del Turismo e delle Antichità"
   }
 }

@@ -1,88 +1,60 @@
+"use client";
 import React, { useState, useEffect } from "react";
-import {
-  Box,
-  TextField,
-  Button,
-  Typography,
-  Stack,
-  InputAdornment,
-  Select,
-  MenuItem,
-  InputLabel,
-  FormControl,
-} from "@mui/material";
-import { AiOutlineClose } from "react-icons/ai";
+import { Box, TextField, Typography, Stack, Button } from "@mui/material";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import { DOMAIN } from "@/lib/constants/FixedTexts";
 import { ToastContainer, toast } from "react-toastify";
-import { grey } from "@mui/material/colors";
+import BelowTheControlPanel from "./components/BelowTheControlPanel";
+import ControlPanelImages from "./components/ControlPanelImages";
+import TopOfTheControlPanel2 from "./components/TopOfTheControlPanel2";
+import TripProgram from "./components/TripProgram";
+import Preparation from "./components/Preparation";
+import TourIncludes from "./components/TourIncludes";
+import { supabase } from "@/lib/supabaseClient";
 const CreateTripForm = () => {
-  const router = useRouter();
-
-  // 🧾 بيانات النموذج الأساسية
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     price: "",
-    information: "",
+    days: "",
+    people: "",
+    categoryId: "",
+    cityId: "",
+    Destination: "", // ← أضف هذا
+    theDate: "", // ← أضف هذا
+    TripDuration: "", // ← أضف هذا
+    image: [],
+    tripprogram: [{ time: "", program: "" }],
+    includes: [{ text: "" }], // ✅ أضف هذا السطر
   });
 
-  // 📆 عدد الأيام و الأشخاص
-  const [days, setDays] = useState("");
-  const [people, setPeople] = useState("");
-
-  // 🏙️ المدينة و التصنيف
-  const [cityId, setCityId] = useState("");
-  const [categoryId, setCategoryId] = useState("");
-
-  // 📦 تحميل المدن والتصنيفات من قاعدة البيانات
   const [cities, setCities] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [selectedImages, setSelectedImages] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const [cityRes, categoryRes] = await Promise.all([
-          axios.get(`${DOMAIN}/api/city`),
-          axios.get(`${DOMAIN}/api/categories`),
+          supabase.from("city").select("*"),
+          supabase.from("category").select("*"),
         ]);
+
+        if (cityRes.error || categoryRes.error) {
+          throw new Error("فشل في جلب البيانات");
+        }
+
         setCities(cityRes.data);
         setCategories(categoryRes.data);
       } catch (error) {
-        toast.error("❌ خطأ في تحميل المدن أو التصنيفات:", error);
+        toast.error("❌ خطأ في تحميل المدن أو التصنيفات");
+        console.error(error);
       }
     };
+
     fetchData();
   }, []);
 
-  // 🖼️ الصور المختارة
-  const [selectedImages, setSelectedImages] = useState([]);
-
-  // 📤 تحميل الصور من الجهاز
-  const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
-    const remainingSlots = 12 - selectedImages.length;
-
-    if (
-      selectedImages.length + files.length > 12 ||
-      selectedImages.length + files.length < 4
-    ) {
-      toast.error("❌ يجب اختيار ما بين 4 إلى 12 صورة.");
-      return;
-    }
-
-    const limitedFiles = files.slice(0, remainingSlots);
-    const newImages = limitedFiles.map((file) => ({
-      name: file.name,
-      url: URL.createObjectURL(file),
-      file,
-    }));
-
-    setSelectedImages((prev) => [...prev, ...newImages]);
-  };
-
-  // 🧹 تنظيف روابط الصور المؤقتة عند الخروج
   useEffect(() => {
     return () => {
       selectedImages.forEach((img) => {
@@ -91,57 +63,124 @@ const CreateTripForm = () => {
     };
   }, [selectedImages]);
 
-  // ✏️ تحديث الحقول النصية
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (value > 5000) {
-      toast.error("❌ لا يمكن أن يكون السعر أكبر من 5000 دولار", {
-        position: "top-center",
-      });
+    if (name === "price" && value > 5000) {
+      toast.error("❌ لا يمكن أن يكون السعر أكبر من 5000 دولار");
       return;
     }
-
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // 📩 إرسال النموذج إلى API
+  const handleProgramChange = (updatedPrograms) => {
+    setFormData((prev) => ({ ...prev, tripprogram: updatedPrograms }));
+  };
+
+  const isValid = () => {
+    const requiredFields = [
+      "title",
+      "description",
+      "price",
+      "days",
+      "people",
+      "categoryId",
+      "cityId",
+      "Destination",
+      "theDate",
+      "TripDuration",
+    ];
+
+    for (let field of requiredFields) {
+      const value = formData[field];
+      if (
+        value === undefined ||
+        value === null ||
+        (typeof value === "string" && value.trim() === "")
+      ) {
+        toast.error(`❌ الحقل "${field}" مطلوب ولا يمكن تركه فارغًا`);
+        return false;
+      }
+    }
+
+    if (selectedImages.length < 4 || selectedImages.length > 12) {
+      toast.error("❌ يجب اختيار ما بين 4 إلى 12 صورة.");
+      return false;
+    }
+
+    if (
+      !formData.includes ||
+      !Array.isArray(formData.includes) ||
+      formData.includes.some((item, index) => {
+        if (!item.text || item.text.trim() === "") {
+          toast.error(`❌ بند المرفقات رقم ${index + 1} فارغ`);
+          return true;
+        }
+        return false;
+      })
+    ) {
+      return false;
+    }
+
+    if (
+      !formData.tripprogram ||
+      !Array.isArray(formData.tripprogram) ||
+      formData.tripprogram.some((item, index) => {
+        if (!item.time || item.time.trim() === "") {
+          toast.error(`❌ وقت النشاط رقم ${index + 1} فارغ`);
+          return true;
+        }
+        if (!item.program || item.program.trim() === "") {
+          toast.error(`❌ وصف النشاط رقم ${index + 1} فارغ`);
+          return true;
+        }
+        return false;
+      })
+    ) {
+      return false;
+    }
+
+    return true;
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!isValid()) {
+      toast.error("❌ يرجى ملء جميع الحقول قبل الإرسال");
+      return;
+    }
 
-    const DayPeople = `${days}Day/${people}People`;
+    const DayPeople = `${formData.days}Day/${formData.people}People`;
+    const payload = {
+      ...formData,
+      price: parseFloat(formData.price),
+      DayPeople,
+      image: selectedImages.map((img) => img.name),
+    };
 
     try {
-      console.log({
-        ...formData,
-        DayPeople: `${days}Day/${people}People`,
-        categoryId,
-        cityId,
-        image: selectedImages.map((img) => img.name),
-      });
-
-      const response = await axios.post(`${DOMAIN}/api/tours`, {
-        ...formData,
-        price: parseFloat(formData.price),
-        DayPeople,
-        categoryId,
-        cityId,
-        image: selectedImages.map((img) => img.name),
-      });
-
+      const response = await axios.post(`${DOMAIN}/api/tours`, payload);
       if (response.status === 201) {
-        toast.success("✅ تم حفظ الرحلة:", response.data);
-        // 🔄 إعادة تعيين النموذج
-        setFormData({ title: "", description: "", price: "", information: "" });
-        setDays("");
-        setPeople("");
-        setCityId("");
-        setCategoryId("");
+        toast.success("✅ تم حفظ الرحلة");
+        setFormData({
+          title: "",
+          description: "",
+          price: "",
+          days: "",
+          people: "",
+          categoryId: "",
+          cityId: "",
+          Destination: "", // ← أضف هذا
+          theDate: "", // ← أضف هذا
+          TripDuration: "", // ← أضف هذا
+          image: [],
+          tripProgram: [{ time: "", program: "" }],
+          includes: [{ text: "" }], // ✅ أضف هذا
+        });
         setSelectedImages([]);
       } else {
-        toast.error("❌ فشل في حفظ الرحلة:", response.data);
+        toast.error("❌ فشل في حفظ الرحلة");
       }
     } catch (error) {
-      toast.error("❌ خطأ في الاتصال بـ API:", error);
+      toast.error("❌ خطأ في الاتصال بـ API");
     }
   };
 
@@ -176,371 +215,45 @@ const CreateTripForm = () => {
 
           <form onSubmit={handleSubmit}>
             <Stack spacing={2}>
-              {/* 📝 عنوان الرحلة */}
-              <TextField
-                label="عنوان الرحلة"
-                name="title"
-                value={formData.title}
-                onChange={handleChange}
-                sx={{
-                  input: {
-                    color: "#d4a85f",
-                    fontSize: "18px",
-                    fontWeight: "bold",
-                    fontFamily: "Cairo, sans-serif",
-                  },
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": { borderColor: "#d4a85f" },
-                    "&:hover fieldset": { borderColor: "#ff9800" },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#ff9800",
-                      borderWidth: "2px",
-                    },
-                  },
-                  "& .MuiInputLabel-root": { color: "#d4a85f" },
-                  "& .MuiInputLabel-root.Mui-focused": { color: "#ff9800" },
-                }}
-                fullWidth
-                required
+              <TopOfTheControlPanel2
+                formData={formData}
+                handleChange={handleChange}
               />
-
-              {/* 📝 وصف الرحلة */}
-              <TextField
-                label="معلومات عن المعبد او المكان السياحي"
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-                multiline
-                rows={3}
-                sx={{
-                  input: {
-                    color: "#d4a85f",
-                    fontSize: "18px",
-                    fontWeight: "bold",
-                    fontFamily: "Cairo, sans-serif",
-                  },
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": { borderColor: "#d4a85f" },
-                    "&:hover fieldset": { borderColor: "#ff9800" },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#ff9800",
-                      borderWidth: "2px",
-                    },
-                  },
-                  "& .MuiInputLabel-root": { color: "#d4a85f" },
-                  "& .MuiInputLabel-root.Mui-focused": { color: "#ff9800" },
-                }}
-                fullWidth
-                required
+              <ControlPanelImages
+                selectedImages={selectedImages}
+                setSelectedImages={setSelectedImages}
               />
-
-              {/* 🖼️ تحميل الصور */}
-              <Box>
-                <input
-                  accept="image/*"
-                  type="file"
-                  multiple
-                  onChange={handleImageChange}
-                  style={{ display: "none" }}
-                  id="upload-multiple-images"
-                />
-                <label htmlFor="upload-multiple-images">
-                  <Button
-                    variant="contained"
-                    component="span"
-                    sx={{
-                      backgroundColor: "#ff9800",
-                      color: "#ffffff",
-                      fontSize: "18px",
-                      fontWeight: "700",
-                    }}
-                  >
-                    اختر صور من جهازك
-                  </Button>
-                </label>
-
-                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mt: 2 }}>
-                  {selectedImages.map((img, index) => (
-                    <Box
-                      key={index}
-                      position="relative"
-                      sx={{ width: "150px" }}
-                    >
-                      <Button
-                        size="small"
-                        onClick={() => {
-                          setSelectedImages((prev) =>
-                            prev.filter((_, i) => i !== index)
-                          );
-                          URL.revokeObjectURL(img.url);
-                        }}
-                        sx={{
-                          position: "absolute",
-                          top: 0,
-                          right: 0,
-                          minWidth: "30px",
-                          padding: "2px",
-                          color: "#ff9800",
-                          borderRadius: "50%",
-                          zIndex: 1,
-                        }}
-                      >
-                        <AiOutlineClose style={{ fontSize: "22px" }} />
-                      </Button>
-                      <img
-                        src={img.url}
-                        alt={img.name}
-                        style={{ width: "100%", borderRadius: "8px" }}
-                      />
-                    </Box>
-                  ))}
-                </Box>
-              </Box>
-
-              {/* 💰 السعر */}
-              <TextField
-                label="ثمن الرحله بالدولار"
-                name="price"
-                type="number"
-                value={formData.price}
-                onChange={handleChange}
-                required
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end" sx={{ color: "#d4a85f" }}>
-                      $
-                    </InputAdornment>
-                  ),
-                }}
-                inputProps={{
-                  max: 1000, // ✅ يمنع إدخال أكثر من 1000 من خلال واجهة المستخدم
-                  min: 0, // اختياري: لمنع القيم السالبة
-                }}
-                sx={{
-                  width: "18%",
-                  input: {
-                    color: "#d4a85f",
-                    fontSize: "18px",
-                    fontWeight: "bold",
-                    fontFamily: "Cairo, sans-serif",
-                  },
-                  "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button":
-                    {
-                      WebkitAppearance: "none",
-                      margin: 0,
-                    },
-                  "& input": {
-                    MozAppearance: "textfield",
-                  },
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": { borderColor: "#d4a85f" },
-                    "&:hover fieldset": { borderColor: "#ff9800" },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#ff9800",
-                      borderWidth: "2px",
-                    },
-                  },
-                  "& .MuiInputLabel-root": { color: "#d4a85f" },
-                  "& .MuiInputLabel-root.Mui-focused": { color: "#ff9800" },
-                }}
+              <TripProgram
+                programs={formData.tripprogram}
+                setPrograms={handleProgramChange}
               />
-
-              {/* ℹ️ معلومات إضافية */}
-              <TextField
-                label="معلومات عن الرحله"
-                name="information"
-                value={formData.information}
-                onChange={handleChange}
-                multiline
-                rows={2}
-                sx={{
-                  input: {
-                    color: "#d4a85f",
-                    fontSize: "18px",
-                    fontWeight: "bold",
-                    fontFamily: "Cairo, sans-serif",
-                  },
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": { borderColor: "#d4a85f" },
-                    "&:hover fieldset": { borderColor: "#ff9800" },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#ff9800",
-                      borderWidth: "2px",
-                    },
-                  },
-                  "& .MuiInputLabel-root": { color: "#d4a85f" },
-                  "& .MuiInputLabel-root.Mui-focused": { color: "#ff9800" },
-                }}
-                fullWidth
+              <TourIncludes
+                includes={formData.includes}
+                setIncludes={(data) =>
+                  setFormData((prev) => ({ ...prev, includes: data }))
+                }
+              />{" "}
+              <Preparation formData={formData} handleChange={handleChange} />
+              <BelowTheControlPanel
+                cities={cities}
+                categories={categories}
+                categoryId={formData.categoryId}
+                cityId={formData.cityId}
+                handleChange={handleChange}
               />
-
-              <div className="flex flex-row gap-8">
-                {/* 📆 عدد الأيام */}
-                <TextField
-                  label="عدد الأيام"
-                  type="number"
-                  value={days}
-                  onChange={(e) => setDays(e.target.value)}
-                  sx={{
-                    width: "48%",
-
-                    input: {
-                      color: "#d4a85f",
-                      fontSize: "18px",
-                      fontWeight: "bold",
-                      fontFamily: "Cairo, sans-serif",
-                    },
-                    "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button":
-                      {
-                        WebkitAppearance: "none",
-                        margin: 0,
-                      },
-                    "& input": {
-                      MozAppearance: "textfield",
-                    },
-                    "& .MuiOutlinedInput-root": {
-                      "& fieldset": { borderColor: "#d4a85f" },
-                      "&:hover fieldset": { borderColor: "#ff9800" },
-                      "&.Mui-focused fieldset": {
-                        borderColor: "#ff9800",
-                        borderWidth: "2px",
-                      },
-                    },
-                    "& .MuiInputLabel-root": { color: "#d4a85f" },
-                    "& .MuiInputLabel-root.Mui-focused": { color: "#ff9800" },
-                  }}
-                  fullWidth
-                  required
-                />
-
-                {/* 👥 عدد الأشخاص */}
-                <TextField
-                  label="عدد الأشخاص"
-                  type="number"
-                  value={people}
-                  onChange={(e) => setPeople(e.target.value)}
-                  sx={{
-                    width: "48%",
-
-                    input: {
-                      color: "#d4a85f",
-                      fontSize: "18px",
-                      fontWeight: "bold",
-                      fontFamily: "Cairo, sans-serif",
-                    },
-                    "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button":
-                      {
-                        WebkitAppearance: "none",
-                        margin: 0,
-                      },
-                    "& input": {
-                      MozAppearance: "textfield",
-                    },
-                    "& .MuiOutlinedInput-root": {
-                      "& fieldset": { borderColor: "#d4a85f" },
-                      "&:hover fieldset": { borderColor: "#ff9800" },
-                      "&.Mui-focused fieldset": {
-                        borderColor: "#ff9800",
-                        borderWidth: "2px",
-                      },
-                    },
-                    "& .MuiInputLabel-root": { color: "#d4a85f" },
-                    "& .MuiInputLabel-root.Mui-focused": { color: "#ff9800" },
-                  }}
-                  fullWidth
-                  required
-                />
-              </div>
-
-              {/* 🏷️ اختيار التصنيف */}
-              <FormControl
-                fullWidth
-                required
-                sx={{
-                  input: {
-                    color: "#d4a85f",
-                    fontSize: "18px",
-                    fontWeight: "bold",
-                    fontFamily: "Cairo, sans-serif",
-                  },
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": { borderColor: "#d4a85f" },
-                    "&:hover fieldset": { borderColor: "#ff9800" },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#ff9800",
-                      borderWidth: "2px",
-                    },
-                  },
-                  "& .MuiInputLabel-root": { color: "#d4a85f" },
-                  "& .MuiInputLabel-root.Mui-focused": { color: "#ff9800" },
-                }}
-              >
-                <InputLabel id="category-select-label">اختر التصنيف</InputLabel>
-                <Select
-                  labelId="category-select-label"
-                  id="category-select"
-                  value={categoryId}
-                  onChange={(e) => setCategoryId(e.target.value)}
-                >
-                  {categories.map((cat) => (
-                    <MenuItem key={cat.id} value={cat.id}>
-                      {cat.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-
-              {/* 🏙️ اختيار المدينة */}
-              <FormControl
-                fullWidth
-                required
-                sx={{
-                  input: {
-                    color: "#d4a85f",
-                    fontSize: "18px",
-                    fontWeight: "bold",
-                    fontFamily: "Cairo, sans-serif",
-                  },
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": { borderColor: "#d4a85f" },
-                    "&:hover fieldset": { borderColor: "#ff9800" },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#ff9800",
-                      borderWidth: "2px",
-                    },
-                  },
-                  "& .MuiInputLabel-root": { color: "#d4a85f" },
-                  "& .MuiInputLabel-root.Mui-focused": { color: "#ff9800" },
-                }}
-              >
-                <InputLabel id="city-select-label">اختر المدينة</InputLabel>
-                <Select
-                  labelId="city-select-label"
-                  id="city-select"
-                  value={cityId}
-                  onChange={(e) => setCityId(e.target.value)}
-                >
-                  {cities.map((city) => (
-                    <MenuItem key={city.id} value={city.id}>
-                      {city.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-
-              {/* ✅ زر الحفظ */}
               <Button
                 type="submit"
                 variant="contained"
-                color="primary"
                 sx={{
+                  mt: "10px",
                   backgroundColor: "#ff9800",
-                  color: "#ffffff",
-                  fontSize: "18px",
-                  fontWeight: "700",
+                  fontWeight: "bold",
+                  fontSize: "16px",
+                  fontFamily: "Cairo, sans-serif",
+                  "&:hover": { backgroundColor: "#d4a85f" },
                 }}
               >
-                حفظ الرحلة
+                ✅ حفظ الرحلة
               </Button>
             </Stack>
           </form>

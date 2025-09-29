@@ -3,14 +3,14 @@
     "Home": "Startseite",
     "Tours": "Touren",
     "About": "Über uns",
-    "Admin": "Verwaltung"
+    "Admin": "Administrator"
   },
   "HomeHeroPage": {
     "title1": "Deine Reise beginnt hier",
     "title2": "Entdecke Ägypten mit zeitlosen Augen",
     "p": "Begib dich auf eine faszinierende Reise entlang des Nils, entdecke außergewöhnliche Geschichten und zeitlose Schönheit durch ein einzigartig kuratiertes Erlebnis.",
     "btn1": "Touren entdecken",
-    "btn2": "Jetzt buchen"
+    "btn2": "Ägypten-Visum"
   },
   "ToursHeroPage": {
     "titlePage": "Touren",
@@ -19,9 +19,9 @@
     "BtnDivPic": "Erlebe die Legende",
     "SelectTours1": "Wonach suchst du?",
     "SelectTours2": "Dauer",
-    "SelectTours3": "Tourarten",
+    "SelectTours3": "Tourtypen",
     "SelectTours4": "Gruppengröße",
-    "SelectToursLabel1": "Bootsausflüge & Luxuskreuzfahrten",
+    "SelectToursLabel1": "Bootsfahrten & Luxuskreuzfahrten",
     "SelectToursLabel2": "Kulturelle & historische Touren",
     "SelectToursLabel3": "Nächtliche Touren & Unterhaltung",
     "SelectToursLabel4": "1 bis 4 Stunden",
@@ -31,7 +31,7 @@
   },
   "LoginForm": {
     "LoginTitle": "Melde dich für deine Reise an",
-    "LoginP": "Beginne deine Reise mit SolDelNilo – wo Geschichte die Seele berührt",
+    "LoginP": "Beginne deine Reise mit SolDelNilo – wo Geschichte auf Seele trifft",
     "LoginBtn": "Anmelden",
     "account": "Ich möchte ein Konto erstellen",
     "Btn2": "Neues Konto erstellen",
@@ -39,10 +39,65 @@
   },
   "SignUnForm": {
     "title": "Erstelle dein Konto",
-    "p": "Beginne deine Reise mit SolDelNilo – wo Geschichte die Seele berührt",
+    "p": "Beginne deine Reise mit SolDelNilo – wo Geschichte auf Seele trifft",
     "btn": "Konto erstellen",
-    "title2": "Du hast bereits ein Konto?",
-    "btn2": "Anmeldeseite",
+    "title2": "Hast du bereits ein Konto?",
+    "btn2": "Login-Seite",
     "btn3": "Startseite"
+  },
+  "NotFoundPage": {
+    "btn": "TOUREN ENTDECKEN",
+    "p": "Du scheinst dich in den Sanden der Zeit verirrt zu haben..."
+  },
+  "Error": {
+    "btn": "TOUREN ENTDECKEN",
+    "p": "Ein unerwartetes Hindernis auf deiner Reise..."
+  },
+  "Visa": {
+    "VISA": "ÄGYPTEN-VISUM",
+    "VISA_P": "Entdecke Ägypten – Beantrage jetzt dein Touristenvisum",
+    "title1": "Wer kann sich bewerben?",
+    "p2": "Bürger aus über 70 Ländern sind für ein eVisum berechtigt, darunter: USA, Kanada, EU-Länder, Golfstaaten, Japan und Australien.",
+    "title2": "Visumtypen",
+    "th": "Typ",
+    "th2": "Beschreibung",
+    "th3": "Dauer",
+    "th4": "eVisum (Einmalige Einreise)",
+    "th5": "Online vor der Reise beantragen",
+    "th6": "Bis zu 30 Tage",
+    "th7": "Visum für mehrfache Einreisen",
+    "th8": "Mehrere Besuche innerhalb von 6 Monaten",
+    "th9": "30 Tage pro Besuch",
+    "th10": "Visum bei Ankunft",
+    "th11": "An Flughäfen für ausgewählte Nationalitäten verfügbar",
+    "th12": "Variabel",
+    "title3": "Grundlegende Anforderungen",
+    "li": "Reisepass mit mindestens 6 Monaten Gültigkeit",
+    "li2": "Aktuelles Passfoto",
+    "li3": "Reisedetails (Ankunftsdatum, Unterkunft)",
+    "li4": "Aktive E-Mail-Adresse",
+    "li5": "Visa oder Mastercard zur Zahlung",
+    "title4": "Gebühren",
+    "th13": "Visumtyp",
+    "th14": "Gebühr (USD)",
+    "th15": "Einmalige Einreise",
+    "th16": "$25",
+    "th17": "Mehrfache Einreisen",
+    "th18": "$60",
+    "title5": "Schritte zur elektronischen Antragstellung",
+    "li6": "Registriere dich im offiziellen Portal",
+    "li7": "Fülle das Antragsformular aus",
+    "li8": "Lade Reisepass und Foto hoch",
+    "li9": "Bezahle die Gebühren online",
+    "li10": "Erhalte das Visum per E-Mail innerhalb von 7 Werktagen",
+    "link1": "Über das offizielle Portal beantragen",
+    "link2": "Artikel der ägyptischen Präsidentschaft lesen",
+    "title6": "Wichtige Hinweise",
+    "li11": "Mindestens 7 Tage vor Reiseantritt beantragen",
+    "li12": "Das eVisum erlaubt keine Arbeit oder Studium",
+    "li13": "Grenzbeamte können die Einreise ohne Erklärung verweigern",
+    "li14": "Trage stets eine ausgedruckte Kopie deines Visums bei dir",
+    "title7": "Kontakt",
+    "p3": "Ministerium für Tourismus und Altertümer"
   }
 }

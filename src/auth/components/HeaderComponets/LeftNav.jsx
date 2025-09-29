@@ -3,11 +3,11 @@
 import { Link } from "@/i18n/navigation";
 import { FaDollarSign } from "react-icons/fa";
 import { BsDoorOpenFill } from "react-icons/bs";
-import { motion } from "framer-motion";
+import { color, motion } from "framer-motion";
 import { BsFillPersonVcardFill } from "react-icons/bs";
 import LogoutBtn from "./LogoutBtn";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-const LeftNav = ({ path, user }) => {
+const LeftNav = ({ path, user, }) => {
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const boxVariants = {
     hidden: { opacity: 0, scale: 0.1 },
@@ -34,7 +34,7 @@ const LeftNav = ({ path, user }) => {
               textTransform: "capitalize",
               fontSize: "18px",
               gap: "10px",
-              color: "#ff9800",
+              color: "#d4a85f",
             }}
           >
             <BsFillPersonVcardFill />
@@ -51,6 +51,7 @@ const LeftNav = ({ path, user }) => {
           />
           <Link
             href={"/register"}
+            style={{":hover":{color:"#d4a85f"}}}
             className="flex items-center justify-center gap-2 flex-row link"
           >
             Sign Up <BsDoorOpenFill />

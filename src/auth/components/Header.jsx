@@ -11,10 +11,21 @@ import {
   AboutPathEn,
   AboutPathEs,
 } from "@/lib/constants/FixedTexts";
+import ThemeToggle from "./ThemeToggle";
 
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const Header = ({ user }) => {
-  const path = usePathname();
+  const path = usePathname(); // مثل: "/en/about" أو "/ar/visaInfo"
+
+  // ✅ تقسيم المسار إلى أجزاء
+  const segments = path.split("/").filter(Boolean); // يحذف الفراغات الناتجة عن "/"
+
+  // ✅ استخراج الجزء بعد اللغة
+  const slug = segments.length > 1 ? segments.slice(1).join("/") : "";
+
+  console.log("📍 المسار الكامل:", path);
+  console.log("🔤 اللغة:", segments[0]);
+  console.log("📄 المسار بعد اللغة:", slug);
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$
   return (
     <header
@@ -36,9 +47,10 @@ const Header = ({ user }) => {
       }
     >
       <Logo path={path} />
-      <Nav path={path} user={user} />
-      <MobilNav />
+      <Nav path={path} user={user} slug={slug}/>
+      <MobilNav slug={slug}/>
       <LeftNav path={path} user={user} />
+      <ThemeToggle />
     </header>
   );
 };

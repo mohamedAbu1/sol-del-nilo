@@ -16,9 +16,18 @@ export const TourSchema = z.object({
   title: z.string().min(3),
   description: z.string().min(10),
   price: z.number().positive(),
-  information: z.string().optional(),
   DayPeople: z.string().optional(),
   image: z.array(z.string()).optional(),
   categoryId: z.string(),
-  cityId: z.string()
+  cityId: z.string(),
+  Destination: z.string(),
+  theDate: z.string(),
+  TripDuration: z.string(),
+  NumberOfParticipants: z.string(),
+  tripProgram: z.array(
+  z.object({
+    time: z.string(),
+    program: z.string()
+  })
+)
 });

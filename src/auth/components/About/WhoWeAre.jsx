@@ -1,6 +1,6 @@
 import Image from "next/image";
 import SectionTitle from "./SectionTitle ";
-const imga = "/assets/Copilot_20250912_105907.png";
+const imga = "/assets/Copilot_20250908_231423.png";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const WhoWeAre = () => (
   <section className="mb-12 flex flex-col lg:flex-row items-center gap-10">

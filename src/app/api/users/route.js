@@ -14,6 +14,7 @@ export async function GET() {
         createdAt: true,
         role:true,
         isActive:true,
+        comments:true,
       },
     });
 

@@ -35,13 +35,12 @@ const CardID = () => {
           )
           .eq("id", id)
           .single();
-
+          setTour(data)
         if (error || !data) {
           console.error("❌ فشل في جلب بيانات الرحلة:", error?.message);
           toast.error("❌ الرحلة غير موجودة أو حدث خطأ");
           return;
         }
-
       } catch (err) {
         console.error("❌ خطأ في الاتصال بـ Supabase:", err.message);
         toast.error("❌ فشل في تحميل بيانات الرحلة");

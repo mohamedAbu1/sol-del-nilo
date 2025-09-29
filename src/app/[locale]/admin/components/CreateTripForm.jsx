@@ -157,7 +157,7 @@ const CreateTripForm = () => {
     };
 
     try {
-      const response = await axios.post(`${DOMAIN}/api/tours`, payload);
+      const response = await axios.post("/api/tours", payload);
       if (response.status === 201) {
         toast.success("✅ تم حفظ الرحلة");
         setFormData({

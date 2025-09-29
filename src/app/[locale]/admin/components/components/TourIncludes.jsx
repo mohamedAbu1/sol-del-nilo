@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 // ✅ دالة التحقق من وجود حروف عربية
 const containsArabic = (text) => /[\u0600-\u06FF]/.test(text);
 
-const TourIncludes = ({ Includes = [], setIncludes }) => {
+const TourIncludes = ({ includes = [1], setIncludes }) => {
   // ✅ تحديث قيمة عنصر معين مع منع اللغة العربية
   const handleChange = (index, value) => {
     const cleanValue = value.replace(/[\u0600-\u06FF]/g, "");
@@ -13,19 +13,19 @@ const TourIncludes = ({ Includes = [], setIncludes }) => {
       toast.error("❌ يمنع استخدام اللغة العربية");
     }
 
-    const updated = [...Includes];
+    const updated = [...includes];
     updated[index].text = cleanValue;
     setIncludes(updated);
   };
 
   // ✅ إضافة عنصر جديد
   const handleAdd = () => {
-    setIncludes([...Includes, { text: "" }]);
+    setIncludes([...includes, { text: "" }]);
   };
 
   return (
     <div className="space-y-4">
-      {Includes.map((item, index) => (
+      {includes.map((item, index) => (
         <TextField
           key={index}
           label={`يشمل البرنامج - ${index + 1}`}

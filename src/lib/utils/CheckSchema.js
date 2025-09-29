@@ -24,7 +24,7 @@ export const TourSchema = z.object({
   theDate: z.string(),
   TripDuration: z.string(),
   NumberOfParticipants: z.string(),
-  tripProgram: z.array(
+  tripprogram: z.array(
   z.object({
     time: z.string(),
     program: z.string()

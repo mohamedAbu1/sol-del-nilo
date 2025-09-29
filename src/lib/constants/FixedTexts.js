@@ -30,17 +30,17 @@ export const getSliderToursDiv = (t) => [
   // {img:img3,title:t("TitleDivPic"),p:t("PDivPic"),btn:t("BtnDivPic")},
   // {img:img4,title:t("TitleDivPic"),p:t("PDivPic"),btn:t("BtnDivPic")},
   {
-    image: "/assets/pexels-axp-photography-500641970-18991590.jpg",
+    image: "/assets/Cairo.jpg",
     title: t("TitleDivPic"),
     subtitle: t("PDivPic"),
   },
   {
-    image: "/assets/pexels-ahmed-aziz-126288236-12607742.jpg",
+    image: "/assets/Abu Simbel.jpg",
     title: t("TitleDivPic"),
     subtitle: t("PDivPic"),
   },
   {
-    image: "/assets/pexels-mert-celik-1876960105-33634565.jpg",
+    image: "/assets/Nile River.jpg",
     title: t("TitleDivPic"),
     subtitle: t("PDivPic"),
   },

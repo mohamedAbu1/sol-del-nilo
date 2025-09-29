@@ -3,7 +3,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 
 const imag2 = "/assets/Copilot_20250910_005440.png";
-const imga = "/assets/Copilot_20250909_192112.png";
+const imga = "/assets/Temple of the Elephants.png";
 
 const ImageHeroRegisterCover = () => {
   return (

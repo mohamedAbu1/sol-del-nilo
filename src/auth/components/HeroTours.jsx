@@ -33,8 +33,8 @@ const HeroTours = () => {
             *,
             category(*),
             city(*),
-            tripProgram(*),
-            Includes(*)
+            tripprogram(*),
+            includes(*)
           `
           )
           .order("created_at", { ascending: false });

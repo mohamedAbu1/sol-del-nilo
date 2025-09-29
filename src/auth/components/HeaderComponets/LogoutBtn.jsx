@@ -10,7 +10,7 @@ const LogoutBtn = () => {
   const router = useRouter();
   const LogoutHnadler = async () => {
     try {
-      await axios.get(`${DOMAIN}/api/logout`);
+      await axios.get("/api/logout");
       router.push("/");
       router.refresh();
       localStorage.setItem("user", undefined);

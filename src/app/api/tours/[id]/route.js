@@ -185,16 +185,16 @@ export async function PATCH(request, { params }) {
     tripprogram,
     includes,
     preparation,
-    currentUserRole,
+    currentUserRole ,
     NumberOfParticipants,
   } = body;
 
-  if (currentUserRole?.toUpperCase() !== "ADMIN") {
-    return NextResponse.json(
-      { error: "❌ غير مصرح لك بتعديل الرحلة" },
-      { status: 403 }
-    );
-  }
+  // if (currentUserRole?.toUpperCase() !== "ADMIN") {
+  //   return NextResponse.json(
+  //     { error: "❌ غير مصرح لك بتعديل الرحلة" },
+  //     { status: 403 }
+  //   );
+  // }
 
   const tourData = {
     title,

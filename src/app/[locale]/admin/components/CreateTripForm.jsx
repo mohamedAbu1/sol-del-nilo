@@ -199,7 +199,7 @@ const CreateTripForm = () => {
 
         <Box
           sx={{
-            width: "70%",
+            width: "85%",
             mx: "auto",
             mt: 5,
             p: 3,

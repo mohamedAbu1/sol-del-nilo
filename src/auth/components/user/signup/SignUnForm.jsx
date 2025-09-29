@@ -87,20 +87,20 @@ const SignUnForm = () => {
     >
       <motion.div
         variants={itemVariants}
-        style={{ borderRadius: "25px", position: "relative" }}
-        className="w-3/4 h-5/6 lg:h-3/4 formDiv"
+        style={{ borderRadius: "25px", position: "relative" ,height:"fit-contact"}}
+        className="w-3/4 lg:h-3/4 formDiv"
       >
         <motion.div
           variants={containerVariants}
           className="w-full h-full flex flex-col items-center justify-center gap-5"
           style={{ borderRadius: "25px" }}
         >
-          <motion.div variants={itemVariants}>
+          <motion.div variants={itemVariants}  style={{ zIndex: "9999" }}>
             <Image
               src={logo2}
               alt="Logo"
-              width={150}
-              height={150}
+              width={110}
+              height={110}
               loading="eager"
               className="flex lg:hidden"
               style={{ zIndex: "9999" }}
@@ -122,16 +122,19 @@ const SignUnForm = () => {
             {t("p")}
           </motion.h3>
 
-          <motion.div variants={itemVariants}>
+          <motion.div
+            variants={itemVariants}
+            style={{ width:"100%" }}
+          >
             <form
               onSubmit={handleSubmit}
               style={{
                 display: "flex",
                 flexDirection: "column",
-                alignItems:"center",
-                justifyContent:"center",
+                alignItems: "center",
+                justifyContent: "center",
                 gap: "20px",
-                width: "400px",
+                // width: "400px",
                 margin: "auto",
                 zIndex: "99999",
               }}
@@ -143,7 +146,7 @@ const SignUnForm = () => {
                 required
                 sx={{
                   zIndex: "9999",
-                  width:"100%",
+                  width: "100%",
                   input: {
                     color: "#d4a85f",
                     fontSize: "18px",
@@ -168,7 +171,7 @@ const SignUnForm = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 sx={{
-                  width:"100%",
+                  width: "100%",
                   zIndex: "9999",
                   input: {
                     color: "#d4a85f",
@@ -188,11 +191,12 @@ const SignUnForm = () => {
                   "& .MuiInputLabel-root.Mui-focused": { color: "#ff9800" },
                 }}
               />
-              <FormControl variant="outlined" required  sx={{
-                  m: 1,
+              <FormControl
+                variant="outlined"
+                required
+                sx={{
                   zIndex: "9999",
 
-                  width: "45ch",
                   "& .MuiOutlinedInput-root": {
                     "& fieldset": { borderColor: "#d4a85f" },
                     "&:hover fieldset": { borderColor: "#ff9800" },
@@ -209,7 +213,8 @@ const SignUnForm = () => {
                     fontWeight: "bold",
                     fontFamily: "Cairo, sans-serif",
                   },
-                }}>
+                }}
+              >
                 <InputLabel>Your password</InputLabel>
                 <OutlinedInput
                   type={showPassword ? "text" : "password"}
@@ -232,12 +237,12 @@ const SignUnForm = () => {
                 type="submit"
                 variant="contained"
                 color="primary"
-                   sx={{
-                      width:"100%",
-                      mt: "22px",
-                      backgroundColor: "#d4a85f",
-                      zIndex: "9999",
-                    }}
+                sx={{
+                  width: "100%",
+                  mt: "22px",
+                  backgroundColor: "#d4a85f",
+                  zIndex: "9999",
+                }}
               >
                 Create account
               </Button>

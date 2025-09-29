@@ -16,9 +16,9 @@ const HomePage = () => {
         Welcome to the <span style={{color:"#ff9800"}}>SolDelNilo</span>  control panel
       </h1>
       <div className="w-full h-9/12 flex flex-col gap-5 items-center justify-center">
-        <ul className="flex flex-row gap-20 w-3/4">
+        <ul className="flex flex-row gap-20 w-full" style={{padding:"20px"}}>
           <li
-            style={{ padding: "22px", borderRadius: "22px",  boxShadow:"rgba(0, 0, 0, 0.35) 0px 5px 15px"}}
+            style={{ width:"32%", padding: "22px", borderRadius: "22px",  boxShadow:"rgba(0, 0, 0, 0.35) 0px 5px 15px"}}
             className="border-gray-500 border-2 flex flex-col gap-6"
           >
             <HiOutlineInformationCircle className="text-4xl" style={{color:"#ff9800"}}/>
@@ -29,7 +29,7 @@ const HomePage = () => {
             </p>
           </li>
           <li
-            style={{ padding: "22px", borderRadius: "22px", boxShadow:"rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
+            style={{ width:"32%", padding: "22px", borderRadius: "22px", boxShadow:"rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
             className="border-gray-500 border-2 flex flex-col gap-6"
           >
             <MdOutlineCreate className="text-4xl" style={{color:"#ff9800"}} />
@@ -41,7 +41,7 @@ const HomePage = () => {
             </p>
           </li>
           <li
-            style={{ padding: "22px", borderRadius: "22px", boxShadow:"rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
+            style={{ width:"32%",padding: "22px", borderRadius: "22px", boxShadow:"rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
             className="border-gray-500 border-2 flex flex-col gap-6"
           >
             <FaUsersCog className="text-4xl" style={{color:"#ff9800"}}/>

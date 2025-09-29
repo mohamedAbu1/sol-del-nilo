@@ -47,6 +47,7 @@ const MobilNav = ({ slug }) => {
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
+        style={{zIndex:"9999"}}
       >
         {CityName.map((i, index) => {
           return (

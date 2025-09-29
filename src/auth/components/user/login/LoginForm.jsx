@@ -48,11 +48,11 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [csrfToken, setCsrfToken] = useState("");
 
-  useEffect(() => {
-    axios.get("/api/csrf").then((res) => {
-      setCsrfToken(res.data.csrfToken);
-    });
-  }, []);
+  // useEffect(() => {
+  //   axios.get("/api/csrf").then((res) => {
+  //     setCsrfToken(res.data.csrfToken);
+  //   });
+  // }, []);
 
   const handleLogin = async () => {
     try {
@@ -105,15 +105,14 @@ const LoginForm = () => {
           className="w-full h-full flex flex-col items-center justify-center gap-5"
           style={{ borderRadius: "25px" }}
         >
-          <motion.div variants={itemVariants}>
+          <motion.div variants={itemVariants} style={{zIndex: "9999"}}>
             <Image
               src={logo2}
               alt="Logo"
-              width={150}
-              height={150}
+              width={110}
+              height={110}
               loading="eager"
               className="flex lg:hidden"
-              style={{ zIndex: "9999" }}
             />
           </motion.div>
 

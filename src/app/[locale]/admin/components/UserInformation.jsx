@@ -14,80 +14,52 @@ import {
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { DOMAIN } from "@/lib/constants/FixedTexts";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
+import { supabase } from "@/lib/supabaseClient";
 const UserInformation = () => {
   const [userData, setUsersData] = useState([]);
-
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await axios.get(`${DOMAIN}/api/users`);
-        setUsersData(response.data.users);
-      } catch (error) {
-        return null;
+    const fetchUsers = async () => {
+      const { data, error } = await supabase
+        .from("user")
+        .select("id, name, email, created_at, role, isActive");
+
+      if (error) {
+        console.error("❌ خطأ في جلب المستخدمين:", error.message);
+        return;
       }
+
+      setUsersData(data);
     };
-    fetchUser();
+
+    fetchUsers();
   }, []);
-  console.log(userData);
 
-  // بيانات وهمية كمثال
-  // const users = [
-  //   {
-  //     email: "user1@example.com",
-  //     name: "محمد علي",
-  //     password: "********",
-  //     isActive: true,
-  //     role: "USER",
-  //     delete: "DELETE",
-  //   },
-  //   {
-  //     email: "admin@example.com",
-  //     name: "سارة أحمد",
-  //     password: "********",
-  //     isActive: false,
-  //     role: "ADMIN",
-  //     delete: `DELETE`,
-  //   },
-  //   {
-  //     email: "admin@example.com",
-  //     name: "سارة أحمد",
-  //     password: "********",
-  //     isActive: false,
-  //     role: "ADMIN",
-  //     delete: "DELETE",
-  //   },
-  //   {
-  //     email: "admin@example.com",
-  //     name: "سارة أحمد",
-  //     password: "********",
-  //     isActive: false,
-  //     role: "ADMIN",
-  //     delete: "DELETE",
-  //   },
-  // ];
   const handleDelete = async (userId) => {
-  try {
-    const response = await axios.delete(`${DOMAIN}/api/users`, {
-      data: {
-        userId,
-        currentUserRole: "ADMIN", // تأكد أنك ترسل الدور من الجلسة أو السياق
-      },
-    });
+    try {
+      const response = await axios.delete(`${DOMAIN}/api/users`, {
+        data: {
+          userId,
+          currentUserRole: "ADMIN", // تأكد أنك ترسل الدور من الجلسة أو السياق
+        },
+      });
 
-    if (response.status === 200) {
-      // حذف المستخدم من القائمة بدون إعادة تحميل
-      setUsersData((prev) => prev.filter((user) => user.id !== userId));
-    } else {
-      console.error("فشل في حذف المستخدم:", response.data);
+      if (response.status === 200) {
+        // حذف المستخدم من القائمة بدون إعادة تحميل
+        setUsersData((prev) => prev.filter((user) => user.id !== userId));
+      } else {
+        console.error("فشل في حذف المستخدم:", response.data);
+      }
+    } catch (error) {
+      console.error("❌ خطأ أثناء حذف المستخدم:", error);
     }
-  } catch (error) {
-    console.error("❌ خطأ أثناء حذف المستخدم:", error);
-  }
-};
+  };
   return (
-    <div className="w-full" style={{backgroundColor:"#181a1b"}}>
-      <TableContainer component={Paper} sx={{ mt: 4 ,backgroundColor:"#181a1b"}}>
+    <div className="w-full" style={{ backgroundColor: "#181a1b" }}>
+      <TableContainer
+        component={Paper}
+        sx={{ mt: 4, backgroundColor: "#181a1b" }}
+      >
         <Table>
           <TableHead>
             <TableRow>
@@ -138,7 +110,7 @@ const UserInformation = () => {
                 <TableCell sx={{ color: "grey", fontWeight: "700" }}>
                   {user.createdAt}
                 </TableCell>
-                <TableCell >
+                <TableCell>
                   <Chip
                     label={user.isActive ? "active" : "Not active"}
                     color={user.isActive ? "success" : "error"}
@@ -157,12 +129,15 @@ const UserInformation = () => {
                     sx={{}}
                     label={
                       <>
-                        <Button onClick={() => handleDelete(user.id)} variant="outlined" endIcon={<DeleteIcon />}>
+                        <Button
+                          onClick={() => handleDelete(user.id)}
+                          variant="outlined"
+                          endIcon={<DeleteIcon />}
+                        >
                           Delete
                         </Button>
                       </>
                     }
-                    
                     size="small"
                   />
                 </TableCell>

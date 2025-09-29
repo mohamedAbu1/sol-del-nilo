@@ -18,7 +18,7 @@ const Sidebar = () => {
   return (
     <section
       style={{
-        width: width * 0.17,
+        width: width * 0.25,
         height: "100vh",
         borderTopRightRadius: "80px",
         borderBottomRightRadius: "80px",

@@ -1,3 +1,4 @@
+"use client"
 import React, { useRef } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import Dividering from "./Divider/Divider";
@@ -9,6 +10,7 @@ import { FaCircle } from "react-icons/fa6";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { Link } from "@/i18n/navigation";
 import HikingIcon from "@mui/icons-material/Hiking";
+import { useScreenSize } from "@/auth/hooks/screenSize";
 
 const AnimatedSection = ({ children }) => {
   const ref = useRef(null);
@@ -34,6 +36,8 @@ const AnimatedSection = ({ children }) => {
 };
 
 const InformationCard = ({ tour }) => {
+    const { width2 } = useScreenSize();
+
   return (
     <Box
       sx={{
@@ -227,8 +231,9 @@ const InformationCard = ({ tour }) => {
           <div style={{ padding: "20px" }}>
             <ul
               style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
+                display: "flex",
+                flexDirection:"row",
+                flexWrap:"wrap",
                 gap: "16px",
                 listStyle: "none",
                 padding: 0,
@@ -249,7 +254,7 @@ const InformationCard = ({ tour }) => {
                     style={{
                       fontSize: "clamp(14px, 2vw, 18px)",
                     }}
-                    className="px-6 py-4 text-gray-600 capitalize dark:text-gray-400"
+                    className="px-6 py-4 text-gray-600 capitalize dark:text-gray-400 flex flex-wrap"
                   >
                     {i.text}
                   </span>

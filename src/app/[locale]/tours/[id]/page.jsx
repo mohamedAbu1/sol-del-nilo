@@ -12,11 +12,14 @@ import SideDecor from "@/auth/components/SideDecor ";
 import RightSideDecor from "@/auth/components/RightSideDecor";
 import { supabase } from "@/lib/supabaseClient"; // تأكد من استيراد العميل
 import { toast } from "react-toastify";
+import { useScreenSize } from "@/auth/hooks/screenSize";
+
 const CardID = () => {
   const [tour, setTour] = useState(null);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
+  const { width } = useScreenSize();
 
   // ✅ جلب بيانات الرحلة
   useEffect(() => {
@@ -71,7 +74,7 @@ const CardID = () => {
       <AnimatedPictures tour={tour} />
 
       <div
-        style={{ width: "100%", paddingRight: "60px", paddingLeft: "75px" }}
+        style={{ width: "100%", paddingRight:width <= 600 ? "0px" :"60px", paddingLeft:width <= 600 ? "0px" :"60px" }}
         className="flex flex-col xl:flex-row"
       >
         {/* ✅ بطاقة معلومات الرحلة */}

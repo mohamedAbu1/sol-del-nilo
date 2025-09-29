@@ -24,7 +24,7 @@ const SelectToursWrapper = () => {
       <button
         onClick={() => setOpen(true)}
         className="fixed top-6 right-1 lg:left-6  text-[#ff9800] p-3 rounded-full  hover:text-gray-700"
-        style={{ zIndex: 1000, cursor:"pointer" }}
+        style={{ zIndex: 1000, cursor:"pointer", width:"30px"}}
       >
         <MdMenu size={28} />
       </button>

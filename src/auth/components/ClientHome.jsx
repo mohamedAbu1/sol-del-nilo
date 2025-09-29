@@ -99,7 +99,7 @@ export default function ClientHome({ user }) {
 
         {(!showVideo || videoEnded) && (
           <Image
-            src="/public/assets/Copilot_20250917_121852.png"
+            src="public/assets/Copilot_20250917_121852.png"
             alt="Desktop background"
             fill
             className={`absolute top-0 left-0 w-full h-full object-cover z-[-1] ${

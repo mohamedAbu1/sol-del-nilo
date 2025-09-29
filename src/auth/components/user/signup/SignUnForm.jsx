@@ -87,7 +87,11 @@ const SignUnForm = () => {
     >
       <motion.div
         variants={itemVariants}
-        style={{ borderRadius: "25px", position: "relative" ,height:"fit-contact"}}
+        style={{
+          borderRadius: "25px",
+          position: "relative",
+          height: "fit-contact",
+        }}
         className="w-3/4 lg:h-3/4 formDiv"
       >
         <motion.div
@@ -95,7 +99,7 @@ const SignUnForm = () => {
           className="w-full h-full flex flex-col items-center justify-center gap-5"
           style={{ borderRadius: "25px" }}
         >
-          <motion.div variants={itemVariants}  style={{ zIndex: "9999" }}>
+          <motion.div variants={itemVariants} style={{ zIndex: "9999" }}>
             <Image
               src={logo2}
               alt="Logo"
@@ -122,10 +126,7 @@ const SignUnForm = () => {
             {t("p")}
           </motion.h3>
 
-          <motion.div
-            variants={itemVariants}
-            style={{ width:"100%" }}
-          >
+          <motion.div variants={itemVariants} style={{ width: "100%" }}>
             <form
               onSubmit={handleSubmit}
               style={{
@@ -196,7 +197,6 @@ const SignUnForm = () => {
                 required
                 sx={{
                   zIndex: "9999",
-
                   "& .MuiOutlinedInput-root": {
                     "& fieldset": { borderColor: "#d4a85f" },
                     "&:hover fieldset": { borderColor: "#ff9800" },
@@ -214,6 +214,7 @@ const SignUnForm = () => {
                     fontFamily: "Cairo, sans-serif",
                   },
                 }}
+                fullWidth
               >
                 <InputLabel>Your password</InputLabel>
                 <OutlinedInput

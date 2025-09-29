@@ -34,7 +34,7 @@ export default function HeroSlider() {
                 className="absolute inset-0 w-full h-full object-cover rounded-[28px]"
               />
               <div className="absolute inset-0 flex items-center justify-center text-center px-4 bg-black/40 rounded-[28px]">
-                <div className="w-11/12 flex flex-col gap-4 text-white animate-fadeIn">
+                <div className="w-11/12 flex flex-col gap-4 text-white animate-fadeIn items-center">
                   <h1 className="text-[clamp(1.8rem,4vw,3rem)] font-bold capitalize animate-slideUp">
                     {slide.title}
                   </h1>
@@ -42,7 +42,8 @@ export default function HeroSlider() {
                     {slide.subtitle}
                   </p>
                   <button
-                    className="px-6 py-2 bg-[#ff9800] rounded-full text-white font-semibold hover:scale-105 transition duration-300 animate-slideUp delay-400"
+                  style={{width:"30%"}}
+                    className="px-6 py-6 bg-[#ff9800] rounded-full text-white font-semibold hover:scale-105 transition duration-300 animate-slideUp delay-400"
                   >
                     Live the legend
                   </button>

@@ -437,3 +437,8 @@ const SignUnForm = () => {
 };
 
 export default SignUnForm;
+
+
+
+// "generate": "prisma generate",
+    // "postinstall": "npm run generate"

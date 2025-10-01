@@ -30,7 +30,7 @@ export const getSliderToursDiv = (t) => [
   // {img:img3,title:t("TitleDivPic"),p:t("PDivPic"),btn:t("BtnDivPic")},
   // {img:img4,title:t("TitleDivPic"),p:t("PDivPic"),btn:t("BtnDivPic")},
   {
-    image: "/assets/cairo.jpg",
+    image: "/assets/Cairo.jpg",
     title: t("TitleDivPic"),
     subtitle: t("PDivPic"),
   },

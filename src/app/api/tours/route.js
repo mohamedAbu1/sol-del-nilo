@@ -160,18 +160,54 @@ console.log("✅ التحقق:", validation);
     );
   }
 }
-export async function GET() {
+// export async function GET() {
+//   try {
+//     const { data: tours, error } = await supabase
+//       .from("tour")
+//       .select(`
+//             *,
+//             category(*),
+//             city(*),
+//             tripprogram(*),
+//             includes(*)
+//           `)
+//       .order("createdAt", { ascending: false });
+
+//     if (error) throw error;
+
+//     return NextResponse.json({ tours }, { status: 200 });
+//   } catch (error) {
+//     console.error("❌ خطأ أثناء جلب الرحلات:", error);
+//     return NextResponse.json({ error: "فشل في جلب الرحلات" }, { status: 500 });
+//   }
+// }
+export async function GET(request) {
   try {
-    const { data: tours, error } = await supabase
+    const { searchParams } = new URL(request.url);
+    console.log(searchParams)
+
+    const raw = searchParams.get("categories");
+        console.log(raw)
+
+    const categories = raw?.split(",").map(decodeURIComponent) || [];
+console.log(categories)
+    let query = supabase
       .from("tour")
       .select(`
-            *,
-            category(*),
-            city(*),
-            tripprogram(*),
-            includes(*)
-          `)
-      .order("createdAt", { ascending: false });
+        *,
+        category!inner(name),
+        city(*),
+        tripprogram(*),
+        includes(*)
+      `)
+      .order("created_at", { ascending: false });
+
+    // ✅ فلترة حسب اسم الكاتجري داخل الجدول المرتبط
+    if (categories.length > 0) {
+      query = query.in("category.name", categories);
+    }
+
+    const { data: tours, error } = await query;
 
     if (error) throw error;
 

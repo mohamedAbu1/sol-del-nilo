@@ -1,4 +1,3 @@
-// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 import ImageHeroRegisterCover from "@/auth/components/user/signup/ImageHeroRegisterCover";
 import SignUnForm from "@/auth/components/user/signup/SignUnForm";
 import SignUpTextHero from "@/auth/components/user/signup/SignUpTextHero";
@@ -8,10 +7,12 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const Register = async () => {
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const cookieStore = await cookies(); // ✅ استخدم await
   const token = cookieStore.get("jwttoken")?.value;
   if (token) redirect("/");
-  
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
   return (
     <main className="w-full h-screen flex flex-row relative overflow-hidden">
       <ImageHeroRegisterCover />

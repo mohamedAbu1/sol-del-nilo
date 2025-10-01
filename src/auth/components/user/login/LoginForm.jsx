@@ -1,5 +1,4 @@
 "use client";
-
 import {
   Box,
   TextField,
@@ -14,15 +13,16 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import SendIcon from "@mui/icons-material/Send";
 import Image from "next/image";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useScreenSize } from "@/auth/hooks/screenSize";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-
+import { ToastContainer, toast } from "react-toastify";
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const logo2 = "/assets/Copilot_20250908_231423.png";
-
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -32,61 +32,93 @@ const containerVariants = {
     },
   },
 };
-
 const itemVariants = {
   hidden: { opacity: 0, y: 40 },
   visible: { opacity: 1, y: 0 },
 };
-
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+const containsArabic = (text) => /[\u0600-\u06FF]/.test(text);
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const LoginForm = () => {
   const router = useRouter();
   const { width } = useScreenSize();
   const t = useTranslations("LoginForm");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [csrfToken, setCsrfToken] = useState("");
-
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   // useEffect(() => {
   //   axios.get("/api/csrf").then((res) => {
   //     setCsrfToken(res.data.csrfToken);
   //   });
   // }, []);
+  // ✅ دالة تمنع اللغة العربية وتعرض Toast
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  const handleChange = (e) => {
+    const { name, value } = e.target;
 
+    // ✅ منع اللغة العربية في الحقول المحددة
+    const textFields = ["email", "password"];
+    if (textFields.includes(name) && containsArabic(value)) {
+      toast.error("Must be written in English only ❌");
+      return;
+    }
+
+    // ✅ تحديث الحالة
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const handleLogin = async () => {
     try {
-      const response = await axios.post(
-        "/api/Login",
-        { email, password },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "x-csrf-token": csrfToken,
-          },
-        }
-      );
+      // ✅ إرسال البيانات مباشرة بدون تغليف داخل formData
+      const response = await axios.post("/api/Login", formData, {
+        headers: {
+          "Content-Type": "application/json",
+          "x-csrf-token": csrfToken,
+        },
+      });
 
       if (response.status === 200) {
         const token = response.data.token;
+
+        // ✅ تخزين التوكن الحقيقي
         localStorage.setItem("user", "token");
+
+        // ✅ إعادة التوجيه بعد تسجيل الدخول
         router.push("/");
       } else {
-        alert(`❌ خطأ: ${response.data.error || response.data.message}`);
+        toast.error(`error ❌: ${response.data.error || response.data.message}`);
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        alert(`❌ خطأ: ${error.response?.data?.error || "خطأ غير متوقع"}`);
+        toast.error(`error ❌: ${error.response?.data?.error || "Unexpected error"}`);
       } else {
-        alert("❌ حدث خطأ أثناء الاتصال بالخادم");
+        toast.error("An error occurred while connecting to the server. ❌");
       }
       console.error("Axios error:", error);
     }
   };
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  const handleEnglishOnlyChange = (e) => {
+    const { name, value } = e.target;
 
+    const textFields = ["email", "password"];
+    if (textFields.includes(name) && containsArabic(value)) {
+      toast.error("Must be written in English only ❌");
+      return;
+    }
+
+    handleChange(e); // تحديث الحالة الأصلية
+  };
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => event.preventDefault();
   const handleMouseUpPassword = (event) => event.preventDefault();
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
   return (
     <motion.section
@@ -105,7 +137,7 @@ const LoginForm = () => {
           className="w-full h-full flex flex-col items-center justify-center gap-5"
           style={{ borderRadius: "25px" }}
         >
-          <motion.div variants={itemVariants} style={{zIndex: "9999"}}>
+          <motion.div variants={itemVariants} style={{ zIndex: "9999" }}>
             <Image
               src={logo2}
               alt="Logo"
@@ -154,10 +186,11 @@ const LoginForm = () => {
               autoComplete="off"
             >
               <TextField
+                name="email"
                 label="Your Email"
                 variant="outlined"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={formData.email}
+                onChange={handleEnglishOnlyChange}
                 sx={{
                   zIndex: "9999",
 
@@ -211,8 +244,9 @@ const LoginForm = () => {
                 <OutlinedInput
                   id="outlined-adornment-password"
                   type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  name="password"
+                  value={formData.password}
+                  onChange={handleEnglishOnlyChange}
                   endAdornment={
                     <InputAdornment position="end">
                       <IconButton
@@ -244,7 +278,7 @@ const LoginForm = () => {
                     variant="contained"
                     endIcon={<SendIcon />}
                     sx={{
-                      width:"100%",
+                      width: "100%",
                       mt: "22px",
                       backgroundColor: "#d4a85f",
                       zIndex: "9999",
@@ -291,6 +325,7 @@ const LoginForm = () => {
           </motion.div>
         </motion.div>
       </motion.div>
+      <ToastContainer />
     </motion.section>
   );
 };

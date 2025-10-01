@@ -1,6 +1,5 @@
 "use client";
 import {
-  Box,
   TextField,
   IconButton,
   OutlinedInput,
@@ -10,18 +9,18 @@ import {
   Button,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import SendIcon from "@mui/icons-material/Send";
 import Image from "next/image";
 import axios from "axios";
-import { useState, useEffect } from "react";
-import { useScreenSize } from "@/auth/hooks/screenSize";
+import { useState } from "react";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import { ToastContainer, toast } from "react-toastify";
 
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const logo2 = "/assets/Copilot_20250908_231423.png";
-
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -31,52 +30,138 @@ const containerVariants = {
     },
   },
 };
-
 const itemVariants = {
   hidden: { opacity: 0, y: 40 },
   visible: { opacity: 1, y: 0 },
 };
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+const containsArabic = (text) => /[\u0600-\u06FF]/.test(text);
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 const SignUnForm = () => {
-  // async function submit(formData) {
-  //   const result = await handleContact(formData)
-  //   console.log(result)
-  // }
+  const allowedDomains = [
+    "@gmail.com",
+    "@outlook.com",
+    "@hotmail.com",
+    "@yahoo.com",
+    "@icloud.com",
+    "@live.com",
+    "@mail.ru",
+    "@gmx.com",
+  ];
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
   const router = useRouter();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const t = useTranslations("SignUnForm");
+
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  const handleEmailBlur = (e) => {
+    const value = e.target.value;
+    const domain = value.slice(value.indexOf("@"));
+
+    if (value.includes("@") && !allowedDomains.includes(domain)) {
+      toast.error(
+        "The email must be from a well-known domain such as gmail or hotmail. ❌"
+      );
+
+      // حذف النطاق السيئ
+      const localPart = value.slice(0, value.indexOf("@"));
+      setFormData((prev) => ({ ...prev, email: localPart }));
+    }
+  };
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    // ✅ منع اللغة العربية في الحقول المحددة
+    const textFields = ["name", "email", "password"];
+    if (textFields.includes(name) && containsArabic(value)) {
+      toast.error("Must be written in English only ❌");
+      return;
+    }
+
+    // ✅ تحقق من الطول لحقل الاسم
+    if (name === "name" && (value.length < 0 || value.length > 14)) {
+      toast.error("The name must be between 3 and 14 characters long. ❌");
+      return;
+    }
+
+    // ✅ تحديث الحالة
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  // const handleLogin = async () => {
+  //   try {
+  //     // ✅ إرسال البيانات مباشرة بدون تغليف داخل formData
+  //     const response = await axios.post("/api/Login", formData, {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         "x-csrf-token": csrfToken,
+  //       },
+  //     });
+
+  //     if (response.status === 200) {
+  //       const token = response.data.token;
+
+  //       // ✅ تخزين التوكن الحقيقي
+  //       localStorage.setItem("user", token);
+
+  //       // ✅ إعادة التوجيه بعد تسجيل الدخول
+  //       router.push("/");
+  //     } else {
+  //       toast.error(`error ❌: ${response.data.error || response.data.message}`);
+  //     }
+  //   } catch (error) {
+  //     if (axios.isAxiosError(error)) {
+  //       toast.error(`error ❌: ${error.response?.data?.error || "Unexpected error"}`);
+  //     } else {
+  //       toast.error("An error occurred while connecting to the server. ❌");
+  //     }
+  //     console.error("Axios error:", error);
+  //   }
+  // };
+
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  const handleEnglishOnlyChange = (e) => {
+    const { name, value } = e.target;
+
+    const textFields = ["name", "email", "password"];
+    if (textFields.includes(name) && containsArabic(value)) {
+      toast.error("Must be written in English only ❌");
+      return;
+    }
+
+    handleChange(e); // تحديث الحالة الأصلية
+  };
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      const response = await axios.post("/api/register", {
-        name,
-        email,
-        password,
+      const response = await axios.post("/api/register", formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
-
-      console.log("📤 تم إرسال البيانات:", response.data);
-
-      if (response.status === 201) {
-        router.push("/login");
+      if (response.status >= 200 && response.status < 300) {
+        toast.success("Registration successful ✅");
+        router.push("/");
       } else {
-        alert(`❌ خطأ: ${response.data.error || response.data.message}`);
+        toast.error(`❌ ${response.data.error || response.data.message}`);
       }
     } catch (error) {
       console.error("❌ خطأ أثناء الإرسال:", error);
-      alert("حدث خطأ أثناء الاتصال بالخادم");
+      toast.error("An error occurred while connecting to the server. ❌");
     }
   };
-
-  const { width } = useScreenSize();
-  const t = useTranslations("SignUnForm");
-
-  //   const handleClickShowPassword = () => setShowPassword((show) => !show);
-  //   const handleMouseDownPassword = (event) => event.preventDefault();
-  //   const handleMouseUpPassword = (event) => event.preventDefault();
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
   return (
     <motion.section
@@ -142,9 +227,14 @@ const SignUnForm = () => {
             >
               <TextField
                 label="Your Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                name="name"
+                value={formData.name}
+                onChange={handleEnglishOnlyChange}
                 required
+                inputProps={{
+                  minLength: 3,
+                  maxLength: 14,
+                }}
                 sx={{
                   zIndex: "9999",
                   width: "100%",
@@ -168,8 +258,10 @@ const SignUnForm = () => {
               />
               <TextField
                 label="E-Mail"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                name="email"
+                value={formData.email}
+                onChange={handleEnglishOnlyChange}
+                onBlur={handleEmailBlur}
                 required
                 sx={{
                   width: "100%",
@@ -219,8 +311,9 @@ const SignUnForm = () => {
                 <InputLabel>Your password</InputLabel>
                 <OutlinedInput
                   type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  name="password"
+                  value={formData.password}
+                  onChange={handleEnglishOnlyChange}
                   endAdornment={
                     <InputAdornment position="end">
                       <IconButton
@@ -283,6 +376,7 @@ const SignUnForm = () => {
           </motion.div>
         </motion.div>
       </motion.div>
+      <ToastContainer />
     </motion.section>
   );
 };

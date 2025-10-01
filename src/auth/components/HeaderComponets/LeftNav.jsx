@@ -6,8 +6,9 @@ import { BsDoorOpenFill } from "react-icons/bs";
 import { color, motion } from "framer-motion";
 import { BsFillPersonVcardFill } from "react-icons/bs";
 import LogoutBtn from "./LogoutBtn";
+import { Button } from "@mui/material";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-const LeftNav = ({ path, user, }) => {
+const LeftNav = ({ path, user }) => {
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const boxVariants = {
     hidden: { opacity: 0, scale: 0.1 },
@@ -21,7 +22,7 @@ const LeftNav = ({ path, user, }) => {
       animate="visible"
       transition={{ delay: 1, duration: 1 }}
       className={
-        " text-gray-400 md:w-1/6 lg:w-3/12 flex flex-row items-center justify-around"
+        " text-gray-400 md:w-2/5 lg:w-6/12 flex flex-row items-center justify-around"
       }
     >
       {user ? (
@@ -41,7 +42,6 @@ const LeftNav = ({ path, user, }) => {
             {user.name}
           </h3>
           <LogoutBtn />
-         
         </div>
       ) : (
         <>
@@ -51,10 +51,16 @@ const LeftNav = ({ path, user, }) => {
           />
           <Link
             href={"/register"}
-            style={{":hover":{color:"#d4a85f"}}}
-            className="flex items-center justify-center gap-2 flex-row link"
+            // style={{color:"blue", ":hover": { color: "#d4a85f" } }}
+            className="flex items-center justify-center gap-2 flex-row"
           >
-            Sign Up <BsDoorOpenFill />
+            <Button
+              variant="outlined"
+              color="warning"
+              endIcon={<BsDoorOpenFill />}
+            >
+              Sign Up
+            </Button>
           </Link>
         </>
       )}

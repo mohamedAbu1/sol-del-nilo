@@ -1,60 +1,30 @@
 "use client";
-// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 import { useState, useEffect } from "react";
 import Header from "./Header";
 import Hero from "./HeroComponets/Hero";
 import Image from "next/image";
-// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
 export default function ClientHome({ user }) {
-  const [showVideo, setShowVideo] = useState(false);
-  const [videoEnded, setVideoEnded] = useState(false);
-  const [startTransition, setStartTransition] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(true);
   const [showContent, setShowContent] = useState(false);
   const [animateImage, setAnimateImage] = useState(false);
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-  const videoSrc = ""; // ✅ مسار ثابت من مجلد public
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-  useEffect(() => {
-    const hasSeenVideo = localStorage.getItem("hasSeenIntroVideo");
-    const hasSeenImageAnimation = localStorage.getItem("hasSeenImageAnimation");
 
-    if (!hasSeenVideo) {
-      setShowVideo(true);
-      localStorage.setItem("hasSeenIntroVideo", "true");
-    } else {
-      setStartTransition(true);
-      setTimeout(() => setShowContent(true), 1000);
-    }
+  useEffect(() => {
+    const hasSeenImageAnimation = localStorage.getItem("hasSeenImageAnimation");
 
     if (!hasSeenImageAnimation) {
       setAnimateImage(true);
       localStorage.setItem("hasSeenImageAnimation", "true");
     }
+
+    const timer = setTimeout(() => {
+      setShowWelcome(false);
+      setShowContent(true);
+    }, 3000);
+
+    return () => clearTimeout(timer);
   }, []);
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-  useEffect(() => {
-    if (videoEnded) {
-      setStartTransition(true);
-      setAnimateImage(true);
-      setTimeout(() => setShowContent(true), 1000);
-    }
-  }, [videoEnded]);
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-  const handleReplay = () => {
-    setShowVideo(true);
-    setVideoEnded(false);
-    setStartTransition(false);
-    setShowContent(false);
-    setAnimateImage(false);
-    localStorage.removeItem("hasSeenIntroVideo");
-    localStorage.removeItem("hasSeenImageAnimation");
-  };
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-  const handleSkip = () => {
-    setShowVideo(false);
-    setVideoEnded(true);
-  };
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
   return (
     <main className="relative w-full h-screen overflow-hidden">
       {/* Overlay */}
@@ -70,48 +40,30 @@ export default function ClientHome({ user }) {
         />
       </div>
 
-      {/* Desktop video and image */}
+      {/* Desktop background */}
       <div className="hidden lg:block w-full h-full">
-        {showVideo && !videoEnded && (
-          <>
-            <video
-              autoPlay
-              muted
-              loop={false}
-              playsInline
-              controls={false}
-              onEnded={() => setVideoEnded(true)}
-              className="absolute top-0 left-0 w-full h-full object-cover z-0"
-            >
-              <source src="/videos/This-is-Egypt.mp4" type="video/mp4" />
-            </video>
+        <Image
+          src="/assets/Luxor Temple.png"
+          alt="Desktop background"
+          fill
+          className={`absolute top-0 left-0 w-full h-full object-cover z-[-1] ${
+            animateImage ? "animate-fold-in" : ""
+          }`}
+        />
 
-            {/* Skip button */}
-            <button
-              onClick={handleSkip}
-              style={{ padding: "13px", cursor: "pointer" }}
-              className="absolute bottom-12 left-1/2 transform -translate-x-1/2 z-10 bg-white/90 text-black font-semibold rounded-full shadow-lg hover:bg-white transition"
-            >
-              Skip
-            </button>
-          </>
+        {/* Desktop Welcome Message */}
+        {showWelcome && (
+          <div className="absolute inset-0 flex items-center justify-center z-10">
+            <h1 className="text-white text-5xl font-bold animate-fade-in-up">
+             Welcome to <span className="text-yellow-400">SolDelNilo</span>
+            </h1>
+          </div>
         )}
 
-        {(!showVideo || videoEnded) && (
-          <Image
-            src="/assets/Luxor Temple.png"
-            alt="Desktop background"
-            fill
-            className={`absolute top-0 left-0 w-full h-full object-cover z-[-1] ${
-              animateImage ? "animate-fold-in" : ""
-            }`}
-          />
-        )}
-
-        {/* Hero + Replay button */}
+        {/* Desktop Hero */}
         {showContent && (
           <div className="relative z-10 flex flex-col items-center justify-center h-full space-y-6 px-4">
-            <Hero handleReplay={handleReplay} />
+            <Hero />
           </div>
         )}
       </div>
@@ -121,7 +73,16 @@ export default function ClientHome({ user }) {
         <Header user={user} />
       </div>
 
-      {/* Mobile Hero + Replay button */}
+      {/* Mobile Welcome Message */}
+      {showWelcome && (
+        <div className="lg:hidden absolute inset-0 flex items-center justify-center z-10">
+          <h1 className="text-white text-4xl font-bold animate-fade-in-up text-center px-4 leading-snug">
+            Welcome to <span className="text-yellow-400">SolDelNilo</span>
+          </h1>
+        </div>
+      )}
+
+      {/* Mobile Hero */}
       {showContent && (
         <div className="lg:hidden relative z-10 flex flex-col items-center justify-center h-full space-y-6 px-4">
           <Hero />

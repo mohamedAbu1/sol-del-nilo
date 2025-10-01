@@ -22,11 +22,12 @@ const LogoutBtn = () => {
   return (
     <>
       <Button
-        style={{ color: "grey" }}
         className="flex items-center justify-center gap-2 flex-row link bg-none"
+        variant="outlined"
+        color="warning"
         onClick={LogoutHnadler}
       >
-        logout <BsDoorOpenFill />
+         Sign Out <BsDoorOpenFill />
       </Button>
     </>
   );

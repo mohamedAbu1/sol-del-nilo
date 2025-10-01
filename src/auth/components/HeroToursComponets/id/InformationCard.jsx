@@ -63,7 +63,7 @@ const InformationCard = ({ tour }) => {
             {tour.title}
           </Typography>
           <Link href={"/tours"}>
-            <Button variant="outlined" color="secondary" style={{margin:"10px"}} endIcon={<HikingIcon />}>
+            <Button variant="outlined" color="warning" style={{margin:"10px"}} endIcon={<HikingIcon />}>
               Another trip
             </Button>
           </Link>

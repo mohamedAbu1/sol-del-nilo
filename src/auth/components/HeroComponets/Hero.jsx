@@ -11,13 +11,6 @@ const Hero = ({ handleReplay }) => {
       <TextHero />
       <BtnHero />
       <LinksMidea />
-      <button
-        onClick={handleReplay}
-        style={{ cursor: "pointer" }}
-        className=" hidden lg:flex px-6 py-2 text-white rounded animate-pulse-3s hover:bg-white/20 transition"
-      >
-        🎬 Replay Video
-      </button>
     </section>
   );
 };

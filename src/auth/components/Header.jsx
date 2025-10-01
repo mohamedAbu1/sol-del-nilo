@@ -23,9 +23,7 @@ const Header = ({ user }) => {
   // ✅ استخراج الجزء بعد اللغة
   const slug = segments.length > 1 ? segments.slice(1).join("/") : "";
 
-  console.log("📍 المسار الكامل:", path);
-  console.log("🔤 اللغة:", segments[0]);
-  console.log("📄 المسار بعد اللغة:", slug);
+ 
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$
   return (
     <header

@@ -7,12 +7,13 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import LoadingScreen from "../../lodaing";
 import { Suspense } from "react";
-
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const Login = async () => {
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const cookieStore = await cookies();
   const token = cookieStore.get("jwttoken")?.value;
   if (token) redirect("/");
-
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   return (
     <Suspense fallback={<LoadingScreen />}>
       <main className="w-full h-screen flex flex-row relative overflow-hidden">

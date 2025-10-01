@@ -7,7 +7,7 @@ import { FaDollarSign } from "react-icons/fa";
 import { Link } from "@/i18n/navigation";
 import { motion } from "framer-motion";
 import React from "react";
-
+import SmsIcon from "@mui/icons-material/Sms";
 const cardVariants = {
   visible: (i) => ({
     opacity: 1,
@@ -29,7 +29,6 @@ const cardVariants = {
     },
   },
 };
-
 const CardDiv = React.forwardRef(function CardDiv(
   { toursData, hoverIndex, setHoverIndex, controls, WidthCard },
   ref
@@ -40,8 +39,8 @@ const CardDiv = React.forwardRef(function CardDiv(
       style={{
         perspective: "1200px",
         display: "flex",
-        alignItems:"center",
-        justifyContent:"center",
+        alignItems: "center",
+        justifyContent: "center",
         gap: "20px",
         flexWrap: "wrap",
         zIndex: "999",
@@ -96,7 +95,7 @@ const CardDiv = React.forwardRef(function CardDiv(
           </h1>
 
           <CardContent
-            className={`absolute bottom-9 z-50 text-white transition-opacity duration-700 ease-in-out capitalize ${
+            className={`w-full absolute bottom-9 z-50 text-white transition-opacity duration-700 ease-in-out capitalize ${
               hoverIndex === index
                 ? "opacity-100"
                 : "opacity-0 pointer-events-none"
@@ -115,13 +114,36 @@ const CardDiv = React.forwardRef(function CardDiv(
             >
               {i.description}
             </Typography>
-            <Typography
-              variant="body2"
-              sx={{ marginTop: "18px", color: "#d4a85f", fontWeight: "700" }}
-              className="text-gray-300"
-            >
-              {i.Destination}
-            </Typography>
+            <div className="flex w-full items-center justify-between">
+              <Typography
+                variant="body2"
+                sx={{ marginTop: "18px", color: "#d4a85f", fontWeight: "700" }}
+                className="text-gray-300"
+              >
+                {i.Destination}
+              </Typography>
+              <Typography
+                variant="body2"
+                sx={{ marginTop: "18px", color: "#d4a85f", fontWeight: "700" }}
+                className="text-gray-300"
+              >
+                {i.category?.name === "trip1"
+                  ? "Boat Trips"
+                  : i.category?.name === "trip2"
+                  ? "Cultural Trips"
+                  : i.category?.name === "trip3"
+                  ? "Night Tours"
+                  : i.category?.name === "trip4"
+                  ? "1 to 4 Hours Tours"
+                  : i.category?.name === "trip5"
+                  ? "1 Day Trips"
+                  : i.category?.name === "trip6"
+                  ? "Excursions Tours"
+                  : i.category?.name === "trip7"
+                  ? "Group Tours"
+                  : "Unknown"}{" "}
+              </Typography>
+            </div>
           </CardContent>
 
           <CardActions
@@ -137,11 +159,7 @@ const CardDiv = React.forwardRef(function CardDiv(
             }}
           >
             <Link href={`/tours/${i.id}`}>
-              <Button
-                size="large"
-                color="secondary"
-                style={{ fontSize: "19px", fontWeight: "700" }}
-              >
+              <Button variant="outlined" color="warning" endIcon={<SmsIcon />}>
                 See More
               </Button>
             </Link>

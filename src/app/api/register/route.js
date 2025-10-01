@@ -149,14 +149,7 @@
 //       return NextResponse.json({ error: "فشل إنشاء المستخدم" }, { status: 500 });
 //     }
 
-//     // ✅ إنشاء JWT وتخزينه في الكوكيز
-//     const payload = {
-//       id: newUser[0].id,
-//       email: newUser[0].email,
-//       name: newUser[0].name,
-//       role: newUser[0].role,
-//       isActive: newUser[0].isActive,
-//     };
+
 
 //     const cookie = setCookie(payload);
 
@@ -194,12 +187,10 @@ export async function POST(request) {
 
     // ✅ التحقق من وجود المستخدم مسبقًا
     const { data: existingUser, error: findError } = await supabase
-      .from("user") // تأكد من حالة الأحرف
+      .from("user")
       .select("id")
       .eq("email", email)
       .single();
-
-    console.log("🔍 نتيجة البحث:", existingUser);
 
     if (findError && findError.code !== "PGRST116") {
       console.error("❌ خطأ في البحث:", findError.message);
@@ -219,7 +210,7 @@ export async function POST(request) {
     // ✅ تشفير كلمة المرور
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // ✅ إدخال المستخدم الجديد بكل الحقول
+    // ✅ إدخال المستخدم الجديد
     const { data: newUser, error: insertError } = await supabase
       .from("user")
       .insert([
@@ -241,27 +232,42 @@ export async function POST(request) {
       );
     }
 
-    // ✅ توليد JWT
-    const token = generateToken({
+    // ✅ التحقق من وجود بيانات بعد الإدخال
+    if (!newUser || !newUser[0]) {
+      console.error("❌ لم يتم استرجاع بيانات المستخدم بعد الإدخال");
+      return NextResponse.json(
+        { error: "فشل في استرجاع بيانات المستخدم بعد الإدخال" },
+        { status: 500 }
+      );
+    }
+
+    // ✅ إنشاء JWT وتخزينه في الكوكيز
+    const payload = {
       id: newUser[0].id,
       email: newUser[0].email,
       name: newUser[0].name,
       role: newUser[0].role,
       isActive: newUser[0].isActive,
-    });
+    };
 
     // ✅ تخزين JWT في الكوكيز
-    const cookie = setCookie(token);
+    const cookie = setCookie(payload);
 
     const response = NextResponse.json(
       {
         message: "تم إنشاء المستخدم بنجاح",
         user: newUser[0],
       },
-      { status: 201 }
+      { status: 200 }
     );
 
-    response.headers.set("Set-Cookie", cookie);
+    // ✅ التحقق من الكوكي قبل إضافته
+    if (cookie) {
+      response.headers.set("Set-Cookie", cookie);
+    } else {
+      console.warn("⚠️ لم يتم إنشاء الكوكيز بشكل صحيح");
+    }
+
     return response;
   } catch (error) {
     console.error("❌ خطأ عام:", error);

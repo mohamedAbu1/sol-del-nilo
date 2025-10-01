@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { serialize } from "cookie";
 const SECRET = process.env.JWT_SECRET || "your-secret-key";
+console.log(SECRET)
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 // ✅ لإنشاء التوكن
 export function generateToken(payload) {

@@ -1,7 +1,7 @@
 // todo هنا نقوم بكتابة العناصر الثابته في الموقع لاستخدمها في اكثر من مكان 
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 import { FaWhatsapp } from "react-icons/fa6";
-import { FaInstagram, FaLinkedin } from "react-icons/fa";
+import { FaInstagram,FaTiktok } from "react-icons/fa";
 import { BiLogoFacebook, BiLogoGmail } from "react-icons/bi";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 export const DOMAIN = "http://localhost:3000"
@@ -30,17 +30,17 @@ export const getSliderToursDiv = (t) => [
   // {img:img3,title:t("TitleDivPic"),p:t("PDivPic"),btn:t("BtnDivPic")},
   // {img:img4,title:t("TitleDivPic"),p:t("PDivPic"),btn:t("BtnDivPic")},
   {
-    image: "/assets/Cairo.jpg",
+    image: "/assets/cairo.jpg",
     title: t("TitleDivPic"),
     subtitle: t("PDivPic"),
   },
   {
-    image: "/assets/Abu Simbel.jpg",
+    image: "/assets/Abu_Simbel.jpg",
     title: t("TitleDivPic"),
     subtitle: t("PDivPic"),
   },
   {
-    image: "/assets/Nile River.jpg",
+    image: "/assets/Nile_River.jpg",
     title: t("TitleDivPic"),
     subtitle: t("PDivPic"),
   },
@@ -58,9 +58,9 @@ export const getCityName = (t) => [
 ]
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 export const MideaIcon = [
-   {titleIcon:"SoloNilo.facebook" ,Icon: <BiLogoFacebook /> ,path:"/"},
-   {titleIcon:"SoloNilo.Whatsapp" ,Icon: <FaWhatsapp /> ,path:"/"},
-   {titleIcon:"SoloNilo.Instagram" ,Icon: <FaInstagram /> ,path:"/"},
-   {titleIcon:"SoloNilo.Linkedin" ,Icon: <FaLinkedin /> ,path:"/"},
+   {titleIcon:"SoloNilo.facebook" ,Icon: <BiLogoFacebook /> ,path:"https://www.facebook.com/profile.php?id=100093492715749&mibextid=ZbWKwL"},
+   {titleIcon:"SoloNilo.Whatsapp" ,Icon: <FaWhatsapp /> ,path:"https://wa.me/201010104875"},
+   {titleIcon:"SoloNilo.Instagram" ,Icon: <FaInstagram /> ,path:"https://www.instagram.com/egipto_milenario?igsh=MXF0azJzdzdyNTVibA=="},
+   {titleIcon:"SoloNilo.Tiktok" ,Icon: <FaTiktok /> ,path:"/"},
    {titleIcon:"SoloNilo.Gmail" ,Icon: <BiLogoGmail /> ,path:"/"},
 ]

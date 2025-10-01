@@ -224,11 +224,11 @@ const CreateTripForm = () => {
                 setSelectedImages={setSelectedImages}
               />
               <TripProgram
-                programs={formData.tripprogram}
+                programs={formData.tripprogram || []}
                 setPrograms={handleProgramChange}
               />
               <TourIncludes
-                includes={formData.includes}
+                includes={formData.includes || []}
                 setIncludes={(data) =>
                   setFormData((prev) => ({ ...prev, includes: data }))
                 }

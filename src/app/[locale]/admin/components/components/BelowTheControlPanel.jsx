@@ -16,7 +16,6 @@ const BelowTheControlPanel = ({
   handleChange,
 }) => {
   const router = useRouter();
-console.log(categories)
   return (
     <>
       {/* 🏷️ اختيار التصنيف */}

@@ -26,7 +26,7 @@ const MobilNav = ({ slug }) => {
   };
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   return (
-    <div className="flex items-center justify-center lg:hidden">
+    <div className="w-14 flex items-center justify-center lg:hidden bg-amber-800">
       <Button
         id="fade-button"
         aria-controls={open ? "fade-menu" : undefined}

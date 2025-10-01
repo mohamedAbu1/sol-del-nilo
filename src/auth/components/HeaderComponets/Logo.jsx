@@ -24,7 +24,7 @@ const Logo = ({ path }) => {
       animate="visible"
       transition={{ duration: 1.5 }}
       style={{paddingLeft: width >= 670 ?"110px" : "0px"}}
-      className="md:w-3/12 lg:w-3/6 flex justify-start items-center"
+      className="md:w-3/12 lg:w-1/3 flex justify-start items-center"
     >
       <Link href={"/"}>
         <Image

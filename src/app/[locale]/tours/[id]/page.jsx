@@ -61,7 +61,6 @@ const CardID = () => {
 
   if (loading) return <Lodaing />;
   if (!tour) return <p>الرحلة غير موجودة</p>;
-  console.log(tour);
 
   return (
     <main

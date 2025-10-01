@@ -12,7 +12,6 @@ import SelectTours from "./HeroToursComponets/SelectTours";
 import { toast } from "react-toastify";
 import { ToursPathEn } from "@/lib/constants/FixedTexts";
 import { Box } from "@mui/material";
-import { supabase } from "@/lib/supabaseClient";
 
 const HeroTours = () => {
   const path = usePathname();
@@ -21,42 +20,65 @@ const HeroTours = () => {
   const [toursData, setToursData] = useState([]);
   const [hoverIndex, setHoverIndex] = useState(null);
   const [ref, inView] = useInView({ threshold: 0.4 });
+
+  const [selectedCategories, setSelectedCategories] = useState([]);
+
   const controls = useAnimation();
   const WidthCard = width === 540 ? 300 : 360;
+  // useEffect(() => {
+  //   const fetchTours = async () => {
+  //     try {
+  //       const { data, error } = await supabase
+  //         .from("tour")
+  //         .select(
+  //           `
+  //           *,
+  //           category(*),
+  //           city(*),
+  //           tripprogram(*),
+  //           includes(*)
+  //         `
+  //         )
+  //         .order("created_at", { ascending: false });
+
+  //       if (error) {
+  //         console.error("❌ خطأ في جلب الرحلات:", error.message);
+  //         toast.error("❌ فشل في تحميل الرحلات");
+  //         setToursData([]);
+  //         return;
+  //       }
+
+  //       setToursData(data || []);
+  //     } catch (err) {
+  //       console.error("❌ فشل في الاتصال بـ Supabase:", err.message);
+  //       toast.error("❌ فشل في تحميل الرحلات");
+  //       setToursData([]);
+  //     }
+  //   };
+
+  //   fetchTours();
+  // }, []);
   useEffect(() => {
     const fetchTours = async () => {
       try {
-        const { data, error } = await supabase
-          .from("tour")
-          .select(
-            `
-            *,
-            category(*),
-            city(*),
-            tripprogram(*),
-            includes(*)
-          `
-          )
-          .order("created_at", { ascending: false });
+        const query =
+          selectedCategories.length > 0
+            ? selectedCategories.map(encodeURIComponent).join(",")
+            : "";
+        const res = await axios.get("/api/tours", {
+          params: query ? { categories: query } : {},
+        });
 
-        if (error) {
-          console.error("❌ خطأ في جلب الرحلات:", error.message);
-          toast.error("❌ فشل في تحميل الرحلات");
-          setToursData([]);
-          return;
-        }
-
-        setToursData(data || []);
-      } catch (err) {
-        console.error("❌ فشل في الاتصال بـ Supabase:", err.message);
-        toast.error("❌ فشل في تحميل الرحلات");
-        setToursData([]);
+        const data = res.data;
+        setToursData(data.tours || []);
+      } catch (error) {
+        console.error("❌ خطأ في جلب الرحلات:", error);
+        toast.error("حدث خطأ أثناء تحميل الرحلات");
       }
     };
 
     fetchTours();
-  }, []);
-
+  }, [selectedCategories]);
   useEffect(() => {
     if (inView) {
       controls.start("visible");
@@ -94,7 +116,10 @@ const HeroTours = () => {
         <HeroSlider />
       </Box>
 
-      <SelectTours />
+      <SelectTours
+        setSelectedCategories={setSelectedCategories}
+        selectedCategories={selectedCategories}
+      />
 
       <Box
         sx={{ marginTop: "40px", marginBottom: "40px" }}

@@ -26,11 +26,17 @@ const LinksMidea = () => {
             initial="hidden"
             animate="visible"
             className="SocialMediaIcon"
-            transition={{ delay: index * 0.2, duration: 0.5 }}
+            transition={{ delay: index * 0.2, duration: 0.5, zIndex: "9999" }}
           >
-            <Link herf={i.path} target="_blank" title={i.titleIcon}>
+            <a
+              href={i.path}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={i.titleIcon}
+              style={{ cursor: "pointer" }}
+            >
               {i.Icon}
-            </Link>
+            </a>
           </motion.span>
         );
       })}

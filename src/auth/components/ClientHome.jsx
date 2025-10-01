@@ -43,7 +43,7 @@ export default function ClientHome({ user }) {
       {/* Desktop background */}
       <div className="hidden lg:block w-full h-full">
         <Image
-          src="/assets/Luxor Temple.png"
+          src="/assets/Luxor_Temple.png"
           alt="Desktop background"
           fill
           className={`absolute top-0 left-0 w-full h-full object-cover z-[-1] ${

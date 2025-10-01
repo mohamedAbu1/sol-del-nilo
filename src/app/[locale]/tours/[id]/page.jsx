@@ -74,7 +74,7 @@ const CardID = () => {
 
       <div
         style={{ width: "100%", paddingRight:width <= 600 ? "0px" :"60px", paddingLeft:width <= 600 ? "0px" :"60px" }}
-        className="flex flex-col xl:flex-row"
+        className="flex flex-col xl:flex-row justify-center"
       >
         {/* ✅ بطاقة معلومات الرحلة */}
         <InformationCard tour={tour} />

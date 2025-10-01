@@ -29,7 +29,6 @@ const PaymentForm = () => {
     guideLanguages: [],
   });
   const handleChildrenCountChange = (value) => {
-    console.log("VALUE:", value); // ✅ هنا تراقب القيمة لحظة الإدخال
     setBookingData((prev) => {
       const updated = { ...prev, childrenCount: value };
 
@@ -166,8 +165,8 @@ const PaymentForm = () => {
       sx={{
         width: "100%",
         maxWidth: "900px",
-        height: "1000px",
-        mt: 6,
+        height:"fit-content",
+        mt: 19,
         px: { xs: 2, sm: 4, md: 6 },
         display: "flex",
         alignItems: "center",

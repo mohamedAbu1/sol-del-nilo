@@ -124,7 +124,7 @@ export async function POST(req) {
 
     if (findError) {
       console.error("Supabase Error:", findError.message);
-      return NextResponse.json({ error: "المستخدم غير موجود" }, { status: 404 });
+      return NextResponse.json({ error: "The user does not exist" }, { status: 404 });
     }
 
     // ✅ التحقق من كلمة المرور

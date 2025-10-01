@@ -152,6 +152,8 @@ const SignUnForm = () => {
       });
       if (response.status >= 200 && response.status < 300) {
         toast.success("Registration successful ✅");
+        localStorage.setItem("user", "token");
+
         router.push("/");
       } else {
         toast.error(`❌ ${response.data.error || response.data.message}`);

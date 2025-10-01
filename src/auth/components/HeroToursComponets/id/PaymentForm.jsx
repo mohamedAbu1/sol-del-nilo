@@ -165,7 +165,7 @@ const PaymentForm = () => {
       sx={{
         width: "100%",
         maxWidth: "900px",
-        height:"fit-content",
+        height: "fit-content",
         mt: 19,
         px: { xs: 2, sm: 4, md: 6 },
         display: "flex",
@@ -508,15 +508,30 @@ const PaymentForm = () => {
 
                     {bookingData.petType === "other" && (
                       <TextField
-                        label="نوع الحيوان"
+                        label="Animal type"
                         value={bookingData.customPetType}
-                        onChange={(e) =>
+                        onChange={(e) => {
+                          const value = e.target.value;
+
+                          // ✅ تحقق من وجود حروف عربية أو رموز أو أرقام
+                          const containsArabic = /[\u0600-\u06FF]/.test(value);
+                          const containsSymbolsOrNumbers = /[^a-zA-Z\s]/.test(
+                            value
+                          ); // أي شيء غير حروف إنجليزية ومسافات
+
+                          if (containsArabic || containsSymbolsOrNumbers) {
+                            toast.error(
+                              "Please enter English letters only. ❌"
+                            );
+                            return;
+                          }
+
                           setBookingData((prev) => ({
                             ...prev,
-                            customPetType: e.target.value,
-                          }))
-                        }
-                        placeholder="أدخل نوع الحيوان"
+                            customPetType: value,
+                          }));
+                        }}
+                        placeholder="Enter the animal type"
                         InputProps={{
                           style: {
                             fontWeight: "600",

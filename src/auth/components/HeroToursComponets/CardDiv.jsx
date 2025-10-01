@@ -58,8 +58,8 @@ const CardDiv = React.forwardRef(function CardDiv(
           variants={cardVariants}
           className="relative overflow-hidden"
           style={{
-            width: WidthCard,
-            height: "550px",
+            width: "clamp(280px, 90vw, 400px)",
+            height: "clamp(400px, 60vh, 550px)",
             borderRadius: "22px",
             background: "#181a1b",
             boxShadow:

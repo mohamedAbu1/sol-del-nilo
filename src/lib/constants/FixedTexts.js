@@ -58,7 +58,7 @@ export const getCityName = (t) => [
 ]
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 export const MideaIcon = [
-   {titleIcon:"SoloNilo.facebook" ,Icon: <BiLogoFacebook /> ,path:"https://www.facebook.com/profile.php?id=100093492715749&mibextid=ZbWKwL"},
+   {titleIcon:"SoloNilo.facebook" ,Icon: <BiLogoFacebook /> ,path:"https://www.facebook.com/share/1bSxScbbn3/"},
    {titleIcon:"SoloNilo.Whatsapp" ,Icon: <FaWhatsapp /> ,path:"https://wa.me/201010104875"},
    {titleIcon:"SoloNilo.Instagram" ,Icon: <FaInstagram /> ,path:"https://www.instagram.com/egipto_milenario?igsh=MXF0azJzdzdyNTVibA=="},
    {titleIcon:"SoloNilo.Tiktok" ,Icon: <FaTiktok /> ,path:"/"},

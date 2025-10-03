@@ -1,5 +1,4 @@
 "use client";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import AnimatedPictures from "@/auth/components/HeroToursComponets/id/AnimatedPictures";
@@ -7,10 +6,9 @@ import InformationCard from "@/auth/components/HeroToursComponets/id/Information
 import PaymentForm from "@/auth/components/HeroToursComponets/id/PaymentForm";
 import Lodaing from "../../lodaing";
 import RegisterToBuy from "@/auth/components/HeroToursComponets/id/RegisterToBuy";
-import Header from "@/auth/components/Header";
 import SideDecor from "@/auth/components/SideDecor ";
 import RightSideDecor from "@/auth/components/RightSideDecor";
-import { supabase } from "@/lib/supabaseClient"; // تأكد من استيراد العميل
+import { supabase } from "../../../../lib/supabaseClient";
 import { toast } from "react-toastify";
 import { useScreenSize } from "@/auth/hooks/screenSize";
 

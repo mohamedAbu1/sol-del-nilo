@@ -12,7 +12,7 @@ import SelectTours from "./HeroToursComponets/SelectTours";
 import { toast } from "react-toastify";
 import { ToursPathEn } from "@/lib/constants/FixedTexts";
 import { Box } from "@mui/material";
-import { supabase } from "@/lib/supabaseClient";
+import { supabase } from "../../lib/supabaseClient";
 const HeroTours = () => {
   const path = usePathname();
   const t = useTranslations("ToursHeroPage");

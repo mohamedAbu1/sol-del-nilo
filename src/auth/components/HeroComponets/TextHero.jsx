@@ -30,7 +30,7 @@ const TextHero = () => {
         variants={container}
         initial="hidden"
         animate="visible"
-        className="text-[clamp(2rem,6vw,4rem)] font-bold text-[#FF9800] flex flex-wrap justify-center gap-[2px]"
+        className="text-[clamp(1.8rem,6vw,4rem)] font-bold text-[#FF9800] flex flex-wrap justify-center gap-[2px]"
       >
         {sentence.split("").map((char, index) => (
           <motion.span
@@ -48,7 +48,7 @@ const TextHero = () => {
         initial="hidden"
         animate="visible"
         transition={{ delay: 1 }}
-        className="text-[clamp(1.2rem,4vw,2.5rem)] text-white font-semibold flex flex-wrap justify-center gap-[2px]"
+        className="text-[clamp(1.1rem,4vw,2.5rem)] text-white font-semibold flex flex-wrap justify-center gap-[2px]"
       >
         {sentence2.split("").map((char, index) => (
           <motion.span

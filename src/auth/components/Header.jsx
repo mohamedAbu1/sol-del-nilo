@@ -48,7 +48,7 @@ const Header = ({ user }) => {
     >
       <Logo path={path} />
       <Nav path={path} user={user} slug={slug}/>
-      <MobilNav slug={slug}/>
+      <MobilNav slug={slug} user={user}/>
       <LeftNav path={path} user={user} width={width}/>
       <ThemeToggle />
     </header>

@@ -11,7 +11,7 @@ import { useTranslations } from "next-intl";
 import { getNavPath } from "@/lib/constants/FixedTexts";
 import LogoutBtn from "./LogoutBtn";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-const MobilNav = ({ slug }) => {
+const MobilNav = ({ slug, user }) => {
   const t = useTranslations("Header");
   const CityName = getNavPath(t);
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
@@ -34,6 +34,7 @@ const MobilNav = ({ slug }) => {
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
+        style={{ zIndex: "9999", color: "#fff", fontSize: "25px" }}
       >
         <AiOutlineMenu className="text-2xl  hover:scale-110 transition-all" />
       </Button>
@@ -48,7 +49,7 @@ const MobilNav = ({ slug }) => {
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        style={{zIndex:"9999"}}
+        style={{ zIndex: "9999" }}
       >
         {CityName.map((i, index) => {
           return (
@@ -61,7 +62,7 @@ const MobilNav = ({ slug }) => {
             </Link>
           );
         })}
-         <LogoutBtn />
+        {!user ? "" : <LogoutBtn />}
       </Menu>
     </div>
   );

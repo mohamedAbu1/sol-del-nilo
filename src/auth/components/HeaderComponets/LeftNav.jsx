@@ -57,9 +57,9 @@ const LeftNav = ({ path, user, width }) => {
             className="flex items-center justify-center gap-2 flex-row"
           >
             <Button
-              variant="outlined"
-              color="warning"
+              variant="contained"
               endIcon={<BsDoorOpenFill />}
+              style={{backgroundColor:"#ff9800",color:"#fff"}}
             >
               Sign Up
             </Button>

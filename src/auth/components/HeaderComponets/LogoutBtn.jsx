@@ -23,8 +23,8 @@ const LogoutBtn = () => {
     <>
       <Button
         className="hidden lg:flex items-center justify-center gap-2 flex-row link bg-none"
-        variant="outlined"
-        color="warning"
+        variant="contained"
+        style={{backgroundColor:"#FF9800"}}
         onClick={LogoutHnadler}
       >
          Sign Out <BsDoorOpenFill />

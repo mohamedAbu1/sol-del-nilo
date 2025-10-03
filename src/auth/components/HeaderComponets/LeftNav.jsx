@@ -7,13 +7,15 @@ import { color, motion } from "framer-motion";
 import { BsFillPersonVcardFill } from "react-icons/bs";
 import LogoutBtn from "./LogoutBtn";
 import { Button } from "@mui/material";
+import { useState } from "react";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-const LeftNav = ({ path, user }) => {
+const LeftNav = ({ path, user, width }) => {
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const boxVariants = {
     hidden: { opacity: 0, scale: 0.1 },
     visible: { opacity: 1, scale: 1 },
   };
+
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   return (
     <motion.div
@@ -22,7 +24,7 @@ const LeftNav = ({ path, user }) => {
       animate="visible"
       transition={{ delay: 1, duration: 1 }}
       className={
-        " text-gray-400 md:w-2/5 lg:w-6/12 flex flex-row items-center justify-around"
+        " text-gray-400 md:w-2/4 lg:w-6/12 flex flex-row items-center justify-around"
       }
     >
       {user ? (
@@ -33,7 +35,7 @@ const LeftNav = ({ path, user }) => {
               alignItems: "center",
               justifyContent: "center",
               textTransform: "capitalize",
-              fontSize: "18px",
+              fontSize: "14px",
               gap: "10px",
               color: "#d4a85f",
             }}
@@ -41,7 +43,7 @@ const LeftNav = ({ path, user }) => {
             <BsFillPersonVcardFill />
             {user.name}
           </h3>
-          <LogoutBtn />
+          {width <= 1024 ? "" :  <LogoutBtn />}
         </div>
       ) : (
         <>

@@ -9,6 +9,7 @@ import { AiOutlineMenu } from "react-icons/ai";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { getNavPath } from "@/lib/constants/FixedTexts";
+import LogoutBtn from "./LogoutBtn";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const MobilNav = ({ slug }) => {
   const t = useTranslations("Header");
@@ -60,6 +61,7 @@ const MobilNav = ({ slug }) => {
             </Link>
           );
         })}
+         <LogoutBtn />
       </Menu>
     </div>
   );

@@ -24,11 +24,7 @@ export default async function EgyptVisaPage() {
       <Dividering />
       <Dividering />
       <Dividering />
-      <GeneralAdvice
-        title="رحلة إلى معبد الكرنك"
-        description="استمتع بجولة تاريخية في أحد أعظم المعابد المصرية القديمة، مع مرشد سياحي محترف."
-        imageUrl="/assets/karnak.jpg"
-      />
+      <GeneralAdvice />
     </main>
   );
 }

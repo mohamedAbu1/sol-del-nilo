@@ -12,6 +12,7 @@ import {
   AboutPathEs,
 } from "@/lib/constants/FixedTexts";
 import ThemeToggle from "./ThemeToggle";
+import { useScreenSize } from "../hooks/screenSize";
 
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const Header = ({ user }) => {
@@ -23,6 +24,7 @@ const Header = ({ user }) => {
   // ✅ استخراج الجزء بعد اللغة
   const slug = segments.length > 1 ? segments.slice(1).join("/") : "";
 
+   const { width, height } = useScreenSize();
  
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$
   return (
@@ -47,7 +49,7 @@ const Header = ({ user }) => {
       <Logo path={path} />
       <Nav path={path} user={user} slug={slug}/>
       <MobilNav slug={slug}/>
-      <LeftNav path={path} user={user} />
+      <LeftNav path={path} user={user} width={width}/>
       <ThemeToggle />
     </header>
   );

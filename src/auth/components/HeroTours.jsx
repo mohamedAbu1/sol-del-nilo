@@ -124,6 +124,7 @@ const HeroTours = () => {
           categoriesFromDB={categoriesFromDB}
           setSelectedCategories={setSelectedCategories}
           setSearch={setSearch}
+          width={width}
           search={search}
         />
       </Box>

@@ -22,7 +22,7 @@ const LogoutBtn = () => {
   return (
     <>
       <Button
-        className="flex items-center justify-center gap-2 flex-row link bg-none"
+        className="hidden lg:flex items-center justify-center gap-2 flex-row link bg-none"
         variant="outlined"
         color="warning"
         onClick={LogoutHnadler}

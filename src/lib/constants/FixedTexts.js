@@ -67,11 +67,11 @@ export const MideaIcon = [
 ]
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 export const AdviceCard = [
-  {imageUrl:img,title:"mohamed",description:"asdasdasdsad"},
-  {imageUrl:img,title:"ahmed",description:"sadsadsdasdsadsadsda"},
-  {imageUrl:img,title:"ali",description:"sdasadsdsdadsasd"},
-  {imageUrl:img,title:"mosad",description:"sadsaddsafgdfgdgfgf"},
-  {imageUrl:img,title:"sa dsa",description:"kuykyytjyjtjytjyt"},
-  {imageUrl:img,title:"sadasd",description:"gfdfdgfgfgdfdggfgfd"},
-  {imageUrl:img,title:"sadsad",description:"rteytyttyujyjhjhytjytj"}
+  {id:"1",imageUrl:img,title:"mohamed",description:"asdasdasdsad"},
+  {id:"2",imageUrl:img,title:"ahmed",description:"sadsadsdasdsadsadsda"},
+  {id:"3",imageUrl:img,title:"ali",description:"sdasadsdsdadsasd"},
+  {id:"4",imageUrl:img,title:"mosad",description:"sadsaddsafgdfgdgfgf"},
+  {id:"8",imageUrl:img,title:"sa dsa",description:"kuykyytjyjtjytjyt"},
+  {id:"6",imageUrl:img,title:"sadasd",description:"gfdfdgfgfgdfdggfgfd"},
+  {id:"9",imageUrl:img,title:"sadsad",description:"rteytyttyujyjhjhytjytj"}
 ]

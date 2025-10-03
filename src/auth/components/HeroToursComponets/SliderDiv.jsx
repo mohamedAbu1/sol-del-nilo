@@ -7,7 +7,7 @@ import { FaPlane } from "react-icons/fa6";
 import { BiSearch } from "react-icons/bi";
 import { toast } from "react-toastify";
 
-const backgroundImages = [
+const backgroundImagesRow = [
   "/assets/Temple_of_the_Elephants.png",
   "/assets/Copilot_20251003_113408.png",
   "/assets/Copilot_20251003_114530.png",
@@ -15,12 +15,21 @@ const backgroundImages = [
   "/assets/Copilot_20251003_111802.png",
   "/assets/Copilot_20251003_110337.png",
 ];
+const backgroundImagesCol = [
+  "/assets/545371804_18083318650930067_5402798298470446398_n.jpg",
+  "/assets/491433899_18069893710930067_3619158703201338962_n.jpg",
+  "/assets/489886514_18069129334930067_56951173587226056_n.jpg",
+  "/assets/489671803_18068665750930067_7121276910165743367_n.jpg",
+  "/assets/482682747_18065431657930067_3567087536427897819_n.jpg",
+  "/assets/548898267_18083849644930067_2023880468351303706_n.jpg",
+];
 
 export default function HeroStaticSearch({
   categoriesFromDB,
   setSelectedCategories,
   setSearch,
   search,
+  width,
 }) {
   const t = useTranslations("ToursHeroPage");
   const [focused, setFocused] = useState(false);
@@ -49,7 +58,7 @@ export default function HeroStaticSearch({
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setBgIndex((prev) => (prev + 1) % backgroundImages.length);
+      setBgIndex((prev) => (prev + 1) % backgroundImagesRow.length);
     }, 10000);
 
     return () => clearInterval(interval);
@@ -67,7 +76,7 @@ export default function HeroStaticSearch({
     >
       <AnimatePresence mode="wait">
         <motion.div
-          key={backgroundImages[bgIndex]}
+          key={width <= 1024 ? backgroundImagesCol[bgIndex]: backgroundImagesRow[bgIndex]}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -80,7 +89,7 @@ export default function HeroStaticSearch({
           }}
         >
           <Image
-            src={backgroundImages[bgIndex]}
+            src={width <= 1024 ? backgroundImagesCol[bgIndex]: backgroundImagesRow[bgIndex]}
             alt="Background"
             fill
             style={{ objectFit: "cover" }}
@@ -138,10 +147,12 @@ export default function HeroStaticSearch({
                 borderRadius: "999px",
                 fontSize: "clamp(1rem, 2.5vw, 1.125rem)",
                 color: "black",
-                backgroundColor: "white",
+                backgroundColor:"transparent",
                 boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
                 outline: "none",
+                border:"1px solid #fff"
               }}
+              className="placeholder:text-[grey]"
             />
 
             <button
@@ -155,7 +166,7 @@ export default function HeroStaticSearch({
                 gap: "10px",
                 transform: "translateY(-50%)",
                 padding: "0.5rem clamp(0.75rem, 4vw, 1rem)",
-                backgroundColor: "#ff9800",
+                // backgroundColor: "#ff9800",
                 color: "white",
                 fontWeight: 600,
                 borderRadius: "999px",

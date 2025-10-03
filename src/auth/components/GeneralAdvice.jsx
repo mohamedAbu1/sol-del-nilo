@@ -3,10 +3,16 @@ import React from "react";
 import Image from "next/image";
 import { AdviceCard } from "@/lib/constants/FixedTexts";
 import { motion } from "framer-motion";
+import { useScreenSize } from "../hooks/screenSize";
 
 const GeneralAdvice = () => {
+  const { width, height } = useScreenSize();
+
   return (
-    <div className="w-full flex items-center flex-col px-4">
+    <div
+      style={{ padding: "10px" }}
+      className="w-full flex items-center flex-col px-4"
+    >
       <h1
         style={{
           fontSize: "clamp(2rem, 4vw, 3.5rem)",
@@ -29,8 +35,8 @@ const GeneralAdvice = () => {
             whileHover={{ scale: 1.02 }}
             style={{
               display: "flex",
-              flexDirection: "row-reverse",
-              alignItems: "center",
+              flexDirection: width <= 1024 ? "column" : "row-reverse",
+              alignItems:width <= 1024 ? "" : "center",
               background: "linear-gradient(to left, #dcedc8, #fff8e1)",
               borderRadius: "20px",
               boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
@@ -46,13 +52,14 @@ const GeneralAdvice = () => {
                 flex: "0 0 300px",
                 height: "200px",
                 position: "relative",
+                zIndex:"8888",
               }}
             >
               <Image
                 src={i.imageUrl}
                 alt={i.title}
                 fill
-                style={{ objectFit: "cover" }}
+                style={{ objectFit: "cover", zIndex:"9999"}}
               />
             </div>
 
@@ -62,6 +69,7 @@ const GeneralAdvice = () => {
                 flex: 1,
                 padding: "1.5rem",
                 color: "#333",
+
               }}
             >
               <h2

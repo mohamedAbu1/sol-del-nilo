@@ -15,7 +15,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { DOMAIN } from "@/lib/constants/FixedTexts";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { supabase } from "@/lib/supabaseClient";
+import { supabase } from "../../../../lib/supabaseClient";
 const UserInformation = () => {
   const [userData, setUsersData] = useState([]);
   useEffect(() => {

@@ -15,7 +15,7 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { DOMAIN } from "@/lib/constants/FixedTexts";
-import { supabase } from "@/lib/supabaseClient";
+import { supabase } from "../../../../lib/supabaseClient";
 import TopOfTheControlPanel2 from "./components/TopOfTheControlPanel2";
 import ControlPanelImages from "./components/ControlPanelImages";
 import TripProgram from "./components/TripProgram";

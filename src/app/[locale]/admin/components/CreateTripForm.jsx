@@ -10,7 +10,7 @@ import TopOfTheControlPanel2 from "./components/TopOfTheControlPanel2";
 import TripProgram from "./components/TripProgram";
 import Preparation from "./components/Preparation";
 import TourIncludes from "./components/TourIncludes";
-import { supabase } from "@/lib/supabaseClient";
+import { supabase } from "../../../../lib/supabaseClient";
 const CreateTripForm = () => {
   const [formData, setFormData] = useState({
     title: "",

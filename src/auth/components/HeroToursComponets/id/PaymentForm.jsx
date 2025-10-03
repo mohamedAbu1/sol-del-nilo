@@ -14,6 +14,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { toast, ToastContainer } from "react-toastify";
 import { FaTaxi, FaShuttleVan, FaBusAlt } from "react-icons/fa";
 import Dividering from "./Divider/Divider";
+import StripeCheckoutButton from "../../StripeCheckoutButton";
 
 const PaymentForm = () => {
   const [bookingData, setBookingData] = useState({
@@ -793,58 +794,38 @@ const PaymentForm = () => {
                       }}
                     >
                       <PayPalButtons
-                        style={{
-                          layout: "vertical",
-                          color: "black",
-                          shape: "rect",
-                          label: "paypal",
-                        }}
                         createOrder={(data, actions) => {
                           return actions.order.create({
                             purchase_units: [
                               {
                                 amount: {
-                                  value: "5.00",
+                                  value: "100.00", // قيمة الرحلة
                                 },
                               },
                             ],
                           });
                         }}
-                        onApprove={(data, actions) => {
-                          return actions.order.capture().then((details) => {
-                            alert(
-                              `✅ تم الدفع بواسطة ${details.payer.name.given_name}`
-                            );
+                        onApprove={async (data, actions) => {
+                          const details = await actions.order.capture();
+                          // ✅ إرسال بيانات الدفع إلى السيرفر
+                          await fetch("/api/paypal-confirm", {
+                            method: "POST",
+                            body: JSON.stringify({
+                              payerName: details.payer.name.given_name,
+                              payerEmail: details.payer.email_address,
+                              amount: details.purchase_units[0].amount.value,
+                              currency:
+                                details.purchase_units[0].amount.currency_code,
+                              status: details.status,
+                              orderId: details.id,
+                            }),
                           });
-                        }}
-                        onError={(err) => {
-                          console.error("❌ خطأ في الدفع:", err);
-                          alert("حدث خطأ أثناء الدفع.");
                         }}
                       />
                     </PayPalScriptProvider>
                   </Box>
 
-                  <Button
-                    onClick={handleStripeCheckout}
-                    variant="contained"
-                    sx={{
-                      width: "100%",
-                      backgroundColor: "#d4a85f",
-                      color: "#fff",
-                      fontWeight: "600",
-                      fontFamily: "Cairo, sans-serif",
-                      fontSize: "clamp(14px, 2vw, 18px)",
-                      px: 3,
-                      py: 1.5,
-                      borderRadius: "8px",
-                      "&:hover": {
-                        backgroundColor: "#1565c0",
-                      },
-                    }}
-                  >
-                    Stripe 💳
-                  </Button>
+                  <StripeCheckoutButton />
                 </Stack>
               </motion.div>
             </AnimatePresence>

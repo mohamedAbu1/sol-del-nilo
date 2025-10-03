@@ -12,7 +12,7 @@ import SelectTours from "./HeroToursComponets/SelectTours";
 import { toast } from "react-toastify";
 import { ToursPathEn } from "@/lib/constants/FixedTexts";
 import { Box } from "@mui/material";
-
+import { supabase } from "@/lib/supabaseClient";
 const HeroTours = () => {
   const path = usePathname();
   const t = useTranslations("ToursHeroPage");
@@ -20,53 +20,31 @@ const HeroTours = () => {
   const [toursData, setToursData] = useState([]);
   const [hoverIndex, setHoverIndex] = useState(null);
   const [ref, inView] = useInView({ threshold: 0.4 });
+  const [search, setSearch] = useState("");
 
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const [categoriesFromDB, setCategoriesFromDB] = useState([]);
 
   const controls = useAnimation();
   const WidthCard = width === 540 ? 300 : 360;
-  // useEffect(() => {
-  //   const fetchTours = async () => {
-  //     try {
-  //       const { data, error } = await supabase
-  //         .from("tour")
-  //         .select(
-  //           `
-  //           *,
-  //           category(*),
-  //           city(*),
-  //           tripprogram(*),
-  //           includes(*)
-  //         `
-  //         )
-  //         .order("created_at", { ascending: false });
 
-  //       if (error) {
-  //         console.error("❌ خطأ في جلب الرحلات:", error.message);
-  //         toast.error("❌ فشل في تحميل الرحلات");
-  //         setToursData([]);
-  //         return;
-  //       }
-
-  //       setToursData(data || []);
-  //     } catch (err) {
-  //       console.error("❌ فشل في الاتصال بـ Supabase:", err.message);
-  //       toast.error("❌ فشل في تحميل الرحلات");
-  //       setToursData([]);
-  //     }
-  //   };
-
-  //   fetchTours();
-  // }, []);
   useEffect(() => {
     const fetchTours = async () => {
       try {
-        const query =
-          selectedCategories.length > 0
-            ? selectedCategories.map(encodeURIComponent).join(",")
-            : "";
+        const trimmedSearch = search.trim();
+
+        let query = {};
+
+        if (trimmedSearch !== "") {
+          query.categories = encodeURIComponent(trimmedSearch);
+        } else if (selectedCategories.length > 0) {
+          query.categories = selectedCategories
+            .map(encodeURIComponent)
+            .join(",");
+        }
+
         const res = await axios.get("/api/tours", {
-          params: query ? { categories: query } : {},
+          params: query,
         });
 
         const data = res.data;
@@ -78,12 +56,41 @@ const HeroTours = () => {
     };
 
     fetchTours();
-  }, [selectedCategories]);
+  }, [search, selectedCategories]);
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("category")
+          .select("*")
+          .order("created_at", { ascending: false });
+
+        if (error) {
+          console.error("❌ خطأ في جلب الكاتجري:", error.message);
+          toast.error("حدث خطأ أثناء تحميل الكاتجري");
+          return;
+        }
+
+        setCategoriesFromDB(data || []);
+      } catch (err) {
+        console.error("❌ فشل في الاتصال بـ Supabase:", err.message);
+        toast.error("فشل في تحميل الكاتجري");
+      }
+    };
+
+    fetchCategories();
+  }, []);
   useEffect(() => {
     if (inView) {
       controls.start("visible");
     }
   }, [inView]);
+  useEffect(() => {
+    const trimmed = search.trim();
+    if (trimmed === "") {
+      setSelectedCategories([]); // ✅ تصفير الـ Checkboxes
+    }
+  }, [search]);
 
   return (
     <section
@@ -113,12 +120,18 @@ const HeroTours = () => {
         }}
         className="hidden lg:flex"
       >
-        <HeroSlider />
+        <HeroSlider
+          categoriesFromDB={categoriesFromDB}
+          setSelectedCategories={setSelectedCategories}
+          setSearch={setSearch}
+          search={search}
+        />
       </Box>
 
       <SelectTours
         setSelectedCategories={setSelectedCategories}
         selectedCategories={selectedCategories}
+        categoriesFromDB={categoriesFromDB}
       />
 
       <Box

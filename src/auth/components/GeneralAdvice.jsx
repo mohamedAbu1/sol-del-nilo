@@ -1,0 +1,94 @@
+"use client";
+import React from "react";
+import Image from "next/image";
+import { AdviceCard } from "@/lib/constants/FixedTexts";
+import { motion } from "framer-motion";
+
+const GeneralAdvice = () => {
+  return (
+    <div className="w-full flex items-center flex-col px-4">
+      <h1
+        style={{
+          fontSize: "clamp(2rem, 4vw, 3.5rem)",
+          textTransform: "capitalize",
+          color: "#ff9800",
+          fontWeight: "bold",
+          marginBottom: "2rem",
+        }}
+      >
+        General Advice
+      </h1>
+
+      <div className="flex flex-row flex-wrap gap-6 items-center justify-center w-full">
+        {AdviceCard.map((i, index) => (
+          <motion.div
+            key={i.id}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+            whileHover={{ scale: 1.02 }}
+            style={{
+              display: "flex",
+              flexDirection: "row-reverse",
+              alignItems: "center",
+              background: "linear-gradient(to left, #dcedc8, #fff8e1)",
+              borderRadius: "20px",
+              boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
+              overflow: "hidden",
+              maxWidth: "700px",
+              width: "100%",
+              transition: "box-shadow 0.3s ease",
+            }}
+          >
+            {/* ✅ الصورة */}
+            <div
+              style={{
+                flex: "0 0 300px",
+                height: "200px",
+                position: "relative",
+              }}
+            >
+              <Image
+                src={i.imageUrl}
+                alt={i.title}
+                fill
+                style={{ objectFit: "cover" }}
+              />
+            </div>
+
+            {/* ✅ النصوص */}
+            <div
+              style={{
+                flex: 1,
+                padding: "1.5rem",
+                color: "#333",
+              }}
+            >
+              <h2
+                style={{
+                  fontSize: "1.75rem",
+                  marginBottom: "0.75rem",
+                  color: "#ff9800",
+                  fontWeight: "600",
+                }}
+              >
+                {i.title}
+              </h2>
+              <p
+                style={{
+                  fontSize: "1.1rem",
+                  lineHeight: "1.6",
+                  color: "#444",
+                }}
+              >
+                {i.description}
+              </p>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default GeneralAdvice;

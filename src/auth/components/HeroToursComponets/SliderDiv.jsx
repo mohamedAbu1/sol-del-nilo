@@ -1,58 +1,238 @@
 "use client";
-import { getSliderToursDiv } from "@/lib/constants/FixedTexts";
 import { useTranslations } from "next-intl";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import Image from "next/image";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { FaPlane } from "react-icons/fa6";
+import { BiSearch } from "react-icons/bi";
+import { toast } from "react-toastify";
 
-export default function HeroSlider() {
+const backgroundImages = [
+  "/assets/Temple_of_the_Elephants.png",
+  "/assets/Copilot_20251003_113408.png",
+  "/assets/Copilot_20251003_114530.png",
+  "/assets/Copilot_20251003_102123.png",
+  "/assets/Copilot_20251003_111802.png",
+  "/assets/Copilot_20251003_110337.png",
+];
+
+export default function HeroStaticSearch({
+  categoriesFromDB,
+  setSelectedCategories,
+  setSearch,
+  search,
+}) {
   const t = useTranslations("ToursHeroPage");
-  const ToursHeroSlider = getSliderToursDiv(t);
+  const [focused, setFocused] = useState(false);
+  const [bgIndex, setBgIndex] = useState(0);
+
+  const handleSearch = () => {
+    const trimmed = search.trim();
+
+    if (trimmed === "") {
+      setSelectedCategories([]);
+      console.log("🔍 عرض جميع الرحلات");
+      return;
+    }
+
+    const match = categoriesFromDB.find(
+      (cat) => cat.name.toLowerCase() === trimmed.toLowerCase()
+    );
+
+    if (match) {
+      setSelectedCategories([match.name]);
+      console.log("🔍 البحث عن الكاتجري:", match.name);
+    } else {
+      toast.error("❌ الكاتجري غير موجود");
+    }
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setBgIndex((prev) => (prev + 1) % backgroundImages.length);
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <div className="w-full h-[70vh] overflow-hidden">
-      <Swiper
-        modules={[Navigation, Pagination, Autoplay]}
-        navigation
-        pagination={{ clickable: true }}
-        autoplay={{ delay: 5000 }}
-        loop={true}
-        slidesPerView={1}
-        centeredSlides={true}
-        className="h-full"
+    <div
+      style={{
+        position: "relative",
+        width: "100%",
+        height: "clamp(60vh, 70vh, 100vh)",
+        overflow: "hidden",
+        borderRadius: "40px",
+      }}
+    >
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={backgroundImages[bgIndex]}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1 }}
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+          }}
+        >
+          <Image
+            src={backgroundImages[bgIndex]}
+            alt="Background"
+            fill
+            style={{ objectFit: "cover" }}
+          />
+        </motion.div>
+      </AnimatePresence>
+
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundColor: "rgba(0,0,0,0.5)",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: "1rem",
+        }}
       >
-        {ToursHeroSlider.map((slide, index) => (
-          <SwiperSlide key={index}>
-            <div className="relative w-full h-full">
-              <Image
-                src={slide.image}
-                fill
-                alt="SwiperSlide"
-                className="absolute inset-0 w-full h-full object-cover rounded-[28px]"
-              />
-              <div className="absolute inset-0 flex items-center justify-center text-center px-4 bg-black/40 rounded-[28px]">
-                <div className="w-11/12 flex flex-col gap-4 text-white animate-fadeIn items-center">
-                  <h1 className="text-[clamp(1.8rem,4vw,3rem)] font-bold capitalize animate-slideUp">
-                    {slide.title}
-                  </h1>
-                  <p className="text-[clamp(1rem,2vw,1.4rem)] animate-slideUp delay-200">
-                    {slide.subtitle}
-                  </p>
-                  <button
-                  style={{width:"30%"}}
-                    className="px-6 py-6 bg-[#ff9800] rounded-full text-white font-semibold hover:scale-105 transition duration-300 animate-slideUp delay-400"
+        <div
+          style={{
+            width: "100%",
+            maxWidth: "640px",
+            textAlign: "center",
+            color: "white",
+            display: "flex",
+            flexDirection: "column",
+            gap: "1.5rem",
+            alignItems: "center",
+          }}
+        >
+          <h1
+            style={{
+              fontSize: "clamp(1.5rem, 5vw, 3rem)",
+              fontWeight: "bold",
+            }}
+          >
+            {t("TitleDivPic") || "Find Your Adventure"}
+          </h1>
+
+          <div style={{ position: "relative", width: "100%" }}>
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => {
+                const value = e.target.value;
+                const cleaned = value.replace(/[^a-zA-Z\s]/g, "");
+                setSearch(cleaned);
+              }}
+              onFocus={() => setFocused(true)}
+              onBlur={() => setFocused(false)}
+              placeholder="Search category..."
+              style={{
+                width: "100%",
+                padding: "1rem clamp(80px, 20vw, 120px) 1rem 1rem",
+                borderRadius: "999px",
+                fontSize: "clamp(1rem, 2.5vw, 1.125rem)",
+                color: "black",
+                backgroundColor: "white",
+                boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+                outline: "none",
+              }}
+            />
+
+            <button
+              onClick={handleSearch}
+              style={{
+                position: "absolute",
+                top: "50%",
+                right: "0.5rem",
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                transform: "translateY(-50%)",
+                padding: "0.5rem clamp(0.75rem, 4vw, 1rem)",
+                backgroundColor: "#ff9800",
+                color: "white",
+                fontWeight: 600,
+                borderRadius: "999px",
+                cursor: "pointer",
+                transition: "transform 0.3s ease",
+                fontSize: "clamp(0.875rem, 2vw, 1rem)",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.transform =
+                  "translateY(-50%) scale(1.05)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.transform = "translateY(-50%)")
+              }
+            >
+              <BiSearch style={{ fontSize: "18px" }} /> Search
+            </button>
+          </div>
+
+          <AnimatePresence>
+            {focused && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.4 }}
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  justifyContent: "center",
+                  gap: "0.5rem",
+                  marginTop: "1rem",
+                  width: "100%",
+                }}
+              >
+                {categoriesFromDB.map((cat, index) => (
+                  <motion.div
+                    key={cat.id}
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0, opacity: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.03 }}
+                    onMouseDown={() => {
+                      setSearch(cat.name);
+                      setSelectedCategories([cat.name]);
+                    }}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.5rem",
+                      padding: "0.5rem 0.75rem",
+                      backgroundColor: "#ffffff",
+                      color: "#333",
+                      borderRadius: "16px",
+                      fontSize: "clamp(0.75rem, 2vw, 0.875rem)",
+                      fontWeight: 500,
+                      boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+                      cursor: "pointer",
+                      transition: "background-color 0.2s ease",
+                      border: "1px solid #e0e0e0",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.backgroundColor = "#ff9800")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.backgroundColor = "white")
+                    }
                   >
-                    Live the legend
-                  </button>
-                </div>
-              </div>
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+                    <FaPlane className="text-amber-500 hover:text-[#fff] transition-colors duration-200" />
+                    {cat.name}
+                  </motion.div>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
     </div>
   );
 }

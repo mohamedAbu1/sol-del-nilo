@@ -5,6 +5,8 @@ import ImageSection from "@/auth/components/ImageSection";
 import ContentSection from "@/auth/components/ContentSection";
 import SideDecor from "@/auth/components/SideDecor ";
 import RightSideDecor from "@/auth/components/RightSideDecor";
+import Dividering from "@/auth/components/HeroToursComponets/id/Divider/Divider";
+import GeneralAdvice from "@/auth/components/GeneralAdvice";
 
 export default async function EgyptVisaPage() {
   const cookieStore = await cookies(); // ✅ استخدم await
@@ -19,6 +21,14 @@ export default async function EgyptVisaPage() {
       <ImageSection />
       <ContentSection />
       <RightSideDecor />
+      <Dividering />
+      <Dividering />
+      <Dividering />
+      <GeneralAdvice
+        title="رحلة إلى معبد الكرنك"
+        description="استمتع بجولة تاريخية في أحد أعظم المعابد المصرية القديمة، مع مرشد سياحي محترف."
+        imageUrl="/assets/karnak.jpg"
+      />
     </main>
   );
 }

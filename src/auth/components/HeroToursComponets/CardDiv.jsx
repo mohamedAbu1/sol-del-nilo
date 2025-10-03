@@ -6,8 +6,9 @@ import Typography from "@mui/material/Typography";
 import { FaDollarSign } from "react-icons/fa";
 import { Link } from "@/i18n/navigation";
 import { motion } from "framer-motion";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SmsIcon from "@mui/icons-material/Sms";
+
 const cardVariants = {
   visible: (i) => ({
     opacity: 1,
@@ -29,10 +30,24 @@ const cardVariants = {
     },
   },
 };
+
 const CardDiv = React.forwardRef(function CardDiv(
   { toursData, hoverIndex, setHoverIndex, controls, WidthCard },
   ref
 ) {
+  const [hasAnimatedOnce, setHasAnimatedOnce] = useState(false);
+
+  useEffect(() => {
+    if (!hasAnimatedOnce) {
+      controls.start("visible");
+      setHasAnimatedOnce(true);
+    }
+  }, [controls, hasAnimatedOnce]);
+
+  useEffect(() => {
+    controls.start("visible");
+  }, [toursData.length]);
+
   return (
     <div
       ref={ref}
@@ -53,12 +68,12 @@ const CardDiv = React.forwardRef(function CardDiv(
           onMouseEnter={() => setHoverIndex(index)}
           onMouseLeave={() => setHoverIndex(null)}
           custom={index}
-          animate={controls}
-          initial="hidden"
+          animate={hasAnimatedOnce ? undefined : controls}
+          initial={hasAnimatedOnce ? false : "hidden"}
           variants={cardVariants}
           className="relative overflow-hidden"
           style={{
-            width: "clamp(280px, 90vw, 400px)",
+            width: "clamp(280px, 90vw, 450px)",
             height: "clamp(400px, 60vh, 550px)",
             borderRadius: "22px",
             background: "#181a1b",
@@ -127,21 +142,7 @@ const CardDiv = React.forwardRef(function CardDiv(
                 sx={{ marginTop: "18px", color: "#d4a85f", fontWeight: "700" }}
                 className="text-gray-300"
               >
-                {i.category?.name === "trip1"
-                  ? "Boat Trips"
-                  : i.category?.name === "trip2"
-                  ? "Cultural Trips"
-                  : i.category?.name === "trip3"
-                  ? "Night Tours"
-                  : i.category?.name === "trip4"
-                  ? "1 to 4 Hours Tours"
-                  : i.category?.name === "trip5"
-                  ? "1 Day Trips"
-                  : i.category?.name === "trip6"
-                  ? "Excursions Tours"
-                  : i.category?.name === "trip7"
-                  ? "Group Tours"
-                  : "Unknown"}{" "}
+                {i.category?.name}
               </Typography>
             </div>
           </CardContent>

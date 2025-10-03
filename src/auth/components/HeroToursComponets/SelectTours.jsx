@@ -10,7 +10,11 @@ import { useScreenSize } from "../../hooks/screenSize";
 import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 
-const SelectToursWrapper = ({ selectedCategories, setSelectedCategories }) => {
+const SelectToursWrapper = ({
+  selectedCategories,
+  setSelectedCategories,
+  categoriesFromDB,
+}) => {
   const [open, setOpen] = useState(false);
   const { width } = useScreenSize();
   const t = useTranslations("ToursHeroPage");
@@ -24,7 +28,7 @@ const SelectToursWrapper = ({ selectedCategories, setSelectedCategories }) => {
       prev.includes(value) ? prev.filter((c) => c !== value) : [...prev, value]
     );
   };
-
+console.log(selectedCategories[0])
   return (
     <div className="relative z-9999">
       {/* زر المنيو */}
@@ -87,124 +91,21 @@ const SelectToursWrapper = ({ selectedCategories, setSelectedCategories }) => {
                   <MdTravelExplore size={20} color="#FF9800" />
                   {t("SelectTours1")}
                 </h1>
-                <FormGroup>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        color="warning"
-                        value={"trip1"}
-                        checked={selectedCategories.includes("trip1")}
-                        onChange={handleCategoryChange}
-                      />
-                    }
-                    label={t("SelectToursLabel1")}
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        color="warning"
-                        value={"trip2"}
-                        checked={selectedCategories.includes("trip2")}
-                        onChange={handleCategoryChange}
-                      />
-                    }
-                    label={t("SelectToursLabel2")}
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        color="warning"
-                        value={"trip3"}
-                        checked={selectedCategories.includes("trip3")}
-                        onChange={handleCategoryChange}
-                      />
-                    }
-                    label={t("SelectToursLabel3")}
-                  />
-                </FormGroup>
-              </div>
-
-              {/* القسم الثاني */}
-              <div>
-                <h1
-                  style={{ fontSize: titleSize }}
-                  className="flex gap-3 items-center"
-                >
-                  <GiDuration size={20} color="#FF9800" />
-                  {t("SelectTours2")}
-                </h1>
-                <FormGroup>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        color="warning"
-                        value={"trip4"}
-                        checked={selectedCategories.includes("trip4")}
-                        onChange={handleCategoryChange}
-                      />
-                    }
-                    label={t("SelectToursLabel4")}
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        color="warning"
-                        value={"trip5"}
-                        checked={selectedCategories.includes("trip5")}
-                        onChange={handleCategoryChange}
-                      />
-                    }
-                    label={t("SelectToursLabel5")}
-                  />
-                </FormGroup>
-              </div>
-
-              {/* القسم الثالث */}
-              <div>
-                <h1
-                  style={{ fontSize: titleSize }}
-                  className="flex gap-3 items-center"
-                >
-                  <FaRegArrowAltCircleRight size={20} color="#FF9800" />
-                  {t("SelectTours3")}
-                </h1>
-                <FormGroup>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        color="warning"
-                        value={"trip6"}
-                        checked={selectedCategories.includes("trip6")}
-                        onChange={handleCategoryChange}
-                      />
-                    }
-                    label={t("SelectToursLabel6")}
-                  />
-                </FormGroup>
-              </div>
-
-              {/* القسم الرابع */}
-              <div>
-                <h1
-                  style={{ fontSize: titleSize }}
-                  className="flex gap-3 items-center"
-                >
-                  <MdGroupAdd size={20} color="#FF9800" />
-                  {t("SelectTours4")}
-                </h1>
-                <FormGroup>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        color="warning"
-                        value={"trip7"}
-                        checked={selectedCategories.includes("trip7")}
-                        onChange={handleCategoryChange}
-                      />
-                    }
-                    label={t("SelectToursLabel7")}
-                  />
-                </FormGroup>
+                {categoriesFromDB.map((i, index) => (
+                  <FormGroup key={i.id} style={{gap:"20px"}}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          color="warning"
+                          value={i.name}
+                          checked={selectedCategories.includes(i.name)}
+                          onChange={handleCategoryChange}
+                        />
+                      }
+                      label={i.name}
+                    />
+                  </FormGroup>
+                ))}
               </div>
             </div>
           </motion.div>

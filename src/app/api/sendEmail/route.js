@@ -3,8 +3,8 @@ import { createClient } from "@supabase/supabase-js";
 
 // إعداد الاتصال بـ Supabase باستخدام مفتاح الخدمة
 const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  "mohamedahmed33m11@gmail.com",
+  "huqj pwik kicw jnzy"
 );
 
 export const POST = async (req) => {
@@ -26,8 +26,8 @@ export const POST = async (req) => {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+        user: "mohamedahmed33m11@gmail.com",
+        pass: "huqj pwik kicw jnzy",
       },
     });
 

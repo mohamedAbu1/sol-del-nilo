@@ -22,6 +22,7 @@ import TripProgram from "./components/TripProgram";
 import TourIncludes from "./components/TourIncludes";
 import Preparation from "./components/Preparation";
 import BelowTheControlPanel from "./components/BelowTheControlPanel";
+import axios from "axios";
 
 // ✅ دالة التحقق من وجود حروف عربية
 const containsArabic = (text) => /[\u0600-\u06FF]/.test(text);
@@ -33,18 +34,15 @@ const UpdateTripForm = () => {
     title: "",
     description: "",
     price: "",
-    Destination: "",
-    theDate: "",
     TripDuration: "",
-    days: "",
-    people: "",
-    cityId: "",
+    people: "1",
     categoryId: "",
+    cityId: "",
+    rival: "",
+    theDate: "",
     image: [],
     tripprogram: [{ time: "", program: "" }],
     includes: [{ text: "" }],
-    NumberOfParticipants: "",
-    toursID: "",
   });
 
   const [toursID, setToursID] = useState("");
@@ -62,7 +60,7 @@ const UpdateTripForm = () => {
       });
     };
   }, [selectedImages]);
-
+  console.log(selectedImages);
   // ✅ تحميل المدن والتصنيفات
   useEffect(() => {
     const fetchData = async () => {
@@ -73,7 +71,6 @@ const UpdateTripForm = () => {
 
       if (cityRes.error || categoryRes.error) {
         toast.error("❌ فشل في تحميل المدن أو التصنيفات");
-        console.error("Supabase Error:", cityRes.error || categoryRes.error);
         return;
       }
 
@@ -87,27 +84,12 @@ const UpdateTripForm = () => {
   // ✅ تحميل جميع الرحلات
   useEffect(() => {
     const fetchTours = async () => {
-      const { data, error } = await supabase
-        .from("tour")
-        .select(`
-          id,
-          title,
-          description,
-          price,
-          Destination,
-          theDate,
-          TripDuration,
-          DayPeople,
-          cityId,
-          categoryId,
-          image,
-          tripprogram(*),
-          includes(*),
-          NumberOfParticipants
-        `);
+      const { data, error } = await supabase.from("tour").select(`
+        id, title, description, price, theDate, TripDuration, DayPeople,
+        cityId, rival, categoryId, image, tripprogram(*), includes(*)
+      `);
 
       if (error) {
-        console.error("❌ خطأ في جلب الرحلات:", error.message);
         toast.error("❌ فشل في تحميل بيانات الرحلات");
         return;
       }
@@ -123,27 +105,16 @@ const UpdateTripForm = () => {
     const fetchTour = async () => {
       const { data, error } = await supabase
         .from("tour")
-        .select(`
-          id,
-          title,
-          description,
-          price,
-          Destination,
-          theDate,
-          TripDuration,
-          DayPeople,
-          cityId,
-          categoryId,
-          image,
-          tripprogram(*),
-          includes(*),
-          NumberOfParticipants
-        `)
+        .select(
+          `
+          id, title, description, price, theDate, TripDuration, rival,
+          DayPeople, cityId, categoryId, image, tripprogram(*), includes(*)
+        `
+        )
         .eq("id", toursID)
         .single();
 
       if (error) {
-        console.error("❌ فشل في جلب بيانات الرحلة:", error.message);
         toast.error("❌ فشل في تحميل بيانات الرحلة");
         return;
       }
@@ -157,21 +128,25 @@ const UpdateTripForm = () => {
   // ✅ تعبئة النموذج بالبيانات
   useEffect(() => {
     if (tour) {
-      const [dayPart, peoplePart] = tour.DayPeople?.split("/") || [];
+      const [_, peoplePart] = tour.DayPeople?.split("/") || [];
+
+      const formattedImages =
+        tour.image?.map((img) => ({
+          name: img.name || img,
+          label: img.label || "",
+        })) || [];
 
       setFormData({
         title: tour.title || "",
         description: tour.description || "",
         price: tour.price?.toString() || "",
-        Destination: tour.Destination || "",
         theDate: tour.theDate || "",
         TripDuration: tour.TripDuration || "",
-        days: dayPart?.replace("Day", "") || "",
-        people: peoplePart?.replace("People", "") || "",
+        people: peoplePart?.replace("People", "") || "1",
         cityId: tour.cityId || "",
         categoryId: tour.categoryId || "",
-        image: tour.image || [],
-        NumberOfParticipants: tour.NumberOfParticipants || "",
+        rival: tour.rival || "",
+        image: formattedImages,
         tripprogram:
           tour.tripprogram?.map((item) => ({
             time: item.time || "",
@@ -181,15 +156,15 @@ const UpdateTripForm = () => {
           tour.includes?.map((item) => ({
             text: item.text || "",
           })) || [],
-        toursID: tour.id || "",
       });
 
       const loadedImages =
-        tour.image?.map((imgName) => ({
-          name: imgName,
-          url: `${DOMAIN}/assets/${imgName}`,
+        formattedImages.map((img) => ({
+          ...img,
+          url: `${DOMAIN}/assets/${img.name}`,
           file: null,
         })) || [];
+
       setSelectedImages(loadedImages);
     }
   }, [tour]);
@@ -198,13 +173,7 @@ const UpdateTripForm = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    const textFields = [
-      "title",
-      "description",
-      "Destination",
-      "TripDuration",
-      "NumberOfParticipants",
-    ];
+    const textFields = ["title", "description", "TripDuration"];
     if (textFields.includes(name) && containsArabic(value)) {
       toast.error("❌ يجب الكتابة باللغة الإنجليزية فقط");
       return;
@@ -220,8 +189,7 @@ const UpdateTripForm = () => {
 
   // ✅ اختيار الرحلة
   const handleSelect = (e) => {
-    const selectedId = e.target.value;
-    setToursID(selectedId);
+    setToursID(e.target.value);
   };
 
   // ✅ تحديث برنامج الرحلة
@@ -229,89 +197,161 @@ const UpdateTripForm = () => {
     setFormData((prev) => ({ ...prev, tripprogram: data }));
   };
 
-  // ✅ تحديث البنود المشمولة
-  const handleIncludesChange = (data) => {
-    setFormData((prev) => ({ ...prev, includes: data }));
-  };
+  // // ✅ تحديث البنود المشمولة
+  // const handleIncludesChange = (data) => {
+  //   setFormData((prev) => ({ ...prev, includes: data }));
+  // };
 
   // ✅ حفظ التعديلات
- const handleSubmit = async (e) => {
-  e.preventDefault();
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
 
-  if (selectedImages.length < 4 || selectedImages.length > 12) {
-    toast.error("❌ يجب اختيار ما بين 4 إلى 12 صورة قبل حفظ الرحلة");
-    return;
-  }
+  //   // ✅ تحقق من عدد الصور
+  //   if (selectedImages.length < 4 || selectedImages.length > 12) {
+  //     toast.error("❌ يجب اختيار ما بين 4 إلى 12 صورة قبل حفظ الرحلة");
+  //     return;
+  //   }
 
-  const { days, people, includes, tripprogram, toursID, ...cleanData } = formData;
-  const DayPeople = `${days}Day/${people}People`;
+  //   // ✅ تحقق من وجود label لكل صورة
+  //   const hasEmptyLabel = selectedImages.some(
+  //     (img) => !img.label || img.label.trim() === ""
+  //   );
+  //   if (hasEmptyLabel) {
+  //     toast.error("❌ يجب كتابة وصف (label) لكل صورة قبل الحفظ");
+  //     return;
+  //   }
 
-  try {
-    // ✅ تحديث جدول tour فقط
-    const { error: tourError } = await supabase
-      .from("tour")
-      .update({
-        ...cleanData,
+  //   // ✅ تجهيز الصور بصيغة { name, label }
+  //   const imageObjects = selectedImages.map((img) => ({
+  //     name: img.name,
+  //     label: img.label.trim(),
+  //   }));
+
+  //   // // ✅ تجهيز البيانات
+  //   // const payload = {
+  //   //   ...formData,
+  //   //   price: parseFloat(formData.price),
+  //   //   DayPeople: `${parseInt(formData.people, 10)}`,
+  //   //   image: imageObjects,
+  //   // };
+  //   const { tripprogram, includes, image, ...cleanFormData } = formData;
+
+  //   const payload = {
+  //     ...cleanFormData,
+  //     price: parseFloat(formData.price),
+  //     DayPeople: `${formData.people}`,
+  //     image: imageObjects,
+  //   };
+  //   console.log("🚀 Payload to Supabase:", payload);
+  //   const uniqueIncludes = Array.from(
+  //     new Set(formData.includes.map((i) => i.text.trim()))
+  //   ).map((text) => ({ tourId: toursID, text }));
+  //   try {
+  //     // ✅ تحديث بيانات الرحلة
+  //     const { error: tourError } = await supabase
+  //       .from("tour")
+  //       .update(payload)
+  //       .eq("id", toursID);
+
+  //     if (tourError) {
+  //       toast.error("❌ فشل في حفظ الرحلة");
+  //       return;
+  //     }
+
+  //     // ✅ حذف البنود القديمة
+  //     await supabase.from("includes").delete().eq("tourId", toursID);
+
+  //     // ✅ إدخال البنود الجديدة
+  //     const includesData = formData.includes.map((item) => ({
+  //       tourId: toursID,
+  //       text: item.text,
+  //     }));
+
+  //     const { error: includesError } = await supabase
+  //       .from("includes")
+  //       .insert(includesData);
+
+  //     if (includesError) {
+  //       toast.error("❌ تم حفظ الرحلة لكن فشل حفظ البنود");
+  //       return;
+  //     }
+
+  //     toast.success("✅ تم حفظ الرحلة والبنود بنجاح");
+
+  //     // ✅ إعادة تعيين النموذج
+  //     setFormData({
+  //       title: "",
+  //       description: "",
+  //       price: "",
+  //       TripDuration: "",
+  //       people: "1",
+  //       categoryId: "",
+  //       cityId: "",
+  //       rival: "",
+  //       theDate: "",
+  //       image: [],
+  //       tripprogram: [{ time: "", program: "" }],
+  //       includes: [{ text: "" }],
+  //     });
+  //     setSelectedImages([]);
+  //     setToursID("");
+  //     setTour(null);
+  //   } catch (error) {
+  //     toast.error("❌ خطأ في الاتصال بقاعدة البيانات");
+  //   }
+  // };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // if (!isValid()) {
+    //   toast.error("❌ يرجى ملء جميع الحقول قبل الإرسال");
+    //   return;
+    // }
+
+    try {
+      toast.info("📤 جاري تجهيز البيانات...");
+
+      const imageObjects = selectedImages.map((img) => ({
+        name: img.name,
+        label: img.label,
+      }));
+      const payload = {
+        ...formData,
         price: parseFloat(formData.price),
-        DayPeople,
-        image: selectedImages.map((img) => img.name),
-      })
-      .eq("id", toursID);
+        DayPeople: `${formData.people}`,
+        image: imageObjects, // ✅ تخزين الأسماء فقط
+      };
 
-    if (tourError) {
-      console.error("❌ خطأ أثناء تحديث الرحلة:", tourError.message);
-      toast.error("❌ فشل في حفظ الرحلة");
-      return;
+      console.log("📦 Payload:", payload);
+
+      const response = await axios.patch(`/api/tours/${toursID}`, payload);
+      if (response.status === 200 || response.status === 204) {
+        toast.success("✅ تم حفظ الرحلة");
+        setFormData({
+          title: "",
+          description: "",
+          price: "",
+          TripDuration: "",
+          people: "1",
+          categoryId: "",
+          cityId: "",
+          rival: "",
+          theDate: "",
+          image: [],
+          tripprogram: [{ time: "", program: "" }],
+          includes: [{ text: "" }],
+        });
+
+        setSelectedImages([]);
+      } else {
+        toast.error("❌ فشل في حفظ الرحلة");
+      }
+    } catch (error) {
+      console.error("❌ API Error:", error.response?.data || error.message);
+      toast.error(
+        `❌ ${error.response?.data?.error || "خطأ في الاتصال بـ API"}`
+      );
     }
-
-    // ✅ حذف البنود القديمة من جدول includes
-    await supabase.from("includes").delete().eq("tourId", toursID);
-
-    // ✅ إدخال البنود الجديدة في جدول includes
-    const includesData = includes.map((item) => ({
-      tourId: toursID,
-      text: item.text,
-    }));
-
-    const { error: includesError } = await supabase
-      .from("includes")
-      .insert(includesData);
-
-    if (includesError) {
-      console.error("❌ خطأ أثناء تحديث البنود:", includesError.message);
-      toast.error("❌ تم حفظ الرحلة لكن فشل حفظ البنود");
-      return;
-    }
-
-    toast.success("✅ تم حفظ الرحلة والبنود بنجاح");
-
-    // ✅ إعادة تعيين النموذج
-    setFormData({
-      title: "",
-      description: "",
-      price: "",
-      Destination: "",
-      theDate: "",
-      TripDuration: "",
-      days: "",
-      people: "",
-      cityId: "",
-      categoryId: "",
-      image: [],
-      tripprogram: [{ time: "", program: "" }],
-      includes: [{ text: "" }],
-      NumberOfParticipants: "",
-      toursID: "",
-    });
-    setSelectedImages([]);
-    setToursID("");
-  } catch (error) {
-    console.error("❌ خطأ في الاتصال بـ Supabase:", error);
-    toast.error("❌ خطأ في الاتصال بقاعدة البيانات");
-  }
-};
-
-
+  };
   return (
     <>
       <div
@@ -390,6 +430,7 @@ const UpdateTripForm = () => {
               <TopOfTheControlPanel2
                 formData={formData}
                 handleChange={handleChange}
+                setFormData={setFormData}
               />
 
               {/* 🖼️ رفع الصور */}

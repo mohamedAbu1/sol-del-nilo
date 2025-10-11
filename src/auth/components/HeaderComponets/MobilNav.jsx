@@ -52,9 +52,26 @@ const MobilNav = ({ slug, user }) => {
         style={{ zIndex: "9999" }}
       >
         {CityName.map((i, index) => {
+          const isTours = i.path === "/tours";
+          const today = new Date().toISOString().split("T")[0];
+
+          const linkProps = isTours
+            ? {
+                pathname: "/tours",
+                query: {
+                  destination: "Alexandria",
+                  category: "Wellness & Medical",
+                  date: today,
+                  duration: "61",
+                  minPrice: "10000",
+                  maxPrice: "14000",
+                },
+              }
+            : i.path;
+
           return (
             <Link
-              href={i.path}
+              href={linkProps}
               key={index}
               style={{ color: slug === i.path ? "#ff9800" : "#000" }}
             >
@@ -62,6 +79,7 @@ const MobilNav = ({ slug, user }) => {
             </Link>
           );
         })}
+
         {!user ? "" : <LogoutBtn />}
       </Menu>
     </div>

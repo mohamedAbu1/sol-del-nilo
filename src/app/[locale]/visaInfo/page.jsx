@@ -1,8 +1,8 @@
-import Header from "@/auth/components/Header";
+import Header from "@/auth/components/HeaderComponets/Header";
 import { cookies } from "next/headers";
 import { vrefyTokenForPage } from "@/lib/utils/veryfyToken";
 import ImageSection from "@/auth/components/ImageSection";
-import ContentSection from "@/auth/components/ContentSection";
+import ContentSection from "@/auth/components/HeroContact/ContentSection";
 import SideDecor from "@/auth/components/SideDecor ";
 import RightSideDecor from "@/auth/components/RightSideDecor";
 import Dividering from "@/auth/components/HeroToursComponets/id/Divider/Divider";

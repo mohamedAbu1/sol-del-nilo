@@ -17,23 +17,27 @@ import { DOMAIN } from "@/lib/constants/FixedTexts";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { supabase } from "../../../../lib/supabaseClient";
 const UserInformation = () => {
-  const [userData, setUsersData] = useState([]);
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const { data, error } = await supabase
-        .from("user")
-        .select("id, name, email, created_at, role, isActive");
+const [userData, setUsersData] = useState([]);
 
-      if (error) {
-        console.error("❌ خطأ في جلب المستخدمين:", error.message);
-        return;
+useEffect(() => {
+  const fetchUsers = async () => {
+    try {
+      const res = await fetch("/api/users");
+      const result = await res.json();
+
+      if (res.ok) {
+        setUsersData(result.users);
+      } else {
+        console.error("❌ خطأ من الخادم:", result.error);
       }
-
-      setUsersData(data);
-    };
-
-    fetchUsers();
-  }, []);
+    } catch (err) {
+      console.error("❌ خطأ في الاتصال:", err);
+    }
+  };
+  console.log(userData)
+  fetchUsers();
+}, []);
+  console.log(userData)
 
   const handleDelete = async (userId) => {
     try {

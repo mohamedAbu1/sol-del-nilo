@@ -1,14 +1,16 @@
 import LinksMidea from "./LinksMidea";
 import BtnHero from "./BtnHero";
 import TextHero from "./TextHero";
+import TravelPlannerForm from "../TravelPlannerForm";
 // ? $$$$$$$$$$$$$$$$$$$$$$
-const Hero = ({ handleReplay }) => {
+const Hero = ({ showBubble }) => {
   return (
     <section
       style={{ color: "var(--textLithe)" }}
-      className="w-full h-full flex items-center justify-center gap-5 flex-col absolute  inset-0 z-20"
+      className="w-full h-full flex flex-col items-center justify-end md:justify-center gap-5 z-20"
     >
       <TextHero />
+      {showBubble && <TravelPlannerForm />}
       <BtnHero />
       <LinksMidea />
     </section>

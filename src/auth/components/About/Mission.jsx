@@ -1,12 +1,17 @@
-import SectionTitle from './SectionTitle ';
+"use client"
+import { useTranslations } from "next-intl";
+import SectionTitle from "./SectionTitle ";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-const Mission = () => (
-  <section className="mb-12 text-center">
-    <SectionTitle title="OUR MISSION" />
-    <p className="text-lg text-gray-400 max-w-3xl mx-auto">
-      To bring the wonders of Egypt to life through immersive and unforgettable travel experiences.
-    </p>
-  </section>
-);
-
+const Mission = () => {
+    const t = useTranslations("AboutPage");
+  
+  return (
+    <section className="mb-12 text-center">
+      <SectionTitle title={t("title1")} />
+      <p className="text-lg text-gray-400 max-w-3xl mx-auto">
+       {t("p1")}
+      </p>
+    </section>
+  );
+};
 export default Mission;

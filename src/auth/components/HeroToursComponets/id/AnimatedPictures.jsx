@@ -9,7 +9,6 @@ import "swiper/css/pagination";
 import "swiper/css/effect-fade";
 
 const AnimatedPictures = ({ tour }) => {
-  const galleryImages = tour.image.map((img) => `/assets/${img}`);
   const includesTexts = tour.includes?.map((item) => item.text) || [];
   const [showGrid, setShowGrid] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -21,7 +20,6 @@ const AnimatedPictures = ({ tour }) => {
 
     return () => clearInterval(interval);
   }, []);
-
   return (
     <div
       style={{
@@ -42,13 +40,13 @@ const AnimatedPictures = ({ tour }) => {
             animation: "fadeIn 2s ease-in-out",
           }}
         >
-          {galleryImages.map((img, index) => (
+          {tour.image.map((img, index) => (
             <div
               key={index}
               style={{ position: "relative", width: "100%", height: "100%" }}
             >
               <Image
-                src={img}
+                src={`/assets/${img.name}`}
                 alt={`Grid ${index}`}
                 fill
                 style={{
@@ -68,20 +66,20 @@ const AnimatedPictures = ({ tour }) => {
           pagination={{ clickable: true }}
           autoplay={{ delay: 4000 }}
           loop={true}
-          loopAdditionalSlides={galleryImages.length}
+          loopAdditionalSlides={tour.length}
           effect="fade"
           slidesPerView={1}
           watchSlidesProgress={true}
           onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
           style={{ width: "100%", height: "100%" }}
         >
-          {galleryImages.map((img, index) => (
+          {tour.image.map((img, index) => (
             <SwiperSlide key={`${index}-${img}`}>
               <div
                 style={{ position: "relative", width: "100%", height: "100%" }}
               >
                 <Image
-                  src={img}
+                  src={`/assets/${img.name}`}
                   alt={`Slide ${index}`}
                   fill
                   style={{
@@ -108,10 +106,7 @@ const AnimatedPictures = ({ tour }) => {
                     animation: "fadeSlideIn 3s ease-in-out forwards",
                   }}
                 >
-                  {img
-                    .split("/")
-                    .pop()
-                    .replace(/\.[^/.]+$/, "")}{" "}
+                  {img.label}{" "}
                 </div>
               </div>
             </SwiperSlide>

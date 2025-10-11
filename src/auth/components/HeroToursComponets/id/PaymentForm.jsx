@@ -9,16 +9,16 @@ import {
   FormControlLabel,
   Checkbox,
 } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast, ToastContainer } from "react-toastify";
 import { FaTaxi, FaShuttleVan, FaBusAlt } from "react-icons/fa";
 import Dividering from "./Divider/Divider";
 import StripeCheckoutButton from "../../StripeCheckoutButton";
 
-const PaymentForm = () => {
+const PaymentForm = ({ tour, setNan, tourGuidePrice, setGuideLanguages ,setGuidePriceTotal}) => {
   const [bookingData, setBookingData] = useState({
-    people: 1,
+    people: "2",
     hasChildren: "no",
     childrenCount: "",
     childrenAges: [],
@@ -67,6 +67,10 @@ const PaymentForm = () => {
 
   const handleBookingChange = (e) => {
     const { name, value } = e.target;
+    // // ✅ تحديث قيمة nan كرقم
+    // if (name === "people") {
+    //   setNan(parseInt(value) || 0);
+    // }
     setBookingData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -102,12 +106,36 @@ const PaymentForm = () => {
       petType: value,
     }));
   };
+useEffect(() => {
+  const adults = parseInt(bookingData.people) || 0;
+  const children = parseInt(bookingData.childrenCount) || 0;
+  const baseCount = adults + children / 2;
+
+  // ✅ حساب سعر اللغات المختارة
+  const selectedLanguages = Object.entries(bookingData.guideLanguages)
+    .filter(([_, isSelected]) => isSelected)
+    .map(([lang]) => lang);
+
+  const guideTotal = selectedLanguages.reduce(
+    (sum, lang) => sum + (tourGuidePrice[lang] || 0),
+    0
+  );
+
+  setNan(baseCount); // عدد الأشخاص فقط
+  setGuideLanguages(bookingData.guideLanguages); // تحديث اللغات المختارة
+  setGuidePriceTotal(guideTotal); // ✅ السعر الإضافي للمرشد السياحي
+}, [
+  bookingData.people,
+  bookingData.childrenCount,
+  bookingData.guideLanguages,
+]);
+
 
   const updateVehicleType = () => {
     const adults = parseInt(bookingData.people) || 0;
     const children = parseInt(bookingData.childrenCount) || 0;
-    const total = adults + children;
-
+    const price = parseFloat(children / 2);
+    const total = adults + price;
     let type = "";
     if (total <= 4) type = "تاكسي";
     else if (total <= 15) type = "عربية 16 راكب";
@@ -141,18 +169,27 @@ const PaymentForm = () => {
   const handleGuideLanguageChange = (language) => {
     setBookingData((prev) => {
       const current = prev.guideLanguages;
+      const selectedCount = Object.values(current).filter(Boolean).length;
 
-      if (current.includes(language)) {
+      // إذا تم إلغاء التحديد
+      if (current[language]) {
         return {
           ...prev,
-          guideLanguages: current.filter((l) => l !== language),
+          guideLanguages: {
+            ...current,
+            [language]: false,
+          },
         };
       }
 
-      if (current.length < 2) {
+      // إذا تم التحديد
+      if (selectedCount < 2) {
         return {
           ...prev,
-          guideLanguages: [...current, language],
+          guideLanguages: {
+            ...current,
+            [language]: true,
+          },
         };
       }
 
@@ -632,9 +669,9 @@ const PaymentForm = () => {
                           key={lang}
                           control={
                             <Checkbox
-                              checked={bookingData.guideLanguages.includes(
-                                lang
-                              )}
+                              checked={
+                                bookingData.guideLanguages[lang] || false
+                              }
                               onChange={() => handleGuideLanguageChange(lang)}
                               sx={{
                                 color: "#d4a85f",

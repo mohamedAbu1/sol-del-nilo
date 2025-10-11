@@ -40,7 +40,6 @@
 //         description: body.description,
 //         price: parseFloat(body.price),
 //         DayPeople: body.DayPeople,
-//         Destination: body.Destination,
 //         theDate: body.theDate,
 //         TripDuration: body.TripDuration,
 //         NumberOfParticipants: body.NumberOfParticipants,
@@ -62,7 +61,7 @@
 //         tourId: newTour.id,
 //       })),
 //     });
- 
+
 //     return NextResponse.json(newTour, { status: 201 });
 //   } catch (error) {
 //     console.error("❌ خطأ في إنشاء الرحلة:", error);
@@ -100,7 +99,7 @@ import { TourSchema } from "@/lib/utils/CheckSchema";
 export async function POST(request) {
   try {
     const body = await request.json();
-   console.log(body)
+    console.log(body);
 
     const validation = TourSchema.safeParse(body);
     if (!validation.success) {
@@ -109,7 +108,7 @@ export async function POST(request) {
         { status: 400 }
       );
     }
-console.log("✅ التحقق:", validation);
+    console.log("✅ التحقق:", validation);
 
     const { data: newTour, error: tourError } = await supabase
       .from("tour")
@@ -119,13 +118,12 @@ console.log("✅ التحقق:", validation);
           description: body.description,
           price: parseFloat(body.price),
           DayPeople: body.DayPeople,
-          Destination: body.Destination,
           theDate: body.theDate,
           TripDuration: body.TripDuration,
-          NumberOfParticipants: body.NumberOfParticipants,
           image: body.image,
           categoryId: body.categoryId,
           cityId: body.cityId,
+          rival: body.rival,
         },
       ])
       .select()
@@ -140,7 +138,7 @@ console.log("✅ التحقق:", validation);
       program: step.program,
       tourId: newTour.id,
     }));
-    
+
     await supabase.from("tripprogram").insert(tripProgramData);
 
     // إدخال العناصر المشمولة
@@ -184,25 +182,23 @@ console.log("✅ التحقق:", validation);
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
-    console.log(searchParams)
-
     const raw = searchParams.get("categories");
-        console.log(raw)
-
     const categories = raw?.split(",").map(decodeURIComponent) || [];
-console.log(categories)
+
     let query = supabase
       .from("tour")
-      .select(`
+      .select(
+        `
         *,
         category!inner(name),
         city(*),
         tripprogram(*),
-        includes(*)
-      `)
+        includes(*),
+        reviews(*)
+      `
+      )
       .order("created_at", { ascending: false });
 
-    // ✅ فلترة حسب اسم الكاتجري داخل الجدول المرتبط
     if (categories.length > 0) {
       query = query.in("category.name", categories);
     }

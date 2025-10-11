@@ -16,16 +16,15 @@ const CreateTripForm = () => {
     title: "",
     description: "",
     price: "",
-    days: "",
-    people: "",
+    TripDuration: "",
+    people: "1",
     categoryId: "",
     cityId: "",
-    Destination: "", // ← أضف هذا
-    theDate: "", // ← أضف هذا
-    TripDuration: "", // ← أضف هذا
+    rival: "",
+    theDate: "",
     image: [],
     tripprogram: [{ time: "", program: "" }],
-    includes: [{ text: "" }], // ✅ أضف هذا السطر
+    includes: [{ text: "" }],
   });
 
   const [cities, setCities] = useState([]);
@@ -65,10 +64,12 @@ const CreateTripForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     if (name === "price" && value > 5000) {
       toast.error("❌ لا يمكن أن يكون السعر أكبر من 5000 دولار");
       return;
     }
+
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -81,13 +82,12 @@ const CreateTripForm = () => {
       "title",
       "description",
       "price",
-      "days",
+      "TripDuration",
       "people",
       "categoryId",
       "cityId",
-      "Destination",
+      "rival",
       "theDate",
-      "TripDuration",
     ];
 
     for (let field of requiredFields) {
@@ -141,6 +141,11 @@ const CreateTripForm = () => {
 
     return true;
   };
+
+  const extractImageNames = () => {
+    return selectedImages.map((img) => img.name); // ✅ فقط أسماء الصور
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isValid()) {
@@ -148,39 +153,50 @@ const CreateTripForm = () => {
       return;
     }
 
-    const DayPeople = `${formData.days}Day/${formData.people}People`;
-    const payload = {
-      ...formData,
-      price: parseFloat(formData.price),
-      DayPeople,
-      image: selectedImages.map((img) => img.name),
-    };
-
     try {
+      toast.info("📤 جاري تجهيز البيانات...");
+
+      const imageObjects = selectedImages.map((img) => ({
+        name: img.name,
+        label: img.label,
+      }));
+      const payload = {
+        ...formData,
+        price: parseFloat(formData.price),
+        DayPeople: `${formData.people}`,
+        image: imageObjects, // ✅ تخزين الأسماء فقط
+      };
+
+      console.log("📦 Payload:", payload);
+
       const response = await axios.post("/api/tours", payload);
+
       if (response.status === 201) {
         toast.success("✅ تم حفظ الرحلة");
         setFormData({
           title: "",
           description: "",
           price: "",
-          days: "",
-          people: "",
+          TripDuration: "",
+          people: "1",
           categoryId: "",
           cityId: "",
-          Destination: "", // ← أضف هذا
-          theDate: "", // ← أضف هذا
-          TripDuration: "", // ← أضف هذا
+          rival: "",
+          theDate: "",
           image: [],
-          tripProgram: [{ time: "", program: "" }],
-          includes: [{ text: "" }], // ✅ أضف هذا
+          tripprogram: [{ time: "", program: "" }],
+          includes: [{ text: "" }],
         });
+
         setSelectedImages([]);
       } else {
         toast.error("❌ فشل في حفظ الرحلة");
       }
     } catch (error) {
-      toast.error("❌ خطأ في الاتصال بـ API");
+      console.error("❌ API Error:", error.response?.data || error.message);
+      toast.error(
+        `❌ ${error.response?.data?.error || "خطأ في الاتصال بـ API"}`
+      );
     }
   };
 
@@ -218,6 +234,7 @@ const CreateTripForm = () => {
               <TopOfTheControlPanel2
                 formData={formData}
                 handleChange={handleChange}
+                setFormData={setFormData}
               />
               <ControlPanelImages
                 selectedImages={selectedImages}

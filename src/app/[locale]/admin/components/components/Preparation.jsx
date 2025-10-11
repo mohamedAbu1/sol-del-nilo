@@ -5,7 +5,7 @@ const Preparation = ({ formData, handleChange }) => {
   return (
     <div className="flex flex-row gap-8">
       {/* ℹ️ معلومات إضافية */}
-      <TextField
+      {/* <TextField
         label="عدد السياح"
         name="NumberOfParticipants"
         value={formData.NumberOfParticipants || ""}
@@ -40,9 +40,9 @@ const Preparation = ({ formData, handleChange }) => {
           "& .MuiInputLabel-root": { color: "#d4a85f" },
           "& .MuiInputLabel-root.Mui-focused": { color: "#ff9800" },
         }}
-      />
+      /> */}
       {/* 📆 عدد الأيام */}
-      <TextField
+      {/* <TextField
         label="عدد الأيام"
         type="number"
         name="days"
@@ -78,14 +78,15 @@ const Preparation = ({ formData, handleChange }) => {
         }}
         fullWidth
         required
-      />
+      /> */}
 
       {/* 👥 عدد الأشخاص */}
       <TextField
         label="عدد الأشخاص"
         type="number"
         name="people"
-        value={formData.people || ""}
+        value={formData.people || "0"}
+        disabled
         onChange={handleChange}
         sx={{
           width: "35%",

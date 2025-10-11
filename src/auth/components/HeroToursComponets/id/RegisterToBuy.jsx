@@ -24,7 +24,7 @@ const RegisterToBuy = () => {
         whileInView="visible"
         viewport={{ once: true }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="w-full max-w-[600px] flex flex-col items-center justify-center gap-6 rounded-xl border border-[#d4a85f] shadow-md bg-[#fdf8f3] text-[#ff9800] font-[Cairo] font-semibold p-6"
+        className="w-full max-w-[600px] flex flex-col items-center justify-center gap-6 rounded-xl border border-[#d4a85f] shadow-md  text-[#ff9800] font-[Cairo] font-semibold p-6"
       >
         <h1 className="text-[clamp(1.5rem,4vw,2.2rem)] text-center">
           You must log in to book. 💡

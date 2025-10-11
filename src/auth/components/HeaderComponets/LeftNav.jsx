@@ -8,6 +8,7 @@ import { BsFillPersonVcardFill } from "react-icons/bs";
 import LogoutBtn from "./LogoutBtn";
 import { Button } from "@mui/material";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const LeftNav = ({ path, user, width }) => {
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
@@ -15,6 +16,7 @@ const LeftNav = ({ path, user, width }) => {
     hidden: { opacity: 0, scale: 0.1 },
     visible: { opacity: 1, scale: 1 },
   };
+  const t = useTranslations("Header");
 
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   return (
@@ -60,8 +62,9 @@ const LeftNav = ({ path, user, width }) => {
               variant="contained"
               endIcon={<BsDoorOpenFill />}
               style={{backgroundColor:"#ff9800",color:"#fff"}}
+              className="hover:text-gray-400"
             >
-              Sign Up
+              {t("Btn1")}
             </Button>
           </Link>
         </>

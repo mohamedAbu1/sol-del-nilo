@@ -1,21 +1,26 @@
 // app/layout.tsx
+import "../styles/globals.css";
 import { Geist, Geist_Mono, Montserrat } from "next/font/google";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 const montserrat = Montserrat({
   subsets: ["latin"],
   weight: ["300", "400", "500", "700"],
   display: "swap",
 });
 
+export const metadata = {
+  title: "SolDelNilo",
+  description: "Contact form and tourism platform",
+  icons: {
+    icon: "./favicon.ico", // ✅ هذا يضمن تحميل الأيقونة بشكل صحيح
+  },
+};
+
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <head />
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${montserrat.className}`}>
       <body>{children}</body>
     </html>
   );

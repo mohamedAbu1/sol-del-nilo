@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { BiSearch } from "react-icons/bi";
@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 const BtnHero = () => {
   // ? $$$$$$$$$$$$$$$$$$$$$$
   const t = useTranslations("HomeHeroPage");
-  const router = useRouter()
+  const router = useRouter();
   // ? $$$$$$$$$$$$$$$$$$$$$$
   const boxVariants = {
     hidden: { opacity: 0, x: +100 },
@@ -23,7 +23,7 @@ const BtnHero = () => {
   // ? $$$$$$$$$$$$$$$$$$$$$$
 
   return (
-    <div className="divBtnHero">
+    <div style={{ marginLeft: "20px" }} className="divBtnHero">
       <motion.span
         variants={boxVariants}
         initial="hidden"
@@ -31,7 +31,7 @@ const BtnHero = () => {
         transition={{ delay: 0.2, duration: 0.5 }}
         onClick={() => router.push("/tours")}
       >
-        <Button  className={"BtnHero1 text-gray-400"}>
+        <Button className={"BtnHero1 text-gray-400"}>
           <BiSearch />
           {t("btn1")}
         </Button>

@@ -1,4 +1,4 @@
-import ClientHome from "@/auth/components/ClientHome";
+import ClientHome from "@/auth/components/HeroComponets/ClientHome";
 import { generateMetadata } from "./metadata";
 export { generateMetadata };
 import { cookies } from "next/headers";
@@ -10,7 +10,6 @@ const HomePage = async () => {
   const cookieStore = await cookies();
   const token = cookieStore.get("jwttoken")?.value;
   const user = vrefyTokenForPage(token);
-
   return (
     <Suspense fallback={<LoadingScreen />}>
       <ClientHome user={user} />

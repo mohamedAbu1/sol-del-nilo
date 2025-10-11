@@ -8,12 +8,12 @@ import { toast } from "react-toastify";
 // ✅ دالة التحقق من وجود حروف عربية
 const containsArabic = (text) => /[\u0600-\u06FF]/.test(text);
 
-const TopOfTheControlPanel2 = ({ formData, handleChange }) => {
+const TopOfTheControlPanel2 = ({ formData, handleChange, setFormData }) => {
   // ✅ دالة تمنع اللغة العربية وتعرض Toast
   const handleEnglishOnlyChange = (e) => {
     const { name, value } = e.target;
 
-    const textFields = ["title", "description", "Destination", "TripDuration"];
+    const textFields = ["title", "description", "rival", "TripDuration"];
     if (textFields.includes(name) && containsArabic(value)) {
       toast.error("❌ يجب الكتابة باللغة الإنجليزية فقط");
       return;
@@ -105,10 +105,11 @@ const TopOfTheControlPanel2 = ({ formData, handleChange }) => {
               fontWeight: "bold",
               fontFamily: "Cairo, sans-serif",
             },
-            "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
-              WebkitAppearance: "none",
-              margin: 0,
-            },
+            "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button":
+              {
+                WebkitAppearance: "none",
+                margin: 0,
+              },
             "& input": {
               MozAppearance: "textfield",
             },
@@ -124,14 +125,35 @@ const TopOfTheControlPanel2 = ({ formData, handleChange }) => {
             "& .MuiInputLabel-root.Mui-focused": { color: "#ff9800" },
           }}
         />
-
         <TextField
-          label="الوجهة"
-          name="Destination"
-          type="text"
-          value={formData.Destination || ""}
-          onChange={handleEnglishOnlyChange}
+          label="نسبة الخصم %"
+          name="rival"
+          type="number"
+          value={formData.rival || ""}
+          onChange={(e) => {
+            const value = e.target.value;
+            setFormData((prev) => ({
+              ...prev,
+              rival: value, // ✅ تخزين كنص
+            }));
+          }}
+          onBlur={(e) => {
+            const value = e.target.value;
+            const numericValue = parseFloat(value);
+            if (numericValue > 100) {
+              toast.error("❌ نسبة الخصم يجب أن تكون أقل من أو تساوي 100%");
+              setFormData((prev) => ({
+                ...prev,
+                rival: "", // ✅ مسح القيمة إذا كانت غير صالحة
+              }));
+            }
+          }}
           required
+          inputProps={{
+            min: 0,
+            max: 100,
+            step: 1,
+          }}
           sx={{
             width: "25%",
             input: {
@@ -164,7 +186,9 @@ const TopOfTheControlPanel2 = ({ formData, handleChange }) => {
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <FaRegCalendarAlt style={{ color: "#ff9800", fontSize: "20px" }} />
+                <FaRegCalendarAlt
+                  style={{ color: "#ff9800", fontSize: "20px" }}
+                />
               </InputAdornment>
             ),
           }}
@@ -188,16 +212,30 @@ const TopOfTheControlPanel2 = ({ formData, handleChange }) => {
             "& .MuiInputLabel-root.Mui-focused": { color: "#ff9800" },
           }}
         />
-
         <TextField
-          label="مدة الرحلة"
+          label="عدد الأيام"
           name="TripDuration"
-          type="text"
+          type="text" // نستخدم "text" للتحكم الكامل في الإدخال
           value={formData.TripDuration || ""}
-          onChange={handleEnglishOnlyChange}
+          onChange={(e) => {
+            // إزالة أي رموز أو حروف غير رقمية
+            const cleaned = e.target.value.replace(/[^0-9]/g, "");
+
+            // تحديد الحد الأقصى (اختياري)
+            const limited = cleaned.slice(0, 2); // مثلًا لا يزيد عن رقمين
+
+            setFormData((prev) => ({
+              ...prev,
+              TripDuration: limited, // تخزين كنص رقمي فقط
+            }));
+          }}
+          inputProps={{
+            inputMode: "numeric",
+            maxLength: 2,
+          }}
           required
           sx={{
-            width: "35%",
+            width: "15%",
             input: {
               color: "#d4a85f",
               fontSize: "18px",

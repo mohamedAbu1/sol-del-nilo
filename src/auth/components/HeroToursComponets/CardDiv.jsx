@@ -83,7 +83,7 @@ const CardDiv = React.forwardRef(function CardDiv(
         >
           <Image
             alt={i.title}
-            src={i.image?.[0] ? `/assets/${i.image[0]}` : "/assets/default.jpg"}
+            src={i.image?.[0] ? `/assets/${i.image.name[0]}` : "/assets/default.jpg"}
             fill
             style={{ objectFit: "cover" }}
             className="object-cover"

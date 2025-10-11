@@ -146,7 +146,7 @@ export default function HeroStaticSearch({
                 padding: "1rem clamp(80px, 20vw, 120px) 1rem 1rem",
                 borderRadius: "999px",
                 fontSize: "clamp(1rem, 2.5vw, 1.125rem)",
-                color: "black",
+                color: "#ff9800",
                 backgroundColor:"transparent",
                 boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
                 outline: "none",

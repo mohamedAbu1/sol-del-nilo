@@ -8,16 +8,32 @@ export const DOMAIN = "http://localhost:3000"
 export const NameWebsite = "SolDelNilo"
 export const ToursPathEn = "/en/tours"
 export const ToursPathEs =  "/es/tours"
+export const ToursPathde =  "/de/tours"
+export const ToursPathfr =  "/fr/tours"
+export const ToursPathit =  "/it/tours"
 export const RegisterPathEn =  "/en/register"
 export const RegisterPathEs =  "/es/register"
 export const AboutPathEn =  "/en/about"
 export const AboutPathEs =  "/es/about"
-const img = "/assets/553369982_18084719236930067_3616584709694153081_n.jpg"
+export const AboutPathde =  "/de/about"
+export const AboutPathfr =  "/fr/about"
+export const AboutPathit =  "/it/about"
+export const ContactPathEn =  "/en/contact"
+export const ContactPathEs =  "/es/contact"
+export const ContactPathde =  "/de/contact"
+export const ContactPathfr =  "/fr/contact"
+export const ContactPathit =  "/it/contact"
+const img = "/assets/Copilot_20251011_220928.png"
+const img2 = "/assets/Copilot_20251011_221403.png"
+const img3 = "/assets/Copilot_20251011_221703.png"
+const img4 ="/assets/Copilot_20251011_221802.png"
+const img5 = "/assets/Copilot_20251011_222046.png"
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 export const getNavPath = (t) => [
   {label:t("Home"),path:"/"},
   {label:t("Tours"),path:"/tours"},
   {label:t("About"),path:"/about"},
+  {label:t("Contact"),path:"/contact"},
 ]
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 export const getHeroText = (t) => [
@@ -67,11 +83,9 @@ export const MideaIcon = [
 ]
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 export const AdviceCard = [
-  {id:"1",imageUrl:img,title:"mohamed",description:"asdasdasdsad"},
-  {id:"2",imageUrl:img,title:"ahmed",description:"sadsadsdasdsadsadsda"},
-  {id:"3",imageUrl:img,title:"ali",description:"sdasadsdsdadsasd"},
-  {id:"4",imageUrl:img,title:"mosad",description:"sadsaddsafgdfgdgfgf"},
-  {id:"8",imageUrl:img,title:"sa dsa",description:"kuykyytjyjtjytjyt"},
-  {id:"6",imageUrl:img,title:"sadasd",description:"gfdfdgfgfgdfdggfgfd"},
-  {id:"9",imageUrl:img,title:"sadsad",description:"rteytyttyujyjhjhytjytj"}
+  {id:"1",imageUrl:img,title:"🧥 Wear modest clothing in public and religious places.",description:"It is preferable to wear clothing that covers the shoulders and knees, especially when visiting mosques or rural areas."},
+  {id:"2",imageUrl:img2,title:"💵 Always carry small paper money.",description:"Tips are part of everyday culture, whether in restaurants, on tours, or even in public restrooms."},
+  {id:"3",imageUrl:img3,title:"🚫 Avoid drinking tap water.",description:"Drink only bottled mineral water, even in hotels."},
+  {id:"4",imageUrl:img4,title:"🗣️ Learn some basic Arabic words",description:"Words like thank you, please, and how much? help you communicate and show respect for the local culture."},
+  {id:"8",imageUrl:img5,title:"📸 Respect the rules when photographing.",description:"Do not take photos of military or police installations."},
 ]

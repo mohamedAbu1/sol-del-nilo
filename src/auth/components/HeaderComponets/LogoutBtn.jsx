@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { DOMAIN } from "@/lib/constants/FixedTexts";
 import { toast } from "react-toastify";
+import { useTranslations } from "next-intl";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const LogoutBtn = () => {
   const router = useRouter();
@@ -19,15 +20,17 @@ const LogoutBtn = () => {
       console.log(error);
     }
   };
+    const t = useTranslations("Header");
+  
   return (
     <>
       <Button
-        className="hidden lg:flex items-center justify-center gap-2 flex-row link bg-none"
+        className="hidden lg:flex items-center justify-center gap-2 flex-row link bg-none hover:text-gray-400"
         variant="contained"
-        style={{backgroundColor:"#FF9800"}}
+        style={{ backgroundColor: "#FF9800", color:"#fff"}}
         onClick={LogoutHnadler}
       >
-         Sign Out <BsDoorOpenFill />
+        {t("Btn2")}<BsDoorOpenFill />
       </Button>
     </>
   );

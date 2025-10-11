@@ -3,14 +3,41 @@
     "Home": "Home",
     "Tours": "Tour",
     "About": "Chi siamo",
-    "Admin": "Amministratore"
+    "Admin": "Amministrazione",
+    "Contact": "Contatto",
+    "Btn1": "Registrati",
+    "Btn2": "Esci"
   },
   "HomeHeroPage": {
     "title1": "Il tuo viaggio inizia qui",
     "title2": "Scopri l'Egitto con occhi senza tempo",
-    "p": "Intraprendi un viaggio affascinante lungo il Nilo, scopri storie eccezionali e una bellezza senza tempo attraverso un'esperienza curata in modo unico.",
+    "p": "Intraprendi un viaggio affascinante lungo il Nilo, scopri storie eccezionali e bellezze eterne attraverso un'esperienza curata in modo unico.",
     "btn1": "Esplora i tour",
-    "btn2": "Visto per l'Egitto"
+    "btn2": "Visto per l'Egitto",
+    "welcome": "Benvenuto su SolDelNilo ✨",
+    "welcome1": "Unisciti a noi in un viaggio magico 🌍 lungo il Nilo, dove la storia antica 🏛️ incontra la bellezza senza tempo.",
+    "welcome2": "Scopri esperienze curate 📸 che riflettono l'anima dell'Egitto e ti lasciano ricordi indimenticabili.",
+    "welcome3": "💡 Il nostro obiettivo è offrirti un'esperienza piacevole e coinvolgente sul nostro sito web.",
+    "sc1Title": "L'avventura ti aspetta",
+    "sc2P": "I NOSTRI TOUR",
+    "sc2Title": "Tour consigliati",
+    "sc3P": "Tuya Tours",
+    "sc3Title": "Tuya Tours — Eccellenza nei viaggi dal 2005",
+    "sc3PS": "Da Luxor al mondo, Tuya Tours è il tuo partner di fiducia per esperienze di viaggio eccezionali. Con",
+    "sc3PS1": "oltre 17.000 destinazioni",
+    "sc3PS2": "più di 4200 hotel",
+    "sc3PS3": ", e",
+    "sc3PS4": "oltre 250 compagnie aeree",
+    "sc3PS5": ", offriamo viaggi personalizzati con guide premiate e un servizio impareggiabile.",
+    "sc3BTN": "Scopri di più su di noi →",
+    "sc4Title": "Tour di Luxor e Assuan",
+    "sc4P": "Storico",
+    "sc5Title": "Contattaci",
+    "sc5P": "Hai domande o vuoi fissare un appuntamento? Siamo qui per aiutarti. Contattaci oggi stesso e iniziamo insieme il tuo viaggio!",
+    "sc5P2": "Creiamo viaggi indimenticabili in tutto l'Egitto – dalle meraviglie antiche alle fughe serene, rendiamo ogni viaggio unico e senza problemi.",
+    "sc5BTN": "Contattaci →",
+    "SCTitle": "Città",
+    "SCTitle2": "città egiziane"
   },
   "ToursHeroPage": {
     "titlePage": "Tour",
@@ -37,6 +64,19 @@
     "Btn2": "Crea un nuovo account",
     "Btn3": "Pagina iniziale"
   },
+  "AboutPage": {
+    "title": "CHI SIAMO",
+    "title1": "LA NOSTRA MISSIONE",
+    "p1": "Far rivivere le meraviglie dell'Egitto attraverso esperienze di viaggio coinvolgenti e indimenticabili.",
+    "title2": "CHI SIAMO",
+    "p2": "SolDelNilo è un'agenzia di viaggi dedicata a mostrare il ricco patrimonio e la bellezza senza tempo dell'Egitto. Il nostro team di esperti è appassionato nel creare tour eccezionali che rivelano la magia di questa terra antica.",
+    "title3": "PERCHÉ SOLDELNILO",
+    "p3": "Ci ispiriamo alla storia, cultura e paesaggi dell'Egitto per progettare viaggi unici e autentici. Che si tratti di esplorare templi maestosi, navigare sul Nilo o scoprire tesori nascosti, i nostri tour offrono un'esperienza veramente egiziana."
+  },
+  "ContactPage": {
+    "title": "Contattaci",
+    "p": "Sentiti libero di contattarci tramite il nostro modulo – il tuo messaggio sarà inviato direttamente alla nostra email ufficiale. Il nostro team dedicato lo esaminerà e risponderà prontamente per garantire una comunicazione fluida e professionale."
+  },
   "SignUnForm": {
     "title": "Crea il tuo account",
     "p": "Inizia il tuo viaggio con SolDelNilo – dove la storia incontra l'anima",
@@ -47,7 +87,7 @@
   },
   "NotFoundPage": {
     "btn": "ESPLORA I TOUR",
-    "p": "Sembra che ti sia perso tra le sabbie del tempo..."
+    "p": "Sembra che ti sia perso nelle sabbie del tempo..."
   },
   "Error": {
     "btn": "ESPLORA I TOUR",
@@ -57,7 +97,7 @@
     "VISA": "VISTO PER L'EGITTO",
     "VISA_P": "Scopri l'Egitto – Richiedi ora il tuo visto turistico",
     "title1": "Chi può fare domanda?",
-    "p2": "I cittadini di oltre 70 paesi sono idonei per un eVisa, tra cui: Stati Uniti, Canada, paesi dell'Unione Europea, nazioni del Golfo, Giappone e Australia.",
+    "p2": "I cittadini di oltre 70 paesi possono richiedere un eVisa, tra cui: Stati Uniti, Canada, paesi dell'Unione Europea, nazioni del Golfo, Giappone e Australia.",
     "title2": "Tipi di visto",
     "th": "Tipo",
     "th2": "Descrizione",
@@ -76,7 +116,7 @@
     "li2": "Foto recente formato passaporto",
     "li3": "Dettagli del viaggio (data di arrivo, alloggio)",
     "li4": "Indirizzo email attivo",
-    "li5": "Carta Visa o Mastercard per il pagamento",
+    "li5": "Visa o Mastercard per il pagamento",
     "title4": "Tariffe",
     "th13": "Tipo di visto",
     "th14": "Costo (USD)",
@@ -94,9 +134,9 @@
     "link2": "Leggi l'articolo della presidenza egiziana",
     "title6": "Note importanti",
     "li11": "Richiedi almeno 7 giorni prima del viaggio",
-    "li12": "L'eVisa non consente lavoro o studio",
+    "li12": "L'eVisa non consente di lavorare o studiare",
     "li13": "Gli ufficiali di frontiera possono negare l'ingresso senza spiegazioni",
-    "li14": "Porta sempre una copia stampata del tuo visto",
+    "li14": "Porta sempre con te una copia stampata del visto",
     "title7": "Contattaci",
     "p3": "Ministero del Turismo e delle Antichità"
   }

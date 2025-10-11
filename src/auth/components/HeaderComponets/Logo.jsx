@@ -1,8 +1,7 @@
 "use client";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$
 import Image from "next/image";
-const logo = "/assets/Copilot_20250908_231338.png";
-const logo2 = "/assets/Copilot_20250908_231423.png";
+// const logo = "/assets/Copilot_20250908_231423.png";
 import { Link } from "@/i18n/navigation";
 import { useScreenSize } from "../../hooks/screenSize";
 import { motion } from "framer-motion";
@@ -29,7 +28,7 @@ const Logo = ({ path }) => {
       <Link href={"/"}>
         <Image
           className="Logo"
-          src={width <= 1023 ? logo2 : path ===  ToursPathEn ||ToursPathEs ? logo2 : logo}
+          src={"/assets/Copilot_20250908_2314232.png"}
           alt="logo img"
           width={width <= 540 ? 100 : 150}
           height={width <= 540 ? 100 : 150}

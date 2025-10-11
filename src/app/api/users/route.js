@@ -58,22 +58,37 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabaseClient";
 
-// ✅ جلب جميع المستخدمين
+// ✅ جلب المستخدمين مع الرسائل المرتبطة بهم
 export async function GET() {
   try {
-    const { data, error } = await supabase
-      .from("user")
-      .select("id, name, email, created_at, role, isActive");
+    const { data, error } = await supabase.from("user").select(`
+        id,
+        name,
+        email,
+        created_at,
+        role,
+        isActive,
+        messages (
+          id,
+          subject,
+          message,
+          phone,
+          created_at
+        )
+      `);
 
     if (error) {
       console.error("❌ خطأ من Supabase:", error.message);
-      return NextResponse.json({ error: "فشل في جلب المستخدمين" }, { status: 500 });
+      return NextResponse.json(
+        { error: "فشل في جلب البيانات" },
+        { status: 500 }
+      );
     }
 
     return NextResponse.json({ users: data }, { status: 200 });
   } catch (error) {
     console.error("❌ خطأ غير متوقع:", error);
-    return NextResponse.json({ error: "فشل في جلب المستخدمين" }, { status: 500 });
+    return NextResponse.json({ error: "فشل في جلب البيانات" }, { status: 500 });
   }
 }
 
@@ -85,7 +100,10 @@ export async function DELETE(request) {
 
     // تحقق من صلاحيات الأدمن
     if (currentUserRole?.toUpperCase() !== "ADMIN") {
-      return NextResponse.json({ error: "❌ غير مصرح لك بالحذف" }, { status: 403 });
+      return NextResponse.json(
+        { error: "❌ غير مصرح لك بالحذف" },
+        { status: 403 }
+      );
     }
 
     // تحقق من وجود المستخدم
@@ -96,7 +114,10 @@ export async function DELETE(request) {
       .single();
 
     if (findError || !existingUser) {
-      return NextResponse.json({ error: "❌ المستخدم غير موجود" }, { status: 404 });
+      return NextResponse.json(
+        { error: "❌ المستخدم غير موجود" },
+        { status: 404 }
+      );
     }
 
     // تنفيذ الحذف
@@ -107,12 +128,21 @@ export async function DELETE(request) {
 
     if (deleteError) {
       console.error("❌ خطأ أثناء الحذف:", deleteError.message);
-      return NextResponse.json({ error: "❌ فشل في حذف المستخدم" }, { status: 500 });
+      return NextResponse.json(
+        { error: "❌ فشل في حذف المستخدم" },
+        { status: 500 }
+      );
     }
 
-    return NextResponse.json({ message: "✅ تم حذف المستخدم بنجاح" }, { status: 200 });
+    return NextResponse.json(
+      { message: "✅ تم حذف المستخدم بنجاح" },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("❌ خطأ غير متوقع:", error);
-    return NextResponse.json({ error: "❌ فشل في حذف المستخدم" }, { status: 500 });
+    return NextResponse.json(
+      { error: "❌ فشل في حذف المستخدم" },
+      { status: 500 }
+    );
   }
 }

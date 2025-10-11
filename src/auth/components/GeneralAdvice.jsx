@@ -36,45 +36,51 @@ const GeneralAdvice = () => {
             style={{
               display: "flex",
               flexDirection: width <= 1024 ? "column" : "row-reverse",
-              alignItems:width <= 1024 ? "" : "center",
-              background: "linear-gradient(to left, #dcedc8, #fff8e1)",
+              alignItems: width <= 1024 ? "" : "center",
+              // background: "linear-gradient(to left, #dcedc8, #fff8e1)",
+              border:"1px solid #ff9800",
               borderRadius: "20px",
               boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
               overflow: "hidden",
               maxWidth: "700px",
               width: "100%",
+              height:"100%",
+              minHeight: "500px", // ✅ هنا التعديل
               transition: "box-shadow 0.3s ease",
             }}
           >
-            {/* ✅ الصورة */}
             <div
               style={{
                 flex: "0 0 300px",
-                height: "200px",
+                width:"40%",
+                height: "100%",
                 position: "relative",
-                zIndex:"8888",
+                zIndex: "8888",
               }}
             >
               <Image
                 src={i.imageUrl}
                 alt={i.title}
-                fill
-                style={{ objectFit: "cover", zIndex:"9999"}}
+                width={500}
+                height={250}
+                style={{ objectFit: "cover", zIndex: "9999" }}
               />
             </div>
 
-            {/* ✅ النصوص */}
             <div
               style={{
                 flex: 1,
                 padding: "1.5rem",
                 color: "#333",
-
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                height: "100%", // ✅ هنا التعديل
               }}
             >
               <h2
                 style={{
-                  fontSize: "1.75rem",
+                  fontSize: "1.25rem",
                   marginBottom: "0.75rem",
                   color: "#ff9800",
                   fontWeight: "600",
@@ -84,9 +90,9 @@ const GeneralAdvice = () => {
               </h2>
               <p
                 style={{
-                  fontSize: "1.1rem",
+                  fontSize: "1rem",
                   lineHeight: "1.6",
-                  color: "#444",
+                  color: "#999",
                 }}
               >
                 {i.description}

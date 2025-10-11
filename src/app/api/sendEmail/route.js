@@ -1,10 +1,18 @@
 import nodemailer from "nodemailer";
 import { createClient } from "@supabase/supabase-js";
 
-// إعداد الاتصال بـ Supabase باستخدام مفتاح الخدمة
+// ✅ تحقق من وجود بيانات البيئة
+if (!process.env.SUPABASE_URL || !process.env.SUPABASE_KEY) {
+  throw new Error("Supabase credentials are missing");
+}
+if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+  throw new Error("Email credentials are missing");
+}
+
+// ✅ الاتصال بـ Supabase
 const supabase = createClient(
-  "mohamedahmed33m11@gmail.com",
-  "huqj pwik kicw jnzy"
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_KEY
 );
 
 export const POST = async (req) => {
@@ -12,28 +20,26 @@ export const POST = async (req) => {
     const body = await req.json();
     const { name, email, subject, message, phone, user_id } = body;
 
-    // تحقق من البيانات الأساسية
+    // ✅ تحقق من البيانات الأساسية
     if (!name || !email || !subject || !message || !phone || !user_id) {
       return new Response(
         JSON.stringify({ error: "Missing required fields." }),
-        {
-          status: 400,
-        }
+        { status: 400 }
       );
     }
 
-    // إعداد البريد
+    // ✅ إعداد البريد
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "mohamedahmed33m11@gmail.com",
-        pass: "huqj pwik kicw jnzy",
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
       },
     });
 
     const mailOptions = {
       from: email,
-      to: "mohamedahmed33m11@gmail.com",
+      to: process.env.EMAIL_USER,
       subject: `Contact Form: ${subject}`,
       html: `
         <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9; color: #333;">
@@ -51,10 +57,10 @@ export const POST = async (req) => {
       `,
     };
 
-    // 1️⃣ إرسال البريد
+    // ✅ إرسال البريد
     await transporter.sendMail(mailOptions);
 
-    // 2️⃣ حفظ البيانات في Supabase
+    // ✅ حفظ البيانات في Supabase
     const { error } = await supabase.from("messages").insert([
       {
         name,

@@ -1,13 +1,13 @@
 import nodemailer from "nodemailer";
 import { createClient } from "@supabase/supabase-js";
 
-// // ✅ تحقق من وجود بيانات البيئة
-// if (!process.env.SUPABASE_URL || !process.env.SUPABASE_KEY) {
-//   throw new Error("Supabase credentials are missing");
-// }
-// if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-//   throw new Error("Email credentials are missing");
-// }
+// ✅ تحقق من وجود بيانات البيئة
+if (!process.env.SUPABASE_URL || !process.env.SUPABASE_KEY) {
+  throw new Error("Supabase credentials are missing");
+}
+if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+  throw new Error("Email credentials are missing");
+}
 
 // ✅ الاتصال بـ Supabase
 const supabase = createClient(

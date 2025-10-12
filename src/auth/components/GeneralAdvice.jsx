@@ -52,8 +52,6 @@ const GeneralAdvice = () => {
             <div
               style={{
                 flex: "0 0 300px",
-                width:"40%",
-                height: "100%",
                 position: "relative",
                 zIndex: "8888",
               }}
@@ -61,7 +59,7 @@ const GeneralAdvice = () => {
               <Image
                 src={i.imageUrl}
                 alt={i.title}
-                width={500}
+                width={width <= 1024 ? 700 : 500}
                 height={250}
                 style={{ objectFit: "cover", zIndex: "9999" }}
               />

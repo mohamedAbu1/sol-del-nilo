@@ -15,29 +15,29 @@ const LinksMidea = () => {
 
   return (
     <div
-      style={{ marginTop: "40px", transition: "" }}
+      style={{ marginTop: "40px" }}
       className="w-72 flex items-center justify-around flex-row"
     >
       {MideaIcon.map((i, index) => {
         return (
-          <motion.span
+          <a
+            href={i.path}
+            target="_blank"
+            rel="noopener noreferrer"
+            title={i.titleIcon}
             key={index}
             variants={boxVariants}
             initial="hidden"
             animate="visible"
             className="SocialMediaIcon"
-            transition={{ delay: index * 0.2, duration: 0.5, zIndex: "9999" }}
+            transition={{
+              delay: index * 0.2,
+              duration: 0.5,
+              zIndex: "9999",
+            }}
           >
-            <a
-              href={i.path}
-              target="_blank"
-              rel="noopener noreferrer"
-              title={i.titleIcon}
-              style={{ cursor: "pointer" }}
-            >
-              {i.Icon}
-            </a>
-          </motion.span>
+            {i.Icon}
+          </a>
         );
       })}
     </div>

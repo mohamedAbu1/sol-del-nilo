@@ -54,7 +54,20 @@ export const POST = async (req) => {
       from: email,
       to: process.env.EMAIL_USER,
       subject: `Contact Form: ${subject}`,
-      html: `...`, // نفس HTML السابق
+      html: `
+  <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9; color: #333;">
+    <h2 style="color: #ffb300;">📩 Contact Form Submission</h2>
+    <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+      <tr><td style="padding: 8px; font-weight: bold;">Name:</td><td style="padding: 8px;">${name}</td></tr>
+      <tr style="background-color: #f1f1f1;"><td style="padding: 8px; font-weight: bold;">Email:</td><td style="padding: 8px;">${email}</td></tr>
+      <tr><td style="padding: 8px; font-weight: bold;">Phone:</td><td style="padding: 8px;">${phone}</td></tr>
+      <tr style="background-color: #f1f1f1;"><td style="padding: 8px; font-weight: bold;">Subject:</td><td style="padding: 8px;">${subject}</td></tr>
+      <tr><td style="padding: 8px; font-weight: bold;">Message:</td><td style="padding: 8px;">${message}</td></tr>
+    </table>
+    <hr style="margin-top: 30px; border: none; border-top: 1px solid #ccc;" />
+    <p style="font-size: 0.9rem; color: #777;">This message was sent from your website contact form.</p>
+  </div>
+`,
     };
 
     await transporter.sendMail(mailOptions);

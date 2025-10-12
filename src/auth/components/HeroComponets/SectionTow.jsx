@@ -72,11 +72,11 @@ const SectionTow = forwardRef(() => {
                 onClick={() => {
                   const today = new Date().toISOString().split("T")[0];
                   const query = new URLSearchParams({
-                    destination: "all",
+                    destination: "Luxor",
                     category: card.name,
                     date: today,
-                    duration: "4",
-                    minPrice: "10000",
+                    duration: "5",
+                    minPrice: "0",
                     maxPrice: "14000",
                   }).toString();
 

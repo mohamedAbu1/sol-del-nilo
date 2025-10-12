@@ -235,15 +235,6 @@ const InformationCard = ({ tour, nan, guidePriceTotal }) => {
           >
             {tour.title}
           </Typography>
-          {/* <Link href={"/tours"}>
-            <Button
-              variant="contained"
-              style={{ margin: "10px", backgroundColor: "#FF9800" }}
-              endIcon={<HikingIcon />}
-            >
-              Another trip
-            </Button>
-          </Link> */}
         </div>
       </AnimatedSection>
 
@@ -256,7 +247,6 @@ const InformationCard = ({ tour, nan, guidePriceTotal }) => {
           variant="body1"
           sx={{
             mt: 2,
-            // color: "grey",
             fontSize: "clamp(14px, 2vw, 16px)",
             textTransform: "capitalize",
             pb: 2,
@@ -312,7 +302,7 @@ const InformationCard = ({ tour, nan, guidePriceTotal }) => {
               {
                 label: "Trip duration",
                 icon: <AiOutlineClockCircle style={{ fontSize: "22px" }} />,
-                value: tour.TripDuration,
+                value:`${tour.TripDuration} Day`,
                 style: { fontSize: "clamp(14px, 2vw, 20px)" },
               },
             ].map((item, index) => (

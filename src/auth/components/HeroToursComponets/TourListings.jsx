@@ -195,7 +195,7 @@ const TourListings = ({ theme }) => {
             ))
           ) : (
             <Typography sx={{ px: 4, py: 2, color: "#999" }}>
-              لا توجد رحلات مطابقة للفلاتر الحالية.
+              There are no flights matching the current filters.
             </Typography>
           )}
         </Box>

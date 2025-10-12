@@ -129,7 +129,7 @@ const CommentsReviews = ({ comments = [], tour, user ,userName}) => {
                 textTransform: "capitalize",
               }}
             >
-              {comment.name || "زائر"}
+              {comment.name || "User"}
             </Typography>
             <Rating value={comment.rating} readOnly />
             <Typography
@@ -172,11 +172,11 @@ const CommentsReviews = ({ comments = [], tour, user ,userName}) => {
 
       {/* ✅ نموذج إضافة تعليق */}
       <Box sx={{  p: 2, borderRadius: 2 }}>
-        <Typography sx={{ color: "#ff9800", mb: 1 }}>أضف تعليقك</Typography>
+        <Typography sx={{ color: "#ff9800", mb: 1 }}>Add Your Comment</Typography>
 
         <TextField
           fullWidth
-          placeholder="اسمك"
+          placeholder="Your Name"
           value={name}
           onChange={(e) => setName(filterInput(e.target.value))}
           variant="outlined"
@@ -209,7 +209,7 @@ const CommentsReviews = ({ comments = [], tour, user ,userName}) => {
           fullWidth
           multiline
           rows={3}
-          placeholder="اكتب تعليقك هنا..."
+          placeholder="Write your comment here..."
           value={commentText}
           onChange={(e) => setCommentText(filterInput(e.target.value))}
           variant="outlined"
@@ -238,7 +238,7 @@ const CommentsReviews = ({ comments = [], tour, user ,userName}) => {
           onClick={() => handleSubmit({ user, tour })}
           disabled={isSubmitting}
         >
-          {isSubmitting ? "جاري الإرسال..." : "إرسال"}
+          {isSubmitting ? "Sending..." : "send"}
         </Button>
       </Box>
     </Box>

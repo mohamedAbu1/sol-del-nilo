@@ -102,7 +102,7 @@ export default function SectionThree() {
 
             {/* تفاصيل الجولة */}
             <div className="p-5 flex flex-col justify-between h-[150px]">
-              <div className="p-2 rounded-md h-[75%]">
+              <div className="p-2 rounded-md h-9/12">
                 <div className="flex w-ful items-center justify-between">
                   {" "}
                   <p
@@ -125,15 +125,8 @@ export default function SectionThree() {
                   </p>
                 </div>
                 <h4
-                  style={{
-                    padding: "10px",
-                    fontSize: "14px",
-                    display: "-webkit-box",
-                    WebkitLineClamp: 2,
-                    WebkitBoxOrient: "vertical",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                  }}
+                  className="text-base lg:text-sm font-semibold text-gray-400 dark:text-white leading-snug mb-3 line-clamp-2"
+                  style={{ padding: "10px", fontSize: "16px" }}
                 >
                   {tour.title}
                 </h4>

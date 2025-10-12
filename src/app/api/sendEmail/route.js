@@ -3,15 +3,24 @@ import { createClient } from "@supabase/supabase-js";
 
 export const POST = async (req) => {
   // ✅ تحقق من وجود بيانات البيئة
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-    return new Response(JSON.stringify({ error: "Supabase credentials are missing" }), {
-      status: 500,
-    });
+  if (
+    !process.env.NEXT_PUBLIC_SUPABASE_URL ||
+    !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  ) {
+    return new Response(
+      JSON.stringify({ error: "Supabase credentials are missing" }),
+      {
+        status: 500,
+      }
+    );
   }
   if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-    return new Response(JSON.stringify({ error: "Email credentials are missing" }), {
-      status: 500,
-    });
+    return new Response(
+      JSON.stringify({ error: "Email credentials are missing" }),
+      {
+        status: 500,
+      }
+    );
   }
 
   // ✅ الاتصال بـ Supabase داخل الدالة
@@ -19,15 +28,18 @@ export const POST = async (req) => {
     process.env.NEXT_PUBLIC_SUPABASE_URL,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
   );
-
+  console.log(supabase);
   try {
     const body = await req.json();
     const { name, email, subject, message, phone, user_id } = body;
-
+    console.log(body);
     if (!name || !email || !subject || !message || !phone || !user_id) {
-      return new Response(JSON.stringify({ error: "Missing required fields." }), {
-        status: 400,
-      });
+      return new Response(
+        JSON.stringify({ error: "Missing required fields." }),
+        {
+          status: 400,
+        }
+      );
     }
 
     const transporter = nodemailer.createTransport({
@@ -73,9 +85,12 @@ export const POST = async (req) => {
     });
   } catch (err) {
     console.error("Server error:", err);
-    return new Response(JSON.stringify({ error: err.message || "Unexpected error" }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+    return new Response(
+      JSON.stringify({ error: err.message || "Unexpected error" }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
   }
 };

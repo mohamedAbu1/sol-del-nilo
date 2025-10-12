@@ -3,8 +3,6 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-const logo2 = "/assets/Copilot_20250908_231423.png";
-// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 const SignUpTextHero = () => {
   return (
@@ -20,7 +18,7 @@ const SignUpTextHero = () => {
         transition={{ delay: 0.5, duration: 0.6 }}
       >
         <Image
-          src={logo2}
+          src={"/assets/Copilot_20250908_2314232.png"}
           alt="Logo"
           width={500}
           height={200}

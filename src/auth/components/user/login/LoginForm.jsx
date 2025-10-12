@@ -89,11 +89,15 @@ const LoginForm = () => {
         // ✅ إعادة التوجيه بعد تسجيل الدخول
         router.push("/");
       } else {
-        toast.error(`error ❌: ${response.data.error || response.data.message}`);
+        toast.error(
+          `error ❌: ${response.data.error || response.data.message}`
+        );
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        toast.error(`error ❌: ${error.response?.data?.error || "Unexpected error"}`);
+        toast.error(
+          `error ❌: ${error.response?.data?.error || "Unexpected error"}`
+        );
       } else {
         toast.error("An error occurred while connecting to the server. ❌");
       }
@@ -137,7 +141,7 @@ const LoginForm = () => {
         >
           <motion.div variants={itemVariants} style={{ zIndex: "9999" }}>
             <Image
-              src={"/assets/Copilot_20250908_231423.png"}
+              src={"/assets/Copilot_20250908_2314232.png"}
               alt="Logo"
               width={110}
               height={110}

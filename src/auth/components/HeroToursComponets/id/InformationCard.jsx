@@ -161,7 +161,7 @@ const InformationCard = ({ tour, nan, guidePriceTotal }) => {
 
   let selectedOptions2 = [];
 
-  if (tour.city.name === "Morsi Alam") {
+  if (tour.city.name === "Marsa Alam") {
     selectedOptions2 = [
       { key: "1", label: "🐬 Dolphin swim at Satayah Reef", price: 750 },
       { key: "2", label: "🤿 Diving at Elphinstone Reef", price: 900 },
@@ -228,14 +228,14 @@ const InformationCard = ({ tour, nan, guidePriceTotal }) => {
             gutterBottom
             sx={{
               textTransform: "uppercase",
-              fontSize: "clamp(32px, 6vw, 80px)",
+              fontSize: "clamp(32px, 6vw, 45px)",
               fontWeight: "700",
               color: "#FF9800",
             }}
           >
             {tour.title}
           </Typography>
-          <Link href={"/tours"}>
+          {/* <Link href={"/tours"}>
             <Button
               variant="contained"
               style={{ margin: "10px", backgroundColor: "#FF9800" }}
@@ -243,7 +243,7 @@ const InformationCard = ({ tour, nan, guidePriceTotal }) => {
             >
               Another trip
             </Button>
-          </Link>
+          </Link> */}
         </div>
       </AnimatedSection>
 
@@ -257,7 +257,7 @@ const InformationCard = ({ tour, nan, guidePriceTotal }) => {
           sx={{
             mt: 2,
             // color: "grey",
-            fontSize: "clamp(14px, 2vw, 18px)",
+            fontSize: "clamp(14px, 2vw, 16px)",
             textTransform: "capitalize",
             pb: 2,
           }}

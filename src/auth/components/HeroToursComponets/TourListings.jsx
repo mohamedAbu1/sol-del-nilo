@@ -13,7 +13,7 @@ const TourListings = ({ theme }) => {
   const [allTours, setAllTours] = useState([]);
   const [sortBy, setSortBy] = useState("alphabetical");
   const itemsPerPage = 6;
-  const pathname = usePathname();
+
   const searchParams = useSearchParams();
   const destination = searchParams.get("destination")?.split(",") || [];
   const category = searchParams.get("category")?.split(",") || [];
@@ -21,37 +21,23 @@ const TourListings = ({ theme }) => {
   const minPrice = searchParams.get("minPrice") || "0";
   const maxPrice = searchParams.get("maxPrice") || "14000";
   const duration = searchParams.get("duration") || "";
+
   const handlePageChange = (e, value) => {
     setCurrentPage(value);
     setFadeKey((prev) => prev + 1);
   };
+
   useEffect(() => {
     const fetchTours = async () => {
       try {
         const params = new URLSearchParams(window.location.search);
-
-        const destination = params.get("destination")?.split(",") || [];
-        const category = params.get("category")?.split(",") || [];
-        const date = params.get("date") || "";
-        const minPrice = params.get("minPrice") || "0";
-        const maxPrice = params.get("maxPrice") || "14000";
-
-        const hasQuery =
-          destination.length > 0 ||
-          category.length > 0 ||
-          date !== "" ||
-          minPrice !== "0" ||
-          maxPrice !== "14000";
-
-        const query = hasQuery
-          ? new URLSearchParams({
-              destination: destination.join(","),
-              category: category.join(","),
-              date,
-              minPrice,
-              maxPrice,
-            }).toString()
-          : "";
+        const query = new URLSearchParams({
+          destination: params.get("destination") || "",
+          category: params.get("category") || "",
+          date: params.get("date") || "",
+          minPrice: params.get("minPrice") || "0",
+          maxPrice: params.get("maxPrice") || "14000",
+        }).toString();
 
         const res = await fetch(`/api/tours${query ? `?${query}` : ""}`);
         const data = await res.json();
@@ -70,38 +56,70 @@ const TourListings = ({ theme }) => {
     fetchTours();
   }, [searchParams.toString()]);
 
-  const filteredTours = allTours.filter((tour) => {
+  console.log("📦 allTours:", allTours);
+
+  const filteredTours = allTours.filter((tour, index) => {
+    const tourCategory = (tour.category?.name || tour.category || "")
+      .trim()
+      .toLowerCase();
+    const tourCity = (tour.city?.name || tour.city || "").trim().toLowerCase();
+    const tourPrice = parseFloat(tour.price);
+    const tourDuration = parseInt(tour.TripDuration);
+
+    // فلترة متعددة التصنيفات
     const matchesCategory =
       category.length === 0 ||
-      category.some((cat) =>
-        (tour.category?.name || tour.category)
-          ?.toLowerCase()
-          .includes(cat.toLowerCase())
-      );
+      category.some((cat) => tourCategory === cat.trim().toLowerCase());
 
+    // فلترة متعددة الوجهات
     const matchesDestination =
       destination.length === 0 ||
-      destination.some((d) =>
-        (tour.city?.name || tour.city)?.toLowerCase().includes(d.toLowerCase())
-      );
-    console.log(matchesDestination);
-    const matchesPrice =
-      tour.price >= parseFloat(minPrice) && tour.price <= parseFloat(maxPrice);
+      destination.some((d) => tourCity === d.trim().toLowerCase());
 
+    // فلترة السعر بين minPrice و maxPrice
+    const matchesPrice =
+      !isNaN(tourPrice) &&
+      tourPrice >= parseFloat(minPrice) &&
+      tourPrice <= parseFloat(maxPrice);
+
+    // فلترة التاريخ (مرنة)
     const matchesDate =
-      date === "" || (tour.date && tour.date.startsWith(date));
+      date === "" || (tour.date ? tour.date.startsWith(date) : true);
+
+    // فلترة المدة بين minDuration و maxDuration
+    const minDuration = parseInt(searchParams.get("minDuration") || "0");
+    const maxDuration = parseInt(searchParams.get("maxDuration") || "60"); // قيمة افتراضية كبيرة
 
     const matchesDuration =
-      duration === "" || parseInt(tour.TripDuration) === parseInt(duration);
+      !isNaN(tourDuration) &&
+      tourDuration >= minDuration &&
+      tourDuration <= maxDuration;
+
+    // طباعة للتتبع
+    console.log(`🎯 Tour ${index + 1}:`, {
+      title: tour.title,
+      category: tourCategory,
+      city: tourCity,
+      price: tour.price,
+      date: tour.date,
+      TripDuration: tour.TripDuration,
+      matchesCategory,
+      matchesDestination,
+      matchesPrice,
+      matchesDate,
+      matchesDuration,
+    });
 
     return (
-      matchesCategory ||
-      matchesDestination ||
-      matchesPrice ||
-      matchesDate ||
+      matchesCategory &&
+      matchesDestination &&
+      matchesPrice &&
+      matchesDate &&
       matchesDuration
     );
   });
+
+  console.log("✅ filteredTours:", filteredTours);
 
   let sortedTours = [...filteredTours];
   if (sortBy === "alphabetical") {
@@ -117,7 +135,6 @@ const TourListings = ({ theme }) => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const visibleTours = sortedTours.slice(startIndex, endIndex);
-
   return (
     <>
       <Drawer

@@ -10,18 +10,9 @@ import { ToursPathEn, ToursPathEs } from "@/lib/constants/FixedTexts";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$
 const Logo = ({ path }) => {
     const { width, height } = useScreenSize();
-
-  const boxVariants = {
-    hidden: { opacity: 0, x: -100 },
-    visible: { opacity: 1, x: 0 },
-  };
   // ? $$$$$$$$$$$$$$$$$$$$$$
   return (
-    <motion.div
-      variants={boxVariants}
-      initial="hidden"
-      animate="visible"
-      transition={{ duration: 1.5 }}
+    <div    
       style={{paddingLeft: width >= 670 ?"110px" : "0px"}}
       className="md:w-3/12 lg:w-1/3 flex justify-start items-center"
     >
@@ -36,7 +27,7 @@ const Logo = ({ path }) => {
           loading="eager"
         />
       </Link>
-    </motion.div>
+    </div>
   );
 };
 

@@ -1,9 +1,13 @@
+"use client";
 import { useTranslations } from "next-intl";
 import React from "react";
+import { useRouter } from "next/navigation";
+import { Link } from "@/i18n/navigation";
 
 const SectionSix = () => {
   const img = "/assets/Copilot_20251005_003854.png";
   const t = useTranslations("HomeHeroPage");
+  const router = useRouter();
 
   return (
     <section
@@ -11,7 +15,10 @@ const SectionSix = () => {
       className="relative w-full h-screen text-gray-600 dark:text-white flex flex-col items-center justify-center px-6 lg:px-20 overflow-hidden"
     >
       {/* المحتوى */}
-      <div style={{ marginTop: "60px" }} className="max-w-3xl text-center z-10">
+      <div
+        style={{ marginTop: "60px", marginBottom: "60px" }}
+        className="max-w-3xl text-center z-10"
+      >
         <h2
           style={{ marginBottom: "10px" }}
           className="text-3xl lg:text-4xl font-bold mb-4"
@@ -24,7 +31,11 @@ const SectionSix = () => {
         >
           {t("sc5P")}
         </p>
-        <button className="px-6 py-3 text-gray-600 dark:text-white font-semibold rounded-full hover:bg-blue-700 transition">
+        <button
+          style={{ cursor: "pointer" }}
+          onClick={() => router.push(`/contact`)}
+          className="px-6 py-3 text-gray-600 dark:text-white font-semibold rounded-full transition hover:scale-90 hover:text-yellow-400"
+        >
           {t("sc5BTN")}
         </button>
       </div>
@@ -49,18 +60,31 @@ const SectionSix = () => {
 
           {/* روابط الفوتر */}
           <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-400">
-            <a href="#home" className="hover:text-yellow-400 transition">
+            <Link href="/" className="hover:text-yellow-400 transition">
               Home
-            </a>
-            <a href="#tours" className="hover:text-yellow-400 transition">
+            </Link>
+            <Link
+              href={{
+                pathname: "/tours",
+                query: {
+                  destination: "Alexandria",
+                  category: "Wellness & Medical",
+                  date: new Date().toISOString().split("T")[0],
+                  duration: "61",
+                  minPrice: "0",
+                  maxPrice: "14000",
+                },
+              }}
+              className="hover:text-yellow-400 transition"
+            >
               Tours
-            </a>
-            <a href="#about" className="hover:text-yellow-400 transition">
+            </Link>
+            <Link href="/about" className="hover:text-yellow-400 transition">
               About Us
-            </a>
-            <a href="#contact" className="hover:text-yellow-400 transition">
+            </Link>
+            <Link href="/contact" className="hover:text-yellow-400 transition">
               Contact
-            </a>
+            </Link>
           </div>
 
           {/* سوشيال ميديا */}

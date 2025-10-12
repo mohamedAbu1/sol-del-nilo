@@ -13,30 +13,30 @@ export default function SectionThree() {
   const t = useTranslations("HomeHeroPage");
   const router = useRouter();
 
-useEffect(() => {
-  async function fetchTours() {
-    try {
-      const res = await axios.get("/api/tours");
-      const allTours = Array.isArray(res.data.tours) ? res.data.tours : [];
+  useEffect(() => {
+    async function fetchTours() {
+      try {
+        const res = await axios.get("/api/tours");
+        const allTours = Array.isArray(res.data.tours) ? res.data.tours : [];
 
-      // ✅ فلترة الرحلات التي تحتوي على reviews
-      const toursWithReviews = allTours.filter(
-        (tour) => Array.isArray(tour.reviews) && tour.reviews.length > 0
-      );
+        // ✅ فلترة الرحلات التي تحتوي على reviews
+        const toursWithReviews = allTours.filter(
+          (tour) => Array.isArray(tour.reviews) && tour.reviews.length > 0
+        );
 
-      // ✅ ترتيب الرحلات حسب عدد التقييمات وأخذ أول 8 فقط
-      const sortedTours = toursWithReviews
-        .sort((a, b) => b.reviews.length - a.reviews.length)
-        .slice(0, 8); // ✅ عرض أول 8 فقط
+        // ✅ ترتيب الرحلات حسب عدد التقييمات وأخذ أول 8 فقط
+        const sortedTours = toursWithReviews
+          .sort((a, b) => b.reviews.length - a.reviews.length)
+          .slice(0, 8); // ✅ عرض أول 8 فقط
 
-      setTours(sortedTours);
-    } catch (error) {
-      console.error("فشل في جلب الرحلات:", error);
+        setTours(sortedTours);
+      } catch (error) {
+        console.error("فشل في جلب الرحلات:", error);
+      }
     }
-  }
 
-  fetchTours();
-}, []);
+    fetchTours();
+  }, []);
 
   // console.log(tours.image.name[0])
   console.log(tours[0]);
@@ -102,7 +102,7 @@ useEffect(() => {
 
             {/* تفاصيل الجولة */}
             <div className="p-5 flex flex-col justify-between h-[150px]">
-              <div className="p-2 rounded-md h-9/12">
+              <div className="p-2 rounded-md h-[75%]">
                 <div className="flex w-ful items-center justify-between">
                   {" "}
                   <p
@@ -125,8 +125,15 @@ useEffect(() => {
                   </p>
                 </div>
                 <h4
-                  style={{ padding: "10px", fontSize: "16px" }}
-                  className="text-base lg:text-sm font-semibold text-gray-400 dark:text-white leading-snug mb-3 line-clamp-2"
+                  style={{
+                    padding: "10px",
+                    fontSize: "14px",
+                    display: "-webkit-box",
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: "vertical",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
                 >
                   {tour.title}
                 </h4>

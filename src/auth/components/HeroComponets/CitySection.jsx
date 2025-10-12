@@ -32,6 +32,7 @@ const CitySection = () => {
   return (
     <section
       id="section-three"
+      style={{marginTop:"30px"}}
       className="w-full min-h-screen py-10 flex flex-col items-center justify-start text-white px-4 sm:py-10 md:py-12 lg:py-0"
     >
       {/* ✅ العنوان */}

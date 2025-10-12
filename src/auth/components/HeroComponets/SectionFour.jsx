@@ -5,9 +5,11 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 
 const SectionFour = () => {
   const t = useTranslations("HomeHeroPage");
+  const router = useRouter();
 
   return (
     <section
@@ -72,7 +74,7 @@ const SectionFour = () => {
             {t("sc3PS5")}
           </p>
 
-          <button className="btn-next-section6">{t("sc3BTN")}</button>
+          <button className="btn-next-section6" onClick={() => router.push(`/about`)}>{t("sc3BTN")}</button>
         </div>
       </div>
     </section>

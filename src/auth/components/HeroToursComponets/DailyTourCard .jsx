@@ -11,7 +11,6 @@ const DailyTourCard = ({ tour, themee, viewMode }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const isGrid = viewMode === "grid";
-  console.log(tour);
   const router = useRouter();
 
   return (

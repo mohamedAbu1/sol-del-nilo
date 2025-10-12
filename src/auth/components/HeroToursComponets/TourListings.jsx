@@ -12,7 +12,7 @@ const TourListings = ({ theme }) => {
   const [fadeKey, setFadeKey] = useState(0);
   const [allTours, setAllTours] = useState([]);
   const [sortBy, setSortBy] = useState("alphabetical");
-  const itemsPerPage = 5;
+  const itemsPerPage = 6;
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const destination = searchParams.get("destination")?.split(",") || [];

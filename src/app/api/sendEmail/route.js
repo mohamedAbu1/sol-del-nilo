@@ -3,7 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 
 export const POST = async (req) => {
   // ✅ تحقق من وجود بيانات البيئة
-  if (!process.env.SUPABASE_URL || !process.env.SUPABASE_KEY) {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
     return new Response(JSON.stringify({ error: "Supabase credentials are missing" }), {
       status: 500,
     });
@@ -16,8 +16,8 @@ export const POST = async (req) => {
 
   // ✅ الاتصال بـ Supabase داخل الدالة
   const supabase = createClient(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_KEY
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
   );
 
   try {

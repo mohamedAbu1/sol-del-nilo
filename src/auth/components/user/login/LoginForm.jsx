@@ -21,8 +21,6 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { ToastContainer, toast } from "react-toastify";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-const logo2 = "/assets/Copilot_20250908_231423.png";
-// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -139,7 +137,7 @@ const LoginForm = () => {
         >
           <motion.div variants={itemVariants} style={{ zIndex: "9999" }}>
             <Image
-              src={logo2}
+              src={"/assets/Copilot_20250908_231423.png"}
               alt="Logo"
               width={110}
               height={110}

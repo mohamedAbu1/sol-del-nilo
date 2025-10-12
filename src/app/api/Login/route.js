@@ -97,17 +97,14 @@
 //   }
 // }
 import { NextResponse } from "next/server";
-import { UserLoginSchema } from "@/lib/utils/CheckSchema"; // Zod للتحقق من صحة البيانات
-import { supabase } from "@/lib/supabaseClient"; // الاتصال بـ Supabase
-import bcrypt from "bcryptjs"; // للتحقق من كلمة المرور
-import { setCookie } from "@/lib/utils/JWToken"; // لإنشاء وتخزين JWT
+import { UserLoginSchema } from "@/lib/utils/CheckSchema";
+import { supabase } from "@/lib/supabaseClient";
+import bcrypt from "bcryptjs";
+import { setCookie } from "@/lib/utils/JWToken";
 
 export async function POST(req) {
   try {
-    // ✅ قراءة البيانات القادمة من الطلب
     const body = await req.json();
-
-    // ✅ التحقق من صحة البيانات باستخدام Zod
     const parsed = UserLoginSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json({ error: "البيانات غير صالحة" }, { status: 400 });
@@ -115,7 +112,6 @@ export async function POST(req) {
 
     const { email, password } = parsed.data;
 
-    // ✅ البحث عن المستخدم في Supabase
     const { data: user, error: findError } = await supabase
       .from("user")
       .select("id, name, email, password, role, isActive")
@@ -123,17 +119,14 @@ export async function POST(req) {
       .single();
 
     if (findError) {
-      console.error("Supabase Error:", findError.message);
       return NextResponse.json({ error: "The user does not exist" }, { status: 404 });
     }
 
-    // ✅ التحقق من كلمة المرور
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return NextResponse.json({ error: "كلمة المرور غير صحيحة" }, { status: 401 });
     }
 
-    // ✅ إنشاء بيانات التوكن
     const payload = {
       id: user.id,
       email: user.email,
@@ -143,9 +136,7 @@ export async function POST(req) {
     };
 
     const cookie = setCookie(payload);
-
-    // ✅ إرسال التوكن في الرد
-    const response = NextResponse.json({ message: "تم تسجيل الدخول بنجاح" }, { status: 200 });
+    const response = NextResponse.json({ token: cookie }, { status: 200 });
     response.headers.set("Set-Cookie", cookie);
     return response;
   } catch (error) {

@@ -10,6 +10,7 @@ import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { getNavPath } from "@/lib/constants/FixedTexts";
 import LogoutBtn from "./LogoutBtn";
+import { useTheme } from "next-themes";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const MobilNav = ({ slug, user }) => {
   const t = useTranslations("Header");
@@ -25,6 +26,8 @@ const MobilNav = ({ slug, user }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+    const { theme, setTheme } = useTheme("dark");
+
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   return (
     <div className="w-14 flex items-center justify-center lg:hidden">
@@ -34,7 +37,8 @@ const MobilNav = ({ slug, user }) => {
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
-        style={{ zIndex: "9999", color: "#fff", fontSize: "25px" }}
+        style={{ zIndex: "9999", fontSize: "25px",color:theme === "dark" ? "#fff" :"#ff9800" }}
+        
       >
         <AiOutlineMenu className="text-2xl  hover:scale-110 transition-all" />
       </Button>

@@ -78,6 +78,7 @@ const SectionTow = forwardRef(() => {
                     duration: "5",
                     minPrice: "0",
                     maxPrice: "14000",
+                    search: "Luxor",
                   }).toString();
 
                   router.push(`/tours?${query}`);

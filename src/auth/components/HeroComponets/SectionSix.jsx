@@ -73,6 +73,7 @@ const SectionSix = () => {
                   duration: "61",
                   minPrice: "0",
                   maxPrice: "14000",
+                  search: "Alexandria",
                 },
               }}
               className="hover:text-yellow-400 transition"

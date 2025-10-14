@@ -3,51 +3,51 @@ import React from "react";
 import { FaMapMarkerAlt, FaCalendarAlt } from "react-icons/fa";
 
 const SectionFive = () => {
-      const t = useTranslations("HomeHeroPage");
-  
+  const t = useTranslations("HomeHeroPage");
+
   const tours = [
     {
-      location: "Luxor",
       title:
-        "Intercity Transfers from Luxor to (Aswan, Hurghada, Cairo, Marsa Alam)",
+        "Chery Tiggo 3 2025",
       description:
-        "Your Trusted Partner for Safe & Smooth Inter City Transfer.",
+        "The 2025 Chery Tiggo 3 offers excellent passenger comfort thanks to its spacious cabin and modern features, such as a smart screen and sunroof. It also boasts economical fuel consumption, making it ideal for long trips and daily commutes.",
       duration: "1 Day",
-      price: "$165",
-      image: "/assets/Copilot_20251003_105620.png",
+      image: "/assets/Copilot_20251013_105157.png",
     },
     {
-      location: "Luxor",
-      title: "5 Days / 4 Nights Nile Cruise from Luxor to Aswan",
+      title: "Toyota Hiace",
       description:
-        "Sail the Nile in style from Luxor to Aswan aboard a 5* cruise.",
+        "The Toyota Hiace is one of the best public transportation vehicles, thanks to its high reliability and spacious interior, which comfortably accommodates up to 16 passengers. Its powerful performance, efficient cooling system, and practical design make it ideal for long trips and for tourist or commercial transportation.",
       duration: "5 Days",
-      price: "$580",
-      image: "/assets/Copilot_20251003_114530.png",
+      image: "/assets/Copilot_20251013_110329.png",
     },
     {
-      location: "Aswan",
-      title: "4 Days / 3 Nights Nile Cruise from Aswan to Luxor",
+      title: "Toyota Coaster",
       description:
-        "Enjoy an unforgettable 4-day Nile Cruise from Aswan to Luxor.",
+        "The Toyota Coaster offers a comfortable and safe travel experience thanks to its spacious seats and powerful air conditioning system. Its practical interior design and generous capacity make it ideal for long group trips, school trips, and tourism.",
       duration: "4 Days",
-      price: "$480",
-      image: "/assets/Abu_Simbel.jpg",
+      image: "/assets/Copilot_20251013_110540.png",
     },
   ];
 
   return (
     <section
       id="section-five"
-      className="relative w-full min-h-screen px-4 sm:py-10 md:py-12 lg:py-0 overflow-hidden flex flex-col items-center"
+      className="relative w-full h-auto px-4 sm:py-10 md:py-12 lg:py-0 overflow-hidden flex flex-col items-center"
     >
       {/* العنوان */}
       <div className="text-center mb-12">
-        <span style={{marginBottom:"10px"}} className="inline-block text-3xl text-gray-400 dark:text-white  font-semibold px-3 py-1 rounded-full mb-3">
-           {t("sc3P")}
+        <span
+          style={{ marginBottom: "10px" }}
+          className="inline-block text-3xl text-gray-400 dark:text-white  font-semibold px-3 py-1 rounded-full mb-3"
+        >
+          {t("sc3P")}
         </span>
-        <h2 style={{marginBottom:"15px"}} className="text-3xl lg:text-4xl font-bold text-[#daa60b] dark:text-yellow-700 uppercase">
-         {t("sc3P")}
+        <h2
+          style={{ marginBottom: "15px" }}
+          className="text-3xl lg:text-4xl font-bold text-[#daa60b] dark:text-yellow-700 uppercase"
+        >
+          {t("sc3P")}
         </h2>
       </div>
 
@@ -56,35 +56,30 @@ const SectionFive = () => {
         {tours.map((tour, index) => (
           <div
             key={index}
-            style={{height:"700px"}}
-            className="bg-[#ffffff] dark:bg-neutral-900 rounded-2xl overflow-hidden shadow-lg hover:shadow-yellow-500/40 transition duration-300 flex flex-col"
+            style={{ height: "440px" }}
+            className="rounded-2xl overflow-hidden shadow-lg hover:shadow-yellow-500/40 transition duration-300 flex flex-col"
           >
             {/* الصورة */}
-            <div className="relative h-full">
+            <div className="relative h-[300px] bg-transparent overflow-visible">
               <img
                 src={tour.image}
                 alt={tour.title}
-                className="w-full h-[100%] object-cover"
+                className="absolute -top-10 left-1/2 transform -translate-x-1/2 w-[100%]  h-auto object-cover z-10 rounded-2xl"
               />
-              <div style={{padding:"10px"}} className="absolute top-3 left-3 bg-yellow-500 text-black text-xs font-bold px-3 py-1 rounded-full shadow-md flex items-center gap-1">
-                <FaMapMarkerAlt className="text-black text-sm" />
-                <span style={{fontSize:"14px"}}>{tour.location}</span>
-              </div>
             </div>
 
             {/* التفاصيل */}
-            <div style={{padding:"10px"}} className="h-1/2 p-5 flex flex-col justify-between flex-grow">
+            <div
+              style={{ padding: "10px" }}
+              className="h-1/2 p-5 flex flex-col justify-between flex-grow"
+            >
               <h3 className="text-lg font-bold text-gray-600 dark:text-gray-200 mb-2">
                 {tour.title}
               </h3>
-              <p className="text-sm text-gray-500 dark:text-gray-300 mb-4">{tour.description}</p>
-              <div className="flex items-center justify-between text-sm text-gray-200  mt-auto">
-                <div className="flex items-center gap-2">
-                  <FaCalendarAlt className="text-gray-400 dark:text-yellow-400" />
-                  <span className="text-gray-400 dark:text-yellow-400">{tour.duration}</span>
-                </div>
-                <div className="font-bold text-gray-400 dark:text-white">{tour.price}</div>
-              </div>
+              <p style={{fontSize:"15px"}} className="text-gray-500 dark:text-gray-400 mb-4">
+                {tour.description}
+              </p>
+          
             </div>
           </div>
         ))}
@@ -96,7 +91,6 @@ const SectionFive = () => {
           DISCOVER ALL →
         </button>
       </div> */}
-
     </section>
   );
 };

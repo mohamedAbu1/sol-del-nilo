@@ -7,7 +7,7 @@ export async function GET(request, { params }) {
     const { data: tour, error } = await supabase
       .from("tour")
       .select(
-        "*, category(*), city(*), tripprogram(*), includes(*), reviews(*)"
+        "*, category(*), city(*), tripprogram(*), includes(*), reviews(*),tourimage(*)"
       )
       .eq("id", id)
       .single();

@@ -149,6 +149,16 @@ export async function POST(request) {
 
     await supabase.from("includes").insert(includesData);
 
+    if (body.tourimage && Array.isArray(body.tourimage)) {
+      const tourimageData = body.tourimage.map((step) => ({
+        url: step.url,
+        name: step.name,
+        tourId: newTour.id,
+        created_at: new Date().toISOString(), // ✅ توليد التاريخ الحالي
+      }));
+
+      await supabase.from("tourimage").insert(tourimageData);
+    }
     return NextResponse.json(newTour, { status: 201 });
   } catch (error) {
     console.error("❌ خطأ في إنشاء الرحلة:", error);
@@ -194,7 +204,8 @@ export async function GET(request) {
         city(*),
         tripprogram(*),
         includes(*),
-        reviews(*)
+        reviews(*),
+        tourimage(*)
       `
       )
       .order("created_at", { ascending: false });

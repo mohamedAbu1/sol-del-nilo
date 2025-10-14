@@ -16,7 +16,7 @@ import { FaTaxi, FaShuttleVan, FaBusAlt } from "react-icons/fa";
 import Dividering from "./Divider/Divider";
 import StripeCheckoutButton from "../../StripeCheckoutButton";
 
-const PaymentForm = ({ tour, setNan, tourGuidePrice, setGuideLanguages ,setGuidePriceTotal}) => {
+const PaymentForm = ({ tour, setNan, user,tourGuidePrice, setGuideLanguages ,setGuidePriceTotal}) => {
   const [bookingData, setBookingData] = useState({
     people: "2",
     hasChildren: "no",
@@ -773,7 +773,7 @@ useEffect(() => {
                     </PayPalScriptProvider>
                   </Box>
 
-                  <StripeCheckoutButton />
+                  <StripeCheckoutButton tour={tour} user={user}/>
                 </Stack>
               </motion.div>
             </AnimatePresence>

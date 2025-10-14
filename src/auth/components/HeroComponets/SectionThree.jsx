@@ -39,7 +39,7 @@ export default function SectionThree() {
   }, []);
 
   // console.log(tours.image.name[0])
-  console.log(tours[0]);
+  console.log(tours);
   return (
     <section
       id="section-three"

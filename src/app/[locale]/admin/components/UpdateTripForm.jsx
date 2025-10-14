@@ -23,6 +23,7 @@ import TourIncludes from "./components/TourIncludes";
 import Preparation from "./components/Preparation";
 import BelowTheControlPanel from "./components/BelowTheControlPanel";
 import axios from "axios";
+import ImageCollection from "./components/ImageCollection";
 
 // ✅ دالة التحقق من وجود حروف عربية
 const containsArabic = (text) => /[\u0600-\u06FF]/.test(text);
@@ -51,6 +52,7 @@ const UpdateTripForm = () => {
   const [toursData, setToursData] = useState([]);
   const [tour, setTour] = useState(null);
   const [selectedImages, setSelectedImages] = useState([]);
+  const [selectedImagesList, setSelectedImagesList] = useState([]);
 
   // ✅ تنظيف روابط الصور المؤقتة
   useEffect(() => {
@@ -300,58 +302,104 @@ const UpdateTripForm = () => {
   //     toast.error("❌ خطأ في الاتصال بقاعدة البيانات");
   //   }
   // };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    // if (!isValid()) {
-    //   toast.error("❌ يرجى ملء جميع الحقول قبل الإرسال");
-    //   return;
-    // }
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    try {
-      toast.info("📤 جاري تجهيز البيانات...");
+  try {
+    toast.info("📤 جاري تجهيز البيانات...");
 
-      const imageObjects = selectedImages.map((img) => ({
-        name: img.name,
-        label: img.label,
-      }));
-      const payload = {
-        ...formData,
-        price: parseFloat(formData.price),
-        DayPeople: `${formData.people}`,
-        image: imageObjects, // ✅ تخزين الأسماء فقط
-      };
+    // ✅ تجهيز صور ControlPanelImages
+    const imageObjects = selectedImages.map((img) => ({
+      name: img.name,
+      label: img.label,
+    }));
 
-      console.log("📦 Payload:", payload);
+    // ✅ تجهيز صور ImageCollection المعدلة
+    const tourimagePayload = selectedImagesList.map((img) => ({
+      name: img.name,
+      url: img.url, // تأكد أنه رابط صالح
+      label: img.label,
+      tourId: toursID,
+      created_at: new Date().toISOString(), // إذا كان مطلوبًا في الجدول
+    }));
 
-      const response = await axios.patch(`/api/tours/${toursID}`, payload);
-      if (response.status === 200 || response.status === 204) {
-        toast.success("✅ تم حفظ الرحلة");
-        setFormData({
-          title: "",
-          description: "",
-          price: "",
-          TripDuration: "",
-          people: "1",
-          categoryId: "",
-          cityId: "",
-          rival: "",
-          theDate: "",
-          image: [],
-          tripprogram: [{ time: "", program: "" }],
-          includes: [{ text: "" }],
-        });
+    // ✅ تجهيز بيانات الرحلة
+    const payload = {
+      ...formData,
+      price: parseFloat(formData.price),
+      DayPeople: `${formData.people}`,
+      image: imageObjects,
+    };
 
-        setSelectedImages([]);
-      } else {
-        toast.error("❌ فشل في حفظ الرحلة");
-      }
-    } catch (error) {
-      console.error("❌ API Error:", error.response?.data || error.message);
-      toast.error(
-        `❌ ${error.response?.data?.error || "خطأ في الاتصال بـ API"}`
-      );
+    console.log("📦 Payload:", payload);
+
+    // ✅ تحديث بيانات الرحلة
+    const response = await axios.patch(`/api/tours/${toursID}`, payload);
+    if (response.status !== 200 && response.status !== 204) {
+      toast.error("❌ فشل في حفظ الرحلة");
+      return;
     }
-  };
+
+    // ✅ التحقق من وجود صور قديمة قبل الحذف
+    const { data: existingImages, error: fetchError } = await supabase
+      .from("tourimage")
+      .select("id")
+      .eq("tourId", toursID);
+
+    if (fetchError) {
+      console.warn("⚠️ فشل في التحقق من الصور القديمة:", fetchError.message);
+    } else if (existingImages.length > 0) {
+      const { error: deleteError } = await supabase
+        .from("tourimage")
+        .delete()
+        .eq("tourId", toursID);
+
+      if (deleteError) {
+        console.error("❌ خطأ في حذف الصور:", deleteError.message);
+        toast.warn("⚠️ تم حفظ الرحلة لكن فشل حذف الصور القديمة");
+      }
+    }
+
+    // ✅ إدخال الصور الجديدة
+    const { error: insertError } = await supabase
+      .from("tourimage")
+      .insert(tourimagePayload);
+
+    if (insertError) {
+      console.error("❌ خطأ في حفظ الصور الجديدة:", insertError.message);
+      toast.warn("⚠️ تم حفظ الرحلة لكن فشل حفظ الصور الجديدة");
+    }
+
+    toast.success("✅ تم حفظ الرحلة والصور بنجاح");
+
+    // ✅ إعادة تعيين النموذج
+    setFormData({
+      title: "",
+      description: "",
+      price: "",
+      TripDuration: "",
+      people: "1",
+      categoryId: "",
+      cityId: "",
+      rival: "",
+      theDate: "",
+      image: [],
+      tripprogram: [{ time: "", program: "" }],
+      includes: [{ text: "" }],
+    });
+
+    setSelectedImages([]);
+    setSelectedImagesList([]);
+    setToursID("");
+    setTour(null);
+  } catch (error) {
+    console.error("❌ API Error:", error.response?.data || error.message);
+    toast.error(
+      `❌ ${error.response?.data?.error || "خطأ في الاتصال بـ API"}`
+    );
+  }
+};
+
   return (
     <>
       <div
@@ -438,7 +486,10 @@ const UpdateTripForm = () => {
                 selectedImages={selectedImages}
                 setSelectedImages={setSelectedImages}
               />
-
+              <ImageCollection
+                selectedImagesList={selectedImagesList}
+                setSelectedImagesList={setSelectedImagesList}
+              />
               {/* 📋 برنامج الرحلة */}
               <TripProgram
                 programs={formData.tripprogram}

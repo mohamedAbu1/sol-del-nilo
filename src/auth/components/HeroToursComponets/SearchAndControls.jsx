@@ -21,6 +21,8 @@ const SearchAndControls = ({
   theme,
   sortBy,
   setSortBy,
+  searchText,
+  setSearchText
 }) => {
   return (
     <Box
@@ -45,6 +47,8 @@ const SearchAndControls = ({
           placeholder="Search tours..."
           variant="outlined"
           fullWidth
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
           InputProps={{
             startAdornment: (
               <IconButton>
@@ -63,9 +67,6 @@ const SearchAndControls = ({
               },
               "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
                 borderColor: "#ffb300",
-              },
-              "::placeholder": {
-                color: "red",
               },
             },
           }}

@@ -18,7 +18,8 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children ,params}) {
+    const locale = params?.locale;
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${montserrat.className}`}>
       <body>{children}</body>

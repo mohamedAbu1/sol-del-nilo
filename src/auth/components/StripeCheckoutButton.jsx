@@ -1,43 +1,39 @@
 // components/StripeCheckoutButton.tsx
-import { loadStripe } from "@stripe/stripe-js";
 import { Button } from "@mui/material";
+import axios from "axios";
 import { toast } from "react-toastify";
 
-// ✅ ضع المفتاح العام هنا
-const stripePromise = loadStripe("pk_test_XXXXXXXXXXXXXXXXXXXXXXXX");
-
-const StripeCheckoutButton = () => {
-  const handleStripeCheckout = async () => {
-    const stripe = await stripePromise;
-
+const StripeCheckoutButton = ({ tour, user }) => {
+  const handleCheckout = async () => {
     try {
-      const response = await fetch("/api/create-checkout-session", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          tourName: "Luxor Nile Tour",
-          price: 5000, // السعر بالسنت (50 دولار)
-        }),
+      const response = await axios.post("/api/paymob", {
+        amount: 500000, // المبلغ بالقروش (مثلاً 5000 دولار = 500000)
+        name: user.name,
+        email: user.email,
+        phone: "+201234567890",
+        user_id: user.id,
+        tour_id: tour.id,
       });
 
-      const data = await response.json();
-
-      if (data.url) {
-        window.location.href = data.url;
+      if (response.data.url) {
+        window.location.href = response.data.url; // ✅ إعادة التوجيه إلى صفحة الدفع
       } else {
-        toast.error("❌ فشل إنشاء جلسة الدفع");
+        toast.error("لم يتم استلام رابط الدفع من الخادم.");
       }
     } catch (error) {
-      console.error("Stripe error:", error);
-      toast.error("❌ حدث خطأ أثناء الاتصال بـ Stripe");
+      console.error("❌ Paymob error:", {
+        message: error.message,
+        response: error.response?.data,
+        stack: error.stack,
+      });
+
+      toast.error("حدث خطأ أثناء إنشاء جلسة الدفع. يرجى المحاولة لاحقًا.");
     }
   };
 
   return (
     <Button
-      onClick={handleStripeCheckout}
+      onClick={handleCheckout}
       variant="contained"
       sx={{
         backgroundColor: "#d4a85f",

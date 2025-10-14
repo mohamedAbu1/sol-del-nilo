@@ -13,7 +13,7 @@ const TourListings = ({ theme }) => {
   const [allTours, setAllTours] = useState([]);
   const [sortBy, setSortBy] = useState("alphabetical");
   const itemsPerPage = 6;
-
+const pathname = usePathname();
   const searchParams = useSearchParams();
   const destination = searchParams.get("destination")?.split(",") || [];
   const category = searchParams.get("category")?.split(",") || [];
@@ -21,7 +21,15 @@ const TourListings = ({ theme }) => {
   const minPrice = searchParams.get("minPrice") || "0";
   const maxPrice = searchParams.get("maxPrice") || "14000";
   const duration = searchParams.get("duration") || "";
+  const search = searchParams.get("search") || "All";
+    const [searchText, setSearchText] = useState(search);
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    params.set("search", searchText);
+    const newUrl = `${pathname}?${params.toString()}`;
+    window.history.replaceState({}, "", newUrl);
+  }, [searchText]);
   const handlePageChange = (e, value) => {
     setCurrentPage(value);
     setFadeKey((prev) => prev + 1);
@@ -37,6 +45,7 @@ const TourListings = ({ theme }) => {
           date: params.get("date") || "",
           minPrice: params.get("minPrice") || "0",
           maxPrice: params.get("maxPrice") || "14000",
+          // search: params.get("search") || "All",
         }).toString();
 
         const res = await fetch(`/api/tours${query ? `?${query}` : ""}`);
@@ -56,7 +65,7 @@ const TourListings = ({ theme }) => {
     fetchTours();
   }, [searchParams.toString()]);
 
-  console.log("📦 allTours:", allTours);
+  // console.log("📦 allTours:", allTours);
 
   const filteredTours = allTours.filter((tour, index) => {
     const tourCategory = (tour.category?.name || tour.category || "")
@@ -95,6 +104,10 @@ const TourListings = ({ theme }) => {
       tourDuration >= minDuration &&
       tourDuration <= maxDuration;
 
+const matchesSearch =
+  searchText === "All" ||
+  tour.title.toLowerCase().includes(searchText.toLowerCase()) ||
+  tour.description?.toLowerCase().includes(searchText.toLowerCase());
     // طباعة للتتبع
     console.log(`🎯 Tour ${index + 1}:`, {
       title: tour.title,
@@ -115,11 +128,12 @@ const TourListings = ({ theme }) => {
       matchesDestination &&
       matchesPrice &&
       matchesDate &&
-      matchesDuration
+      matchesDuration &&
+      matchesSearch
     );
   });
 
-  console.log("✅ filteredTours:", filteredTours);
+  // console.log("✅ filteredTours:", filteredTours);
 
   let sortedTours = [...filteredTours];
   if (sortBy === "alphabetical") {
@@ -168,6 +182,8 @@ const TourListings = ({ theme }) => {
           theme={theme}
           sortBy={sortBy}
           setSortBy={setSortBy}
+          searchText={searchText}
+          setSearchText={setSearchText}
         />
 
         <Box

@@ -71,6 +71,7 @@ const Nav = ({ path, user, slug }) => {
                 duration: "61",
                 minPrice: "0",
                 maxPrice: "14000",
+                search: "Alexandria",
               },
             }}
             className="hover:text-[#d4a85f]"

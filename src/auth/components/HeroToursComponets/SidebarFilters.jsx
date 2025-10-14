@@ -17,7 +17,7 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useSearchParams, useRouter } from "next/navigation";
 
-const SidebarFilters = ({ theme }) => {
+const SidebarFilters = ({ theme, tours }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -93,35 +93,37 @@ const SidebarFilters = ({ theme }) => {
   };
 
   // ✅ التعامل مع الفلاتر
- const handleToggle = (cityName) => {
-  let updated;
+  const handleToggle = (cityName) => {
+    let updated;
 
-  // ✅ إذا تم اختيار "All"، نحدد كل المدن
-  if (cityName === "ALL") {
-    updated = cities.map((city) => city.name);
-  } else {
-    // ✅ إضافة أو إزالة المدينة من القائمة المختارة
-    updated = selectedDestinations.includes(cityName)
-      ? selectedDestinations.filter((d) => d !== cityName)
-      : [...selectedDestinations, cityName];
-  }
+    // ✅ إذا تم اختيار "All"، نحدد كل المدن
+    if (cityName === "ALL") {
+      updated = cities.map((city) => city.name);
+    } else {
+      // ✅ إضافة أو إزالة المدينة من القائمة المختارة
+      updated = selectedDestinations.includes(cityName)
+        ? selectedDestinations.filter((d) => d !== cityName)
+        : [...selectedDestinations, cityName];
+    }
 
-  // ✅ تحديث الحالة
-  setSelectedDestinations(updated);
+    // ✅ تحديث الحالة
+    setSelectedDestinations(updated);
 
-  // ✅ بناء الكويري بناءً على القيم الحالية
-  const queryParams = new URLSearchParams();
+    // ✅ بناء الكويري بناءً على القيم الحالية
+    const queryParams = new URLSearchParams();
 
-  if (updated.length > 0) queryParams.set("destination", updated.join(","));
-  if (selectedCategories.length > 0) queryParams.set("category", selectedCategories.join(","));
-  if (date) queryParams.set("date", date);
-  if (durationRange[1]) queryParams.set("duration", durationRange[1].toString());
-  queryParams.set("minPrice", priceRange[0].toString());
-  queryParams.set("maxPrice", priceRange[1].toString());
+    if (updated.length > 0) queryParams.set("destination", updated.join(","));
+    if (selectedCategories.length > 0)
+      queryParams.set("category", selectedCategories.join(","));
+    if (date) queryParams.set("date", date);
+    if (durationRange[1])
+      queryParams.set("duration", durationRange[1].toString());
+    queryParams.set("minPrice", priceRange[0].toString());
+    queryParams.set("maxPrice", priceRange[1].toString());
 
-  // ✅ تحديث عنوان الصفحة بدون إعادة تحميل
-  router.push(`/tours?${queryParams.toString()}`, { scroll: false });
-};
+    // ✅ تحديث عنوان الصفحة بدون إعادة تحميل
+    router.push(`/tours?${queryParams.toString()}`, { scroll: false });
+  };
 
   const handleToggleCategories = (categoryName) => {
     let updated;
@@ -159,12 +161,20 @@ const SidebarFilters = ({ theme }) => {
     setAnchorElDuration(null);
     updateQueryParams();
   };
+  const cityCounts = tours.reduce((acc, city) => {
+    acc[city.city.name] = (acc[city.city.name] || 0) + 1;
+    return acc;
+  }, {});
+  const categoryCounts = tours.reduce((acc, city) => {
+    acc[city.category.name] = (acc[city.category.name] || 0) + 1;
+    return acc;
+  }, {});
   return (
     <div
       className="hidden xl:block"
       style={{
         width: "25%",
-        display:{xs:"none" , xl:"flex"},
+        display: { xs: "none", xl: "flex" },
         minWidth: { lg: "25%" },
         borderTopRightRadius: "20px",
         borderBottomRightRadius: "20px",
@@ -246,20 +256,25 @@ const SidebarFilters = ({ theme }) => {
               />
 
               {cities.map((city) => (
-                <FormControlLabel
-                  key={city.id}
-                  control={
-                    <Checkbox
-                      checked={selectedDestinations.includes(city.name)}
-                      onChange={() => handleToggle(city.name)}
-                      sx={{
-                        color: "#ff9800",
-                        "&.Mui-checked": { color: "#00e676" },
-                      }}
-                    />
-                  }
-                  label={city.name}
-                />
+                <div className="flex flex-row items-center justify-between">
+                  <FormControlLabel
+                    key={city.id}
+                    control={
+                      <Checkbox
+                        checked={selectedDestinations.includes(city.name)}
+                        onChange={() => handleToggle(city.name)}
+                        sx={{
+                          color: "#ff9800",
+                          "&.Mui-checked": { color: "#00e676" },
+                        }}
+                      />
+                    }
+                    label={city.name}
+                  />
+                  <h4 className="text-gray-700 text-[16px]">
+                    {cityCounts[city.name] || 0}
+                  </h4>
+                </div>
               ))}
             </FormGroup>
           </AccordionDetails>
@@ -540,20 +555,23 @@ const SidebarFilters = ({ theme }) => {
 
               {/* ✅ الفئات الفردية */}
               {cards.map((card) => (
-                <FormControlLabel
-                  key={card.id}
-                  control={
-                    <Checkbox
-                      checked={selectedCategories.includes(card.name)}
-                      onChange={() => handleToggleCategories(card.name)}
-                      sx={{
-                        color: "#ff9800",
-                        "&.Mui-checked": { color: "#00e676" },
-                      }}
-                    />
-                  }
-                  label={card.name}
-                />
+                <div className="flex flex-row items-center justify-between">
+                  <FormControlLabel
+                    key={card.id}
+                    control={
+                      <Checkbox
+                        checked={selectedCategories.includes(card.name)}
+                        onChange={() => handleToggleCategories(card.name)}
+                        sx={{
+                          color: "#ff9800",
+                          "&.Mui-checked": { color: "#00e676" },
+                        }}
+                      />
+                    }
+                    label={card.name}
+                  />
+                  <h4 className="text-gray-700 text-[16px]">{categoryCounts[card.name] || 0}</h4>
+                </div>
               ))}
             </FormGroup>
           </AccordionDetails>

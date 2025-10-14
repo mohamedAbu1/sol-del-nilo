@@ -12,6 +12,7 @@ import HikingIcon from "@mui/icons-material/Hiking";
 import { useScreenSize } from "@/auth/hooks/screenSize";
 import { BiDollar } from "react-icons/bi";
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 const AnimatedSection = ({ children }) => {
   const ref = useRef(null);
@@ -50,6 +51,7 @@ const InformationCard = ({ tour, nan, guidePriceTotal }) => {
     bananaIsland: 15,
     // باقي البيانات...
   });
+  const router = useRouter();
 
   const city = tour.city.name; // 👈 يمكنك تغيير المدينة هنا حسب السياق
 
@@ -255,6 +257,9 @@ const InformationCard = ({ tour, nan, guidePriceTotal }) => {
         >
           {tour.description}
         </Typography>
+        <Button className="btn-next-section3" style={{marginBottom:"20px", color:"#000"}} onClick={() => router.push(`/tours/${tour.id}/image`)}>
+          last trip
+        </Button>
       </AnimatedSection>
 
       <Dividering />

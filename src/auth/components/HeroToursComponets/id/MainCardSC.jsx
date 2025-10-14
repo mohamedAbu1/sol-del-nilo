@@ -56,6 +56,7 @@ const MainCardSC = ({ tour, user }) => {
       {user && (
         <PaymentForm
           tour={tour}
+          user={user}
           setNan={setNan}
           tourGuidePrice={tourGuidePrice}
           setGuideLanguages={setGuideLanguages}

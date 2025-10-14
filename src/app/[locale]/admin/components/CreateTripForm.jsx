@@ -11,6 +11,7 @@ import TripProgram from "./components/TripProgram";
 import Preparation from "./components/Preparation";
 import TourIncludes from "./components/TourIncludes";
 import { supabase } from "../../../../lib/supabaseClient";
+import ImageCollection from "./components/ImageCollection";
 const CreateTripForm = () => {
   const [formData, setFormData] = useState({
     title: "",
@@ -30,6 +31,7 @@ const CreateTripForm = () => {
   const [cities, setCities] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedImages, setSelectedImages] = useState([]);
+  const [selectedImagesList, setSelectedImagesList] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -145,60 +147,83 @@ const CreateTripForm = () => {
   const extractImageNames = () => {
     return selectedImages.map((img) => img.name); // ✅ فقط أسماء الصور
   };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (!isValid()) {
+    toast.error("❌ يرجى ملء جميع الحقول قبل الإرسال");
+    return;
+  }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!isValid()) {
-      toast.error("❌ يرجى ملء جميع الحقول قبل الإرسال");
-      return;
-    }
+  try {
+    toast.info("📤 جاري تجهيز البيانات...");
 
-    try {
-      toast.info("📤 جاري تجهيز البيانات...");
+    // تجهيز صور ControlPanelImages
+    const imageObjects = selectedImages.map((img) => ({
+      name: img.name,
+      label: img.label,
+    }));
 
-      const imageObjects = selectedImages.map((img) => ({
+    const payload = {
+      ...formData,
+      price: parseFloat(formData.price),
+      DayPeople: `${formData.people}`,
+      image: imageObjects,
+    };
+
+    // ✅ إرسال بيانات الرحلة
+    const response = await axios.post("/api/tours", payload);
+
+    if (response.status === 201) {
+      const newTourId = response.data.id; // تأكد أن API يرجع id
+
+      // ✅ تجهيز بيانات الصور من ImageCollection
+      const tourimagePayload = selectedImagesList.map((img) => ({
         name: img.name,
-        label: img.label,
+        url: img.url, // ⚠️ تأكد أن هذا URL صالح للتخزين
+        tourId: newTourId,
       }));
-      const payload = {
-        ...formData,
-        price: parseFloat(formData.price),
-        DayPeople: `${formData.people}`,
-        image: imageObjects, // ✅ تخزين الأسماء فقط
-      };
 
-      console.log("📦 Payload:", payload);
+      // ✅ إرسال الصور إلى /api/tourimage
+      const imageRes = await axios.post("/api/tourimage", {
+        tourimage: tourimagePayload,
+      });
 
-      const response = await axios.post("/api/tours", payload);
-
-      if (response.status === 201) {
-        toast.success("✅ تم حفظ الرحلة");
-        setFormData({
-          title: "",
-          description: "",
-          price: "",
-          TripDuration: "",
-          people: "1",
-          categoryId: "",
-          cityId: "",
-          rival: "",
-          theDate: "",
-          image: [],
-          tripprogram: [{ time: "", program: "" }],
-          includes: [{ text: "" }],
-        });
-
-        setSelectedImages([]);
+      if (imageRes.status === 201 || imageRes.status === 200) {
+        toast.success("✅ تم حفظ الرحلة والصور بنجاح");
       } else {
-        toast.error("❌ فشل في حفظ الرحلة");
+        toast.warn("⚠️ تم حفظ الرحلة ولكن فشل حفظ الصور");
       }
-    } catch (error) {
-      console.error("❌ API Error:", error.response?.data || error.message);
-      toast.error(
-        `❌ ${error.response?.data?.error || "خطأ في الاتصال بـ API"}`
-      );
+
+      // ✅ إعادة تعيين النموذج
+      setFormData({
+        title: "",
+        description: "",
+        price: "",
+        TripDuration: "",
+        people: "1",
+        categoryId: "",
+        cityId: "",
+        rival: "",
+        theDate: "",
+        image: [],
+        tripprogram: [{ time: "", program: "" }],
+        includes: [{ text: "" }],
+      });
+
+      setSelectedImages([]);
+      setSelectedImagesList([]);
+    } else {
+      toast.error("❌ فشل في حفظ الرحلة");
     }
-  };
+  } catch (error) {
+    console.error("❌ API Error:", error.response?.data || error.message);
+    toast.error(
+      `❌ ${error.response?.data?.error || "خطأ في الاتصال بـ API"}`
+    );
+  }
+};
+
+
 
   return (
     <>
@@ -239,6 +264,10 @@ const CreateTripForm = () => {
               <ControlPanelImages
                 selectedImages={selectedImages}
                 setSelectedImages={setSelectedImages}
+              />
+              <ImageCollection
+                selectedImagesList={selectedImagesList}
+                setSelectedImagesList={setSelectedImagesList}
               />
               <TripProgram
                 programs={formData.tripprogram || []}

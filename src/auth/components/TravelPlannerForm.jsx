@@ -93,6 +93,7 @@ export default function TravelPlannerForm() {
       date: date || "",
       minPrice: priceRange[0].toString(),
       maxPrice: priceRange[1].toString(),
+      search: destination?.name,
     }).toString();
 
     router.push(`/tours?${query}`);

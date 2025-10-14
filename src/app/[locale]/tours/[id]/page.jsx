@@ -9,6 +9,11 @@ import Header from "@/auth/components/HeaderComponets/Header";
 
 export default async function TourPage({ params }) {
   const { id } = params;
+   // ✅ تحقق أن id هو UUID صالح
+  const isUUID = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(id);
+  if (!isUUID) {
+    return <div>❌ معرف الرحلة غير صالح</div>;
+  }
   console.log("🔍 ID:", id);
   const cookieStore = await cookies();
   const token = cookieStore.get("jwttoken")?.value;
@@ -17,7 +22,7 @@ export default async function TourPage({ params }) {
     const { data: tour, error } = await supabase
       .from("tour")
       .select(
-        "*, category(*), city(*), tripprogram(*), includes(*), reviews(*)"
+        "*, category(*), city(*), tripprogram(*), includes(*), reviews(*),tourimage(*)"
       )
       .eq("id", id)
       .single();
@@ -32,7 +37,7 @@ export default async function TourPage({ params }) {
     const cookieStore = cookies();
     const token = cookieStore.get("jwttoken")?.value;
     const user = vrefyTokenForPage(token);
-
+    console.log(tour);
     return (
       <main className="flex flex-col items-center justify-center">
         <Header user={user} />

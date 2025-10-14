@@ -27,13 +27,13 @@ const CommentsReviews = ({ comments = [], tour, user ,userName}) => {
     return value.replace(/[^a-zA-Z0-9 ]/g, "");
   };
   const avatarImages = [
-    "icons8-iron-man-64.png",
-    "icons8-avengers-80.png",
-    "icons8-thor-hammer-100.png",
-    "icons8-hulk-96.png",
-    "icons8-captain-america-100.png",
-    "icons8-black-widow-96.png",
-    "icons8-hawkeye-96.png",
+    "icons8-crook-and-flail-64.png",
+    "icons8-egypt-64.png",
+    "icons8-pharaoh-64.png",
+    "icons8-egyptian-64.png",
+    "icons8-pharaoh-96.png",
+    "icons8-ancient-64.png",
+    "icons8-egyptology-64.png",
   ];
   const randomAvatar =
     avatarImages[Math.floor(Math.random() * avatarImages.length)];

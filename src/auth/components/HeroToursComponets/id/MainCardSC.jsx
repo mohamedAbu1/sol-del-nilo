@@ -147,6 +147,24 @@ const MainCardSC = ({ tour, user }) => {
         price: 900,
       },
     ],
+    Cairo: [
+      { key: "1", label: "🏛 Visit the National Museum of Egyptian Civilization (NMEC)", price: 750 },
+      {
+        key: "2",
+        label: "🌅 Sunset Nile Cruise",
+        price: 900,
+      },
+      {
+        key: "3",
+        label: "Tour of Islamic Cairo (Khan El Khalili + Al-Azhar)",
+        price: 750,
+      },
+      {
+        key: "4",
+        label: "🎭 Artistic show at the Egyptian Opera House",
+        price: 900,
+      },
+    ],
   };
 
   let selectedOptions2 = [];

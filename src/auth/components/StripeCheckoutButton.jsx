@@ -68,7 +68,7 @@ const BookTourButton = ({
         setTimeout(() => {
           setOpen(false); // إغلاق النافذة بعد 5 ثواني
           setBookingConfirmed(false);
-          resetBookingData() // إعادة الحالة للاستعداد لحجز جديد
+          resetBookingData(); // إعادة الحالة للاستعداد لحجز جديد
         }, 3000);
       } else {
         toast.error("❌ لم يتم حفظ الحجز.");
@@ -115,21 +115,32 @@ const BookTourButton = ({
             backgroundColor: "#fff",
             borderRadius: "16px",
             boxShadow: 24,
-            p: 4,
-            maxWidth: 720,
+            p: { xs: 2, sm: 3, md: 4 },
+            maxWidth: { xs: "95vw", sm: "90vw", md: 720 },
+            width: "100%",
             mx: "auto",
-            mt: "2vh",
+            my: { xs: "5vh", sm: "5vh", md: "2vh" },
             fontFamily: "Cairo, sans-serif",
             color: "#333",
-            textAlign: "center",
+            maxHeight: "91vh",
+            overflowY: "scroll",
+            display:"flex",
+            flexDirection:"column",
+            justifyContent:"center"
           }}
         >
           <Image
             src="/assets/Copilot_20250908_2314232.png"
             alt="SolDelNilo Logo"
-            width={140}
+            width={120}
             height={70}
-            style={{ borderRadius: "8px", marginBottom: "20px" }}
+            style={{
+              borderRadius: "8px",
+              // marginBottom: "20px",
+              maxWidth: "100%",
+              height: "auto",
+              margin:"auto"
+            }}
           />
 
           {bookingConfirmed ? (
@@ -149,7 +160,7 @@ const BookTourButton = ({
           ) : (
             <>
               {/* ✅ عنوان النافذة */}
-              <Typography
+              {/* <Typography
                 variant="h5"
                 fontWeight="bold"
                 textAlign="center"
@@ -157,9 +168,9 @@ const BookTourButton = ({
                 sx={{ color: "#1565c0" }}
               >
                 Booking Summary
-              </Typography>
+              </Typography> */}
 
-              <Divider sx={{ mb: 3 }} />
+              <Divider sx={{ mb: 1 }} />
 
               {/* ✅ بيانات العميل */}
               <Typography

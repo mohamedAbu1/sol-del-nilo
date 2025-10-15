@@ -233,8 +233,9 @@ const InformationCard = ({
       <Dividering />
 
       <AnimatedSection>
-        <div className="w-full flex flex-row">
-          <div className="w-[50%]">
+        <div className="w-full flex flex-col md:flex-row gap-6">
+          {" "}
+          <div className="w-[100%] lg:w-[50%]">
             <h1
               style={{
                 fontWeight: "700",

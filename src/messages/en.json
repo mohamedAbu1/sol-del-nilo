@@ -22,8 +22,8 @@
     "sc2P": "OUR TOURS",
     "sc2Title": "Recommended Tours",
     "sc3P": "SolDelNilo Cars",
-    "sc3Title": "Tuya Tours — Excellence in Travel Since 2005",
-    "sc3PS": " From Luxor to the world, Tuya Tours is your trusted partner for exceptional travel experiences. With",
+    "sc3Title": "SolDelNilo Tours — Excellence in Travel Since 2005",
+    "sc3PS": " From Luxor to the world, SolDelNilo Tours is your trusted partner for exceptional travel experiences. With",
     "sc3PS1": "17K+ destinations",
     "sc3PS2": "4200+ hotels",
     "sc3PS3": ",and",
@@ -37,7 +37,10 @@
     "sc5P2": "Crafting unforgettable journeys across Egypt – from ancient wonders to serene escapes, we make every trip seamless and unique.",
     "sc5BTN": "Contact Us →",
     "SCTitle":"Cities",
-    "SCTitle2":"Egyptian cities"
+    "SCTitle2":"Egyptian cities",
+    "SCSD":"The 2025 Chery Tiggo 3 offers excellent passenger comfort thanks to its spacious cabin and modern features, such as a smart screen and sunroof. It also boasts economical fuel consumption, making it ideal for long trips and daily commutes.",
+    "SCSD2":"The Toyota Hiace is one of the best public transportation vehicles, thanks to its high reliability and spacious interior, which comfortably accommodates up to 16 passengers. Its powerful performance, efficient cooling system, and practical design make it ideal for long trips and for tourist or commercial transportation.",
+    "SCSD3":"The Toyota Coaster offers a comfortable and safe travel experience thanks to its spacious seats and powerful air conditioning system. Its practical interior design and generous capacity make it ideal for long group trips, school trips, and tourism."
   },
   "ToursHeroPage": {
     "titlePage": "Tours",

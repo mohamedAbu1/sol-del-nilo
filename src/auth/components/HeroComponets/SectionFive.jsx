@@ -9,22 +9,19 @@ const SectionFive = () => {
     {
       title:
         "Chery Tiggo 3 2025",
-      description:
-        "The 2025 Chery Tiggo 3 offers excellent passenger comfort thanks to its spacious cabin and modern features, such as a smart screen and sunroof. It also boasts economical fuel consumption, making it ideal for long trips and daily commutes.",
+      description: t("SCSD"),
       duration: "1 Day",
       image: "/assets/Copilot_20251013_105157.png",
     },
     {
       title: "Toyota Hiace",
-      description:
-        "The Toyota Hiace is one of the best public transportation vehicles, thanks to its high reliability and spacious interior, which comfortably accommodates up to 16 passengers. Its powerful performance, efficient cooling system, and practical design make it ideal for long trips and for tourist or commercial transportation.",
+      description: t("SCSD2"),
       duration: "5 Days",
       image: "/assets/Copilot_20251013_110329.png",
     },
     {
       title: "Toyota Coaster",
-      description:
-        "The Toyota Coaster offers a comfortable and safe travel experience thanks to its spacious seats and powerful air conditioning system. Its practical interior design and generous capacity make it ideal for long group trips, school trips, and tourism.",
+      description: t("SCSD3"),
       duration: "4 Days",
       image: "/assets/Copilot_20251013_110540.png",
     },

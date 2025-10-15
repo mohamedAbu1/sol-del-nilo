@@ -16,19 +16,22 @@ import { FaTaxi, FaShuttleVan, FaBusAlt } from "react-icons/fa";
 import Dividering from "./Divider/Divider";
 import StripeCheckoutButton from "../../StripeCheckoutButton";
 
-const PaymentForm = ({ tour, setNan, user,tourGuidePrice, setGuideLanguages ,setGuidePriceTotal}) => {
-  const [bookingData, setBookingData] = useState({
-    people: "2",
-    hasChildren: "no",
-    childrenCount: "",
-    childrenAges: [],
-    hasPets: "no",
-    petType: "",
-    needsTaxi: "no",
-    vehicleType: "",
-    guideRequired: false,
-    guideLanguages: [],
-  });
+const PaymentForm = ({
+  tour,
+  user,
+  setNan,
+  tourGuidePrice,
+  setGuideLanguages,
+  setGuidePriceTotal,
+  selectedOptions,
+  selectedOptions2,
+  bookingData,
+  setBookingData,
+  finalPrice,
+  finalPriceAfterRival,
+  selectedExtras,
+  nan,
+}) => {
   const handleChildrenCountChange = (value) => {
     setBookingData((prev) => {
       const updated = { ...prev, childrenCount: value };
@@ -79,92 +82,29 @@ const PaymentForm = ({ tour, setNan, user,tourGuidePrice, setGuideLanguages ,set
     toast.success("Reservation sent: ✅");
   };
 
-  const handleStripeCheckout = async () => {
-    const response = await axios.post("/api/create-checkout-session", {
-      price: 5.0,
-      tourId: "example-id",
-      bookingData,
-    });
-
-    if (response.data.url) {
-      window.location.href = response.data.url;
-    } else {
-      toast.error("Failed to create payment session ❌");
-    }
-  };
-
-  const handlePetTypeChange = (e) => {
-    const value = e.target.value;
-    const containsArabic = /[\u0600-\u06FF]/.test(value);
-    if (containsArabic) {
-      toast.error("Please enter the animal type in English only. ❌");
-      return;
-    }
-
-    setBookingData((prev) => ({
-      ...prev,
-      petType: value,
-    }));
-  };
-useEffect(() => {
-  const adults = parseInt(bookingData.people) || 0;
-  const children = parseInt(bookingData.childrenCount) || 0;
-  const baseCount = adults + children / 2;
-
-  // ✅ حساب سعر اللغات المختارة
-  const selectedLanguages = Object.entries(bookingData.guideLanguages)
-    .filter(([_, isSelected]) => isSelected)
-    .map(([lang]) => lang);
-
-  const guideTotal = selectedLanguages.reduce(
-    (sum, lang) => sum + (tourGuidePrice[lang] || 0),
-    0
-  );
-
-  setNan(baseCount); // عدد الأشخاص فقط
-  setGuideLanguages(bookingData.guideLanguages); // تحديث اللغات المختارة
-  setGuidePriceTotal(guideTotal); // ✅ السعر الإضافي للمرشد السياحي
-}, [
-  bookingData.people,
-  bookingData.childrenCount,
-  bookingData.guideLanguages,
-]);
-
-
-  const updateVehicleType = () => {
+  useEffect(() => {
     const adults = parseInt(bookingData.people) || 0;
     const children = parseInt(bookingData.childrenCount) || 0;
-    const price = parseFloat(children / 2);
-    const total = adults + price;
-    let type = "";
-    if (total <= 4) type = "تاكسي";
-    else if (total <= 15) type = "عربية 16 راكب";
-    else type = "أتوبيس سياحي";
+    const baseCount = adults + children ;
 
-    setBookingData((prev) => ({
-      ...prev,
-      vehicleType: type,
-    }));
-  };
+    // ✅ حساب سعر اللغات المختارة
+    const selectedLanguages = Object.entries(bookingData.guideLanguages)
+      .filter(([_, isSelected]) => isSelected)
+      .map(([lang]) => lang);
 
-  const getVehicleInfo = (type) => {
-    switch (type) {
-      case "تاكسي":
-        return { label: "Taxi", icon: <FaTaxi color="#ff9800" size={32} /> };
-      case "عربية 16 راكب":
-        return {
-          label: "16-Seater Van",
-          icon: <FaShuttleVan color="#ff9800" size={32} />,
-        };
-      case "أتوبيس سياحي":
-        return {
-          label: "Tourist Bus",
-          icon: <FaBusAlt color="#ff9800" size={32} />,
-        };
-      default:
-        return { label: type, icon: null };
-    }
-  };
+    const guideTotal = selectedLanguages.reduce(
+      (sum, lang) => sum + (tourGuidePrice[lang] || 0),
+      0
+    );
+
+    setNan(baseCount); // عدد الأشخاص فقط
+    setGuideLanguages(bookingData.guideLanguages); // تحديث اللغات المختارة
+    setGuidePriceTotal(guideTotal); // ✅ السعر الإضافي للمرشد السياحي
+  }, [
+    bookingData.people,
+    bookingData.childrenCount,
+    bookingData.guideLanguages,
+  ]);
 
   const handleGuideLanguageChange = (language) => {
     setBookingData((prev) => {
@@ -773,7 +713,15 @@ useEffect(() => {
                     </PayPalScriptProvider>
                   </Box>
 
-                  <StripeCheckoutButton tour={tour} user={user}/>
+                  <StripeCheckoutButton
+                    tour={tour}
+                    user={user}
+                    finalPriceAfterRival={finalPriceAfterRival}
+                    selectedExtras={selectedExtras}
+                    nan={nan}
+                    bookingData={bookingData}
+                    setBookingData={setBookingData}
+                  />
                 </Stack>
               </motion.div>
             </AnimatePresence>

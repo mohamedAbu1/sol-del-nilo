@@ -21,9 +21,9 @@
     "sc1Title": "L'avventura ti aspetta",
     "sc2P": "I NOSTRI TOUR",
     "sc2Title": "Tour consigliati",
-    "sc3P": "Tuya Tours",
-    "sc3Title": "Tuya Tours — Eccellenza nei viaggi dal 2005",
-    "sc3PS": "Da Luxor al mondo, Tuya Tours è il tuo partner di fiducia per esperienze di viaggio eccezionali. Con",
+    "sc3P": "SolDelNilo Tours",
+    "sc3Title": "SolDelNilo Tours — Eccellenza nei viaggi dal 2005",
+    "sc3PS": "Da Luxor al mondo, SolDelNilo Tours è il tuo partner di fiducia per esperienze di viaggio eccezionali. Con",
     "sc3PS1": "oltre 17.000 destinazioni",
     "sc3PS2": "più di 4200 hotel",
     "sc3PS3": ", e",
@@ -37,7 +37,10 @@
     "sc5P2": "Creiamo viaggi indimenticabili in tutto l'Egitto – dalle meraviglie antiche alle fughe serene, rendiamo ogni viaggio unico e senza problemi.",
     "sc5BTN": "Contattaci →",
     "SCTitle": "Città",
-    "SCTitle2": "città egiziane"
+    "SCTitle2": "città egiziane",
+     "SCSD":"La Chery Tiggo 3 del 2025 offre un comfort eccellente per i passeggeri grazie al suo abitacolo spazioso e alle dotazioni moderne, come lo schermo intelligente e il tettuccio apribile. Vanta inoltre consumi ridotti, il che la rende ideale per lunghi viaggi e spostamenti quotidiani.",
+    "SCSD2":"Il Toyota Hiace è uno dei migliori veicoli per il trasporto pubblico, grazie alla sua elevata affidabilità e agli interni spaziosi, che possono ospitare comodamente fino a 16 passeggeri. Le sue prestazioni elevate, l'efficiente sistema di raffreddamento e il design pratico lo rendono ideale per lunghi viaggi e per il trasporto turistico o commerciale.",
+    "SCSD3":"Il Toyota Coaster offre un'esperienza di viaggio confortevole e sicura grazie ai sedili spaziosi e al potente impianto di climatizzazione. Il suo pratico design degli interni e la generosa capienza lo rendono ideale per lunghi viaggi di gruppo, gite scolastiche e turismo."
   },
   "ToursHeroPage": {
     "titlePage": "Tour",

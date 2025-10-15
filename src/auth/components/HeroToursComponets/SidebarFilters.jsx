@@ -256,9 +256,8 @@ const SidebarFilters = ({ theme, tours }) => {
               />
 
               {cities.map((city) => (
-                <div className="flex flex-row items-center justify-between">
+                <div key={city.id} className="flex flex-row items-center justify-between">
                   <FormControlLabel
-                    key={city.id}
                     control={
                       <Checkbox
                         checked={selectedDestinations.includes(city.name)}
@@ -555,9 +554,8 @@ const SidebarFilters = ({ theme, tours }) => {
 
               {/* ✅ الفئات الفردية */}
               {cards.map((card) => (
-                <div className="flex flex-row items-center justify-between">
+                <div key={card.id} className="flex flex-row items-center justify-between">
                   <FormControlLabel
-                    key={card.id}
                     control={
                       <Checkbox
                         checked={selectedCategories.includes(card.name)}

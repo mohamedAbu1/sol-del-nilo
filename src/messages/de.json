@@ -21,9 +21,9 @@
     "sc1Title": "Abenteuer erwartet dich",
     "sc2P": "UNSERE TOUREN",
     "sc2Title": "Empfohlene Touren",
-    "sc3P": "Tuya Tours",
-    "sc3Title": "Tuya Tours – Exzellenz im Reisen seit 2005",
-    "sc3PS": "Von Luxor in die Welt – Tuya Tours ist dein vertrauenswürdiger Partner für außergewöhnliche Reiseerlebnisse. Mit",
+    "sc3P": "SolDelNilo Tours",
+    "sc3Title": "SolDelNilo Tours – Exzellenz im Reisen seit 2005",
+    "sc3PS": "Von Luxor in die Welt – SolDelNilo Tours ist dein vertrauenswürdiger Partner für außergewöhnliche Reiseerlebnisse. Mit",
     "sc3PS1": "17K+ Reisezielen",
     "sc3PS2": "4200+ Hotels",
     "sc3PS3": ", und",
@@ -37,7 +37,10 @@
     "sc5P2": "Unvergessliche Reisen durch Ägypten – von antiken Wundern bis zu ruhigen Rückzugsorten, wir gestalten jede Reise einzigartig und reibungslos.",
     "sc5BTN": "Kontaktiere uns →",
     "SCTitle":"Städte",
-    "SCTitle2":"Ägyptische Städte"
+    "SCTitle2":"Ägyptische Städte",
+     "SCSD":"Der Chery Tiggo 3 (Modelljahr 2025) bietet dank seiner geräumigen Kabine und moderner Ausstattung wie einem intelligenten Bildschirm und einem Schiebedach hervorragenden Fahrgastkomfort. Er zeichnet sich außerdem durch einen sparsamen Kraftstoffverbrauch aus und eignet sich daher ideal für lange Fahrten und den täglichen Arbeitsweg.",
+    "SCSD2":"Der Toyota Hiace ist dank seiner hohen Zuverlässigkeit und seines geräumigen Innenraums, der bequem Platz für bis zu 16 Passagiere bietet, eines der besten öffentlichen Verkehrsmittel. Seine starke Leistung, das effiziente Kühlsystem und das praktische Design machen ihn ideal für lange Reisen sowie für den touristischen oder gewerblichen Transport.",
+    "SCSD3":"Der Toyota Coaster bietet dank geräumiger Sitze und leistungsstarker Klimaanlage ein komfortables und sicheres Reiseerlebnis. Seine praktische Innenausstattung und das großzügige Fassungsvermögen machen ihn ideal für lange Gruppenreisen, Schulausflüge und den Tourismus."
   },
   "ToursHeroPage": {
     "titlePage": "Touren",

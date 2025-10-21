@@ -2,12 +2,15 @@ import "../../styles/globals.css";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
-import { DashboardProvider } from "@/context/Information";
+import { TripsContextProvider } from "@/context/TripsContext";
 import { ThemeProvider } from "next-themes";
+import { AppProvider } from "@/context/AppContext";
+import { TripContextProvider } from "@/context/TripContext";
+import { AppQueryContextProvider } from "@/context/AppQueryContext";
 
 // ✅ تحميل الرسائل حسب اللغة
 export function generateStaticParams() {
-  return ["en", "es", "fs","de","it"].map((locale) => ({ locale }));
+  return ["en", "es", "fs", "de", "it"].map((locale) => ({ locale }));
 }
 
 // ✅ التخطيط المحلي بدون عناصر html/head/body
@@ -29,12 +32,18 @@ export default async function LocaleLayout({ children, params }) {
 
   // ✅ إرجاع التخطيط بدون عناصر html/head/body
   return (
-    <DashboardProvider>
-      <NextIntlClientProvider locale={locale} messages={messages}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          {children}
-        </ThemeProvider>
-      </NextIntlClientProvider>
-    </DashboardProvider>
+    <NextIntlClientProvider locale={locale} messages={messages}>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <TripContextProvider>
+          <TripsContextProvider>
+            {" "}
+            {/* ✅ يجب أن يسبق AppQueryContextProvider */}
+            <AppQueryContextProvider>
+              <AppProvider>{children}</AppProvider>
+            </AppQueryContextProvider>
+          </TripsContextProvider>
+        </TripContextProvider>
+      </ThemeProvider>
+    </NextIntlClientProvider>
   );
 }

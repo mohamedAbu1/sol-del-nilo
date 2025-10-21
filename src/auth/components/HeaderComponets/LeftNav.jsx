@@ -7,7 +7,6 @@ import { color, motion } from "framer-motion";
 import { BsFillPersonVcardFill } from "react-icons/bs";
 import LogoutBtn from "./LogoutBtn";
 import { Button } from "@mui/material";
-import { useState } from "react";
 import { useTranslations } from "next-intl";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const LeftNav = ({ path, user, width }) => {

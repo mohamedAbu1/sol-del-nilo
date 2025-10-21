@@ -12,92 +12,50 @@ import {
   InputAdornment,
 } from "@mui/material";
 import { BiSearch } from "react-icons/bi";
-const categories = ["Adventure", "Culture", "Relaxation", "Family", "Luxury"];
 import { useRouter } from "next/navigation";
 import { LocationOn, Category, Event } from "@mui/icons-material";
-import axios from "axios";
+import { useTripsContext } from "@/context/TripsContext";
+import { useAppQueryContext } from "@/context/AppQueryContext";
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 export default function TravelPlannerForm() {
-  const [destination, setDestination] = useState();
-  const [duration, setDuration] = useState(5);
-  const [category, setCategory] = useState("category");
-  const [date, setDate] = useState("");
-  const [priceRange, setPriceRange] = useState([0, 14000]);
-  const [anchorElPrice, setAnchorElPrice] = useState(null);
-  const [anchorElDuration, setAnchorElDuration] = useState(null);
-  const [cities, setCities] = useState([]);
-  const [cards, setCards] = useState([]);
+  const { cities, categories } = useTripsContext();
+  const {
+    selectedCategories,
+    setSelectedCategories,
+    priceRange,
+    setPriceRange,
+    anchorElPrice,
+    openPrice,
+    openDuration,
+    anchorElDuration,
+    handlePriceClick,
+    handlePriceClose,
+    handleDurationClick,
+    handleDurationClose,
+    duration,
+    setDuration,
+    selectedDestinationId,
+    setSelectedDestinationId,
+  } = useAppQueryContext();
   const router = useRouter();
-  useEffect(() => {
-    const fetchCities = async () => {
-      try {
-        const res = await fetch("/api/city");
-        const data = await res.json();
-
-        if (res.ok) {
-          setCities(data);
-        } else {
-          console.error("❌ خطأ في جلب المدن:", data.error);
-        }
-      } catch (err) {
-        console.error("❌ فشل الاتصال:", err);
-      }
-    };
-
-    fetchCities();
-  }, []);
-  useEffect(() => {
-    const fetchCards = async () => {
-      try {
-        const res = await fetch("/api/categories");
-        const data = await res.json();
-
-        if (res.ok) {
-          setCards(data);
-        } else {
-          console.error("❌ خطأ في جلب البيانات:", data.error);
-        }
-      } catch (err) {
-        console.error("❌ فشل الاتصال:", err);
-      }
-    };
-    console.log(cards);
-    fetchCards();
-  }, []);
-
-  const openPrice = Boolean(anchorElPrice);
-  const openDuration = Boolean(anchorElDuration);
-
-  const handlePriceClick = (event) => {
-    setAnchorElPrice(event.currentTarget);
-  };
-
-  const handlePriceClose = () => {
-    setAnchorElPrice(null);
-  };
-
-  const handleDurationClick = (event) => {
-    setAnchorElDuration(event.currentTarget);
-  };
-
-  const handleDurationClose = () => {
-    setAnchorElDuration(null);
-  };
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  const [date, setDate] = useState("");
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const today = new Date().toISOString().split("T")[0];
-
-  console.log(cities);
   const handleSearch = () => {
     const query = new URLSearchParams({
-      destination: destination?.name || "", // ✅ استخدم id فقط
+      destination: selectedDestinationId.name || "", // ✅ استخدم id فقط
       duration: duration.toString(),
-      category: category?.name || "", // ✅ استخدم id فقط
+      category: selectedCategories || "", // ✅ استخدم id فقط
       date: date || "",
       minPrice: priceRange[0].toString(),
       maxPrice: priceRange[1].toString(),
-      search: destination?.name,
+      search: `${selectedDestinationId.name} ${selectedCategories}`,
     }).toString();
 
     router.push(`/tours?${query}`);
   };
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
   return (
     <Box
@@ -138,9 +96,9 @@ export default function TravelPlannerForm() {
             select
             label="Destination"
             fullWidth
-            value={destination}
+            value={selectedDestinationId}
             placeholder={"mohamed"}
-            onChange={(e) => setDestination(e.target.value)}
+            onChange={(e) => setSelectedDestinationId(e.target.value)}
             InputLabelProps={{ style: { color: "#f5f5f5" } }}
             InputProps={{
               style: { color: "#ffffff" },
@@ -190,7 +148,6 @@ export default function TravelPlannerForm() {
             ))}
           </TextField>
         </Grid>
-
         {/* Duration */}
         <Grid
           item
@@ -390,8 +347,8 @@ export default function TravelPlannerForm() {
             select
             label="Category"
             fullWidth
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
+            value={selectedCategories}
+            onChange={(e) => setSelectedCategories(e.target.value)}
             InputLabelProps={{ style: { color: "#f5f5f5" } }}
             InputProps={{
               style: { color: "#ffffff" },
@@ -434,14 +391,13 @@ export default function TravelPlannerForm() {
               },
             }}
           >
-            {cards.map((cat) => (
-              <MenuItem key={cat.id} value={cat}>
+            {categories.map((cat) => (
+              <MenuItem key={cat.id} value={cat.name}>
                 {cat.name}
               </MenuItem>
             ))}
           </TextField>
         </Grid>
-
         {/* Date Picker */}
         <Grid item xs={12} sm={6} md={4} lg={3}>
           <Box className="custom-date-wrapper" sx={{ width: "100%" }}>
@@ -473,7 +429,6 @@ export default function TravelPlannerForm() {
             </Box>
           </Box>
         </Grid>
-
         {/* Search Button */}
         <Grid item xs={12}>
           <Box display="flex" justifyContent="center">

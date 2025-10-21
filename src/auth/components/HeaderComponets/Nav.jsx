@@ -65,13 +65,13 @@ const Nav = ({ path, user, slug }) => {
             href={{
               pathname: "/tours",
               query: {
-                destination: "Alexandria",
-                category: "Wellness & Medical",
+                destination:"All",
+                category: "All",
                 date: new Date().toISOString().split("T")[0],
                 duration: "61",
                 minPrice: "0",
                 maxPrice: "14000",
-                search: "Alexandria",
+                search: "All",
               },
             }}
             className="hover:text-[#d4a85f]"

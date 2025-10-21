@@ -1,33 +1,21 @@
 "use client";
 import { useTranslations } from "next-intl";
 import { FaHeart, FaMapMarkerAlt } from "react-icons/fa";
-import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation"; // ✅ استيراد router
-
+import { useTripsContext } from "@/context/TripsContext";
+import { useState } from "react";
+import { useTripContext } from "@/context/TripContext";
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const CitySection = () => {
+  const [noToursCity, setNoToursCity] = useState(null);
+
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  const { cities } = useTripsContext();
+  const { tour } = useTripContext();
   const t = useTranslations("HomeHeroPage");
-  const [cities, setCities] = useState([]);
   const router = useRouter(); // ✅ استخدام router
-
-  useEffect(() => {
-    const fetchCities = async () => {
-      try {
-        const res = await fetch("/api/city");
-        const data = await res.json();
-
-        if (res.ok) {
-          setCities(data);
-        } else {
-          console.error("❌ خطأ في جلب المدن:", data.error);
-        }
-      } catch (err) {
-        console.error("❌ فشل الاتصال:", err);
-      }
-    };
-
-    fetchCities();
-  }, []);
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
   return (
     <section
@@ -53,15 +41,29 @@ const CitySection = () => {
             key={city.id || index}
             style={{ cursor: "pointer" }}
             onClick={() => {
+              const cityName = city.name;
+              const hasTours =
+                Array.isArray(tour) &&
+                tour.some((t) => {
+                  const tourCity = (t.city?.name || t.city || "").toLowerCase();
+                  return tourCity === cityName.toLowerCase();
+                });
+
+              if (!hasTours) {
+                setNoToursCity(cityName);
+                setTimeout(() => setNoToursCity(null), 3000); // إخفاء بعد 3 ثوانٍ
+                return;
+              }
+
               const today = new Date().toISOString().split("T")[0];
               const query = new URLSearchParams({
-                destination: city.name,
-                category: "Wellness & Medical",
+                destination: cityName,
+                category: "All", // ✅ تحديد كل الفئات
                 date: today,
-                duration: "6",
-                minPrice: "10000",
+                duration: "5",
+                minPrice: "0",
                 maxPrice: "14000",
-                search: city.name,
+                search: cityName,
               }).toString();
 
               router.push(`/tours?${query}`);
@@ -90,6 +92,13 @@ const CitySection = () => {
             </div>
           </div>
         ))}
+        {noToursCity && (
+          <div style={{opacity:"0.9"}} className="fixed inset-0 bg-black flex items-center justify-center z-50">
+            <div style={{padding:"10px"}} className="bg-white text-black px-6 py-4 rounded-xl shadow-lg text-xl font-bold">
+             There are currently no flights to {noToursCity}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

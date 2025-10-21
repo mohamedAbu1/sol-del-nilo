@@ -17,12 +17,10 @@ const DailyTourCard = ({ tour, themee, viewMode }) => {
     <Box
       sx={{
         width: isGrid
-          ? { xs: "100%", sm: "48%", md: "48%", lg: "32%" } // ✅ Grid: كروت متجاورة
+          ? { xs: "100%", sm: "48%", md: "28%", lg: "31%" } // ✅ Grid: كروت متجاورة
           : "100%", // ✅ List: كارت بعرض كامل
         display: "flex",
-        // height: isGrid ? "50%" : "25%",
         flexDirection: isGrid ? "column" : "row", // ✅ Grid: عمودي / List: أفقي
-        // backgroundColor: "#212121",
         color: "#ffffff",
         borderRadius: "16px",
         overflow: "hidden",
@@ -30,9 +28,10 @@ const DailyTourCard = ({ tour, themee, viewMode }) => {
         transition: "all 0.4s ease", // ✅ أنيمشن ناعم
         "&:hover": {
           transform: "scale(1.02)",
+          border: "1px solid #ffb300",
         },
       }}
-      className="bg-white dark:bg-[#212121]"
+      className="bg-white dark:bg-[#030712]"
     >
       {/* ✅ صورة الرحلة */}
       <Box

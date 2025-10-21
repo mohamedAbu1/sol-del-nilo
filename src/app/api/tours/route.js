@@ -1,100 +1,7 @@
-// import prisma from "@/lib/utils/db";
-// import { NextResponse } from "next/server";
-// import { TourSchema } from "@/lib/utils/CheckSchema";
-// export async function POST(request) {
-//   try {
-//     const body = await request.json();
-//     console.log("📦 البيانات المستلمة:", body);
-//     if (!body.title || !body.description || !body.price) {
-//       return NextResponse.json(
-//         { error: "Missing required fields" },
-//         { status: 405 }
-//       );
-//     }
-//     const validation = TourSchema.safeParse(body);
-//     if (!validation.success) {
-//       return NextResponse.json(
-//         { error: "البيانات غير صالحة", details: validation.error.format() },
-//         { status: 400 }
-//       );
-//     }
-//     if (
-//       !Array.isArray(body.tripprogram) ||
-//       body.tripprogram.length === 0 ||
-//       body.tripprogram.some(
-//         (step) =>
-//           !step.time ||
-//           !step.program ||
-//           step.time.trim() === "" ||
-//           step.program.trim() === ""
-//       )
-//     ) {
-//       return NextResponse.json(
-//         { error: "برنامج الرحلة غير مكتمل أو فارغ" },
-//         { status: 400 }
-//       );
-//     }
-//     const newTour = await prisma.tour.create({
-//       data: {
-//         title: body.title,
-//         description: body.description,
-//         price: parseFloat(body.price),
-//         DayPeople: body.DayPeople,
-//         theDate: body.theDate,
-//         TripDuration: body.TripDuration,
-//         NumberOfParticipants: body.NumberOfParticipants,
-//         image: body.image,
-//         category: { connect: { id: body.categoryId } },
-//         city: { connect: { id: body.cityId } },
-//       },
-//     });
-//     await prisma.tripProgram.createMany({
-//       data: body.tripprogram.map((step) => ({
-//         time: step.time,
-//         program: step.program,
-//         tourId: newTour.id,
-//       })),
-//     });
-//     await prisma.includes.createMany({
-//       data: body.includes.map((step) => ({
-//         text: step.text,
-//         tourId: newTour.id,
-//       })),
-//     });
-
-//     return NextResponse.json(newTour, { status: 201 });
-//   } catch (error) {
-//     console.error("❌ خطأ في إنشاء الرحلة:", error);
-//     return NextResponse.json(
-//       { error: "خطأ داخلي في السيرفر" },
-//       { status: 500 }
-//     );
-//   }
-// }
-// export async function GET() {
-//   try {
-//     const tours = await prisma.tour.findMany({
-//       include: {
-//         category: true,
-//         city: true,
-//         tripprogram: true,
-//         includes: true,
-//       },
-//       orderBy: { createdAt: "desc" },
-//     });
-//     return NextResponse.json({ tours }, { status: 200 });
-//   } catch (error) {
-//     console.error("❌ خطأ أثناء جلب الرحلات:", error);
-//     return NextResponse.json({ error: "فشل في جلب الرحلات" }, { status: 500 });
-//   }
-// }
-// ?$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-// ?$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-// ?$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-
 import { supabase } from "@/lib/supabaseClient";
 import { NextResponse } from "next/server";
 import { TourSchema } from "@/lib/utils/CheckSchema";
+// ?$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 export async function POST(request) {
   try {
@@ -117,7 +24,7 @@ export async function POST(request) {
           title: body.title,
           description: body.description,
           price: parseFloat(body.price),
-          DayPeople: body.DayPeople,
+          DayPeople: body.people,
           theDate: body.theDate,
           TripDuration: body.TripDuration,
           image: body.image,
@@ -151,15 +58,15 @@ export async function POST(request) {
 
     if (body.tourimage && Array.isArray(body.tourimage)) {
       const tourimageData = body.tourimage.map((step) => ({
-        url: step.url,
         name: step.name,
+        label: step.label?.trim() || "صورة بدون وصف",
         tourId: newTour.id,
-        created_at: new Date().toISOString(), // ✅ توليد التاريخ الحالي
+        created_at: new Date().toISOString(),
       }));
 
       await supabase.from("tourimage").insert(tourimageData);
     }
-    return NextResponse.json(newTour, { status: 201 });
+    return NextResponse.json({ success: true, data: newTour }, { status: 201 });
   } catch (error) {
     console.error("❌ خطأ في إنشاء الرحلة:", error);
     return NextResponse.json(
@@ -168,27 +75,9 @@ export async function POST(request) {
     );
   }
 }
-// export async function GET() {
-//   try {
-//     const { data: tours, error } = await supabase
-//       .from("tour")
-//       .select(`
-//             *,
-//             category(*),
-//             city(*),
-//             tripprogram(*),
-//             includes(*)
-//           `)
-//       .order("createdAt", { ascending: false });
+// ?$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+// ?$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
-//     if (error) throw error;
-
-//     return NextResponse.json({ tours }, { status: 200 });
-//   } catch (error) {
-//     console.error("❌ خطأ أثناء جلب الرحلات:", error);
-//     return NextResponse.json({ error: "فشل في جلب الرحلات" }, { status: 500 });
-//   }
-// }
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -205,7 +94,8 @@ export async function GET(request) {
         tripprogram(*),
         includes(*),
         reviews(*),
-        tourimage(*)
+        tourimage(*),
+        payments(*)
       `
       )
       .order("created_at", { ascending: false });

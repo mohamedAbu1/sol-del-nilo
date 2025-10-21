@@ -9,6 +9,11 @@
     "Btn2": "Sign Out"
   },
   "HomeHeroPage": {
+    "Home": "Home",
+    "Tours": "Tours",
+    "About": "About Us",
+    "Admin": "Admin",
+    "Contact": "Contact",
     "title1": "Your Journey Begins Here",
     "title2": "Discover Egypt Through Timeless Eyes",
     "p": "Embark on a captivating journey along the Nile, uncover exceptional stories and timeless beauty through a uniquely curated experience.",
@@ -36,11 +41,11 @@
     "sc5P": "Have questions or want to book an appointment? We’re here to help you with whatever you need. Reach out today, and let’s get started on your journey together!",
     "sc5P2": "Crafting unforgettable journeys across Egypt – from ancient wonders to serene escapes, we make every trip seamless and unique.",
     "sc5BTN": "Contact Us →",
-    "SCTitle":"Cities",
-    "SCTitle2":"Egyptian cities",
-    "SCSD":"The 2025 Chery Tiggo 3 offers excellent passenger comfort thanks to its spacious cabin and modern features, such as a smart screen and sunroof. It also boasts economical fuel consumption, making it ideal for long trips and daily commutes.",
-    "SCSD2":"The Toyota Hiace is one of the best public transportation vehicles, thanks to its high reliability and spacious interior, which comfortably accommodates up to 16 passengers. Its powerful performance, efficient cooling system, and practical design make it ideal for long trips and for tourist or commercial transportation.",
-    "SCSD3":"The Toyota Coaster offers a comfortable and safe travel experience thanks to its spacious seats and powerful air conditioning system. Its practical interior design and generous capacity make it ideal for long group trips, school trips, and tourism."
+    "SCTitle": "Cities",
+    "SCTitle2": "Egyptian cities",
+    "SCSD": "The 2025 Chery Tiggo 3 offers excellent passenger comfort thanks to its spacious cabin and modern features, such as a smart screen and sunroof. It also boasts economical fuel consumption, making it ideal for long trips and daily commutes.",
+    "SCSD2": "The Toyota Hiace is one of the best public transportation vehicles, thanks to its high reliability and spacious interior, which comfortably accommodates up to 16 passengers. Its powerful performance, efficient cooling system, and practical design make it ideal for long trips and for tourist or commercial transportation.",
+    "SCSD3": "The Toyota Coaster offers a comfortable and safe travel experience thanks to its spacious seats and powerful air conditioning system. Its practical interior design and generous capacity make it ideal for long group trips, school trips, and tourism."
   },
   "ToursHeroPage": {
     "titlePage": "Tours",
@@ -67,18 +72,18 @@
     "Btn2": "Create a new account",
     "Btn3": "Home Page"
   },
-  "AboutPage":{
-    "title":"ABOUT US",
-    "title1":"OUR MISSION",
-    "p1":"To bring the wonders of Egypt to life through immersive and unforgettable travel experiences.",
-    "title2":"WHO WE ARE",
-    "p2":"SolDelNilo is a travel company dedicated to showcasing the rich heritage and timeless beauty of Egypt. Our team of experts is passionate about crafting exceptional tours that reveal the magic of this ancient land.",
-    "title3":"WHY SOLDELNILO",
-    "p3":"We draw inspiration from Egypt's history, culture, and landscapes to design unique and authentic journeys. Whether exploring the majestic temples, cruising the Nile, or discovering hidden treasures, our tours offer a truly Egyptian experience."
+  "AboutPage": {
+    "title": "ABOUT US",
+    "title1": "OUR MISSION",
+    "p1": "To bring the wonders of Egypt to life through immersive and unforgettable travel experiences.",
+    "title2": "WHO WE ARE",
+    "p2": "SolDelNilo is a travel company dedicated to showcasing the rich heritage and timeless beauty of Egypt. Our team of experts is passionate about crafting exceptional tours that reveal the magic of this ancient land.",
+    "title3": "WHY SOLDELNILO",
+    "p3": "We draw inspiration from Egypt's history, culture, and landscapes to design unique and authentic journeys. Whether exploring the majestic temples, cruising the Nile, or discovering hidden treasures, our tours offer a truly Egyptian experience."
   },
-  "ContactPage":{
-    "title":"Contact Us",
-    "p":"Feel free to reach out through our contact form — your message will be delivered directly to our official email. Our dedicated team will review it and respond promptly to ensure a smooth and professional communication experience."
+  "ContactPage": {
+    "title": "Contact Us",
+    "p": "Feel free to reach out through our contact form — your message will be delivered directly to our official email. Our dedicated team will review it and respond promptly to ensure a smooth and professional communication experience."
   },
   "SignUnForm": {
     "title": "Create Your Account",

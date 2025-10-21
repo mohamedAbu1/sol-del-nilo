@@ -1,32 +1,13 @@
+"use client"
 import { useTranslations } from "next-intl";
 import React from "react";
-import { FaMapMarkerAlt, FaCalendarAlt } from "react-icons/fa";
-
+import { GetTours } from "@/lib/constants/FixedTexts";
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const SectionFive = () => {
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const t = useTranslations("HomeHeroPage");
-
-  const tours = [
-    {
-      title:
-        "Chery Tiggo 3 2025",
-      description: t("SCSD"),
-      duration: "1 Day",
-      image: "/assets/Copilot_20251013_105157.png",
-    },
-    {
-      title: "Toyota Hiace",
-      description: t("SCSD2"),
-      duration: "5 Days",
-      image: "/assets/Copilot_20251013_110329.png",
-    },
-    {
-      title: "Toyota Coaster",
-      description: t("SCSD3"),
-      duration: "4 Days",
-      image: "/assets/Copilot_20251013_110540.png",
-    },
-  ];
-
+  const Car = GetTours(t);
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   return (
     <section
       id="section-five"
@@ -50,7 +31,7 @@ const SectionFive = () => {
 
       {/* ✅ شبكة الكروت المتجاوبة */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-screen-xl">
-        {tours.map((tour, index) => (
+        {(Car || []).map((tour, index) => (
           <div
             key={index}
             style={{ height: "440px" }}
@@ -73,21 +54,16 @@ const SectionFive = () => {
               <h3 className="text-lg font-bold text-gray-600 dark:text-gray-200 mb-2">
                 {tour.title}
               </h3>
-              <p style={{fontSize:"15px"}} className="text-gray-500 dark:text-gray-400 mb-4">
+              <p
+                style={{ fontSize: "15px" }}
+                className="text-gray-500 dark:text-gray-400 mb-4"
+              >
                 {tour.description}
               </p>
-          
             </div>
           </div>
         ))}
       </div>
-
-      {/* زر اكتشف الكل
-      <div className="text-center mt-12">
-        <button className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-full hover:bg-blue-700 transition">
-          DISCOVER ALL →
-        </button>
-      </div> */}
     </section>
   );
 };

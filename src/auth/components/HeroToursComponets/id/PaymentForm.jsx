@@ -25,6 +25,7 @@ const PaymentForm = ({
   setGuidePriceTotal,
   selectedOptions,
   selectedOptions2,
+  setHasBooked,
   bookingData,
   setBookingData,
   finalPrice,
@@ -70,10 +71,6 @@ const PaymentForm = ({
 
   const handleBookingChange = (e) => {
     const { name, value } = e.target;
-    // // ✅ تحديث قيمة nan كرقم
-    // if (name === "people") {
-    //   setNan(parseInt(value) || 0);
-    // }
     setBookingData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -85,7 +82,7 @@ const PaymentForm = ({
   useEffect(() => {
     const adults = parseInt(bookingData.people) || 0;
     const children = parseInt(bookingData.childrenCount) || 0;
-    const baseCount = adults + children ;
+    const baseCount = adults + children;
 
     // ✅ حساب سعر اللغات المختارة
     const selectedLanguages = Object.entries(bookingData.guideLanguages)
@@ -141,7 +138,7 @@ const PaymentForm = ({
   return (
     <Box
       sx={{
-        width: "100%",
+        width: "50%",
         maxWidth: "900px",
         height: "fit-content",
         mt: 19,
@@ -179,7 +176,7 @@ const PaymentForm = ({
               label="Number of people"
               type="text"
               name="people"
-              value={bookingData.people}
+              value={bookingData.people || ""}
               onChange={(e) => {
                 const value = e.target.value;
                 if (/^\d{0,3}$/.test(value)) {
@@ -274,7 +271,7 @@ const PaymentForm = ({
                       label="How many children?"
                       type="text"
                       inputMode="numeric"
-                      value={bookingData.childrenCount}
+                      value={bookingData.childrenCount || ""}
                       onChange={(e) =>
                         handleChildrenCountChange(e.target.value)
                       }
@@ -337,7 +334,7 @@ const PaymentForm = ({
                             label={`Child Age ${index + 1}`}
                             type="text"
                             inputMode="numeric"
-                            value={age}
+                            value={age || ""}
                             onChange={(e) =>
                               handleChildAgeChange(index, e.target.value)
                             }
@@ -487,7 +484,7 @@ const PaymentForm = ({
                     {bookingData.petType === "other" && (
                       <TextField
                         label="Animal type"
-                        value={bookingData.customPetType}
+                        value={bookingData.customPetType || ""}
                         onChange={(e) => {
                           const value = e.target.value;
 
@@ -674,51 +671,14 @@ const PaymentForm = ({
                     Payment Options
                   </Typography>
 
-                  <Box sx={{ width: "100%", maxWidth: 400 }}>
-                    <PayPalScriptProvider
-                      options={{
-                        "client-id":
-                          "ASpH7rWCv_P-4SgXxj_aSpjo_j4WqVn3_ekqPAf-ODCjcqBsE2bE9VjxAIhrf2lf8Px437Zhg7PWwkne",
-                      }}
-                    >
-                      <PayPalButtons
-                        createOrder={(data, actions) => {
-                          return actions.order.create({
-                            purchase_units: [
-                              {
-                                amount: {
-                                  value: "100.00", // قيمة الرحلة
-                                },
-                              },
-                            ],
-                          });
-                        }}
-                        onApprove={async (data, actions) => {
-                          const details = await actions.order.capture();
-                          // ✅ إرسال بيانات الدفع إلى السيرفر
-                          await fetch("/api/paypal-confirm", {
-                            method: "POST",
-                            body: JSON.stringify({
-                              payerName: details.payer.name.given_name,
-                              payerEmail: details.payer.email_address,
-                              amount: details.purchase_units[0].amount.value,
-                              currency:
-                                details.purchase_units[0].amount.currency_code,
-                              status: details.status,
-                              orderId: details.id,
-                            }),
-                          });
-                        }}
-                      />
-                    </PayPalScriptProvider>
-                  </Box>
-
                   <StripeCheckoutButton
                     tour={tour}
                     user={user}
+                    setNan={setNan}
                     finalPriceAfterRival={finalPriceAfterRival}
                     selectedExtras={selectedExtras}
                     nan={nan}
+                    setHasBooked={setHasBooked}
                     bookingData={bookingData}
                     setBookingData={setBookingData}
                   />

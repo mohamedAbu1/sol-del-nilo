@@ -3,25 +3,25 @@ import React from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { Box, Button, TextField } from "@mui/material";
 import { toast } from "react-toastify";
-const ImageCollection = ({ selectedImagesList, setSelectedImagesList }) => {
+const ImageCollection = ({ activityImages, setActivityImages }) => {
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-    const remainingSlots = 12 - selectedImagesList.length;
+    const remainingSlots = 12 - activityImages.length;
 
-    if (selectedImagesList.length + files.length < 2) {
+    if (activityImages.length + files.length < 2) {
       toast.error("❌ يجب ان تختار اكثر من صورتين");
       return;
     }
 
     const limitedFiles = files.slice(0, remainingSlots);
     const newImages = limitedFiles.map((file) => ({
-      name: "", // الاسم الذي يدخله المستخدم
-      url: file.name, // اسم الملف فقط للحفظ لاحقًا
-      preview: URL.createObjectURL(file), // عرض الصورة في الواجهة
+      name: file.name, // ✅ اسم الملف الأصلي
+      label: "", // ✅ وصف خاص إن أردت
+      url: URL.createObjectURL(file), // ✅ للعرض
       file,
     }));
 
-    setSelectedImagesList((prev) => [...prev, ...newImages]);
+    setActivityImages((prev) => [...prev, ...newImages]);
   };
 
   return (
@@ -50,7 +50,7 @@ const ImageCollection = ({ selectedImagesList, setSelectedImagesList }) => {
       </label>
 
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: 3, mt: 3 }}>
-        {selectedImagesList.map((img, index) => (
+        {activityImages.map((img, index) => (
           <Box
             key={index}
             position="relative"
@@ -59,9 +59,7 @@ const ImageCollection = ({ selectedImagesList, setSelectedImagesList }) => {
             <Button
               size="small"
               onClick={() => {
-                setSelectedImagesList((prev) =>
-                  prev.filter((_, i) => i !== index)
-                );
+                setActivityImages((prev) => prev.filter((_, i) => i !== index));
                 URL.revokeObjectURL(img.url);
               }}
               sx={{
@@ -79,7 +77,7 @@ const ImageCollection = ({ selectedImagesList, setSelectedImagesList }) => {
             </Button>
 
             <img
-              src={img.preview}
+              src={img.url}
               alt={`image-${index}`}
               style={{
                 width: "100%",
@@ -90,12 +88,12 @@ const ImageCollection = ({ selectedImagesList, setSelectedImagesList }) => {
             />
 
             <TextField
-              value={img.url}
+              value={img.name}
               onChange={(e) => {
                 const newName = e.target.value;
-                setSelectedImagesList((prev) =>
+                setActivityImages((prev) =>
                   prev.map((item, i) =>
-                    i === index ? { ...item, url: newName } : item
+                    i === index ? { ...item, name: newName } : item
                   )
                 );
               }}
@@ -123,12 +121,12 @@ const ImageCollection = ({ selectedImagesList, setSelectedImagesList }) => {
             />
 
             <TextField
-              value={img.name}
+              value={img.label}
               onChange={(e) => {
                 const newLabel = e.target.value;
-                setSelectedImagesList((prev) =>
+                setActivityImages((prev) =>
                   prev.map((item, i) =>
-                    i === index ? { ...item, name: newLabel } : item
+                    i === index ? { ...item, label: newLabel } : item
                   )
                 );
               }}

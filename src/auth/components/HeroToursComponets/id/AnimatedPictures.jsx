@@ -7,26 +7,45 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
+import { useTripContext } from "@/context/TripContext";
+import { useParams } from "next/navigation";
+const AnimatedPictures = () => {
+  const { tours } = useTripContext(); // ✅ تعديل هنا
+  const params = useParams();
+  const tourId = params?.id;
 
-const AnimatedPictures = ({ tour }) => {
-  const includesTexts = tour.includes?.map((item) => item.text) || [];
+  const tour = tours.find((t) => t.id === tourId); // ✅ تعديل هنا
+
   const [showGrid, setShowGrid] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setShowGrid((prev) => !prev);
-    }, 20000); // تبديل كل 20 ثانية
-
+    }, 20000);
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    console.log("بيانات الرحلة:", tour);
+    console.log("الصور:", tour?.image);
+  }, [tour]);
+
+  if (!tour || !Array.isArray(tour.image) || tour.image.length === 0) {
+    return (
+      <div className="text-center text-gray-500 py-10">
+        لا توجد صور متاحة لهذه الرحلة.
+      </div>
+    );
+  }
+
   return (
     <div
       style={{
-        width: "100vw",
         height: "80vh",
         overflow: "hidden",
         position: "relative",
+        borderRadius: "20px",
       }}
     >
       {showGrid ? (
@@ -40,24 +59,25 @@ const AnimatedPictures = ({ tour }) => {
             animation: "fadeIn 2s ease-in-out",
           }}
         >
-          {tour.image.map((img, index) => (
-            <div
-              key={index}
-              style={{ position: "relative", width: "100%", height: "100%" }}
-            >
-              <Image
-                src={`/assets/${img.name}`}
-                alt={`Grid ${index}`}
-                fill
-                style={{
-                  objectFit: "cover",
-                  borderRadius: "20px",
-                  boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
-                }}
-                sizes="(max-width: 768px) 100vw, 33vw"
-              />
-            </div>
-          ))}
+          {Array.isArray(tour.image) &&
+            tour.image.map((img, index) => (
+              <div
+                key={index}
+                style={{ position: "relative", width: "100%", height: "100%" }}
+              >
+                <Image
+                  src={`/assets/${img.name}`}
+                  alt={`Grid ${index}`}
+                  fill
+                  style={{
+                    objectFit: "cover",
+                    borderRadius: "20px",
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+                  }}
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                />
+              </div>
+            ))}
         </div>
       ) : (
         <Swiper
@@ -66,7 +86,7 @@ const AnimatedPictures = ({ tour }) => {
           pagination={{ clickable: true }}
           autoplay={{ delay: 4000 }}
           loop={true}
-          loopAdditionalSlides={tour.length}
+          loopAdditionalSlides={tour.image.length}
           effect="fade"
           slidesPerView={1}
           watchSlidesProgress={true}
@@ -74,7 +94,7 @@ const AnimatedPictures = ({ tour }) => {
           style={{ width: "100%", height: "100%" }}
         >
           {tour.image.map((img, index) => (
-            <SwiperSlide key={`${index}-${img}`}>
+            <SwiperSlide key={`${index}-${img.name}`}>
               <div
                 style={{ position: "relative", width: "100%", height: "100%" }}
               >
@@ -90,7 +110,6 @@ const AnimatedPictures = ({ tour }) => {
                   sizes="100vw"
                 />
                 <div
-                  key={`text-${index}`} // ✅ مفتاح فريد لإعادة بناء النص
                   className="text-animate"
                   style={{
                     position: "absolute",
@@ -106,7 +125,7 @@ const AnimatedPictures = ({ tour }) => {
                     animation: "fadeSlideIn 3s ease-in-out forwards",
                   }}
                 >
-                  {img.label}{" "}
+                  {img.label}
                 </div>
               </div>
             </SwiperSlide>

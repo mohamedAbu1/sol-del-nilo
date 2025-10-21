@@ -1,154 +1,27 @@
 "use client";
-import { useEffect, useState } from "react";
 import { Drawer, Box, Pagination, Typography } from "@mui/material";
 import SearchAndControls from "./SearchAndControls";
 import DailyTourCard from "./DailyTourCard ";
 import SidebarFiltersMB from "./SidebarFiltersMB";
-import { useSearchParams, usePathname } from "next/navigation";
-const TourListings = ({ theme }) => {
-  const [openDrawer, setOpenDrawer] = useState(false);
-  const [viewMode, setViewMode] = useState("list");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [fadeKey, setFadeKey] = useState(0);
-  const [allTours, setAllTours] = useState([]);
-  const [sortBy, setSortBy] = useState("alphabetical");
-  const itemsPerPage = 6;
-const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const destination = searchParams.get("destination")?.split(",") || [];
-  const category = searchParams.get("category")?.split(",") || [];
-  const date = searchParams.get("date") || "";
-  const minPrice = searchParams.get("minPrice") || "0";
-  const maxPrice = searchParams.get("maxPrice") || "14000";
-  const duration = searchParams.get("duration") || "";
-  const search = searchParams.get("search") || "All";
-    const [searchText, setSearchText] = useState(search);
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    params.set("search", searchText);
-    const newUrl = `${pathname}?${params.toString()}`;
-    window.history.replaceState({}, "", newUrl);
-  }, [searchText]);
-  const handlePageChange = (e, value) => {
-    setCurrentPage(value);
-    setFadeKey((prev) => prev + 1);
-  };
-
-  useEffect(() => {
-    const fetchTours = async () => {
-      try {
-        const params = new URLSearchParams(window.location.search);
-        const query = new URLSearchParams({
-          destination: params.get("destination") || "",
-          category: params.get("category") || "",
-          date: params.get("date") || "",
-          minPrice: params.get("minPrice") || "0",
-          maxPrice: params.get("maxPrice") || "14000",
-          // search: params.get("search") || "All",
-        }).toString();
-
-        const res = await fetch(`/api/tours${query ? `?${query}` : ""}`);
-        const data = await res.json();
-
-        if (res.ok) {
-          setAllTours(data.tours || []);
-          setFadeKey((prev) => prev + 1);
-        } else {
-          console.error("❌ خطأ في جلب الرحلات:", data.error);
-        }
-      } catch (err) {
-        console.error("❌ فشل الاتصال:", err);
-      }
-    };
-
-    fetchTours();
-  }, [searchParams.toString()]);
-
-  // console.log("📦 allTours:", allTours);
-
-  const filteredTours = allTours.filter((tour, index) => {
-    const tourCategory = (tour.category?.name || tour.category || "")
-      .trim()
-      .toLowerCase();
-    const tourCity = (tour.city?.name || tour.city || "").trim().toLowerCase();
-    const tourPrice = parseFloat(tour.price);
-    const tourDuration = parseInt(tour.TripDuration);
-
-    // فلترة متعددة التصنيفات
-    const matchesCategory =
-      category.length === 0 ||
-      category.some((cat) => tourCategory === cat.trim().toLowerCase());
-
-    // فلترة متعددة الوجهات
-    const matchesDestination =
-      destination.length === 0 ||
-      destination.some((d) => tourCity === d.trim().toLowerCase());
-
-    // فلترة السعر بين minPrice و maxPrice
-    const matchesPrice =
-      !isNaN(tourPrice) &&
-      tourPrice >= parseFloat(minPrice) &&
-      tourPrice <= parseFloat(maxPrice);
-
-    // فلترة التاريخ (مرنة)
-    const matchesDate =
-      date === "" || (tour.date ? tour.date.startsWith(date) : true);
-
-    // فلترة المدة بين minDuration و maxDuration
-    const minDuration = parseInt(searchParams.get("minDuration") || "0");
-    const maxDuration = parseInt(searchParams.get("maxDuration") || "60"); // قيمة افتراضية كبيرة
-
-    const matchesDuration =
-      !isNaN(tourDuration) &&
-      tourDuration >= minDuration &&
-      tourDuration <= maxDuration;
-
-const matchesSearch =
-  searchText === "All" ||
-  tour.title.toLowerCase().includes(searchText.toLowerCase()) ||
-  tour.description?.toLowerCase().includes(searchText.toLowerCase());
-    // طباعة للتتبع
-    console.log(`🎯 Tour ${index + 1}:`, {
-      title: tour.title,
-      category: tourCategory,
-      city: tourCity,
-      price: tour.price,
-      date: tour.date,
-      TripDuration: tour.TripDuration,
-      matchesCategory,
-      matchesDestination,
-      matchesPrice,
-      matchesDate,
-      matchesDuration,
-    });
-
-    return (
-      matchesCategory &&
-      matchesDestination &&
-      matchesPrice &&
-      matchesDate &&
-      matchesDuration &&
-      matchesSearch
-    );
-  });
-
-  // console.log("✅ filteredTours:", filteredTours);
-
-  let sortedTours = [...filteredTours];
-  if (sortBy === "alphabetical") {
-    sortedTours.sort((a, b) => a.title.localeCompare(b.title));
-  } else if (sortBy === "price") {
-    sortedTours.sort((a, b) => a.price - b.price);
-  } else if (sortBy === "duration") {
-    sortedTours.sort((a, b) => a.TripDuration - b.TripDuration);
-  } else if (sortBy === "popular") {
-    sortedTours.sort((a, b) => b.reviews.length - a.reviews.length);
-  }
-
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const visibleTours = sortedTours.slice(startIndex, endIndex);
+import { useAppContext } from "@/context/AppContext";
+import { useAppQueryContext } from "@/context/AppQueryContext";
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+const TourListings = () => {
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  const { theme } = useAppContext();
+  const {
+    openDrawer,
+    setOpenDrawer,
+    viewMode,
+    fadeKey,
+    currentPage,
+    setCurrentPage,
+    itemsPerPage,
+    sortedTours,
+    visibleTours,
+  } = useAppQueryContext();
+  console.log(visibleTours);
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   return (
     <>
       <Drawer
@@ -157,34 +30,27 @@ const matchesSearch =
         onClose={() => setOpenDrawer(false)}
         PaperProps={{
           sx: {
-            backgroundColor: theme === "dark" ? "#212121" : "#fff",
+            backgroundColor: theme === "dark" ? "#030712" : "#fff",
             color: "#fff",
             width: "80%",
             padding: 2,
+            borderRadius: "20px",
           },
         }}
       >
-        <SidebarFiltersMB theme={theme} />
+        <SidebarFiltersMB />
       </Drawer>
 
       <main
         className="w-full flex flex-col"
         style={{
-          backgroundColor: theme === "dark" ? "#121212" : "#f9f9f9",
+          backgroundColor: theme === "dark" ? "#030712" : "#f9f9f9",
           minHeight: "100vh",
           transition: "background-color 0.4s ease",
+          borderRadius: "20px",
         }}
       >
-        <SearchAndControls
-          onOpenFilters={() => setOpenDrawer(true)}
-          viewMode={viewMode}
-          setViewMode={setViewMode}
-          theme={theme}
-          sortBy={sortBy}
-          setSortBy={setSortBy}
-          searchText={searchText}
-          setSearchText={setSearchText}
-        />
+        <SearchAndControls />
 
         <Box
           key={fadeKey}
@@ -202,24 +68,43 @@ const matchesSearch =
         >
           {visibleTours.length > 0 ? (
             visibleTours.map((tour) => (
-              <DailyTourCard
-                key={tour.id}
-                tour={tour}
-                themee={theme}
-                viewMode={viewMode}
-              />
+              <DailyTourCard key={tour.id} tour={tour} viewMode={viewMode} />
             ))
           ) : (
-            <Typography sx={{ px: 4, py: 2, color: "#999" }}>
-              There are no flights matching the current filters.
-            </Typography>
+            <div className="w-full text-center py-16 px-4 flex flex-col items-center justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-16 w-16 text-yellow-500 mb-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9.75 9.75h.008v.008H9.75V9.75zm4.5 0h.008v.008h-.008V9.75zM12 15.75c1.5 0 2.25-1.5 2.25-1.5H9.75s.75 1.5 2.25 1.5z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                للأسف، لا توجد رحلات متوفرة حاليًا لهذه الفئة
+              </h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                حاول اختيار فئة أخرى أو تعديل الفلاتر للحصول على نتائج.
+              </p>
+            </div>
           )}
         </Box>
 
         <Pagination
           count={Math.ceil(sortedTours.length / itemsPerPage)}
           page={currentPage}
-          onChange={handlePageChange}
+          onChange={(e, value) => setCurrentPage(value)}
           variant="outlined"
           shape="rounded"
           size="medium"

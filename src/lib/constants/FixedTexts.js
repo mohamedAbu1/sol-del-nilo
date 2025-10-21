@@ -42,10 +42,6 @@ export const getHeroText = (t) => [
 ]
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 export const getSliderToursDiv = (t) => [
-  // {img:img1,title:t("TitleDivPic"),p:t("PDivPic"),btn:t("BtnDivPic")},
-  // {img:img2,title:t("TitleDivPic"),p:t("PDivPic"),btn:t("BtnDivPic")},
-  // {img:img3,title:t("TitleDivPic"),p:t("PDivPic"),btn:t("BtnDivPic")},
-  // {img:img4,title:t("TitleDivPic"),p:t("PDivPic"),btn:t("BtnDivPic")},
   {
     image: "/assets/Temple_of_the_Elephants.png",
     title: t("TitleDivPic"),
@@ -89,3 +85,40 @@ export const AdviceCard = [
   {id:"4",imageUrl:img4,title:"🗣️ Learn some basic Arabic words",description:"Words like thank you, please, and how much? help you communicate and show respect for the local culture."},
   {id:"8",imageUrl:img5,title:"📸 Respect the rules when photographing.",description:"Do not take photos of military or police installations."},
 ]
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+export const desktopImages = [
+  "/assets/Copilot_20251003_102123.png",
+  "/assets/Copilot_20251003_114530.png",
+  "/assets/Copilot_20251003_105735.png",
+  "/assets/Copilot_20251003_110337.png",
+];
+export const desktopImagesMB = [
+  "/assets/545371804_18083318650930067_5402798298470446398_n.jpg",
+  "/assets/489671803_18068665750930067_7121276910165743367_n.jpg",
+  "/assets/548898267_18083849644930067_2023880468351303706_n.jpg",
+  "/assets/553312854_18084731197930067_1648342695818561037_n.jpg",
+];
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+  export const GetTours = (t) => [
+    {
+      title:
+        "Chery Tiggo 3 2025",
+      description: t("SCSD"),
+      duration: "1 Day",
+      image: "/assets/Copilot_20251013_105157.png",
+    },
+    {
+      title: "Toyota Hiace",
+      description: t("SCSD2"),
+      duration: "5 Days",
+      image: "/assets/Copilot_20251013_110329.png",
+    },
+    {
+      title: "Toyota Coaster",
+      description: t("SCSD3"),
+      duration: "4 Days",
+      image: "/assets/Copilot_20251013_110540.png",
+    },
+  ];

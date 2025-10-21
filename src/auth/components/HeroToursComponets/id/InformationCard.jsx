@@ -51,6 +51,11 @@ const InformationCard = ({
   const { width2 } = useScreenSize();
   const router = useRouter();
   console.log(selectedOptions);
+  //   const includesArray = tour?.includes?.split(",").map((text, index) => ({
+  //   id: index,
+  //   text: text.trim(),
+  // }));
+
   return (
     <Box
       sx={{
@@ -152,7 +157,7 @@ const InformationCard = ({
                 value: `${tour.TripDuration} Day`,
                 style: { fontSize: "clamp(14px, 2vw, 20px)" },
               },
-            ].map((item, index) => (
+            ]?.map((item, index) => (
               <div
                 key={index}
                 style={{
@@ -200,7 +205,7 @@ const InformationCard = ({
         >
           <table className="w-full border border-[#d4a85f] text-left bg-white">
             <tbody>
-              {tour.tripprogram.map((i) => (
+              {tour?.tripprogram?.map((i) => (
                 <tr key={i.id} className="border-b border-[#d4a85f]">
                   <th
                     className="bg-[#d4a85f] text-white px-6 py-4 w-1/5"
@@ -233,9 +238,9 @@ const InformationCard = ({
       <Dividering />
 
       <AnimatedSection>
-        <div className="w-full flex flex-col md:flex-row gap-6">
+        <div className="w-full flex flex-col md:flex-col gap-6">
           {" "}
-          <div className="w-[100%] lg:w-[50%]">
+          <div className="w-[100%] lg:w-[100%]">
             <h1
               style={{
                 fontWeight: "700",
@@ -259,32 +264,34 @@ const InformationCard = ({
                   margin: 0,
                 }}
               >
-                {tour.includes.map((i) => (
-                  <li
-                    key={i.id}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "8px",
-                    }}
-                  >
-                    <FaCircle style={{ color: "#FF9800", fontSize: "8px" }} />
-                    <span
+                {Array.isArray(tour?.includes) &&
+                  tour.includes.map((i) => (
+                    <li
+                      key={i.id}
                       style={{
-                        fontSize: "clamp(14px, 2vw, 18px)",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "8px",
                       }}
-                      className="px-6 py-4 text-gray-600 capitalize dark:text-gray-400 flex flex-wrap"
                     >
-                      {i.text}
-                    </span>
-                  </li>
-                ))}
+                      <FaCircle style={{ color: "#FF9800", fontSize: "8px" }} />
+                      <span
+                        style={{
+                          fontSize: "clamp(14px, 2vw, 18px)",
+                        }}
+                        className="px-6 py-4 text-gray-600 capitalize dark:text-gray-400 flex flex-wrap"
+                      >
+                        {i.text}
+                      </span>
+                    </li>
+                  ))}
               </ul>
             </div>
           </div>
+          <Dividering />
           <div
             style={{
-              borderLeft: "2px dotted #FF9800",
+              // borderLeft: "2px dotted #FF9800",
               padding: "10px",
             }}
           >
@@ -301,7 +308,7 @@ const InformationCard = ({
             </h1>
             <div>
               <FormGroup sx={{ gap: "20px" }}>
-                {selectedOptions.map((option) => (
+                {selectedOptions?.map((option) => (
                   <FormControlLabel
                     key={option.key}
                     control={
@@ -328,7 +335,7 @@ const InformationCard = ({
                 ))}
               </FormGroup>
               <FormGroup sx={{ gap: "20px" }}>
-                {(selectedOptions2 || []).map((option) => (
+                {(selectedOptions2 || [])?.map((option) => (
                   <FormControlLabel
                     key={option.key}
                     control={

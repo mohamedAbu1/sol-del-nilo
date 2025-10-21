@@ -3,15 +3,15 @@ import { AiOutlineClose } from "react-icons/ai";
 import { Box, Button, TextField } from "@mui/material";
 import { toast } from "react-toastify";
 
-const ControlPanelImages = ({ selectedImages, setSelectedImages }) => {
+const ControlPanelImages = ({ mainImages, setMainImages }) => {
   // 📤 تحميل الصور من الجهاز
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-    const remainingSlots = 12 - selectedImages.length;
+    const remainingSlots = 12 - mainImages.length;
 
     if (
-      selectedImages.length + files.length > 10 ||
-      selectedImages.length + files.length < 2
+      mainImages.length + files.length > 10 ||
+      mainImages.length + files.length < 2
     ) {
       toast.error("❌ يجب اختيار ما بين 2 إلى 10 صورة.");
       return;
@@ -19,17 +19,24 @@ const ControlPanelImages = ({ selectedImages, setSelectedImages }) => {
 
     const limitedFiles = files.slice(0, remainingSlots);
     const newImages = limitedFiles.map((file) => ({
-      name: file.name, // ✅ تعبئة تلقائية باسم الصورة    
-      label: "", // ✅ وصف خاص للصورة
+      name: file.name,
+      label: "",
       url: URL.createObjectURL(file),
       file,
     }));
+    if (
+      mainImages.length + files.length > 10 ||
+      mainImages.length + files.length < 2
+    ) {
+      toast.error("❌ يجب اختيار ما بين 2 إلى 10 صورة.");
+      return;
+    }
 
-    setSelectedImages((prev) => [...prev, ...newImages]);
+    const updatedImages = [...mainImages, ...newImages];
+    setMainImages(updatedImages); // للعرض
   };
-console.log(selectedImages)
+  console.log(mainImages);
   return (
-
     <>
       <Box>
         <input
@@ -56,12 +63,12 @@ console.log(selectedImages)
         </label>
 
         <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mt: 2 }}>
-          {selectedImages.map((img, index) => (
+          {mainImages.map((img, index) => (
             <Box key={index} position="relative" sx={{ width: "150px" }}>
               <Button
                 size="small"
                 onClick={() => {
-                  setSelectedImages((prev) =>
+                  setMainImages((prev) =>
                     prev.filter((_, i) => i !== index)
                   );
                   URL.revokeObjectURL(img.url);
@@ -91,7 +98,7 @@ console.log(selectedImages)
                 value={img.name}
                 onChange={(e) => {
                   const newName = e.target.value;
-                  setSelectedImages((prev) =>
+                  setMainImages((prev) =>
                     prev.map((item, i) =>
                       i === index ? { ...item, name: newName } : item
                     )
@@ -125,7 +132,7 @@ console.log(selectedImages)
                 value={img.label}
                 onChange={(e) => {
                   const newLabel = e.target.value;
-                  setSelectedImages((prev) =>
+                  setMainImages((prev) =>
                     prev.map((item, i) =>
                       i === index ? { ...item, label: newLabel } : item
                     )

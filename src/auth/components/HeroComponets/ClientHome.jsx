@@ -10,22 +10,9 @@ import SectionThree from "./SectionThree";
 import SectionFour from "./SectionFour";
 import SectionFive from "./SectionFive";
 import SectionSix from "./SectionSix";
-import { useTheme } from "next-themes";
 import CitySection from "./CitySection";
-
-const desktopImages = [
-  "/assets/Copilot_20251003_102123.png",
-  "/assets/Copilot_20251003_114530.png",
-  "/assets/Copilot_20251003_105735.png",
-  "/assets/Copilot_20251003_110337.png",
-];
-const desktopImagesMB = [
-  "/assets/545371804_18083318650930067_5402798298470446398_n.jpg",
-  "/assets/489671803_18068665750930067_7121276910165743367_n.jpg",
-  "/assets/548898267_18083849644930067_2023880468351303706_n.jpg",
-  "/assets/553312854_18084731197930067_1648342695818561037_n.jpg",
-];
-
+import { desktopImages, desktopImagesMB } from "@/lib/constants/FixedTexts";
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 export default function ClientHome({ user }) {
   const [showWelcomeText, setShowWelcomeText] = useState(true);
   const [showHero, setShowHero] = useState(false);
@@ -33,13 +20,13 @@ export default function ClientHome({ user }) {
   const [showBubble, setShowBubble] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentIndexMB, setCurrentIndexMB] = useState(0);
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
   useEffect(() => {
     const timer1 = setTimeout(() => setShowWelcomeText(false), 1000);
     const timer2 = setTimeout(() => setShowHero(true), 2100);
     const timer3 = setTimeout(() => setHeroMoved(true), 6000);
     const timer4 = setTimeout(() => setShowBubble(true), 7500);
-
     return () => {
       clearTimeout(timer1);
       clearTimeout(timer2);
@@ -47,6 +34,7 @@ export default function ClientHome({ user }) {
       clearTimeout(timer4);
     };
   }, []);
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -54,6 +42,7 @@ export default function ClientHome({ user }) {
     }, 15000);
     return () => clearInterval(interval);
   }, []);
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -61,12 +50,8 @@ export default function ClientHome({ user }) {
     }, 15000);
     return () => clearInterval(interval);
   }, []);
-  const { theme, setTheme } = useTheme();
-  useEffect(() => {
-    if (theme) {
-      console.log("Current theme is:", theme);
-    }
-  }, [theme]);
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
   return (
     <>
       <main
@@ -196,12 +181,12 @@ export default function ClientHome({ user }) {
       </main>
 
       {/* الأقسام التالية */}
-      <SectionTow theme={theme} />
-      <SectionThree theme={theme} />
-      <CitySection theme={theme}/>
-      <SectionFour theme={theme} />
-      <SectionFive theme={theme} />
-      <SectionSix theme={theme} />
+      <SectionTow />
+      <SectionThree />
+      <CitySection />
+      <SectionFour />
+      <SectionFive/>
+      <SectionSix />
     </>
   );
 }

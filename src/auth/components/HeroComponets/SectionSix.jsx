@@ -3,11 +3,15 @@ import { useTranslations } from "next-intl";
 import React from "react";
 import { useRouter } from "next/navigation";
 import { Link } from "@/i18n/navigation";
-
+import { getNavPath } from "@/lib/constants/FixedTexts";
+const img = "/assets/Copilot_20251005_003854.png";
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const SectionSix = () => {
-  const img = "/assets/Copilot_20251005_003854.png";
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const t = useTranslations("HomeHeroPage");
+  const NavPath = getNavPath(t);
   const router = useRouter();
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
   return (
     <section
@@ -60,32 +64,31 @@ const SectionSix = () => {
 
           {/* روابط الفوتر */}
           <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-400">
-            <Link href="/" className="hover:text-yellow-400 transition">
-              Home
-            </Link>
-            <Link
-              href={{
-                pathname: "/tours",
-                query: {
-                  destination: "Alexandria",
-                  category: "Wellness & Medical",
-                  date: new Date().toISOString().split("T")[0],
-                  duration: "61",
-                  minPrice: "0",
-                  maxPrice: "14000",
-                  search: "Alexandria",
-                },
-              }}
-              className="hover:text-yellow-400 transition"
-            >
-              Tours
-            </Link>
-            <Link href="/about" className="hover:text-yellow-400 transition">
-              About Us
-            </Link>
-            <Link href="/contact" className="hover:text-yellow-400 transition">
-              Contact
-            </Link>
+            {NavPath.map((i, index) => {
+              const isTours = i.path === "/tours";
+              const today = new Date().toISOString().split("T")[0];
+
+              const linkProps = isTours
+                ? {
+                    pathname: "/tours",
+                    query: {
+                      destination: "All",
+                      category: "All",
+                      date: today,
+                      duration: "61",
+                      minPrice: "0",
+                      maxPrice: "14000",
+                      search: "",
+                    },
+                  }
+                : i.path;
+
+              return (
+                <Link href={linkProps} key={index} style={{ color: "#ff9800" }}>
+                  {i.label}
+                </Link>
+              );
+            })}
           </div>
 
           {/* سوشيال ميديا */}

@@ -11,15 +11,21 @@ import { useParams } from "next/navigation";
 import { useScreenSize } from "../../../../../auth/hooks/screenSize";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-
+import Lodaing from "../../../lodaing";
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const Page = () => {
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
   const { id } = useParams();
   const [tour, setTour] = useState(null);
   const { width } = useScreenSize();
   const router = useRouter();
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState(null);
   const [fullScreenOpen, setFullScreenOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
   useEffect(() => {
     if (!id) return;
@@ -35,6 +41,7 @@ const Page = () => {
         }
 
         setTour(result);
+        setLoading(false); // ✅ تم التحميل
       } catch (error) {
         console.error("❌ Fetch Error:", error.message);
       }
@@ -42,11 +49,35 @@ const Page = () => {
 
     fetchTourWithImages();
   }, [id]);
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
-  const handleImageClick = (img) => {
-    setSelectedImage(img);
+  const handleImageClick = (index) => {
+    setSelectedIndex(index);
     setFullScreenOpen(true);
   };
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+  // ✅ التغيير التلقائي كل 4 ثواني
+  useEffect(() => {
+    let interval;
+
+    if (fullScreenOpen && tour?.tourimage?.length > 0) {
+      interval = setInterval(() => {
+        setSelectedIndex((prevIndex) => {
+          const nextIndex = prevIndex + 1;
+          return nextIndex >= tour.tourimage.length ? 0 : nextIndex;
+        });
+      }, 4000);
+    }
+
+    return () => clearInterval(interval);
+  }, [fullScreenOpen, tour]);
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+  if (loading || !tour) {
+    return <Lodaing />;
+  }
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
   return (
     <Box sx={{ padding: 4 }}>
@@ -81,7 +112,7 @@ const Page = () => {
                   src={`/assets/${img.url}`}
                   alt={img.name}
                   loading="lazy"
-                  onClick={() => handleImageClick(img)}
+                  onClick={() => handleImageClick(index)}
                   style={{
                     width: "100%",
                     borderRadius: "30px",
@@ -114,13 +145,13 @@ const Page = () => {
         </ImageList>
       )}
 
-      {/* ✅ نافذة عرض الصورة بالحجم الكامل */}
+      {/* ✅ نافذة عرض الصورة بالحجم الكامل مع التغيير التلقائي */}
       <AnimatePresence>
-        {fullScreenOpen && selectedImage && (
+        {fullScreenOpen && selectedIndex !== null && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
             style={{
               position: "fixed",
@@ -133,20 +164,22 @@ const Page = () => {
               justifyContent: "center",
               alignItems: "center",
               zIndex: 9999,
+              flexDirection: "column",
               cursor: "zoom-out",
             }}
             onClick={() => setFullScreenOpen(false)}
           >
             <motion.img
-              src={`/assets/${selectedImage.url}`}
-              alt={selectedImage.name}
-              initial={{ y: 50, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: 50, opacity: 0 }}
+              key={tour.tourimage[selectedIndex].url}
+              src={`/assets/${tour.tourimage[selectedIndex].url}`}
+              alt={tour.tourimage[selectedIndex].name}
+              initial={{ x: 100, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: -100, opacity: 0 }}
               transition={{ duration: 0.5 }}
               style={{
                 maxWidth: "90%",
-                maxHeight: "90%",
+                maxHeight: "80%",
                 borderRadius: "20px",
                 boxShadow: "0 4px 20px rgba(0,0,0,0.5)",
               }}

@@ -29,7 +29,21 @@ const BtnHero = () => {
         initial="hidden"
         animate="visible"
         transition={{ delay: 0.2, duration: 0.5 }}
-        onClick={() => router.push("/tours")}
+        onClick={() => {
+          const today = new Date().toISOString().split("T")[0];
+
+          const query = new URLSearchParams({
+            destination: "All",
+            category: "All",
+            date: today,
+            duration: "5",
+            minPrice: "0",
+            maxPrice: "14000",
+            search: "All",
+          }).toString();
+
+          router.push(`/tours?${query}`, { scroll: false, shallow: true });
+        }}
       >
         <Button className={"BtnHero1 text-gray-400"}>
           <BiSearch />

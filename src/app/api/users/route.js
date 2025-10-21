@@ -55,42 +55,42 @@
 //     return NextResponse.json({ error: "فشل في حذف المستخدم" }, { status: 500 });
 //   }
 // }
+import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
-import { supabase } from "@/lib/supabaseClient";
 
-// ✅ جلب المستخدمين مع الرسائل المرتبطة بهم
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
+
 export async function GET() {
   try {
-    const { data, error } = await supabase.from("user").select(`
+    const { data, error } = await supabase
+      .from("user")
+      .select(`
         id,
         name,
         email,
-        created_at,
         role,
-        isActive,
-        messages (
-          id,
-          subject,
-          message,
-          phone,
-          created_at
-        )
+        created_at,
+        messages(*),
+        reviews(*),
+        payments(*)
       `);
 
     if (error) {
-      console.error("❌ خطأ من Supabase:", error.message);
-      return NextResponse.json(
-        { error: "فشل في جلب البيانات" },
-        { status: 500 }
-      );
+      console.error("❌ Supabase error:", error.message);
+      return NextResponse.json({ error: "فشل في جلب البيانات" }, { status: 500 });
     }
 
+    // ✅ بدون فلترة
     return NextResponse.json({ users: data }, { status: 200 });
-  } catch (error) {
-    console.error("❌ خطأ غير متوقع:", error);
+  } catch (err) {
+    console.error("❌ Unexpected error:", err);
     return NextResponse.json({ error: "فشل في جلب البيانات" }, { status: 500 });
   }
 }
+
 
 // ✅ حذف مستخدم حسب الصلاحيات
 export async function DELETE(request) {

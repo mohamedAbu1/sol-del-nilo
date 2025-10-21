@@ -938,3 +938,898 @@ export default SignUnForm;
             setAnchorElDuration(null);
           };
           const today = new Date().toISOString().split("T")[0];
+
+
+
+
+     // import prisma from "@/lib/utils/db";
+     // import { NextResponse } from "next/server";
+     // import { TourSchema } from "@/lib/utils/CheckSchema";
+     // export async function POST(request) {
+     //   try {
+     //     const body = await request.json();
+     //     console.log("📦 البيانات المستلمة:", body);
+     //     if (!body.title || !body.description || !body.price) {
+     //       return NextResponse.json(
+     //         { error: "Missing required fields" },
+     //         { status: 405 }
+     //       );
+     //     }
+     //     const validation = TourSchema.safeParse(body);
+     //     if (!validation.success) {
+     //       return NextResponse.json(
+     //         { error: "البيانات غير صالحة", details: validation.error.format() },
+     //         { status: 400 }
+     //       );
+     //     }
+     //     if (
+     //       !Array.isArray(body.tripprogram) ||
+     //       body.tripprogram.length === 0 ||
+     //       body.tripprogram.some(
+     //         (step) =>
+     //           !step.time ||
+     //           !step.program ||
+     //           step.time.trim() === "" ||
+     //           step.program.trim() === ""
+     //       )
+     //     ) {
+     //       return NextResponse.json(
+     //         { error: "برنامج الرحلة غير مكتمل أو فارغ" },
+     //         { status: 400 }
+     //       );
+     //     }
+     //     const newTour = await prisma.tour.create({
+     //       data: {
+     //         title: body.title,
+     //         description: body.description,
+     //         price: parseFloat(body.price),
+     //         DayPeople: body.DayPeople,
+     //         theDate: body.theDate,
+     //         TripDuration: body.TripDuration,
+     //         NumberOfParticipants: body.NumberOfParticipants,
+     //         image: body.image,
+     //         category: { connect: { id: body.categoryId } },
+     //         city: { connect: { id: body.cityId } },
+     //       },
+     //     });
+     //     await prisma.tripProgram.createMany({
+     //       data: body.tripprogram.map((step) => ({
+     //         time: step.time,
+     //         program: step.program,
+     //         tourId: newTour.id,
+     //       })),
+     //     });
+     //     await prisma.includes.createMany({
+     //       data: body.includes.map((step) => ({
+     //         text: step.text,
+     //         tourId: newTour.id,
+     //       })),
+     //     });
+     
+     //     return NextResponse.json(newTour, { status: 201 });
+     //   } catch (error) {
+     //     console.error("❌ خطأ في إنشاء الرحلة:", error);
+     //     return NextResponse.json(
+     //       { error: "خطأ داخلي في السيرفر" },
+     //       { status: 500 }
+     //     );
+     //   }
+     // }
+     // export async function GET() {
+     //   try {
+     //     const tours = await prisma.tour.findMany({
+     //       include: {
+     //         category: true,
+     //         city: true,
+     //         tripprogram: true,
+     //         includes: true,
+     //       },
+     //       orderBy: { createdAt: "desc" },
+     //     });
+     //     return NextResponse.json({ tours }, { status: 200 });
+     //   } catch (error) {
+     //     console.error("❌ خطأ أثناء جلب الرحلات:", error);
+     //     return NextResponse.json({ error: "فشل في جلب الرحلات" }, { status: 500 });
+     //   }
+     // }
+
+
+
+     // export async function GET() {
+//   try {
+//     const { data: tours, error } = await supabase
+//       .from("tour")
+//       .select(`
+//             *,
+//             category(*),
+//             city(*),
+//             tripprogram(*),
+//             includes(*)
+//           `)
+//       .order("createdAt", { ascending: false });
+
+//     if (error) throw error;
+
+//     return NextResponse.json({ tours }, { status: 200 });
+//   } catch (error) {
+//     console.error("❌ خطأ أثناء جلب الرحلات:", error);
+//     return NextResponse.json({ error: "فشل في جلب الرحلات" }, { status: 500 });
+//   }
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  useEffect(() => {
+    return () => {
+      selectedImages.forEach((img) => {
+        if (img.url) URL.revokeObjectURL(img.url);
+      });
+    };
+  }, [selectedImages]);
+  console.log(selectedImages);
+  // ✅ تحميل المدن والتصنيفات
+  useEffect(() => {
+    const fetchData = async () => {
+      const [cityRes, categoryRes] = await Promise.all([
+        supabase.from("city").select("*"),
+        supabase.from("category").select("*"),
+      ]);
+
+      if (cityRes.error || categoryRes.error) {
+        toast.error("❌ فشل في تحميل المدن أو التصنيفات");
+        return;
+      }
+
+      setCities(cityRes.data);
+      setCategories(categoryRes.data);
+    };
+
+    fetchData();
+  }, []);
+
+  // ✅ تحميل جميع الرحلات
+  useEffect(() => {
+    const fetchTours = async () => {
+      const { data, error } = await supabase.from("tour").select(`
+        id, title, description, price, theDate, TripDuration, DayPeople,
+        cityId, rival, categoryId, image, tripprogram(*), includes(*),payments(*),reviews(*),tourimage(*)
+      `);
+
+      if (error) {
+        toast.error("❌ فشل في تحميل بيانات الرحلات");
+        return;
+      }
+
+      setToursData(data);
+    };
+
+    fetchTours();
+  }, []);
+
+  // ✅ تحميل بيانات الرحلة المحددة
+  useEffect(() => {
+    const fetchTour = async () => {
+      const { data, error } = await supabase
+        .from("tour")
+        .select(
+          `
+          id, title, description, price, theDate, TripDuration, rival,
+          DayPeople, cityId, categoryId, image, tripprogram(*), includes(*),payments(*),reviews(*),tourimage(*)
+        `
+        )
+        .eq("id", toursID)
+        .single();
+
+      if (error) {
+        toast.error("❌ فشل في تحميل بيانات الرحلة");
+        return;
+      }
+
+      setTour(data);
+    };
+
+    if (toursID) fetchTour();
+  }, [toursID]);
+
+  // ✅ تعبئة النموذج بالبيانات
+  useEffect(() => {
+    if (tour) {
+      const [_, peoplePart] = tour.DayPeople?.split("/") || [];
+
+      const formattedImages =
+        tour.image?.map((img) => ({
+          name: img.name || img,
+          label: img.label || "",
+        })) || [];
+
+      setFormData({
+        title: tour.title || "",
+        description: tour.description || "",
+        price: tour.price?.toString() || "",
+        theDate: tour.theDate || "",
+        TripDuration: tour.TripDuration || "",
+        people: peoplePart?.replace("People", "") || "1",
+        cityId: tour.cityId || "",
+        categoryId: tour.categoryId || "",
+        rival: tour.rival || "",
+        image: formattedImages,
+        tripprogram:
+          tour.tripprogram?.map((item) => ({
+            time: item.time || "",
+            program: item.program || "",
+          })) || [],
+        includes:
+          tour.includes?.map((item) => ({
+            text: item.text || "",
+          })) || [],
+      });
+
+      const loadedImages =
+        formattedImages.map((img) => ({
+          ...img,
+          url: `${DOMAIN}/assets/${img.name}`,
+          file: null,
+        })) || [];
+
+      setSelectedImages(loadedImages);
+    }
+  }, [tour]);
+
+  // ✅ تحديث الحقول النصية مع منع اللغة العربية
+
+
+ 
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    toast.info("📤 جاري تجهيز البيانات...");
+
+    // ✅ تجهيز صور ControlPanelImages
+    const imageObjects = selectedImages.map((img) => ({
+      name: img.name,
+      label: img.label,
+    }));
+
+    // ✅ تجهيز صور ImageCollection المعدلة
+    const tourimagePayload = selectedImagesList.map((img) => ({
+      name: img.name,
+      url: img.url, // تأكد أنه رابط صالح
+      label: img.label,
+      tourId: toursID,
+      created_at: new Date().toISOString(), // إذا كان مطلوبًا في الجدول
+    }));
+
+    // ✅ تجهيز بيانات الرحلة
+    const payload = {
+      ...formData,
+      price: parseFloat(formData.price),
+      DayPeople: `${formData.people}`,
+      image: imageObjects,
+    };
+
+    console.log("📦 Payload:", payload);
+
+    // ✅ تحديث بيانات الرحلة
+    const response = await axios.patch(`/api/tours/${toursID}`, payload);
+    if (response.status !== 200 && response.status !== 204) {
+      toast.error("❌ فشل في حفظ الرحلة");
+      return;
+    }
+
+    // ✅ التحقق من وجود صور قديمة قبل الحذف
+    const { data: existingImages, error: fetchError } = await supabase
+      .from("tourimage")
+      .select("id")
+      .eq("tourId", toursID);
+
+    if (fetchError) {
+      console.warn("⚠️ فشل في التحقق من الصور القديمة:", fetchError.message);
+    } else if (existingImages.length > 0) {
+      const { error: deleteError } = await supabase
+        .from("tourimage")
+        .delete()
+        .eq("tourId", toursID);
+
+      if (deleteError) {
+        console.error("❌ خطأ في حذف الصور:", deleteError.message);
+        toast.warn("⚠️ تم حفظ الرحلة لكن فشل حذف الصور القديمة");
+      }
+    }
+
+    // ✅ إدخال الصور الجديدة
+    const { error: insertError } = await supabase
+      .from("tourimage")
+      .insert(tourimagePayload);
+
+    if (insertError) {
+      console.error("❌ خطأ في حفظ الصور الجديدة:", insertError.message);
+      toast.warn("⚠️ تم حفظ الرحلة لكن فشل حفظ الصور الجديدة");
+    }
+
+    toast.success("✅ تم حفظ الرحلة والصور بنجاح");
+
+    // ✅ إعادة تعيين النموذج
+    setFormData({
+      title: "",
+      description: "",
+      price: "",
+      TripDuration: "",
+      people: "1",
+      categoryId: "",
+      cityId: "",
+      rival: "",
+      theDate: "",
+      image: [],
+      tripprogram: [{ time: "", program: "" }],
+      includes: [{ text: "" }],
+    });
+
+    setSelectedImages([]);
+    setSelectedImagesList([]);
+    setToursID("");
+    setTour(null);
+  } catch (error) {
+    console.error("❌ API Error:", error.response?.data || error.message);
+    toast.error(
+      `❌ ${error.response?.data?.error || "خطأ في الاتصال بـ API"}`
+    );
+  }
+};
+console.log(toursData)
+
+
+
+
+
+
+
+
+
+
+
+
+"use client";
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { useTripContext } from "./TripContext";
+import { useTripsContext } from "./TripsContext";
+
+const AppQueryContext = createContext();
+
+export const AppQueryContextProvider = ({ children }) => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const { tour } = useTripContext();
+  const { cities, categories } = useTripsContext();
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const [viewMode, setViewMode] = useState("list");
+  const [fadeKey, setFadeKey] = useState(0);
+  const itemsPerPage = 6;
+  const [sortBy, setSortBy] = useState("alphabetical");
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const cityFromQuery = searchParams.get("destination") || "";
+  const categoryFromQuery = searchParams.get("category") || "";
+  const date = searchParams.get("date") || "";
+  const minPrice = parseInt(searchParams.get("minPrice") || "0");
+  const maxPrice = parseInt(searchParams.get("maxPrice") || "14000");
+  const Nights = parseInt(searchParams.get("duration") || "0");
+
+  const [expanded, setExpanded] = useState(true);
+  const [expandedCategories, setExpandedCategories] = useState(true);
+  const [selectedDestinations, setSelectedDestinations] = useState(cityFromQuery ? [cityFromQuery] : []);
+  const [selectedCategories, setSelectedCategories] = useState(categoryFromQuery ? [categoryFromQuery] : []);
+  const [priceRange, setPriceRange] = useState([minPrice, maxPrice]);
+  const [durationRange, setDurationRange] = useState([0, Nights || 10]);
+
+  const [anchorElPrice, setAnchorElPrice] = useState(null);
+  const [anchorElDuration, setAnchorElDuration] = useState(null);
+  const openPrice = Boolean(anchorElPrice);
+  const openDuration = Boolean(anchorElDuration);
+
+  const [searchText, setSearchText] = useState("All");
+
+  const updateQueryParams = () => {
+    const query = new URLSearchParams({
+      destination: selectedDestinations.join(","),
+      category: selectedCategories.join(","),
+      date,
+      duration: durationRange[1].toString(),
+      minPrice: priceRange[0].toString(),
+      maxPrice: priceRange[1].toString(),
+    }).toString();
+
+    router.push(`/tours?${query}`);
+  };
+
+  useEffect(() => {
+    updateQueryParams();
+  }, [selectedDestinations, selectedCategories, date, durationRange, priceRange]);
+
+  const handleToggle = (cityName) => {
+    const updated = cityName === "ALL"
+      ? cities.map((city) => city.name)
+      : selectedDestinations.includes(cityName)
+        ? selectedDestinations.filter((d) => d !== cityName)
+        : [...selectedDestinations, cityName];
+
+    setSelectedDestinations(updated);
+    updateQueryParams();
+  };
+
+  const handleToggleCategories = (categoryName) => {
+    const updated = categoryName === "ALL"
+      ? categories.map((card) => card.name)
+      : selectedCategories.includes(categoryName)
+        ? selectedCategories.filter((c) => c !== categoryName)
+        : [...selectedCategories, categoryName];
+
+    setSelectedCategories(updated);
+    updateQueryParams();
+  };
+
+  const handlePriceClick = (e) => setAnchorElPrice(e.currentTarget);
+  const handlePriceClose = () => {
+    setAnchorElPrice(null);
+    updateQueryParams();
+  };
+
+
+  const handleDurationClick = (e) => setAnchorElDuration(e.currentTarget);
+  const handleDurationClose = () => {
+    setAnchorElDuration(null);
+    updateQueryParams();
+  };
+
+  const cityCounts = tour.reduce((acc, city) => {
+    acc[city.city.name] = (acc[city.city.name] || 0) + 1;
+    return acc;
+  }, {});
+  const categoryCounts = tour.reduce((acc, city) => {
+    acc[city.category.name] = (acc[city.category.name] || 0) + 1;
+    return acc;
+  }, {});
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    params.set("search", searchText);
+    const newUrl = `${window.location.pathname}?${params.toString()}`;
+    window.history.replaceState({}, "", newUrl);
+  }, [searchText]);
+
+  const handlePageChange = (e, value) => {
+    setCurrentPage(value);
+    setFadeKey((prev) => prev + 1);
+  };
+
+  return (
+    <AppQueryContext.Provider
+      value={{
+        openDrawer,
+        setOpenDrawer,
+        viewMode,
+        setViewMode,
+        fadeKey,
+        setFadeKey,
+        sortBy,
+        setSortBy,
+        currentPage,
+        setCurrentPage,
+        expanded,
+        setExpanded,
+        expandedCategories,
+        setExpandedCategories,
+        selectedDestinations,
+        setSelectedDestinations,
+        selectedCategories,
+        setSelectedCategories,
+        priceRange,
+        setPriceRange,
+        durationRange,
+        setDurationRange,
+        anchorElPrice,
+        setAnchorElPrice,
+        anchorElDuration,
+        setAnchorElDuration,
+        openPrice,
+        openDuration,
+        updateQueryParams,
+        handleToggle,
+        handleToggleCategories,
+        handlePriceClick,
+        handlePriceClose,
+        handleDurationClick,
+        handleDurationClose,
+        cityCounts,
+        categoryCounts,
+        searchText,
+        setSearchText,
+        handlePageChange,
+        sortedTours,
+        itemsPerPage,
+        visibleTours: tour.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage),
+      }}
+    >
+      {children}
+    </AppQueryContext.Provider>
+  );
+};
+
+export const useAppQueryContext = () => useContext(AppQueryContext);
+
+
+
+
+
+
+"use client";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { useTripContext } from "./TripContext";
+import { useMemo } from "react";
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+const AppQueryContext = createContext();
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+export const AppQueryContextProvider = ({ children }) => {
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const { tour, setTour } = useTripContext();
+  const pathname = usePathname();
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const [viewMode, setViewMode] = useState("grid");
+  const [fadeKey, setFadeKey] = useState(0);
+  const [sortBy, setSortBy] = useState("alphabetical");
+  const [currentPage, setCurrentPage] = useState(1);
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  const itemsPerPageRaw = searchParams.get("itemsPerPage");
+  const itemsPerPage = isNaN(parseInt(itemsPerPageRaw))
+    ? 6
+    : parseInt(itemsPerPageRaw); // ✅ استخراج القيم من الكويري
+
+  const cityFromQuery = searchParams.get("destination") || "";
+  const categoryFromQuery = searchParams.get("category") || "";
+
+  const date = searchParams.get("date") || "";
+  const minPrice = parseInt(searchParams.get("minPrice") || "0");
+  const maxPrice = parseInt(searchParams.get("maxPrice") || "14000");
+  const Nights = parseInt(searchParams.get("duration") || "0");
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  const [expanded, setExpanded] = useState(true);
+  const [expandedCategories, setExpandedCategories] = useState(true);
+  const [selectedDestinations, setSelectedDestinations] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+
+  // ✅ حالات الفلاتر
+  useEffect(() => {
+    if (tour.length > 0) {
+      if (cityFromQuery.toLowerCase() === "all") {
+        const allCities = Array.from(
+          new Set(tour.map((t) => t.city?.name || t.city).filter(Boolean))
+        );
+        setSelectedDestinations(allCities);
+      } else if (cityFromQuery) {
+        setSelectedDestinations(cityFromQuery.split(","));
+      }
+
+      if (categoryFromQuery.toLowerCase() === "all") {
+        const allCategories = Array.from(
+          new Set(
+            tour.map((t) => t.category?.name || t.category).filter(Boolean)
+          )
+        );
+        setSelectedCategories(allCategories);
+      } else if (categoryFromQuery) {
+        setSelectedCategories(categoryFromQuery.split(","));
+      }
+    }
+  }, [tour]);
+
+  const [priceRange, setPriceRange] = useState([minPrice, maxPrice]);
+  const [durationRange, setDurationRange] = useState([0, Nights || 10]);
+
+  const [anchorElPrice, setAnchorElPrice] = useState(null);
+  const [anchorElDuration, setAnchorElDuration] = useState(null);
+  const openPrice = Boolean(anchorElPrice);
+  const openDuration = Boolean(anchorElDuration);
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  const [searchText, setSearchText] = useState("All");
+
+  // ✅ تحديث الكويري
+  const updateQueryParams = () => {
+    const query = new URLSearchParams({
+      destination: selectedDestinations.join(","),
+      category: selectedCategories.join(","),
+      date,
+      duration: durationRange[1].toString(),
+      minPrice: priceRange[0].toString(),
+      maxPrice: priceRange[1].toString(),
+      search: searchText, // ✅ أضف هذا
+    }).toString();
+
+    router.push(`${pathname}?${query}`);
+  };
+
+  useEffect(() => {
+    if (
+      pathname === "/tours" &&
+      selectedDestinations.length > 0 &&
+      selectedCategories.length > 0
+    ) {
+      updateQueryParams();
+    }
+  }, [
+    selectedDestinations,
+    selectedCategories,
+    date,
+    durationRange,
+    priceRange,
+  ]);
+
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    params.set("search", searchText);
+    const newUrl = `${pathname}?${params.toString()}`;
+    window.history.replaceState({}, "", newUrl);
+  }, [searchText]);
+  const handlePageChange = (e, value) => {
+    setCurrentPage(value);
+    setFadeKey((prev) => prev + 1);
+  };
+  // فلترة الرحلات
+  // const filteredTours = tour.filter((tour) => {
+  //   const tourCity = (tour.city?.name || tour.city || "").toLowerCase();
+  //   const tourCategory = (
+  //     tour.category?.name ||
+  //     tour.category ||
+  //     ""
+  //   ).toLowerCase();
+  //   const matchesSearch =
+  //     searchText === "All" ||
+  //     tour.title.toLowerCase().includes(searchText.toLowerCase()) ||
+  //     tour.description?.toLowerCase().includes(searchText.toLowerCase());
+
+  //   const matchesCity =
+  //     selectedDestinations.length === 0 ||
+  //     selectedDestinations.includes(tourCity);
+  //   const matchesCategory =
+  //     selectedCategories.length === 0 ||
+  //     selectedCategories.includes(tourCategory);
+
+  //   return matchesCity && matchesCategory && matchesSearch;
+  // });
+  const filteredTours = useMemo(() => {
+    if (tour.length === 0) return [];
+    return tour.filter((tour) => {
+      const tourCity = (tour.city?.name || tour.city || "").toLowerCase();
+      const tourCategory = (
+        tour.category?.name ||
+        tour.category ||
+        ""
+      ).toLowerCase();
+      const matchesSearch =
+        searchText === "All" ||
+        tour.title.toLowerCase().includes(searchText.toLowerCase()) ||
+        tour.description?.toLowerCase().includes(searchText.toLowerCase());
+
+      const matchesCity =
+        selectedDestinations.length === 0 ||
+        selectedDestinations.includes(tourCity);
+
+      const matchesCategory =
+        selectedCategories.length === 0 ||
+        selectedCategories.includes(tourCategory);
+
+      return matchesCity && matchesCategory && matchesSearch;
+    });
+  }, [tour, selectedDestinations, selectedCategories, searchText]);
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  // ترتيب النتائج
+  const sortedTours = useMemo(() => {
+    let sorted = [...filteredTours];
+    if (sortBy === "alphabetical") {
+      sorted.sort((a, b) => a.title.localeCompare(b.title));
+    } else if (sortBy === "price") {
+      sorted.sort((a, b) => a.price - b.price);
+    } else if (sortBy === "duration") {
+      sorted.sort((a, b) => a.TripDuration - b.TripDuration);
+    } else if (sortBy === "popular") {
+      sorted.sort((a, b) => b.reviews.length - a.reviews.length);
+    }
+    return sorted;
+  }, [filteredTours, sortBy]);
+
+  const visibleTours = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return sortedTours.slice(startIndex, endIndex);
+  }, [sortedTours, currentPage, itemsPerPage]);
+
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  //   const paginatedTours = visibleTours.slice(
+  //     (currentPage - 1) * itemsPerPage,
+  //     currentPage * itemsPerPage
+  //   );
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  // ✅ التعامل مع الفلاتر
+  const handleToggle = (cityName) => {
+    let updated;
+
+    // ✅ إذا تم اختيار "All"، نحدد كل المدن
+    if (cityName === "ALL") {
+      updated = cities.map((city) => city.name);
+    } else {
+      // ✅ إضافة أو إزالة المدينة من القائمة المختارة
+      updated = selectedDestinations.includes(cityName)
+        ? selectedDestinations.filter((d) => d !== cityName)
+        : [...selectedDestinations, cityName];
+    }
+
+    // ✅ تحديث الحالة
+    setSelectedDestinations(updated);
+
+    // ✅ بناء الكويري بناءً على القيم الحالية
+    const queryParams = new URLSearchParams();
+
+    if (updated.length > 0) queryParams.set("destination", updated.join(","));
+    if (selectedCategories.length > 0)
+      queryParams.set("category", selectedCategories.join(","));
+    if (date) queryParams.set("date", date);
+    if (durationRange[1])
+      queryParams.set("duration", durationRange[1].toString());
+    queryParams.set("minPrice", priceRange[0].toString());
+    queryParams.set("maxPrice", priceRange[1].toString());
+
+    // ✅ تحديث عنوان الصفحة بدون إعادة تحميل
+    router.push(`/tours?${queryParams.toString()}`, { scroll: false });
+  };
+
+  const handleToggleCategories = (categoryName) => {
+    let updated;
+
+    if (categoryName === "ALL") {
+      updated = categories.map((card) => card.name); // ✅ كل الفئات
+    } else {
+      updated = selectedCategories.includes(categoryName)
+        ? selectedCategories.filter((c) => c !== categoryName)
+        : [...selectedCategories, categoryName];
+    }
+
+    setSelectedCategories(updated);
+
+    const query = new URLSearchParams({
+      destination: selectedDestinations.join(","),
+      category: updated.join(","),
+      date,
+      duration: durationRange[1].toString(),
+      minPrice: priceRange[0].toString(),
+      maxPrice: priceRange[1].toString(),
+    }).toString();
+
+    router.push(`/tours?${query}`);
+  };
+
+  const handlePriceClick = (e) => setAnchorElPrice(e.currentTarget);
+  const handlePriceClose = () => {
+    setAnchorElPrice(null);
+    updateQueryParams();
+  };
+
+  const handleDurationClick = (e) => setAnchorElDuration(e.currentTarget);
+  const handleDurationClose = () => {
+    setAnchorElDuration(null);
+    updateQueryParams();
+  };
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  const cityCounts = tour.reduce((acc, city) => {
+    acc[city.city.name] = (acc[city.city.name] || 0) + 1;
+    return acc;
+  }, {});
+  const categoryCounts = tour.reduce((acc, city) => {
+    acc[city.category.name] = (acc[city.category.name] || 0) + 1;
+    return acc;
+  }, {});
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  useEffect(() => {
+    const fetchTours = async () => {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const query = new URLSearchParams({
+          destination: params.get("destination") || "",
+          category: params.get("category") || "",
+          date: params.get("date") || "",
+          minPrice: params.get("minPrice") || "0",
+          maxPrice: params.get("maxPrice") || "14000",
+          search: params.get("search") || "All",
+        }).toString();
+
+        const res = await fetch(`/api/tours${query ? `?${query}` : ""}`);
+        const data = await res.json();
+
+        if (res.ok) {
+          setTour(data.tours || []);
+          setFadeKey((prev) => prev + 1);
+        } else {
+          console.error("❌ خطأ في جلب الرحلات:", data.error);
+        }
+      } catch (err) {
+        console.error("❌ فشل الاتصال:", err);
+      }
+    };
+
+    fetchTours();
+  }, [searchParams.toString()]);
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  return (
+    <AppQueryContext.Provider
+      value={{
+        expanded,
+        setExpanded,
+        expandedCategories,
+        setExpandedCategories,
+        selectedDestinations,
+        setSelectedDestinations,
+        selectedCategories,
+        setSelectedCategories,
+        priceRange,
+        setPriceRange,
+        durationRange,
+        setDurationRange,
+        openPrice,
+        openDuration,
+        setAnchorElPrice,
+        setAnchorElDuration,
+        updateQueryParams,
+        anchorElDuration,
+        handleToggle,
+        handleToggleCategories,
+        handlePriceClick,
+        handlePriceClose,
+        handleDurationClick,
+        handleDurationClose,
+        cityCounts,
+        categoryCounts,
+        visibleTours,
+        handlePageChange,
+        setViewMode,
+        viewMode,
+        setOpenDrawer,
+        openDrawer,
+        setSortBy,
+        sortBy,
+        sortedTours,
+        setCurrentPage,
+        currentPage,
+        setSearchText,
+        itemsPerPage,
+      }}
+    >
+      {children}
+    </AppQueryContext.Provider>
+  );
+};
+
+export const useAppQueryContext = () => useContext(AppQueryContext);

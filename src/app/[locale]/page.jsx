@@ -10,6 +10,7 @@ const HomePage = async () => {
   const cookieStore = await cookies();
   const token = cookieStore.get("jwttoken")?.value;
   const user = vrefyTokenForPage(token);
+  console.log(user)
   return (
     <Suspense fallback={<LoadingScreen />}>
       <ClientHome user={user} />

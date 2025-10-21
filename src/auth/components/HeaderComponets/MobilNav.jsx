@@ -11,10 +11,11 @@ import { useTranslations } from "next-intl";
 import { getNavPath } from "@/lib/constants/FixedTexts";
 import LogoutBtn from "./LogoutBtn";
 import { useTheme } from "next-themes";
+import { useMemo } from "react";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const MobilNav = ({ slug, user }) => {
   const t = useTranslations("Header");
-  const CityName = getNavPath(t);
+  const NavPath = getNavPath(t);
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const [anchorEl, setAnchorEl] = useState("");
   const open = Boolean(anchorEl);
@@ -22,11 +23,12 @@ const MobilNav = ({ slug, user }) => {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const handleClose = () => {
     setAnchorEl(null);
   };
-    const { theme, setTheme } = useTheme("dark");
+  const { theme, setTheme } = useTheme("dark");
 
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   return (
@@ -37,8 +39,11 @@ const MobilNav = ({ slug, user }) => {
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
-        style={{ zIndex: "9999", fontSize: "25px",color:theme === "dark" ? "#fff" :"#ff9800" }}
-        
+        style={{
+          zIndex: "9999",
+          fontSize: "25px",
+          color: theme === "dark" ? "#fff" : "#ff9800",
+        }}
       >
         <AiOutlineMenu className="text-2xl  hover:scale-110 transition-all" />
       </Button>
@@ -55,9 +60,11 @@ const MobilNav = ({ slug, user }) => {
         onClose={handleClose}
         style={{ zIndex: "9999" }}
       >
-        {CityName.map((i, index) => {
+        {NavPath.map((i, index) => {
           const isTours = i.path === "/tours";
-          const today = new Date().toISOString().split("T")[0];
+          const today = useMemo(() => {
+            return new Date().toISOString().split("T")[0];
+          }, []);
 
           const linkProps = isTours
             ? {

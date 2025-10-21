@@ -3,30 +3,17 @@ import { useTranslations } from "next-intl";
 import React, { forwardRef, useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useTripsContext } from "@/context/TripsContext";
+import { useTripContext } from "@/context/TripContext";
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 const SectionTow = forwardRef(() => {
+  const { categories } = useTripsContext();
   const t = useTranslations("HomeHeroPage");
-  const [cards, setCards] = useState([]);
   const router = useRouter();
-
-  useEffect(() => {
-    const fetchCards = async () => {
-      try {
-        const res = await fetch("/api/categories");
-        const data = await res.json();
-
-        if (res.ok) {
-          setCards(data);
-        } else {
-          console.error("❌ خطأ في جلب البيانات:", data.error);
-        }
-      } catch (err) {
-        console.error("❌ فشل الاتصال:", err);
-      }
-    };
-    console.log(cards);
-    fetchCards();
-  }, []);
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  const [noToursMessage, setNoToursMessage] = useState("");
+  const { tours, setTours } = useTripContext();
 
   return (
     <section
@@ -44,10 +31,9 @@ const SectionTow = forwardRef(() => {
           {t("sc1Title")}
         </h2>
       </div>
-
       {/* ✅ شبكة الكروت المتجاوبة */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-full max-w-7xl flex-wrap">
-        {cards.map((card, index) => (
+        {categories.map((card, index) => (
           <div
             key={card.id || index}
             className="relative rounded-3xl overflow-hidden shadow-2xl group hover:shadow-yellow-500/40 transition duration-500"
@@ -71,17 +57,30 @@ const SectionTow = forwardRef(() => {
                 className="btn-next-section3"
                 onClick={() => {
                   const today = new Date().toISOString().split("T")[0];
-                  const query = new URLSearchParams({
-                    destination: "Luxor",
-                    category: card.name,
-                    date: today,
-                    duration: "5",
-                    minPrice: "0",
-                    maxPrice: "14000",
-                    search: "Luxor",
-                  }).toString();
 
-                  router.push(`/tours?${query}`);
+                  // ✅ تحقق من وجود رحلات لهذه الفئة
+                  const hasTours = tours.some((t) => {
+                    const category = t.category?.name || t.category || "";
+                    return category.toLowerCase() === card.name.toLowerCase();
+                  });
+
+                  if (hasTours) {
+                    const query = new URLSearchParams({
+                      destination: "All",
+                      category: card.name,
+                      date: today,
+                      duration: "5",
+                      minPrice: "0",
+                      maxPrice: "14000",
+                      search: "All",
+                    }).toString();
+
+                    router.push(`/tours?${query}`);
+                  } else {
+                    setNoToursMessage(
+                      `Unfortunately, there are currently no trips available for this category."${card.name}"`
+                    );
+                  }
                 }}
               >
                 View All →
@@ -89,6 +88,24 @@ const SectionTow = forwardRef(() => {
             </div>
           </div>
         ))}
+        {noToursMessage && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+            <div style={{padding:"20px",}} className="w-[100%] bg-white dark:bg-gray-900 text-center rounded-xl shadow-xl px-6 py-8 max-w-md mx-4">
+              <h3 style={{paddingBottom:"10px"}} className="text-xl font-bold text-red-600 dark:text-yellow-400 mb-4">
+                {noToursMessage}
+              </h3>
+              <p style={{paddingBottom:"10px"}} className="text-sm text-gray-600 dark:text-gray-300">
+               Try choosing another category or adjusting the filters to get results.
+              </p>
+              <button
+                style={{padding:"10px", cursor:"pointer"}} className="mt-6 px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-full transition"
+                onClick={() => setNoToursMessage("")}
+              >
+                closing
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

@@ -13,17 +13,21 @@ import SearchIcon from "@mui/icons-material/Search";
 import ViewModuleIcon from "@mui/icons-material/ViewModule";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import { FiFilter } from "react-icons/fi";
+import { useAppQueryContext } from "@/context/AppQueryContext";
+import { useAppContext } from "@/context/AppContext";
 
-const SearchAndControls = ({
-  onOpenFilters,
-  viewMode,
-  setViewMode,
-  theme,
-  sortBy,
-  setSortBy,
-  searchText,
-  setSearchText
-}) => {
+const SearchAndControls = () => {
+    const { theme } = useAppContext();
+  
+  const {
+      setOpenDrawer,
+      viewMode,
+      setViewMode,
+      sortBy,
+      setSortBy,
+      searchText,
+      setSearchText,
+    } = useAppQueryContext();
   return (
     <Box
       sx={{
@@ -39,7 +43,7 @@ const SearchAndControls = ({
         gap: 2,
         marginBottom: "15px",
       }}
-      className="bg-white dark:bg-[#212121]"
+      className="bg-white dark:bg-[#030712]"
     >
       {/* ✅ حقل البحث */}
       <Box sx={{ flex: 1, minWidth: 250 }}>
@@ -57,7 +61,7 @@ const SearchAndControls = ({
             ),
             sx: {
               color: theme === "dark" ? "#fff" : "#2c2c2c",
-              backgroundColor: theme === "dark" ? "#2c2c2c" : "#fff",
+              backgroundColor: theme === "dark" ? "#030712" : "#fff",
               borderRadius: "12px",
               "& .MuiOutlinedInput-notchedOutline": {
                 borderColor: "#ff9800",
@@ -88,7 +92,7 @@ const SearchAndControls = ({
             color: "#212121",
           },
         }}
-        onClick={onOpenFilters}
+        onClick={() =>setOpenDrawer(true)}
       >
         Sidebar Filters
       </Button>
@@ -129,12 +133,12 @@ const SearchAndControls = ({
       >
         <ToggleButton value="grid">
           <ViewModuleIcon
-            sx={{ color: viewMode === "grid" ? "#ff9800" : "#000" }}
+            sx={{ color: viewMode === "grid" ? "#ff9800" : "#212121" }}
           />
         </ToggleButton>
         <ToggleButton value="list">
           <ViewListIcon
-            sx={{ color: viewMode === "list" ? "#ff9800" : "#000" }}
+            sx={{ color: viewMode === "list" ? "#ff9800" : "#212121" }}
           />
         </ToggleButton>
       </ToggleButtonGroup>

@@ -15,8 +15,7 @@ const RegisterToBuy = () => {
   return (
     <div
       ref={ref}
-      className="w-full flex items-center justify-center px-4 py-10"
-      style={{ minHeight: "500px" }}
+      className="w-1/2 flex items-center justify-center px-4 py-10"
     >
       <motion.div
         variants={boxVariants}

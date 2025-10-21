@@ -1,45 +1,33 @@
 "use client";
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect } from "react";
 import { FaHeart, FaMapMarkerAlt, FaCalendarAlt } from "react-icons/fa";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { MdOutlineReviews } from "react-icons/md";
 import { BiDollar } from "react-icons/bi";
-
+import { useTripContext } from "@/context/TripContext";
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 export default function SectionThree() {
-  const [tours, setTours] = useState([]);
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  const { tours, setTours } = useTripContext();
   const t = useTranslations("HomeHeroPage");
   const router = useRouter();
-
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   useEffect(() => {
-    async function fetchTours() {
-      try {
-        const res = await axios.get("/api/tours");
-        const allTours = Array.isArray(res.data.tours) ? res.data.tours : [];
+    // ✅ فلترة الرحلات التي تحتوي على reviews
+    const toursWithReviews = tours.filter(
+      (tour) => Array.isArray(tour.reviews) && tour.reviews.length > 0
+    );
 
-        // ✅ فلترة الرحلات التي تحتوي على reviews
-        const toursWithReviews = allTours.filter(
-          (tour) => Array.isArray(tour.reviews) && tour.reviews.length > 0
-        );
+    // ✅ ترتيب الرحلات حسب عدد التقييمات وأخذ أول 8 فقط
+    const sortedTours = toursWithReviews
+      .sort((a, b) => b.reviews.length - a.reviews.length)
+      .slice(0, 8); // ✅ عرض أول 8 فقط
 
-        // ✅ ترتيب الرحلات حسب عدد التقييمات وأخذ أول 8 فقط
-        const sortedTours = toursWithReviews
-          .sort((a, b) => b.reviews.length - a.reviews.length)
-          .slice(0, 8); // ✅ عرض أول 8 فقط
-
-        setTours(sortedTours);
-      } catch (error) {
-        console.error("فشل في جلب الرحلات:", error);
-      }
-    }
-
-    fetchTours();
+    setTours(sortedTours);
   }, []);
-
-  // console.log(tours.image.name[0])
-  console.log(tours);
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   return (
     <section
       id="section-three"

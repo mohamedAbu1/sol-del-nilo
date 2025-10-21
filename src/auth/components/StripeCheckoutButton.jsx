@@ -1,14 +1,18 @@
+"use client";
 import { useState } from "react";
 import { Button, Modal, Box, Typography, Divider } from "@mui/material";
 import Image from "next/image";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const BookTourButton = ({
   tour,
   user,
+  setNan,
   options,
   finalPriceAfterRival,
+  setHasBooked,
   selectedExtras,
   nan,
   setBookingData,
@@ -18,6 +22,7 @@ const BookTourButton = ({
   const [bookingConfirmed, setBookingConfirmed] = useState(false);
 
   const [open, setOpen] = useState(false);
+  const router = useRouter();
 
   const resetBookingData = () => {
     setBookingData({
@@ -64,18 +69,39 @@ const BookTourButton = ({
       const saveResponse = await axios.post("/api/paymob", bookingPayload);
 
       if (saveResponse.status === 200) {
-        toast.success("✅ تم حفظ الحجز في قاعدة البيانات!");
-        setTimeout(() => {
-          setOpen(false); // إغلاق النافذة بعد 5 ثواني
-          setBookingConfirmed(false);
-          resetBookingData(); // إعادة الحالة للاستعداد لحجز جديد
-        }, 3000);
+        toast.success("✅ Booking saved successfully!");
+
+        // تحديث الحالة لعرض رسالة النجاح
+        setBookingConfirmed(true);
+        // إعادة تحميل الصفحة بعد تأكيد الحجز
+        resetBookingData();
+
+        setOpen(false); // إغلاق النافذة فورًا أو بعد الحجز
+        setHasBooked(true);
       } else {
-        toast.error("❌ لم يتم حفظ الحجز.");
+        toast.error("❌ Booking failed.");
       }
+
+      await fetch("/api/send-confirmation", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: user.email,
+          name: user.name,
+          tourTitle: tour.title,
+          date: tour.theDate,
+          time: bookingTime,
+          price: parseFloat(finalPriceAfterRival).toFixed(2),
+        }),
+      });
+
+      // تحديث الحالة لعرض رسالة النجاح
+      setBookingConfirmed(true);
     } catch (err) {
       console.error("❌ Save error:", err);
       toast.error("حدث خطأ أثناء حفظ الحجز.");
+    } finally {
+      router.push(`/tours/${tour.id}`);
     }
   };
   const selectedGuides = Object.entries(bookingData.guideLanguages || {})
@@ -95,6 +121,7 @@ const BookTourButton = ({
         }}
         variant="contained"
         sx={{
+          width: "100%",
           backgroundColor: "#d4a85f",
           color: "#fff",
           fontWeight: "800",
@@ -124,9 +151,9 @@ const BookTourButton = ({
             color: "#333",
             maxHeight: "91vh",
             overflowY: "scroll",
-            display:"flex",
-            flexDirection:"column",
-            justifyContent:"center"
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
           }}
         >
           <Image
@@ -139,7 +166,7 @@ const BookTourButton = ({
               // marginBottom: "20px",
               maxWidth: "100%",
               height: "auto",
-              margin:"auto"
+              margin: "auto",
             }}
           />
 
@@ -159,17 +186,6 @@ const BookTourButton = ({
             </>
           ) : (
             <>
-              {/* ✅ عنوان النافذة */}
-              {/* <Typography
-                variant="h5"
-                fontWeight="bold"
-                textAlign="center"
-                mb={2}
-                sx={{ color: "#1565c0" }}
-              >
-                Booking Summary
-              </Typography> */}
-
               <Divider sx={{ mb: 1 }} />
 
               {/* ✅ بيانات العميل */}

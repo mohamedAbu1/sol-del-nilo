@@ -6,14 +6,14 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
-
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const SectionFour = () => {
   const t = useTranslations("HomeHeroPage");
   const router = useRouter();
-
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   return (
     <section
-      style={{ marginTop: "15px", paddingBottom:'40px' }}
+      style={{ marginTop: "15px", paddingBottom: "40px" }}
       id="section-four"
       className="relative w-full min-h-screen px-4 sm:py-10 md:py-12 lg:py-0 flex flex-col items-center justify-start text-white"
     >
@@ -74,7 +74,12 @@ const SectionFour = () => {
             {t("sc3PS5")}
           </p>
 
-          <button className="btn-next-section6" onClick={() => router.push(`/about`)}>{t("sc3BTN")}</button>
+          <button
+            className="btn-next-section6"
+            onClick={() => router.push(`/about`)}
+          >
+            {t("sc3BTN")}
+          </button>
         </div>
       </div>
     </section>

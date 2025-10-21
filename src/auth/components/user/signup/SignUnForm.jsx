@@ -93,38 +93,7 @@ const SignUnForm = () => {
     // ✅ تحديث الحالة
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-  // const handleLogin = async () => {
-  //   try {
-  //     // ✅ إرسال البيانات مباشرة بدون تغليف داخل formData
-  //     const response = await axios.post("/api/Login", formData, {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         "x-csrf-token": csrfToken,
-  //       },
-  //     });
-
-  //     if (response.status === 200) {
-  //       const token = response.data.token;
-
-  //       // ✅ تخزين التوكن الحقيقي
-  //       localStorage.setItem("user", token);
-
-  //       // ✅ إعادة التوجيه بعد تسجيل الدخول
-  //       router.push("/");
-  //     } else {
-  //       toast.error(`error ❌: ${response.data.error || response.data.message}`);
-  //     }
-  //   } catch (error) {
-  //     if (axios.isAxiosError(error)) {
-  //       toast.error(`error ❌: ${error.response?.data?.error || "Unexpected error"}`);
-  //     } else {
-  //       toast.error("An error occurred while connecting to the server. ❌");
-  //     }
-  //     console.error("Axios error:", error);
-  //   }
-  // };
-
+ 
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const handleEnglishOnlyChange = (e) => {
     const { name, value } = e.target;

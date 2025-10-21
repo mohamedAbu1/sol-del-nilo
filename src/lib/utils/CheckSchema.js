@@ -31,7 +31,15 @@ export const TourSchema = z.object({
   TripDuration: z.string(),
   Destination: z.string().optional(), // ✅ أضف هذا الحقل
   NumberOfParticipants: z.string().optional(), // ✅ أضف هذا الحقل
-  discountPercent: z.string().optional(), // ✅ أضف هذا الحقل إذا كنت ترسله
+  discountPercent: z.string().optional(),
+  tourimage: z
+    .array(
+      z.object({
+        name: z.string(),
+        label: z.string().optional(),
+      })
+    )
+    .optional(), // ✅ أضف هذا الحقل إذا كنت ترسله
   tripprogram: z
     .array(
       z.object({

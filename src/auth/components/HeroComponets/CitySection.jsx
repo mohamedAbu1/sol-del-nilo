@@ -12,11 +12,12 @@ const CitySection = () => {
 
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const { cities } = useTripsContext();
-  const { tour } = useTripContext();
+  const { tours } = useTripContext();
   const t = useTranslations("HomeHeroPage");
   const router = useRouter(); // ✅ استخدام router
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-
+console.log(cities)
+console.log(tours)
   return (
     <section
       id="section-three"
@@ -43,8 +44,8 @@ const CitySection = () => {
             onClick={() => {
               const cityName = city.name;
               const hasTours =
-                Array.isArray(tour) &&
-                tour.some((t) => {
+                Array.isArray(tours) &&
+                tours.some((t) => {
                   const tourCity = (t.city?.name || t.city || "").toLowerCase();
                   return tourCity === cityName.toLowerCase();
                 });
@@ -93,9 +94,15 @@ const CitySection = () => {
           </div>
         ))}
         {noToursCity && (
-          <div style={{opacity:"0.9"}} className="fixed inset-0 bg-black flex items-center justify-center z-50">
-            <div style={{padding:"10px"}} className="bg-white text-black px-6 py-4 rounded-xl shadow-lg text-xl font-bold">
-             There are currently no flights to {noToursCity}
+          <div
+            style={{ opacity: "0.9" }}
+            className="fixed inset-0 bg-black flex items-center justify-center z-50"
+          >
+            <div
+              style={{ padding: "10px" }}
+              className="bg-white text-black px-6 py-4 rounded-xl shadow-lg text-xl font-bold"
+            >
+              There are currently no tours to {noToursCity}
             </div>
           </div>
         )}

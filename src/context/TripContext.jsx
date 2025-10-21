@@ -10,7 +10,7 @@ const TripContext = createContext();
 export const TripContextProvider = ({ children }) => {
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const [tours, setTours] = useState([]);
-  
+
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
   const getAllTours = async () => {
@@ -21,9 +21,7 @@ export const TripContextProvider = ({ children }) => {
         toast.error("❌ فشل في تحميل الرحلات");
         return [];
       }
-      console.log(response)
       setTours(response.data.tours);
-              setLoading(false); // ✅ تم التحميل
 
       return response.data;
     } catch (error) {
@@ -32,14 +30,12 @@ export const TripContextProvider = ({ children }) => {
       return [];
     }
   };
-useEffect(() => {
-  getAllTours();
-}, []);
+  useEffect(() => {
+    getAllTours();
+  }, []);
 
-useEffect(() => {
-  console.log("📦 بيانات الرحلات بعد التحديث:", tours);
-}, [tours]);
-
+  useEffect(() => {
+  }, [tours]);
 
   return (
     <TripContext.Provider

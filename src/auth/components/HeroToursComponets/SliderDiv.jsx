@@ -40,7 +40,6 @@ export default function HeroStaticSearch({
 
     if (trimmed === "") {
       setSelectedCategories([]);
-      console.log("🔍 عرض جميع الرحلات");
       return;
     }
 

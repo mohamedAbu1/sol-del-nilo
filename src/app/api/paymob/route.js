@@ -10,7 +10,6 @@ const supabase = createClient(
 export async function POST(req) {
   try {
     const body = await req.json();
-    console.log("📦 Received booking payload:", body);
     // ✅ بيانات الدفع
     const {
       amount_cents,
@@ -77,7 +76,6 @@ export async function DELETE(req) {
   try {
     const body = await req.json();
     const { email, bookingId } = body;
-    console.log(body);
     if (!email || !bookingId) {
       return NextResponse.json(
         { error: "Missing email or bookingId" },

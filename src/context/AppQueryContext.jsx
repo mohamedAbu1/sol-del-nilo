@@ -241,7 +241,6 @@ const handleToggle = (cityName) => {
   });
 
   if (!cityHasTours) {
-    console.warn(`❌ لا توجد رحلات للمدينة: ${cityName}`);
     return;
   }
 

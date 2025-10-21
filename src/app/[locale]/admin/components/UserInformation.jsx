@@ -24,7 +24,6 @@ const UserInformation = () => {
   useEffect(() => {
     if (users?.id) fetchUserActivities(users.id);
   }, [users]);
-  console.log(users);
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
   return (

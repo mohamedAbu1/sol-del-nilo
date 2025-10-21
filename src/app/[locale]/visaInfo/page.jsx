@@ -1,12 +1,12 @@
 import Header from "@/auth/components/HeaderComponets/Header";
 import { cookies } from "next/headers";
 import { vrefyTokenForPage } from "@/lib/utils/veryfyToken";
-import ImageSection from "@/auth/components/ImageSection";
-import ContentSection from "@/auth/components/HeroContact/ContentSection";
+import ImageSection from "@/auth/components/VISA/ImageSection";
+import ContentSection from "@/auth/components/VISA/ContentSection";
 import SideDecor from "@/auth/components/SideDecor ";
 import RightSideDecor from "@/auth/components/RightSideDecor";
 import Dividering from "@/auth/components/HeroToursComponets/id/Divider/Divider";
-import GeneralAdvice from "@/auth/components/GeneralAdvice";
+import GeneralAdvice from "@/auth/components/VISA/GeneralAdvice";
 
 export default async function EgyptVisaPage() {
   const cookieStore = await cookies(); // ✅ استخدم await

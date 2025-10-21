@@ -23,7 +23,6 @@ export const AppProvider = ({ children }) => {
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   useEffect(() => {
     if (theme) {
-      console.log("Current theme is:", theme);
     }
   }, [theme]);
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$

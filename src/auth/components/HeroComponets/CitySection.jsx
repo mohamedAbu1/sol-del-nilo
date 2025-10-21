@@ -16,8 +16,7 @@ const CitySection = () => {
   const t = useTranslations("HomeHeroPage");
   const router = useRouter(); // ✅ استخدام router
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-console.log(cities)
-console.log(tours)
+
   return (
     <section
       id="section-three"

@@ -41,7 +41,6 @@ export async function GET(request) {
 export async function POST(request) {
   try {
     const body = await request.json();
-    console.log("📦 البيانات المستلمة:", body.tourimage);
     if (!body.tourimage || !Array.isArray(body.tourimage)) {
       return NextResponse.json(
         { error: "tourimage غير موجود أو غير صالح" },

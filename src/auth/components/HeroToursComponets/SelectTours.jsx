@@ -28,7 +28,6 @@ const SelectToursWrapper = ({
       prev.includes(value) ? prev.filter((c) => c !== value) : [...prev, value]
     );
   };
-console.log(selectedCategories[0])
   return (
     <div className="relative z-9999">
       {/* زر المنيو */}

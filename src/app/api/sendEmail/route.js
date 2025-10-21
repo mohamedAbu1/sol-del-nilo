@@ -28,11 +28,9 @@ export const POST = async (req) => {
     process.env.NEXT_PUBLIC_SUPABASE_URL,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
   );
-  console.log(supabase);
   try {
     const body = await req.json();
     const { name, email, subject, message, phone, user_id } = body;
-    console.log(body);
     if (!name || !email || !subject || !message || !phone || !user_id) {
       return new Response(
         JSON.stringify({ error: "Missing required fields." }),

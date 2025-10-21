@@ -16,14 +16,12 @@ const Nav = ({ path, user, slug }) => {
     visible: { opacity: 1 },
   };
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-
   return (
     <div className="hidden lg:flex w-3/5 justify-start">
       <ul className="w-full flex flex-row items-center justify-around capitalize gap-2">
         <motion.li
           style={{
             fontWeight: "600",
-
             fontSize:
               width <= 1297
                 ? path === ToursPathEs
@@ -39,7 +37,7 @@ const Nav = ({ path, user, slug }) => {
           transition={{ delay: 0.5, duration: 0.5 }}
           className={slug === "" ? "text-[#d4a85f]" : "text-gray-400"}
         >
-          <Link href={"/"} className="hover:text-[#d4a85f]">
+          <Link href={"/"} style={{cursor: "pointer"}} className="hover:text-[#d4a85f]">
             {t("Home")}
           </Link>
         </motion.li>
@@ -65,7 +63,7 @@ const Nav = ({ path, user, slug }) => {
             href={{
               pathname: "/tours",
               query: {
-                destination:"All",
+                destination: "All",
                 category: "All",
                 date: new Date().toISOString().split("T")[0],
                 duration: "61",
@@ -75,6 +73,7 @@ const Nav = ({ path, user, slug }) => {
               },
             }}
             className="hover:text-[#d4a85f]"
+            style={{cursor: "pointer"}}
           >
             {t("Tours")}
           </Link>
@@ -97,7 +96,7 @@ const Nav = ({ path, user, slug }) => {
           transition={{ delay: 0.5, duration: 0.5 }}
           className={slug === "about" ? "text-[#d4a85f]" : "text-gray-400"}
         >
-          <Link href={"/about"} className="hover:text-[#d4a85f]">
+          <Link href={"/about"} style={{cursor: "pointer"}} className="hover:text-[#d4a85f]">
             {t("About")}
           </Link>
         </motion.li>
@@ -119,7 +118,7 @@ const Nav = ({ path, user, slug }) => {
           transition={{ delay: 0.5, duration: 0.5 }}
           className={slug === "contact" ? "text-[#d4a85f]" : "text-gray-400"}
         >
-          <Link href={"/contact"} className="hover:text-[#d4a85f]">
+          <Link href={"/contact"} style={{cursor: "pointer"}} className="hover:text-[#d4a85f]">
             {t("Contact")}
           </Link>
         </motion.li>
@@ -146,7 +145,7 @@ const Nav = ({ path, user, slug }) => {
             transition={{ delay: 0.5, duration: 0.5 }}
             className={slug === "admin" ? "text-[#d4a85f]" : "text-gray-400"}
           >
-            <Link href={"/admin"} className="hover:text-[#d4a85f]">
+            <Link href={"/admin"} style={{cursor: "pointer"}} className="hover:text-[#d4a85f]">
               {t("Admin")}
             </Link>
           </motion.li>

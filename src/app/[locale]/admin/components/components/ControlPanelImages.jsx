@@ -35,7 +35,6 @@ const ControlPanelImages = ({ mainImages, setMainImages }) => {
     const updatedImages = [...mainImages, ...newImages];
     setMainImages(updatedImages); // للعرض
   };
-  console.log(mainImages);
   return (
     <>
       <Box>

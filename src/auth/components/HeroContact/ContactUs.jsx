@@ -39,8 +39,7 @@ const ContactUs = ({ user }) => {
   };
   useEffect(() => {
     if (process.env.NODE_ENV === "development") {
-    console.log("Current theme is:", theme);
-  }
+    }
   }, [theme]);
 
   const handleSubmit = async () => {

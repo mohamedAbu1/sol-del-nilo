@@ -6,7 +6,6 @@ import { TourSchema } from "@/lib/utils/CheckSchema";
 export async function POST(request) {
   try {
     const body = await request.json();
-    console.log(body);
 
     const validation = TourSchema.safeParse(body);
     if (!validation.success) {
@@ -15,7 +14,6 @@ export async function POST(request) {
         { status: 400 }
       );
     }
-    console.log("✅ التحقق:", validation);
 
     const { data: newTour, error: tourError } = await supabase
       .from("tour")
@@ -37,7 +35,6 @@ export async function POST(request) {
       .single();
 
     if (tourError) throw tourError;
-    console.log("🆔 newTour.id:", newTour?.id);
 
     // إدخال برنامج الرحلة
     const tripProgramData = body.tripprogram.map((step) => ({

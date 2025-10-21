@@ -7,7 +7,6 @@ const Contact = async () => {
   const cookieStore = await cookies();
   const token = cookieStore.get("jwttoken")?.value;
   const user = vrefyTokenForPage(token);
-  console.log({user});
   return (
     <main className="w-full h-auto flex flex-col items-center justify-center m-auto">
       <Header user={user} />

@@ -152,7 +152,6 @@ export const TripsContextProvider = ({ children }) => {
         label: img.label || "",
       })) || [];
 
-    console.log("📸 الصور الرئيسية المسترجعة من tour.image:", formattedImages);
 
     // ✅ تجهيز صور الأنشطة
     const formattedTourImages =
@@ -163,10 +162,7 @@ export const TripsContextProvider = ({ children }) => {
         url: img.url,
       })) || [];
 
-    console.log(
-      "🎯 صور الأنشطة المسترجعة من tour.tourimage:",
-      formattedTourImages
-    );
+   
 
     // ✅ تعبئة النموذج الأساسي
     setFormData({
@@ -191,7 +187,6 @@ export const TripsContextProvider = ({ children }) => {
         })) || [],
     });
 
-    console.log("📝 تم تعبئة النموذج بـ formData.image:", formattedImages);
 
     // ✅ توزيع الصور الرئيسية إلى الحالة
     const mainImageObjects = formattedImages.map((img) => ({
@@ -202,7 +197,6 @@ export const TripsContextProvider = ({ children }) => {
     }));
 
     setMainImages(mainImageObjects);
-    console.log("🖼️ تم تعيين الصور الرئيسية إلى mainImages:", mainImageObjects);
 
     // ✅ توزيع صور الأنشطة إلى الحالة
     const activityImageObjects = formattedTourImages.map((img) => ({
@@ -214,17 +208,11 @@ export const TripsContextProvider = ({ children }) => {
     }));
 
     setActivityImages(activityImageObjects);
-    console.log(
-      "🎬 تم تعيين صور الأنشطة إلى activityImages:",
-      activityImageObjects
-    );
+ 
 
     // ✅ تخزين صور الأنشطة الأصلية
     setTourImages(formattedTourImages);
-    console.log(
-      "📦 تم تخزين صور الأنشطة الأصلية في tourImages:",
-      formattedTourImages
-    );
+
 
     // ✅ إعادة الصور الرئيسية بصيغة قابلة للعرض
     return mainImageObjects;
@@ -263,7 +251,6 @@ export const TripsContextProvider = ({ children }) => {
         toast.error("❌ فشل في حفظ الرحلة");
         return false;
       }
-      console.log(toursID);
       const { data: existingImages, error: fetchError } = await supabase
         .from("tourimage")
         .select("id")
@@ -272,7 +259,6 @@ export const TripsContextProvider = ({ children }) => {
       if (!fetchError && existingImages.length > 0) {
         await supabase.from("tourimage").delete().eq("tourId", toursID);
       }
-      console.log(toursID);
 
       const { error: insertError } = await supabase
         .from("tourimage")

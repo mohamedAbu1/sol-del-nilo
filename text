@@ -1833,3 +1833,388 @@ export const AppQueryContextProvider = ({ children }) => {
 };
 
 export const useAppQueryContext = () => useContext(AppQueryContext);
+
+
+
+
+
+// import { NextResponse } from "next/server";
+// import  prisma  from "@/lib/utils/db";
+
+// export async function GET() {
+//   try {
+//     const categories = await prisma.category.findMany({
+//       select: {
+//         id: true,
+//         name: true,
+//       },
+//       orderBy: {
+//         name: "asc",
+//       },
+//     });
+
+//     return NextResponse.json(categories);
+//   } catch (error) {
+//     console.error("❌ خطأ في جلب التصنيفات:", error);
+//     return NextResponse.json({ error: "فشل في جلب التصنيفات" }, { status: 500 });
+//   }
+// }
+
+
+
+// import { NextResponse } from "next/server";
+// import  prisma  from "@/lib/utils/db";
+
+// export async function GET() {
+//   try {
+//     const cities = await prisma.city.findMany({
+//       select: {
+//         id: true,
+//         name: true,
+//       },
+//       orderBy: {
+//         name: "asc",
+//       },
+//     });
+
+//     return NextResponse.json(cities);
+//   } catch (error) {
+//     console.error("❌ خطأ في جلب المدن:", error);
+//     return NextResponse.json({ error: "فشل في جلب المدن" }, { status: 500 });
+//   }
+// }
+
+
+
+
+
+// //todo POST
+// //todo /api/Login
+// //todo Login
+// //todo Public
+// // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+// // ✅ استيراد الأدوات اللازمة
+// import { NextResponse } from "next/server"; // لإنشاء ردود HTTP
+// import { UserLoginSchema } from "@/lib/utils/CheckSchema"; // للتحقق من صحة البيانات باستخدام Zod
+// import prisma from "@/lib/utils/db"; // الاتصال بقاعدة البيانات
+// import bcrypt from "bcryptjs"; // للتحقق من كلمة المرور المشفرة
+// import { verifyCsrfToken } from "@/lib/utils/csrf"; // التحقق من رمز CSRF
+// import { setCookie } from "@/lib/utils/JWToken";
+// // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+// // ✅ دالة POST لمعالجة تسجيل الدخول
+// export async function POST(req) {
+//   try {
+//     // // ✅ استخراج رمز CSRF من الهيدر
+//     // const csrfToken = req.headers.get("x-csrf-token");
+//     // const secret = process.env.CSRF_SECRET;
+//     // console.log(secret);
+//     // if (!secret) throw new Error("CSRF_SECRET is not defined");
+//     // // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+//     // // ✅ التحقق من صحة رمز CSRF
+//     // if (!csrfToken || !verifyCsrfToken(secret, csrfToken)) {
+//     //   return NextResponse.json(
+//     //     { error: "رمز CSRF غير صالح أو مفقود" },
+//     //     { status: 403 }
+//     //   );
+//     // }
+//     // // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+//     // ✅ قراءة البيانات القادمة من الطلب (email و password)
+//     const body = await req.json();
+
+//     // ✅ التحقق من صحة البيانات باستخدام Zod
+//     const parsed = UserLoginSchema.safeParse(body);
+
+//     // ✅ إذا كانت البيانات غير صالحة، نرجع خطأ 400
+//     if (!parsed.success) {
+//       return NextResponse.json(
+//         { error: "البيانات غير صالحة" },
+//         { status: 400 }
+//       );
+//     }
+//     // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+//     // ✅ استخراج البيانات بعد التحقق
+//     const { email, password } = parsed.data;
+
+//     // ✅ البحث عن المستخدم في قاعدة البيانات باستخدام البريد الإلكتروني
+//     const user = await prisma.user.findUnique({ where: { email } });
+
+//     // ✅ إذا لم يتم العثور على المستخدم، نرجع خطأ 404
+//     if (!user) {
+//       return NextResponse.json(
+//         { error: "المستخدم غير موجود" },
+//         { status: 404 }
+//       );
+//     }
+//     // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+//     // ✅ التحقق من تطابق كلمة المرور المدخلة مع المشفرة في قاعدة البيانات
+//     const isPasswordValid = await bcrypt.compare(password, user.password);
+
+//     // ✅ إذا كانت كلمة المرور خاطئة، نرجع خطأ 401
+//     if (!isPasswordValid) {
+//       return NextResponse.json(
+//         { error: "كلمة المرور غير صحيحة" },
+//         { status: 401 }
+//       );
+//     }
+//     // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+//     // ✅ إنشاء بيانات التوكن
+//     const payload = {
+//       id: user.id,
+//       email: user.email,
+//       isActive: user.isActive,
+//       name: user.name,
+//       role: user.role,
+//     };
+
+//     // ✅ إنشاء توكن JWT يحتوي على بيانات المستخدم
+//     const cookie = setCookie(payload);
+
+//     // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+//     // ✅ إرسال التوكن في الرد
+//     const response = NextResponse.json({ mag: "you login" }, { status: 200 });
+
+//     response.headers.set("Set-Cookie", cookie);
+
+//     return response;
+//     // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+//   } catch (error) {
+//     // ❌ في حالة حدوث خطأ غير متوقع، نرجع خطأ 500
+//     console.error("❌ خطأ في تسجيل الدخول:", error);
+//     return NextResponse.json(
+//       { error: "خطأ داخلي في السيرفر" },
+//       { status: 500 }
+//     );
+//   }
+// }
+
+
+
+
+
+// import prisma from "@/lib/utils/db"; // الاتصال بقاعدة البيانات
+// import { NextResponse } from "next/server"; // لإنشاء ردود HTTP
+// import bcrypt from "bcryptjs"; // لتشفير كلمة المرور
+// import { verifyCsrfToken } from "@/lib/utils/csrf"; // التحقق من رمز CSRF
+
+// // // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+// // export async function POST(request) {
+// //   try {
+// //     // // ✅ استخراج رمز CSRF من الهيدر
+// //     // const csrfToken = request.headers.get("x-csrf-token");
+// //     // const secret = process.env.CSRF_SECRET;
+// //     // if (!secret) throw new Error("CSRF_SECRET is not defined");
+
+// //     // // ✅ التحقق من صحة رمز CSRF
+// //     // if (!csrfToken || !verifyCsrfToken(secret, csrfToken)) {
+// //     //   return NextResponse.json(
+// //     //     { error: "رمز CSRF غير صالح أو مفقود" },
+// //     //     { status: 403 }
+// //     //   );
+// //     // }
+// //     // // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+// //     // ✅ قراءة البيانات القادمة من المستخدم
+// //     const body = await request.json();
+
+// //     // ✅ التحقق من صحة البيانات باستخدام Zod
+// //     const validation = UserSchema.safeParse(body);
+// //     if (!validation.success) {
+// //       return NextResponse.json(
+// //         { error: "البيانات غير صالحة" },
+// //         { status: 400 }
+// //       );
+// //     }
+// //     // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+// //     // ✅ التحقق من عدم وجود المستخدم مسبقًا
+// //     const existingUser = await prisma.user.findUnique({
+// //       where: { email: body.email },
+// //     });
+
+// //     if (existingUser) {
+// //       return NextResponse.json(
+// //         { error: "المستخدم موجود بالفعل، يرجى استخدام بريد إلكتروني آخر" },
+// //         { status: 409 }
+// //       );
+// //     }
+// //     // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+// //     // ✅ تشفير كلمة المرور
+// //     const salt = await bcrypt.genSalt(10);
+// //     const hashedPassword = await bcrypt.hash(body.password, salt);
+// //     // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+// //     // ✅ إنشاء مستخدم جديد في قاعدة البيانات
+// //     const newUser = await prisma.user.create({
+// //       data: {
+// //         name: body.name,
+// //         email: body.email,
+// //         password: hashedPassword,
+// //       },
+// //       select: {
+// //         id: true,
+// //         name: true,
+// //         email: true,
+// //         role: true,
+// //         isActive: true,
+// //       },
+// //     });
+// //     // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+// //     // ✅ إنشاء JWT يحتوي على بيانات المستخدم
+// //     const payload = {
+// //       id: newUser.id,
+// //       email: newUser.email,
+// //       name: newUser.name,
+// //       role: newUser.role,
+// //       isActive: newUser.isActive,
+// //     };
+
+// //     const cookie = setCookie(payload);
+
+// //     // ✅ تخزين JWT في الكوكيز بطريقة آمنة
+// //     const response = NextResponse.json({ mag: "creadsd" }, { status: 201 });
+
+// //     response.headers.set("Set-Cookie", cookie);
+// //     console.log(response);
+// //     return response;
+
+// //     // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+// //   } catch (error) {
+// //     console.error("❌ خطأ في التسجيل:", error);
+// //     return NextResponse.json(
+// //       { error: "حدث خطأ داخلي في السيرفر" },
+// //       { status: 500 }
+// //     );
+// //   }
+// // }
+// import { UserSchema } from "@/lib/utils/CheckSchema"; // التحقق من صحة البيانات باستخدام Zod
+// import { supabase } from "@/lib/supabaseClient"; // الاتصال بقاعدة Supabase
+// import bcrypt from "bcryptjs"; // لتشفير كلمة المرور
+// import { NextResponse } from "next/server"; // لإنشاء ردود HTTP
+// import { setCookie } from "@/lib/utils/JWToken"; // تخزين JWT في الكوكيز
+
+// export async function POST(request) {
+//   try {
+//     const body = await request.json();
+
+//     // ✅ التحقق من صحة البيانات
+//     const validation = UserSchema.safeParse(body);
+//     if (!validation.success) {
+//       return NextResponse.json({ error: "البيانات غير صالحة" }, { status: 400 });
+//     }
+
+//     // ✅ التحقق من عدم وجود المستخدم مسبقًا
+//     const { data: existingUser, error: findError } = await supabase
+//       .from("user")
+//       .select("id")
+//       .eq("email", body.email)
+//       .single();
+
+//     if (findError && findError.code !== "PGRST116") {
+//       // خطأ غير متعلق بعدم وجود صف
+//       console.error("Supabase Error:", findError.message);
+//       return NextResponse.json({ error: "فشل التحقق من المستخدم" }, { status: 500 });
+//     }
+
+//     if (existingUser) {
+//       return NextResponse.json(
+//         { error: "المستخدم موجود بالفعل، يرجى استخدام بريد إلكتروني آخر" },
+//         { status: 409 }
+//       );
+//     }
+
+//     // ✅ تشفير كلمة المرور
+//     const salt = await bcrypt.genSalt(10);
+//     const hashedPassword = await bcrypt.hash(body.password, salt);
+
+//     // ✅ إنشاء مستخدم جديد
+//     const { data: newUser, error: insertError } = await supabase
+//       .from("user")
+//       .insert([
+//         {
+//           name: body.name,
+//           email: body.email,
+//           password: hashedPassword,
+//           role: "USER", // إذا كان لديك حقل role
+//           isActive: true, // إذا كان لديك حقل isActive
+//         },
+//       ])
+//       .select("id, name, email, role, isActive") // عرض الحقول المطلوبة
+
+//     if (insertError) {
+//       console.error("Supabase Error:", insertError.message);
+//       return NextResponse.json({ error: "فشل إنشاء المستخدم" }, { status: 500 });
+//     }
+
+
+
+//     const cookie = setCookie(payload);
+
+//     const response = NextResponse.json({ message: "تم إنشاء المستخدم بنجاح" }, { status: 201 });
+//     response.headers.set("Set-Cookie", cookie);
+//     return response;
+//   } catch (error) {
+//     console.error("❌ خطأ في التسجيل:", error);
+//     return NextResponse.json({ error: "حدث خطأ داخلي في السيرفر" }, { status: 500 });
+//   }
+// }
+
+
+
+
+
+
+
+// // المسار: /app/api/users/route.ts
+
+// import { NextResponse } from "next/server"; // لإنشاء رد HTTP
+// import prisma from "@/lib/utils/db"; // الاتصال بقاعدة البيانات باستخدام Prisma
+
+// export async function GET() {
+//   try {
+//     // جلب جميع المستخدمين من قاعدة البيانات
+//     const users = await prisma.user.findMany({
+//       select: {
+//         id: true,
+//         name: true,
+//         email: true,
+//         createdAt: true,
+//         role:true,
+//         isActive:true,
+//         comments:true,
+//       },
+//     });
+
+//     // إرسال البيانات كـ JSON
+//     return NextResponse.json({ users }, { status: 200 });
+//   } catch (error) {
+//     console.error("خطأ أثناء جلب المستخدمين:", error);
+//     return NextResponse.json({ error: "فشل في جلب المستخدمين" }, { status: 500 });
+//   }
+// }
+// export async function DELETE(request) {
+//   try {
+//     const body = await request.json();
+//     const { userId, currentUserRole } = body;
+
+//     // تحقق من صلاحيات الأدمن
+//     if (currentUserRole !== "ADMIN") {
+//       return NextResponse.json({ error: "غير مصرح لك بالحذف" }, { status: 403 });
+//     }
+
+//     // تحقق من وجود المستخدم
+//     const existingUser = await prisma.user.findUnique({
+//       where: { id: userId },
+//     });
+
+//     if (!existingUser) {
+//       return NextResponse.json({ error: "المستخدم غير موجود" }, { status: 404 });
+//     }
+
+//     // تنفيذ الحذف
+//     await prisma.user.delete({
+//       where: { id: userId },
+//     });
+
+//     return NextResponse.json({ message: "✅ تم حذف المستخدم بنجاح" }, { status: 200 });
+//   } catch (error) {
+//     console.error("❌ خطأ أثناء حذف المستخدم:", error);
+//     return NextResponse.json({ error: "فشل في حذف المستخدم" }, { status: 500 });
+//   }
+// }

@@ -6,7 +6,6 @@ export async function POST(req) {
   try {
     const body = await req.json();
     const { tourId, rating, comment, userId, name, created_at, avatar } = body;
-    console.log(body);
     // تحقق من القيم الأساسية
     if (!tourId || !rating) {
       return NextResponse.json(

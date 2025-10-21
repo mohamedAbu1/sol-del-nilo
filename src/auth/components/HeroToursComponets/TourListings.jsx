@@ -20,7 +20,6 @@ const TourListings = () => {
     sortedTours,
     visibleTours,
   } = useAppQueryContext();
-  console.log(visibleTours);
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   return (
     <>

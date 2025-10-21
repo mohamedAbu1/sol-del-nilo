@@ -14,7 +14,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { toast, ToastContainer } from "react-toastify";
 import { FaTaxi, FaShuttleVan, FaBusAlt } from "react-icons/fa";
 import Dividering from "./Divider/Divider";
-import StripeCheckoutButton from "../../StripeCheckoutButton";
+import StripeCheckoutButton from "../components/StripeCheckoutButton";
 
 const PaymentForm = ({
   tour,

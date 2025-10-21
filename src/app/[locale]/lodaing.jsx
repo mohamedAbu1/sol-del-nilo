@@ -1,5 +1,5 @@
 import React from 'react'
-import PharaonicLoader from '@/auth/components/PharaonicLoader';
+import PharaonicLoader from '@/auth/components/loding/PharaonicLoader';
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const Lodaing = () => {
   return <PharaonicLoader />

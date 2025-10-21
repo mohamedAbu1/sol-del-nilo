@@ -113,9 +113,9 @@ const Page = () => {
                   src={`/assets/${img.url}`}
                   alt={img.name}
                   loading="eager"
+                  fill
                   onClick={() => handleImageClick(index)}
                   style={{
-                    width: "100%",
                     borderRadius: "30px",
                     boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
                     display: "block",
@@ -170,7 +170,7 @@ const Page = () => {
             }}
             onClick={() => setFullScreenOpen(false)}
           >
-            <motion.img
+            <Image
               key={tour.tourimage[selectedIndex].url}
               src={`/assets/${tour.tourimage[selectedIndex].url}`}
               alt={tour.tourimage[selectedIndex].name}
@@ -178,6 +178,8 @@ const Page = () => {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: -100, opacity: 0 }}
               transition={{ duration: 0.5 }}
+              fill
+              loading="eager"
               style={{
                 maxWidth: "90%",
                 maxHeight: "80%",

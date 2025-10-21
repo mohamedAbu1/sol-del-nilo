@@ -1,7 +1,7 @@
 import LinksMidea from "./LinksMidea";
 import BtnHero from "./BtnHero";
 import TextHero from "./TextHero";
-import TravelPlannerForm from "../TravelPlannerForm";
+import TravelPlannerForm from "./TravelPlannerForm";
 // ? $$$$$$$$$$$$$$$$$$$$$$
 const Hero = ({ showBubble }) => {
   return (

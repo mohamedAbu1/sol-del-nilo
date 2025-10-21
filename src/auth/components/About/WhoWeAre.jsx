@@ -2,7 +2,6 @@
 import Image from "next/image";
 import SectionTitle from "./SectionTitle ";
 import { useTranslations } from "next-intl";
-const imga = "/assets/Copilot_20250908_231423.png";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const WhoWeAre = () => {
     const t = useTranslations("AboutPage");
@@ -17,7 +16,7 @@ const WhoWeAre = () => {
       </div>
       <div className="flex-1">
         <Image
-          src={imga}
+        src={"/assets/Copilot_20250908_2314232.png"}
           alt="Egyptian Woman"
           width={400}
           height={600}

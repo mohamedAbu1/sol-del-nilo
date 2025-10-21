@@ -136,7 +136,7 @@ export default function SectionThree() {
                   </span>
                 </div>
                 <button
-                  style={{ padding: "5px" }}
+                  style={{ padding: "5px", cursor:"pointer" }}
                   onClick={() => router.push(`/tours/${tour.id}`)}
                   className="px-4 py-2 bg-gradient-to-r from-yellow-400 to-orange-400 text-gray-100 dark:text-gray-800 font-semibold rounded-full shadow hover:scale-105 transition text-sm lg:text-base"
                 >

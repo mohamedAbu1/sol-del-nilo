@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Header from "../HeaderComponets/Header";
 import Hero from "./Hero";
 import Image from "next/image";
-import WelcomeMessageBubble from "../WelcomeMessage";
+import WelcomeMessageBubble from "./WelcomeMessage";
 import { motion, AnimatePresence } from "framer-motion";
 import SectionTow from "./SectionTow";
 import SectionThree from "./SectionThree";

@@ -25,6 +25,7 @@ const Logo = ({ path }) => {
           height={width <= 540 ? 100 : 150}
           priority
           loading="eager"
+          style={{cursor:"pointer"}}
         />
       </Link>
     </div>

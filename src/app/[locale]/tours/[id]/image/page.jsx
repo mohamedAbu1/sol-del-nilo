@@ -123,12 +123,9 @@ const Page = () => {
           {tour?.tourimage?.map((img, index) => (
             <ImageListItem key={index}>
               <Box sx={{ position: "relative" }}>
-                <Image
+                <img
                   src={`/assets/${img.url}`}
                   alt={img.name}
-                  loading="eager"
-                  width={400} // أو أي قيمة مناسبة
-                  height={300}
                   onClick={() => handleImageClick(index)}
                   style={{
                     borderRadius: "30px",
@@ -185,7 +182,7 @@ const Page = () => {
             }}
             onClick={() => setFullScreenOpen(false)}
           >
-            <img
+            <motion.img
               key={tour.tourimage[selectedIndex].url}
               src={`/assets/${tour.tourimage[selectedIndex].url}`}
               alt={tour.tourimage[selectedIndex].name}
@@ -193,8 +190,9 @@ const Page = () => {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: -100, opacity: 0 }}
               transition={{ duration: 0.5 }}
-              loading="eager"
               style={{
+                width: width <= 600 ? "100%" : "40%",
+                height: width <= 600 ? "95%" : "60%",
                 maxWidth: "100%",
                 maxHeight: "100%",
                 borderRadius: "20px",

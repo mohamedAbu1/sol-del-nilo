@@ -172,7 +172,7 @@ const Page = () => {
               left: 0,
               width: "100vw",
               height: "100vh",
-              backgroundColor: "rgba(0,0,0,0.9)",
+              backgroundColor: "rgba(999,999,999,0.9)",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
@@ -191,12 +191,10 @@ const Page = () => {
               exit={{ x: -100, opacity: 0 }}
               transition={{ duration: 0.5 }}
               style={{
-                width: width <= 600 ? "100%" : "50%",
-                height: width <= 600 ? "95%" : "90%",
                 maxWidth: "100%",
                 maxHeight: "100%",
                 borderRadius: "20px",
-                boxShadow: "0 4px 20px rgba(0,0,0,0.5)",
+                boxShadow: "0 4px 20px rgba(999,999,999,0.5)",
               }}
             />
           </motion.div>

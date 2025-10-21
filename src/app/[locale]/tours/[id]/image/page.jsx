@@ -191,8 +191,8 @@ const Page = () => {
               exit={{ x: -100, opacity: 0 }}
               transition={{ duration: 0.5 }}
               style={{
-                width: width <= 600 ? "100%" : "40%",
-                height: width <= 600 ? "95%" : "60%",
+                width: width <= 600 ? "100%" : "60%",
+                height: width <= 600 ? "95%" : "30%",
                 maxWidth: "100%",
                 maxHeight: "100%",
                 borderRadius: "20px",

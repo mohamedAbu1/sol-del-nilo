@@ -8,7 +8,6 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/material.css"; // ✅ ستايل متناسق مع MUI
 import { useTheme } from "next-themes";
 import { useTranslations } from "next-intl";
-import { supabase } from "@/lib/supabaseClient";
 import axios from "axios";
 
 const ContactUs = ({ user }) => {
@@ -39,7 +38,8 @@ const ContactUs = ({ user }) => {
   };
   useEffect(() => {
     if (process.env.NODE_ENV === "development") {
-    }
+    console.log("Current theme is:", theme);
+  }
   }, [theme]);
 
   const handleSubmit = async () => {

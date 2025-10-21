@@ -1,5 +1,5 @@
 "use client";
-// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$
+import { useEffect, useState } from "react";
 import Logo from "./Logo";
 import Nav from "./Nav";
 import LeftNav from "./LeftNav";
@@ -25,18 +25,37 @@ import {
 import ThemeToggle from "../ThemeToggle";
 import { useScreenSize } from "../../hooks/screenSize";
 
-// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const Header = ({ user }) => {
-  const path = usePathname(); // مثل: "/en/about" أو "/ar/visaInfo"
-
-  // ✅ تقسيم المسار إلى أجزاء
-  const segments = path.split("/").filter(Boolean); // يحذف الفراغات الناتجة عن "/"
-
-  // ✅ استخراج الجزء بعد اللغة
+  const path = usePathname();
+  const segments = path.split("/").filter(Boolean);
   const slug = segments.length > 1 ? segments.slice(1).join("/") : "";
 
   const { width, height } = useScreenSize();
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$
+
+  // ✅ منع التفاعل قبل تحميل المتصفح
+  const [hasMounted, setHasMounted] = useState(false);
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+  if (!hasMounted) return null;
+
+  const isStaticPath =
+    path === ToursPathEn ||
+    path === ToursPathEs ||
+    path === ToursPathde ||
+    path === ToursPathfr ||
+    path === ToursPathit ||
+    path === AboutPathEn ||
+    path === AboutPathEs ||
+    path === AboutPathde ||
+    path === AboutPathfr ||
+    path === AboutPathit ||
+    path === ContactPathEn ||
+    path === ContactPathEs ||
+    path === ContactPathfr ||
+    path === ContactPathit ||
+    path === ContactPathde;
+
   return (
     <header
       style={{
@@ -48,21 +67,7 @@ const Header = ({ user }) => {
         marginTop: "8px",
       }}
       className={
-        path === ToursPathEn ||
-        path === ToursPathEs ||
-        path === ToursPathde ||
-        path === ToursPathfr ||
-        path === ToursPathit ||
-        path === AboutPathEn ||
-        path === AboutPathEs ||
-        path === AboutPathde ||
-        path === AboutPathfr ||
-        path === AboutPathit ||
-        path === ContactPathEn ||
-        path === ContactPathEs ||
-        path === ContactPathfr ||
-        path === ContactPathit ||
-        path === ContactPathde
+        isStaticPath
           ? "container flex items-center justify-between z-50"
           : "container flex items-center justify-around p-4 absolute top-0 z-50"
       }

@@ -1,6 +1,5 @@
 "use client";
-// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -11,26 +10,34 @@ import { useTranslations } from "next-intl";
 import { getNavPath } from "@/lib/constants/FixedTexts";
 import LogoutBtn from "./LogoutBtn";
 import { useTheme } from "next-themes";
-import { useMemo } from "react";
-// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
 const MobilNav = ({ slug, user }) => {
   const t = useTranslations("Header");
   const NavPath = getNavPath(t);
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
   const [anchorEl, setAnchorEl] = useState("");
   const open = Boolean(anchorEl);
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const { theme, setTheme } = useTheme("dark");
 
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  const { theme } = useTheme("dark");
+
+  // ✅ منع التفاعل قبل تحميل المتصفح
+  const [hasMounted, setHasMounted] = useState(false);
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  const today = hasMounted
+    ? new Date().toISOString().split("T")[0]
+    : "2025-01-01"; // قيمة ثابتة أثناء SSR
+
   return (
     <div className="w-14 flex items-center justify-center lg:hidden">
       <Button
@@ -42,10 +49,10 @@ const MobilNav = ({ slug, user }) => {
         style={{
           zIndex: "9999",
           fontSize: "25px",
-          color: theme === "dark" ? "#fff" : "#ff9800",
+          color: hasMounted && theme === "dark" ? "#fff" : "#ff9800",
         }}
       >
-        <AiOutlineMenu className="text-2xl  hover:scale-110 transition-all" />
+        <AiOutlineMenu className="text-2xl hover:scale-110 transition-all" />
       </Button>
       <Menu
         id="fade-menu"
@@ -62,9 +69,6 @@ const MobilNav = ({ slug, user }) => {
       >
         {NavPath.map((i, index) => {
           const isTours = i.path === "/tours";
-          const today = useMemo(() => {
-            return new Date().toISOString().split("T")[0];
-          }, []);
 
           const linkProps = isTours
             ? {
@@ -91,7 +95,7 @@ const MobilNav = ({ slug, user }) => {
           );
         })}
 
-        {!user ? "" : <LogoutBtn />}
+        {user && <LogoutBtn />}
       </Menu>
     </div>
   );

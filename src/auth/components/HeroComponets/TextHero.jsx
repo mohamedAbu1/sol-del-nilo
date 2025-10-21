@@ -1,15 +1,24 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { getHeroText } from "@/lib/constants/FixedTexts";
 import { useTranslations } from "next-intl";
-// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
 const TextHero = () => {
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const t = useTranslations("HomeHeroPage");
-  const HeroText = getHeroText(t);
-  const sentence = HeroText[0].titel;
-  const sentence2 = HeroText[1].titel;
-// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+  const [hasMounted, setHasMounted] = useState(false);
+  const [sentence, setSentence] = useState("");
+  const [sentence2, setSentence2] = useState("");
+
+  useEffect(() => {
+    setHasMounted(true);
+    const HeroText = getHeroText(t);
+    setSentence(HeroText?.[0]?.titel || "");
+    setSentence2(HeroText?.[1]?.titel || "");
+  }, [t]);
+
+  if (!hasMounted) return null;
+
   return (
     <div className="w-full flex flex-col items-center justify-center gap-6 px-4 py-8">
       <h1 className="text-[clamp(1.5rem,6vw,3.8rem)] font-bold text-[#FF9800] text-center">

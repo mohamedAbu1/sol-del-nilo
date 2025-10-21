@@ -1,17 +1,28 @@
 "use client";
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import React from "react";
 import { useRouter } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { getNavPath } from "@/lib/constants/FixedTexts";
+
 const img = "/assets/Copilot_20251005_003854.png";
-// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
 const SectionSix = () => {
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const t = useTranslations("HomeHeroPage");
-  const NavPath = getNavPath(t);
   const router = useRouter();
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+  const [hasMounted, setHasMounted] = useState(false);
+  const [today, setToday] = useState("2025-01-01");
+  const [NavPath, setNavPath] = useState([]);
+
+  useEffect(() => {
+    setHasMounted(true);
+    setToday(new Date().toISOString().split("T")[0]);
+    setNavPath(getNavPath(t));
+  }, [t]);
+
+  if (!hasMounted) return null;
 
   return (
     <section
@@ -23,21 +34,14 @@ const SectionSix = () => {
         style={{ marginTop: "60px", marginBottom: "60px" }}
         className="max-w-3xl text-center z-10"
       >
-        <h2
-          style={{ marginBottom: "10px" }}
-          className="text-3xl lg:text-4xl font-bold mb-4"
-        >
+        <h2 className="text-3xl lg:text-4xl font-bold mb-4">
           {t("sc5Title")}
         </h2>
-        <p
-          style={{ marginBottom: "10px" }}
-          className="text-base lg:text-lg text-gray-400 dark:text-gray-300 mb-8 leading-relaxed"
-        >
+        <p className="text-base lg:text-lg text-gray-400 dark:text-gray-300 mb-8 leading-relaxed">
           {t("sc5P")}
         </p>
         <button
-          style={{ cursor: "pointer" }}
-          onClick={() => router.push(`/contact`)}
+          onClick={() => router.push("/contact")}
           className="px-6 py-3 text-gray-600 dark:text-white font-semibold rounded-full transition hover:scale-90 hover:text-yellow-400"
         >
           {t("sc5BTN")}
@@ -46,13 +50,10 @@ const SectionSix = () => {
 
       {/* خلفية الأعمدة الفرعونية */}
       <section className="relative w-full h-[81vh] overflow-hidden">
-        {/* خلفية الصورة */}
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url(${img})` }}
         />
-
-        {/* طبقة تغطية داكنة */}
         <div className="absolute inset-0 bg-black opacity-60" />
 
         {/* محتوى الفوتر */}
@@ -66,7 +67,6 @@ const SectionSix = () => {
           <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-400">
             {NavPath.map((i, index) => {
               const isTours = i.path === "/tours";
-              const today = new Date().toISOString().split("T")[0];
 
               const linkProps = isTours
                 ? {

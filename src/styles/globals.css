@@ -54,8 +54,8 @@
   box-sizing: border-box;
   font-family: Geist_Mono, Arial, sans-serif;
   /* overflow: hidden; */
-  cursor: default;
-  user-select: none; /* يمنع تحديد النص */
+  /* cursor: default;
+  user-select: none; يمنع تحديد النص */
 }
 .swiper-button-prev,
 .swiper-rtl .swiper-button-next {

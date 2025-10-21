@@ -2,20 +2,25 @@
 import { useTranslations } from "next-intl";
 import { FaHeart, FaMapMarkerAlt } from "react-icons/fa";
 import Image from "next/image";
-import { useRouter } from "next/navigation"; // ✅ استيراد router
+import { useRouter } from "next/navigation";
 import { useTripsContext } from "@/context/TripsContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTripContext } from "@/context/TripContext";
-// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
 const CitySection = () => {
   const [noToursCity, setNoToursCity] = useState(null);
+  const [hasMounted, setHasMounted] = useState(false);
+  const [today, setToday] = useState("2025-01-01");
 
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  useEffect(() => {
+    setHasMounted(true);
+    setToday(new Date().toISOString().split("T")[0]);
+  }, []);
+
   const { cities } = useTripsContext();
   const { tours } = useTripContext();
   const t = useTranslations("HomeHeroPage");
-  const router = useRouter(); // ✅ استخدام router
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  const router = useRouter();
 
   return (
     <section
@@ -23,7 +28,6 @@ const CitySection = () => {
       style={{ marginTop: "30px" }}
       className="w-full min-h-screen py-10 flex flex-col items-center justify-start text-white px-4 sm:py-10 md:py-12 lg:py-0"
     >
-      {/* ✅ العنوان */}
       <div className="text-center mb-12 w-full max-w-4xl">
         <h2 className="text-2xl font-bold text-white uppercase tracking-widest mb-2">
           {t("SCTitle")}
@@ -34,12 +38,10 @@ const CitySection = () => {
         </h3>
       </div>
 
-      {/* ✅ شبكة الكروت المتجاوبة */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-full max-w-screen-xl">
         {cities.map((city, index) => (
           <div
             key={city.id || index}
-            style={{ cursor: "pointer" }}
             onClick={() => {
               const cityName = city.name;
               const hasTours =
@@ -51,14 +53,13 @@ const CitySection = () => {
 
               if (!hasTours) {
                 setNoToursCity(cityName);
-                setTimeout(() => setNoToursCity(null), 3000); // إخفاء بعد 3 ثوانٍ
+                setTimeout(() => setNoToursCity(null), 3000);
                 return;
               }
 
-              const today = new Date().toISOString().split("T")[0];
               const query = new URLSearchParams({
                 destination: cityName,
-                category: "All", // ✅ تحديد كل الفئات
+                category: "All",
                 date: today,
                 duration: "5",
                 minPrice: "0",
@@ -70,9 +71,9 @@ const CitySection = () => {
             }}
             className="group relative bg-[#fff] dark:bg-neutral-900 rounded-3xl overflow-hidden shadow-xl hover:shadow-yellow-500/40 transition duration-300"
           >
-            {/* صورة المدينة */}
             <div className="relative">
               <Image
+                style={{ cursor: "pointer" }}
                 width={400}
                 height={100}
                 src={city.img ? `/assets/${city.img}` : "/assets/default.png"}

@@ -12,52 +12,59 @@ import SectionFive from "./SectionFive";
 import SectionSix from "./SectionSix";
 import CitySection from "./CitySection";
 import { desktopImages, desktopImagesMB } from "@/lib/constants/FixedTexts";
-// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
 export default function ClientHome({ user }) {
+  const [hasMounted, setHasMounted] = useState(false);
   const [showWelcomeText, setShowWelcomeText] = useState(true);
   const [showHero, setShowHero] = useState(false);
   const [heroMoved, setHeroMoved] = useState(false);
   const [showBubble, setShowBubble] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentIndexMB, setCurrentIndexMB] = useState(0);
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
   useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!hasMounted) return;
+
     const timer1 = setTimeout(() => setShowWelcomeText(false), 1000);
     const timer2 = setTimeout(() => setShowHero(true), 2100);
     const timer3 = setTimeout(() => setHeroMoved(true), 6000);
     const timer4 = setTimeout(() => setShowBubble(true), 7500);
+
     return () => {
       clearTimeout(timer1);
       clearTimeout(timer2);
       clearTimeout(timer3);
       clearTimeout(timer4);
     };
-  }, []);
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  }, [hasMounted]);
 
   useEffect(() => {
+    if (!hasMounted) return;
+
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % desktopImages.length);
     }, 15000);
     return () => clearInterval(interval);
-  }, []);
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  }, [hasMounted]);
 
   useEffect(() => {
+    if (!hasMounted) return;
+
     const interval = setInterval(() => {
       setCurrentIndexMB((prev) => (prev + 1) % desktopImagesMB.length);
     }, 15000);
     return () => clearInterval(interval);
-  }, []);
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  }, [hasMounted]);
+
+  if (!hasMounted) return null;
 
   return (
     <>
-      <main
-        id="section-one"
-        className="relative w-full h-screen overflow-hidden"
-      >
+      <main id="section-one" className="relative w-full h-screen overflow-hidden">
         {/* Overlay */}
         <div className="absolute inset-0 bg-black/40 z-0 pointer-events-none" />
 
@@ -185,7 +192,7 @@ export default function ClientHome({ user }) {
       <SectionThree />
       <CitySection />
       <SectionFour />
-      <SectionFive/>
+      <SectionFive />
       <SectionSix />
     </>
   );

@@ -1,143 +1,84 @@
 "use client";
-// ? $$$$$$$$$$$$
+import React, { useEffect, useState } from "react";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { ToursPathEn, ToursPathEs } from "@/lib/constants/FixedTexts";
 import { useScreenSize } from "../../hooks/screenSize";
-// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
 const Nav = ({ path, user, slug }) => {
-  const { width, height } = useScreenSize();
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  const { width } = useScreenSize();
   const t = useTranslations("Header");
-  // ? $$$$$$$$$$$$$$$$$$$
+
   const boxVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1 },
   };
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+  // ✅ منع التفاعل قبل تحميل المتصفح
+  const [hasMounted, setHasMounted] = useState(false);
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  const fontSize =
+    hasMounted && width <= 1297 && path === ToursPathEs ? "15px" : "19px";
+
+  const today = hasMounted
+    ? new Date().toISOString().split("T")[0]
+    : "2025-01-01";
+
   return (
     <div className="hidden lg:flex w-3/5 justify-start">
       <ul className="w-full flex flex-row items-center justify-around capitalize gap-2">
-        <motion.li
-          style={{
-            fontWeight: "600",
-            fontSize:
-              width <= 1297
-                ? path === ToursPathEs
-                  ? "15px"
-                  : "19px"
-                : path === ToursPathEn
-                ? "19px"
-                : "19px",
-          }}
-          variants={boxVariants}
-          initial="hidden"
-          animate="visible"
-          transition={{ delay: 0.5, duration: 0.5 }}
-          className={slug === "" ? "text-[#d4a85f]" : "text-gray-400"}
-        >
-          <Link href={"/"} style={{cursor: "pointer"}} className="hover:text-[#d4a85f]">
-            {t("Home")}
-          </Link>
-        </motion.li>
-        <motion.li
-          style={{
-            fontWeight: "600",
-            fontSize:
-              width <= 1297
-                ? path === ToursPathEs
-                  ? "15px"
-                  : "19px"
-                : path === ToursPathEn
-                ? "19px"
-                : "19px",
-          }}
-          variants={boxVariants}
-          initial="hidden"
-          animate="visible"
-          transition={{ delay: 0.5, duration: 0.5 }}
-          className={slug === "tours" ? "text-[#d4a85f]" : "text-gray-400"}
-        >
-          <Link
-            href={{
+        {[
+          { label: "Home", href: "/", active: slug === "" },
+          {
+            label: "Tours",
+            href: {
               pathname: "/tours",
               query: {
                 destination: "All",
                 category: "All",
-                date: new Date().toISOString().split("T")[0],
+                date: today,
                 duration: "61",
                 minPrice: "0",
                 maxPrice: "14000",
                 search: "All",
               },
+            },
+            active: slug === "tours",
+          },
+          { label: "About", href: "/about", active: slug === "about" },
+          { label: "Contact", href: "/contact", active: slug === "contact" },
+        ].map((item, index) => (
+          <motion.li
+            key={index}
+            style={{
+              fontWeight: "600",
+              fontSize,
             }}
-            className="hover:text-[#d4a85f]"
-            style={{cursor: "pointer"}}
+            variants={boxVariants}
+            initial="hidden"
+            animate="visible"
+            transition={{ delay: 0.5, duration: 0.5 }}
+            className={item.active ? "text-[#d4a85f]" : "text-gray-400"}
           >
-            {t("Tours")}
-          </Link>
-        </motion.li>
-        <motion.li
-          style={{
-            fontWeight: "600",
-            fontSize:
-              width <= 1297
-                ? path === ToursPathEs
-                  ? "15px"
-                  : "19px"
-                : path === ToursPathEn
-                ? "19px"
-                : "19px",
-          }}
-          variants={boxVariants}
-          initial="hidden"
-          animate="visible"
-          transition={{ delay: 0.5, duration: 0.5 }}
-          className={slug === "about" ? "text-[#d4a85f]" : "text-gray-400"}
-        >
-          <Link href={"/about"} style={{cursor: "pointer"}} className="hover:text-[#d4a85f]">
-            {t("About")}
-          </Link>
-        </motion.li>
-        <motion.li
-          style={{
-            fontWeight: "600",
-            fontSize:
-              width <= 1297
-                ? path === ToursPathEs
-                  ? "15px"
-                  : "19px"
-                : path === ToursPathEn
-                ? "19px"
-                : "19px",
-          }}
-          variants={boxVariants}
-          initial="hidden"
-          animate="visible"
-          transition={{ delay: 0.5, duration: 0.5 }}
-          className={slug === "contact" ? "text-[#d4a85f]" : "text-gray-400"}
-        >
-          <Link href={"/contact"} style={{cursor: "pointer"}} className="hover:text-[#d4a85f]">
-            {t("Contact")}
-          </Link>
-        </motion.li>
-        {!user || user.role !== "ADMIN" ? (
-          ""
-        ) : width <= 1279 ? (
-          ""
-        ) : (
+            <Link
+              href={item.href}
+              style={{ cursor: "pointer" }}
+              className="hover:text-[#d4a85f]"
+            >
+              {t(item.label)}
+            </Link>
+          </motion.li>
+        ))}
+
+        {user?.role === "ADMIN" && hasMounted && width > 1279 && (
           <motion.li
             style={{
               fontWeight: "600",
-              fontSize:
-                width <= 1297
-                  ? path === ToursPathEs
-                    ? "15px"
-                    : "19px"
-                  : path === ToursPathEn
-                  ? "19px"
-                  : "19px",
+              fontSize,
             }}
             variants={boxVariants}
             initial="hidden"
@@ -145,7 +86,11 @@ const Nav = ({ path, user, slug }) => {
             transition={{ delay: 0.5, duration: 0.5 }}
             className={slug === "admin" ? "text-[#d4a85f]" : "text-gray-400"}
           >
-            <Link href={"/admin"} style={{cursor: "pointer"}} className="hover:text-[#d4a85f]">
+            <Link
+              href="/admin"
+              style={{ cursor: "pointer" }}
+              className="hover:text-[#d4a85f]"
+            >
               {t("Admin")}
             </Link>
           </motion.li>

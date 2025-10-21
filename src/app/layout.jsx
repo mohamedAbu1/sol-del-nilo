@@ -18,11 +18,14 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children ,params}) {
-    const locale = params?.locale;
+export default function RootLayout({ children, params }) {
+  const locale = params?.locale;
+
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${montserrat.className}`}>
-      <body>{children}</body>
+    <html lang={locale || "en"} className="geist-font montserrat-font">
+      <body suppressHydrationWarning={true}>
+        {children}
+      </body>
     </html>
   );
 }

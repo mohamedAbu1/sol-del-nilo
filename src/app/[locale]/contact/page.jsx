@@ -2,6 +2,8 @@ import ContactUs from "@/auth/components/HeroContact/ContactUs";
 import Header from "@/auth/components/HeaderComponets/Header";
 import { vrefyTokenForPage } from "@/lib/utils/veryfyToken";
 import { cookies } from "next/headers";
+import { generateMetadata } from "./metadata";
+export { generateMetadata };
 
 const Contact = async () => {
   const cookieStore = await cookies();

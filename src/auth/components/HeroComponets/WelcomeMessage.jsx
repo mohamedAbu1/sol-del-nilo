@@ -4,26 +4,37 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
 
 const WelcomeMessageBubble = () => {
+  const t = useTranslations("HomeHeroPage");
+
+  const [hasMounted, setHasMounted] = useState(false);
   const [show, setShow] = useState(false);
   const [startTyping, setStartTyping] = useState(false);
   const [typedLines, setTypedLines] = useState([]);
   const [typingDone, setTypingDone] = useState(false);
-  const t = useTranslations("HomeHeroPage");
-  const fullLines = [
-    t("welcome"),
-    t("welcome1"),
-    t("welcome2"),
-    t("welcome3"),
-
-  ];
+  const [fullLines, setFullLines] = useState([]);
 
   useEffect(() => {
-    const timer = setTimeout(() => setShow(true), 3000);
-    return () => clearTimeout(timer);
+    setHasMounted(true);
   }, []);
 
   useEffect(() => {
-    if (!startTyping) return;
+    if (!hasMounted) return;
+
+    const lines = [
+      t("welcome"),
+      t("welcome1"),
+      t("welcome2"),
+      t("welcome3"),
+    ];
+    setFullLines(lines);
+
+    const timer = setTimeout(() => setShow(true), 3000);
+    return () => clearTimeout(timer);
+  }, [hasMounted, t]);
+
+  useEffect(() => {
+    if (!startTyping || fullLines.length === 0) return;
+
     let lineIndex = 0;
     let charIndex = 0;
     let currentLine = "";
@@ -51,7 +62,7 @@ const WelcomeMessageBubble = () => {
     }, 40);
 
     return () => clearInterval(typingInterval);
-  }, [startTyping]);
+  }, [startTyping, fullLines]);
 
   const animation = {
     hidden: { opacity: 0, y: 30, scale: 0.95 },
@@ -68,6 +79,8 @@ const WelcomeMessageBubble = () => {
     exit: { opacity: 0, y: 20, transition: { duration: 0.5 } },
   };
 
+  if (!hasMounted) return null;
+
   return (
     <AnimatePresence>
       {show && (
@@ -79,13 +92,10 @@ const WelcomeMessageBubble = () => {
           className="relative w-full px-4 py-4 max-w-[95vw] lg:max-w-[clamp(280px,80vw,420px)] h-auto max-h-[90vh] lg:max-h-[clamp(400px,90vh,820px)] bg-gradient-to-br from-amber-500/10 to-yellow-400/20 text-white rounded-3xl shadow-2xl font-[Raleway]"
         >
           {/* ✅ المحتوى */}
-          <div
-            style={{ padding: "20px" }}
-            className="flex flex-col justify-center h-full space-y-6 text-center z-10 px-5 pb-12"
-          >
+          <div className="flex flex-col justify-center h-full space-y-6 text-center z-10 px-5 pb-12" style={{ padding: "20px" }}>
             <h2 className="text-2xl lg:text-[clamp(1.75rem,5vw,2.5rem)] font-bold text-yellow-300 drop-shadow-sm tracking-wide">
               {typedLines[0]}
-              {!typingDone && typedLines[0]?.length < fullLines[0].length && (
+              {!typingDone && typedLines[0]?.length < fullLines[0]?.length && (
                 <span className="animate-pulse text-yellow-300">|</span>
               )}
             </h2>

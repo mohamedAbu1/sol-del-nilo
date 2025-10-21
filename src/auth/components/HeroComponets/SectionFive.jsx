@@ -1,13 +1,23 @@
-"use client"
+"use client";
 import { useTranslations } from "next-intl";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { GetTours } from "@/lib/constants/FixedTexts";
-// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
 const SectionFive = () => {
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const t = useTranslations("HomeHeroPage");
-  const Car = GetTours(t);
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+  // ✅ منع التفاعل قبل تحميل المتصفح
+  const [hasMounted, setHasMounted] = useState(false);
+  const [Car, setCar] = useState([]);
+
+  useEffect(() => {
+    setHasMounted(true);
+    const tours = GetTours(t);
+    setCar(tours || []);
+  }, [t]);
+
+  if (!hasMounted) return null;
+
   return (
     <section
       id="section-five"
@@ -17,7 +27,7 @@ const SectionFive = () => {
       <div className="text-center mb-12">
         <span
           style={{ marginBottom: "10px" }}
-          className="inline-block text-3xl text-gray-400 dark:text-white  font-semibold px-3 py-1 rounded-full mb-3"
+          className="inline-block text-3xl text-gray-400 dark:text-white font-semibold px-3 py-1 rounded-full mb-3"
         >
           {t("sc3P")}
         </span>
@@ -31,7 +41,7 @@ const SectionFive = () => {
 
       {/* ✅ شبكة الكروت المتجاوبة */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-screen-xl">
-        {(Car || []).map((tour, index) => (
+        {Car.map((tour, index) => (
           <div
             key={index}
             style={{ height: "440px" }}
@@ -42,7 +52,7 @@ const SectionFive = () => {
               <img
                 src={tour.image}
                 alt={tour.title}
-                className="absolute -top-10 left-1/2 transform -translate-x-1/2 w-[100%]  h-auto object-cover z-10 rounded-2xl"
+                className="absolute -top-10 left-1/2 transform -translate-x-1/2 w-[100%] h-auto object-cover z-10 rounded-2xl"
               />
             </div>
 

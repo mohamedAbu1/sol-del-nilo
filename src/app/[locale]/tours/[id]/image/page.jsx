@@ -13,12 +13,16 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import Lodaing from "../../../lodaing";
 import Image from "next/image";
+import { useTripContext } from "@/context/TripContext";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const Page = () => {
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-
-  const { id } = useParams();
-  const [tour, setTour] = useState(null);
+  const { tours } = useTripContext();
+  const params = useParams();
+  const id = params?.id;
+  const tour = tours.find((t) => t.id === id);
+  // const { id } = useParams();
+  // const [tour, setTour] = useState(null);
   const { width } = useScreenSize();
   const router = useRouter();
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
@@ -27,29 +31,31 @@ const Page = () => {
   const [fullScreenOpen, setFullScreenOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  console.log(id);
+  console.log(tour);
+  // useEffect(() => {
+  //   if (!id) return;
 
-  useEffect(() => {
-    if (!id) return;
+  //   const fetchTourWithImages = async () => {
+  //     try {
+  //       const response = await fetch(`/api/tours/${id}`);
+  //       const result = await response.json();
 
-    const fetchTourWithImages = async () => {
-      try {
-        const response = await fetch(`/api/tourimage?tourId=${id}`);
-        const result = await response.json();
+  //       if (!response.ok) {
+  //         console.error("❌ API Error:", result.error);
+  //         return;
+  //       }
 
-        if (!response.ok) {
-          console.error("❌ API Error:", result.error);
-          return;
-        }
+  //       setTour(result);
+  //       setLoading(false); // ✅ تم التحميل
+  //     } catch (error) {
+  //       console.error("❌ Fetch Error:", error.message);
+  //     }
+  //   };
 
-        setTour(result);
-        setLoading(false); // ✅ تم التحميل
-      } catch (error) {
-        console.error("❌ Fetch Error:", error.message);
-      }
-    };
-
-    fetchTourWithImages();
-  }, [id]);
+  //   fetchTourWithImages();
+  // }, [id]);
+  // console.log(tour)
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
   const handleImageClick = (index) => {
@@ -74,14 +80,22 @@ const Page = () => {
     return () => clearInterval(interval);
   }, [fullScreenOpen, tour]);
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  console.log(tour);
 
-  if (loading || !tour) {
+  if (!tour) {
     return <Lodaing />;
   }
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
   return (
-    <Box sx={{ padding: 4 }}>
+    <Box
+      sx={{
+        padding: 4,
+        display: "flex",
+        flexDirection: "column",
+        flexWrap: "wrap",
+      }}
+    >
       <div className="w-full flex flex-row items-center justify-between gap-1.5">
         <Typography
           variant="h4"
@@ -113,7 +127,8 @@ const Page = () => {
                   src={`/assets/${img.url}`}
                   alt={img.name}
                   loading="eager"
-                  fill
+                  width={400} // أو أي قيمة مناسبة
+                  height={300}
                   onClick={() => handleImageClick(index)}
                   style={{
                     borderRadius: "30px",
@@ -170,7 +185,7 @@ const Page = () => {
             }}
             onClick={() => setFullScreenOpen(false)}
           >
-            <Image
+            <img
               key={tour.tourimage[selectedIndex].url}
               src={`/assets/${tour.tourimage[selectedIndex].url}`}
               alt={tour.tourimage[selectedIndex].name}
@@ -178,11 +193,10 @@ const Page = () => {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: -100, opacity: 0 }}
               transition={{ duration: 0.5 }}
-              fill
               loading="eager"
               style={{
-                maxWidth: "90%",
-                maxHeight: "80%",
+                maxWidth: "100%",
+                maxHeight: "100%",
                 borderRadius: "20px",
                 boxShadow: "0 4px 20px rgba(0,0,0,0.5)",
               }}

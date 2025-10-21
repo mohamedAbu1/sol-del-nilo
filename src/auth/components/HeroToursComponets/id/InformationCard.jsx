@@ -7,8 +7,6 @@ import { HiOutlineUserGroup } from "react-icons/hi";
 import { AiOutlineClockCircle } from "react-icons/ai";
 import { FaCircle } from "react-icons/fa6";
 import { motion, useInView } from "framer-motion";
-import { Link } from "@/i18n/navigation";
-import HikingIcon from "@mui/icons-material/Hiking";
 import { useScreenSize } from "@/auth/hooks/screenSize";
 import { BiDollar } from "react-icons/bi";
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
@@ -103,7 +101,11 @@ const InformationCard = ({
         <Button
           className="btn-next-section3"
           style={{ marginBottom: "20px", color: "#000" }}
-          onClick={() => router.push(`/tours/${tour.id}/image`)}
+          onClick={() => {
+            if (tour?.id) {
+              router.push(`/tours/${tour.id}/image`);
+            }
+          }}
         >
           last trip
         </Button>

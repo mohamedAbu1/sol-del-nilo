@@ -69,6 +69,7 @@ const AnimatedPictures = () => {
                   src={`/assets/${img.name}`}
                   alt={`Grid ${index}`}
                   fill
+                  loading="eager"
                   style={{
                     objectFit: "cover",
                     borderRadius: "20px",
@@ -107,6 +108,7 @@ const AnimatedPictures = () => {
                     filter: "brightness(0.8)",
                     animation: "kenburns 8s ease-in-out forwards",
                   }}
+                  loading="eager"
                   sizes="100vw"
                 />
                 <div

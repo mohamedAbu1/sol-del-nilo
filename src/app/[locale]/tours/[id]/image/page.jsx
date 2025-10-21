@@ -12,6 +12,7 @@ import { useScreenSize } from "../../../../../auth/hooks/screenSize";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import Lodaing from "../../../lodaing";
+import Image from "next/image";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const Page = () => {
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
@@ -108,10 +109,10 @@ const Page = () => {
           {tour?.tourimage?.map((img, index) => (
             <ImageListItem key={index}>
               <Box sx={{ position: "relative" }}>
-                <img
+                <Image
                   src={`/assets/${img.url}`}
                   alt={img.name}
-                  loading="lazy"
+                  loading="eager"
                   onClick={() => handleImageClick(index)}
                   style={{
                     width: "100%",

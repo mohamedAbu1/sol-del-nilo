@@ -68,6 +68,7 @@ export default function SectionThree() {
                     : "/assets/default.jpg"
                 }
                 alt={tour.title}
+                loading="eager"
                 className="w-full h-[320px] object-cover transform group-hover:scale-110 transition duration-700 ease-in-out"
               />
               <div

@@ -74,7 +74,7 @@ const Page = () => {
           const nextIndex = prevIndex + 1;
           return nextIndex >= tour.tourimage.length ? 0 : nextIndex;
         });
-      }, 4000);
+      }, 2000);
     }
 
     return () => clearInterval(interval);

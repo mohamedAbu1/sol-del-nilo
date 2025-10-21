@@ -5,7 +5,7 @@ import { MdDarkMode } from "react-icons/md";
 import { AiFillSun } from "react-icons/ai";
 import { Typography } from "@mui/material";
 export default function ThemeToggle() {
-  const { theme, setTheme } = useTheme("dark");
+  const { theme, setTheme } = useTheme("light");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);

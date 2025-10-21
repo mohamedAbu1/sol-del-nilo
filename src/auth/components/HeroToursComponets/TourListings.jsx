@@ -43,7 +43,7 @@ const TourListings = () => {
       <main
         className="w-full flex flex-col"
         style={{
-          backgroundColor: theme === "dark" ? "#030712" : "#f9f9f9",
+          backgroundColor: theme === "dark" ? "#030712" : "#fff",
           minHeight: "100vh",
           transition: "background-color 0.4s ease",
           borderRadius: "20px",

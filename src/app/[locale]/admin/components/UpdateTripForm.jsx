@@ -20,9 +20,6 @@ import BelowTheControlPanel from "./components/BelowTheControlPanel";
 import ImageCollection from "./components/ImageCollection";
 import { useTripsContext } from "@/context/TripsContext";
 
-// ✅ دالة التحقق من وجود حروف عربية
-const containsArabic = (text) => /[\u0600-\u06FF]/.test(text);
-
 const UpdateTripForm = () => {
   const {
     formData,

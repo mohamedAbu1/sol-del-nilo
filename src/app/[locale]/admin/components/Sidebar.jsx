@@ -10,7 +10,6 @@ import { MdOutlineBrowserUpdated } from "react-icons/md";
 import { MdOutlineCreate } from "react-icons/md";
 import { useTripsContext } from "@/context/TripsContext";
 import { useScreenSize } from "@/auth/hooks/screenSize";
-import { color } from "framer-motion";
 const Sidebar = () => {
   const { width, height } = useScreenSize();
   const { setActiveSection, activeSection } = useTripsContext();

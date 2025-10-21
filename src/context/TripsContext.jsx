@@ -3,6 +3,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { supabase } from "@/lib/supabaseClient";
 import { DOMAIN } from "@/lib/constants/FixedTexts";
+import axios from "axios";
 
 const TripsContext = createContext();
 

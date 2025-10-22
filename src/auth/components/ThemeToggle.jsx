@@ -15,7 +15,7 @@ export default function ThemeToggle() {
   return (
     <>
       <button
-        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+        onClick={() => setTheme(theme === "light" ? "dark" : "light")}
         className="flex flex-row items-center justify-center gap-2.5 px-4 py-2 rounded text-black dark:text-white"
         style={{ zIndex: "9999", cursor: "pointer", width: "5%" }}
       >

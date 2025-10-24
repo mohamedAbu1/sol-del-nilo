@@ -74,12 +74,13 @@ const MobilNav = ({ slug, user }) => {
             ? {
                 pathname: "/tours",
                 query: {
-                  destination: "Alexandria",
-                  category: "Wellness & Medical",
+                  destination: "All",
+                  category: "All",
                   date: today,
                   duration: "61",
-                  minPrice: "10000",
+                  minPrice: "0",
                   maxPrice: "14000",
+                  search: "All",
                 },
               }
             : i.path;

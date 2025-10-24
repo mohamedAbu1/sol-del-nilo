@@ -84,7 +84,7 @@ const SectionSix = () => {
                 : i.path;
 
               return (
-                <Link href={linkProps} key={index} style={{ color: "#ff9800" }}>
+                <Link href={linkProps} key={index} style={{ color: "#ff9800", cursor:"pointer"}}>
                   {i.label}
                 </Link>
               );

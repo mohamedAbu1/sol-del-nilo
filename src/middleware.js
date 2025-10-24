@@ -5,7 +5,7 @@ import { createCsrfMiddleware } from "@edge-csrf/nextjs";
 import { verifyToken } from "@/lib/utils/JWToken";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 // 🌐 إعدادات اللغة
-const locales = ["en", "es", "fr", "de", "it"];
+const locales = ["en", "es", "fr", "de", "it","pt"];
 const defaultLocale = "en";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 // ✅ تحديد لغة المتصفح

@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { getNavPath } from "@/lib/constants/FixedTexts";
 
-const img = "/assets/Copilot_20251005_003854.png";
+const img = "/assets/Copilot_20251005_003854.webp";
 
 const SectionSix = () => {
   const t = useTranslations("HomeHeroPage");

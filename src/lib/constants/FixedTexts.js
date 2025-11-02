@@ -23,11 +23,11 @@ export const ContactPathEs =  "/es/contact"
 export const ContactPathde =  "/de/contact"
 export const ContactPathfr =  "/fr/contact"
 export const ContactPathit =  "/it/contact"
-const img = "/assets/Copilot_20251011_220928.png"
-const img2 = "/assets/Copilot_20251011_221403.png"
-const img3 = "/assets/Copilot_20251011_221703.png"
-const img4 ="/assets/Copilot_20251011_221802.png"
-const img5 = "/assets/Copilot_20251011_222046.png"
+const img = "/assets/Copilot_20251011_220928.webp"
+const img2 = "/assets/Copilot_20251011_221403.webp"
+const img3 = "/assets/Copilot_20251011_221703.webp"
+const img4 ="/assets/Copilot_20251011_221802.webp"
+const img5 = "/assets/Copilot_20251011_222046.webp"
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 export const getNavPath = (t) => [
   {label:t("Home"),path:"/"},
@@ -43,17 +43,17 @@ export const getHeroText = (t) => [
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 export const getSliderToursDiv = (t) => [
   {
-    image: "/assets/Temple_of_the_Elephants.png",
+    image: "/assets/Temple_of_the_Elephants.webp",
     title: t("TitleDivPic"),
     subtitle: t("PDivPic"),
   },
   {
-    image: "/assets/Abu_Simbel.jpg",
+    image: "/assets/Abu_Simbel.webp",
     title: t("TitleDivPic"),
     subtitle: t("PDivPic"),
   },
   {
-    image: "/assets/Nile_River.jpg",
+    image: "/assets/Nile_River.webp",
     title: t("TitleDivPic"),
     subtitle: t("PDivPic"),
   },
@@ -88,16 +88,16 @@ export const AdviceCard = [
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 export const desktopImages = [
-  "/assets/Copilot_20251003_102123.png",
-  "/assets/Copilot_20251003_114530.png",
-  "/assets/Copilot_20251003_105735.png",
-  "/assets/Copilot_20251003_110337.png",
+  "/assets/Copilot_20251003_102123.webp",
+  "/assets/Copilot_20251003_114530.webp",
+  "/assets/Copilot_20251003_105735.webp",
+  "/assets/Copilot_20251003_110337.webp",
 ];
 export const desktopImagesMB = [
-  "/assets/545371804_18083318650930067_5402798298470446398_n.jpg",
-  "/assets/489671803_18068665750930067_7121276910165743367_n.jpg",
-  "/assets/548898267_18083849644930067_2023880468351303706_n.jpg",
-  "/assets/553312854_18084731197930067_1648342695818561037_n.jpg",
+  "/assets/545371804_18083318650930067_5402798298470446398_n.webp",
+  "/assets/489671803_18068665750930067_7121276910165743367_n.webp",
+  "/assets/548898267_18083849644930067_2023880468351303706_n.webp",
+  "/assets/553312854_18084731197930067_1648342695818561037_n.webp",
 ];
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
@@ -107,18 +107,18 @@ export const desktopImagesMB = [
         "Chery Tiggo 3 2025",
       description: t("SCSD"),
       duration: "1 Day",
-      image: "/assets/Copilot_20251013_105157.png",
+      image: "/assets/Copilot_20251013_105157.webp",
     },
     {
       title: "Toyota Hiace",
       description: t("SCSD2"),
       duration: "5 Days",
-      image: "/assets/Copilot_20251013_110329.png",
+      image: "/assets/Copilot_20251013_110329.webp",
     },
     {
       title: "Toyota Coaster",
       description: t("SCSD3"),
       duration: "4 Days",
-      image: "/assets/Copilot_20251013_110540.png",
+      image: "/assets/Copilot_20251013_110540.webp",
     },
   ];

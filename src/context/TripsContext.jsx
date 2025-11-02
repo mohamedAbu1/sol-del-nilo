@@ -111,6 +111,8 @@ export const TripsContextProvider = ({ children }) => {
   };
 
   const fetchTourById = async (id) => {
+    console.log("📥 بدء تحميل بيانات الرحلة:", id);
+
     const { data, error } = await supabase
       .from("tour")
       .select(
@@ -123,10 +125,12 @@ export const TripsContextProvider = ({ children }) => {
       .single();
 
     if (error) {
+      console.error("❌ خطأ في تحميل بيانات الرحلة:", error.message);
       toast.error("❌ فشل في تحميل بيانات الرحلة");
       return null;
     }
 
+    console.log("✅ تم تحميل بيانات الرحلة:", data);
     return data;
   };
 
@@ -144,17 +148,18 @@ export const TripsContextProvider = ({ children }) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
   const populateFormFromTour = (tour) => {
-    const [_, peoplePart] = tour.DayPeople?.split("/") || [];
+    console.log("🔄 بدء تجهيز النموذج من بيانات الرحلة:", tour);
 
-    // ✅ تجهيز الصور الرئيسية
+    const [_, peoplePart] = tour.DayPeople?.split("/") || [];
+    console.log("👥 عدد الأشخاص:", peoplePart);
+
     const formattedImages =
       tour.image?.map((img) => ({
         name: img.name || img,
         label: img.label || "",
       })) || [];
+    console.log("🖼️ الصور الرئيسية:", formattedImages);
 
-
-    // ✅ تجهيز صور الأنشطة
     const formattedTourImages =
       tour.tourimage?.map((img) => ({
         id: img.id,
@@ -162,11 +167,9 @@ export const TripsContextProvider = ({ children }) => {
         label: img.url || "",
         url: img.url,
       })) || [];
+    console.log("📸 صور الأنشطة:", formattedTourImages);
 
-   
-
-    // ✅ تعبئة النموذج الأساسي
-    setFormData({
+    const formPayload = {
       title: tour.title || "",
       description: tour.description || "",
       price: tour.price?.toString() || "",
@@ -186,20 +189,20 @@ export const TripsContextProvider = ({ children }) => {
         tour.includes?.map((item) => ({
           text: item.text || "",
         })) || [],
-    });
+      // tourimage: formattedTourImages,
+    };
+    console.log("📋 النموذج بعد التعبئة:", formPayload);
+    setFormData(formPayload);
 
-
-    // ✅ توزيع الصور الرئيسية إلى الحالة
     const mainImageObjects = formattedImages.map((img) => ({
       name: img.name,
       label: img.label,
       url: `${DOMAIN}/assets/${img.name}`,
       file: null,
     }));
-
+    console.log("🖼️ الصور الرئيسية للعرض:", mainImageObjects);
     setMainImages(mainImageObjects);
 
-    // ✅ توزيع صور الأنشطة إلى الحالة
     const activityImageObjects = formattedTourImages.map((img) => ({
       id: img.id,
       name: img.name,
@@ -207,15 +210,11 @@ export const TripsContextProvider = ({ children }) => {
       url: `${DOMAIN}/assets/${img.url}`,
       file: null,
     }));
-
+    console.log("📸 صور الأنشطة للعرض:", activityImageObjects);
     setActivityImages(activityImageObjects);
- 
 
-    // ✅ تخزين صور الأنشطة الأصلية
     setTourImages(formattedTourImages);
 
-
-    // ✅ إعادة الصور الرئيسية بصيغة قابلة للعرض
     return mainImageObjects;
   };
 
@@ -233,18 +232,42 @@ export const TripsContextProvider = ({ children }) => {
         label: img.label,
       }));
 
-      const tourimagePayload = selectedImagesList.map((img) => ({
-        name: img.name,
-        url: img.url,
-        tourId: toursID,
-        created_at: new Date().toISOString(),
-      }));
+      const tourimagePayload = selectedImagesList.map(async (img) => {
+        const cleanUrl = img.file
+          ? await uploadToSupabase(img.file) // دالة ترفع الصورة وترجع رابطها
+          : img.url; // إذا كانت الصورة موجودة مسبقًا
+
+        return {
+          name: img.name,
+          url: cleanUrl,
+          tourId: toursID,
+          created_at: new Date().toISOString(),
+        };
+      });
 
       const payload = {
         ...formData,
         price: parseFloat(formData.price),
         DayPeople: `${formData.people}`,
         image: imageObjects,
+      };
+      const uploadToSupabase = async (file) => {
+        const fileName = `${crypto.randomUUID()}-${file.name}`;
+        const { data, error } = await supabase.storage
+          .from("tourimages") // اسم الـ bucket
+          .upload(fileName, file);
+
+        if (error) {
+          console.error("❌ فشل رفع الصورة:", error.message);
+          toast.error("❌ فشل رفع الصورة إلى Supabase");
+          return null;
+        }
+
+        const publicUrl = supabase.storage
+          .from("tourimages")
+          .getPublicUrl(fileName).data.publicUrl;
+
+        return publicUrl;
       };
 
       const response = await axios.patch(`/api/tours/${toursID}`, payload);

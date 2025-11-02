@@ -38,9 +38,9 @@ const SectionFour = () => {
           className="w-full lg:w-1/2 rounded-3xl overflow-hidden shadow-xl"
         >
           {[
-            "/assets/Copilot_20251003_110337.png",
-            "/assets/Abu_Simbel.jpg",
-            "/assets/Copilot_20251003_105620.png",
+            "/assets/Copilot_20251003_110337.webp",
+            "/assets/Abu_Simbel.webp",
+            "/assets/Copilot_20251003_105620.webp",
           ].map((imgSrc, index) => (
             <SwiperSlide key={index}>
               <div className="w-full h-[85vh]">

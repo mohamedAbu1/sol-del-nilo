@@ -79,8 +79,6 @@ export default function ClientHome({ user }) {
             fill
             className="object-cover"
             priority
-            placeholder="blur"
-            blurDataURL="data:image/webp;base64,..."
           />
         </div>
 

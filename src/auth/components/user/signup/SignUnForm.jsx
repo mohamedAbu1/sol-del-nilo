@@ -93,7 +93,7 @@ const SignUnForm = () => {
     // ✅ تحديث الحالة
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
- 
+
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const handleEnglishOnlyChange = (e) => {
     const { name, value } = e.target;
@@ -160,6 +160,9 @@ const SignUnForm = () => {
               width={110}
               height={110}
               loading="eager"
+              priority
+              placeholder="blur"
+              blurDataURL="data:image/webp;base64,..."
               className="flex lg:hidden"
               style={{ zIndex: "9999" }}
             />

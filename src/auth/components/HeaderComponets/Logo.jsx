@@ -32,6 +32,8 @@ const Logo = ({ path }) => {
           height={imageSize}
           priority
           loading="eager"
+          placeholder="blur"
+          blurDataURL="data:image/webp;base64,..."
           style={{ cursor: "pointer" }}
         />
       </Link>

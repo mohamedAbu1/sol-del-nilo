@@ -23,6 +23,9 @@ const SignUpTextHero = () => {
           width={500}
           height={200}
           loading="eager"
+          priority
+          placeholder="blur"
+          blurDataURL="data:image/webp;base64,..."
         />
       </motion.div>
     </motion.section>

@@ -49,13 +49,6 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [csrfToken, setCsrfToken] = useState("");
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-  // useEffect(() => {
-  //   axios.get("/api/csrf").then((res) => {
-  //     setCsrfToken(res.data.csrfToken);
-  //   });
-  // }, []);
-  // ✅ دالة تمنع اللغة العربية وتعرض Toast
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -146,6 +139,9 @@ const LoginForm = () => {
               width={110}
               height={110}
               loading="eager"
+              priority
+              placeholder="blur"
+              blurDataURL="data:image/webp;base64,..."
               className="flex lg:hidden"
             />
           </motion.div>

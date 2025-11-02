@@ -30,7 +30,7 @@ export default function NotFound() {
     >
       {/* خلفية المعبد */}
       <Image
-        src="/assets/Copilot_20250913_220029.png"
+        src="/assets/Copilot_20250913_220029.webp"
         alt="Temple Background"
         fill
         style={{ objectFit: "cover", zIndex: 0 }}

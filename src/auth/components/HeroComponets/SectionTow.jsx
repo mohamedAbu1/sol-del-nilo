@@ -22,7 +22,7 @@ const SectionTow = forwardRef(() => {
   }, []);
 
   if (!hasMounted) return null;
-
+console.log(categories)
   return (
     <section
       id="section-two"

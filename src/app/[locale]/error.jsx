@@ -30,7 +30,7 @@ const ErrorPage = () => {
     >
       {/* خلفية المعبد */}
       <Image
-        src="/assets/Copilot_20250913_220029.png"
+        src="/assets/Copilot_20250913_220029.webp"
         alt="Temple Background"
         fill
         style={{ objectFit: "cover", zIndex: 0 }}
@@ -53,7 +53,7 @@ const ErrorPage = () => {
         {/* ورقة البردية */}
         <div style={{ marginBottom: "1rem" }}>
           <Image
-            src="/assets/Copilot_20250914_193819.png"
+            src="/assets/Copilot_20250914_193819.webp"
             alt="Papyrus Error Label"
             width={isMobile ? 300 : 400}
             height={isMobile ? 150 : 200}
@@ -104,7 +104,7 @@ const ErrorPage = () => {
         }}
       >
         <Image
-          src="/assets/Copilot_20250914_193500.png"
+          src="/assets/Copilot_20250914_193500.webp"
           alt="Pharaoh Character"
           width={isMobile ? 350 : 555}
           height={isMobile ? 250 : 650}

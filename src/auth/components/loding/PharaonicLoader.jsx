@@ -58,7 +58,7 @@ export default function PharaonicLoader() {
         }}
       >
         <Image
-          src="/assets/Copilot_20250926_193431.png"
+          src="/assets/Copilot_20250926_193431.webp"
           alt="Anubis"
           width={650}
           height={650}

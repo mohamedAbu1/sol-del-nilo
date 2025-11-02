@@ -70,6 +70,9 @@ const AnimatedPictures = () => {
                   alt={`Grid ${index}`}
                   fill
                   loading="eager"
+                  priority
+                  placeholder="blur"
+                  blurDataURL="data:image/webp;base64,..."
                   style={{
                     objectFit: "cover",
                     borderRadius: "20px",

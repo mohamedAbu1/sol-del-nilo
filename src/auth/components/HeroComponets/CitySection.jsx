@@ -78,7 +78,10 @@ const CitySection = () => {
                 height={100}
                 src={city.img ? `/assets/${city.img}` : "/assets/default.png"}
                 alt={city.name}
-                loading="eager"
+                loading="lazy"
+                priority={false}
+                placeholder="blur"
+                blurDataURL="data:image/webp;base64,..."
                 className="w-full h-[350px] object-cover transition-transform duration-500 group-hover:scale-105"
               />
               <div

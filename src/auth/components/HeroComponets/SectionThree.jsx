@@ -70,10 +70,16 @@ export default function SectionThree() {
                     : "/assets/default.jpg"
                 }
                 alt={tour.title}
-                loading="eager"
+                loading="lazy"
+                priority={false}
+                placeholder="blur"
+                blurDataURL="data:image/webp;base64,..."
                 className="w-full h-[320px] object-cover transform group-hover:scale-110 transition duration-700 ease-in-out"
               />
-              <div style={{padding:"4px"}} className="absolute top-3 left-3 bg-yellow-500 text-gray-700 text-sm font-bold rounded-full shadow-md flex items-center gap-1">
+              <div
+                style={{ padding: "4px" }}
+                className="absolute top-3 left-3 bg-yellow-500 text-gray-700 text-sm font-bold rounded-full shadow-md flex items-center gap-1"
+              >
                 <BiDollar className="text-gray-500 dark:text-gray-700" />
                 {tour.price}
               </div>
@@ -85,8 +91,14 @@ export default function SectionThree() {
             {/* تفاصيل الجولة */}
             <div className="p-5 flex flex-col justify-between h-[170px] bg-gradient-to-br from-white via-yellow-50 to-yellow-100 dark:from-neutral-900 dark:via-neutral-800 dark:to-neutral-900 rounded-b-3xl shadow-[0_4px_20px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_20px_rgba(255,255,255,0.05)] backdrop-blur-sm border-t border-yellow-200 dark:border-yellow-800 transition-all duration-300">
               {/* معلومات الجولة */}
-              <div style={{paddingLeft:"6px",  paddingRight:"6px"}} className=" rounded-md h-9/12">
-                <div style={{padding:"6px"}} className="flex items-center justify-between mb-2">
+              <div
+                style={{ paddingLeft: "6px", paddingRight: "6px" }}
+                className=" rounded-md h-9/12"
+              >
+                <div
+                  style={{ padding: "6px" }}
+                  className="flex items-center justify-between mb-2"
+                >
                   <p className="text-sm flex items-center gap-2 text-gray-600 dark:text-yellow-300">
                     <FaMapMarkerAlt className="text-yellow-500 dark:text-yellow-400" />
                     <span className="font-medium">{tour.city.name}</span>
@@ -96,20 +108,26 @@ export default function SectionThree() {
                     <span>{tour.reviews.length} Reviews</span>
                   </p>
                 </div>
-                <h4 style={{marginTop:"11px"}} className="text-[1.05rem] font-semibold text-gray-800 dark:text-white leading-snug line-clamp-2 tracking-wide">
+                <h4
+                  style={{ marginTop: "11px" }}
+                  className="text-[1.05rem] font-semibold text-gray-800 dark:text-white leading-snug line-clamp-2 tracking-wide"
+                >
                   {tour.title}
                 </h4>
               </div>
 
               {/* التاريخ والزر */}
-              <div style={{padding:"10px"}} className="flex items-center justify-between rounded-xl bg-white/70 dark:bg-neutral-800/60 shadow-inner backdrop-blur-md h-3/12">
+              <div
+                style={{ padding: "10px" }}
+                className="flex items-center justify-between rounded-xl bg-white/70 dark:bg-neutral-800/60 shadow-inner backdrop-blur-md h-3/12"
+              >
                 <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
                   <FaCalendarAlt className="text-yellow-500 dark:text-yellow-400" />
                   <span>{tour.theDate}</span>
                 </div>
                 <button
                   onClick={() => router.push(`/tours/${tour.id}`)}
-                  style={{padding:"7px",cursor:"pointer"}}
+                  style={{ padding: "7px", cursor: "pointer" }}
                   className="bg-gradient-to-r from-yellow-400 to-orange-400 text-white dark:text-gray-900 font-semibold rounded-full shadow-lg hover:scale-105 hover:shadow-yellow-400/50 transition-all duration-300 text-sm lg:text-base"
                 >
                   Details →

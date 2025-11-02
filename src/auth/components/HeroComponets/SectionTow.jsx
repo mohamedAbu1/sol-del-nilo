@@ -22,7 +22,7 @@ const SectionTow = forwardRef(() => {
   }, []);
 
   if (!hasMounted) return null;
-console.log(categories)
+  console.log(categories);
   return (
     <section
       id="section-two"
@@ -50,6 +50,9 @@ console.log(categories)
               src={card.img ? `/assets/${card.img}` : "/assets/default.png"}
               alt={card.name}
               loading="eager"
+              priority
+              placeholder="blur"
+              blurDataURL="data:image/webp;base64,..."
               className="w-full h-[320px] object-cover transform group-hover:scale-110 transition duration-700 ease-in-out"
             />
             <div className="absolute inset-0 bg-gradient-to-t dark:from-black/70 to-transparent z-10" />
@@ -98,7 +101,8 @@ console.log(categories)
                 {noToursMessage}
               </h3>
               <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
-                Try choosing another category or adjusting the filters to get results.
+                Try choosing another category or adjusting the filters to get
+                results.
               </p>
               <button
                 className="mt-6 px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-full transition"

@@ -7,6 +7,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const SectionFour = () => {
   const t = useTranslations("HomeHeroPage");
@@ -44,10 +45,15 @@ const SectionFour = () => {
           ].map((imgSrc, index) => (
             <SwiperSlide key={index}>
               <div className="w-full h-[85vh]">
-                <img
+                <Image
                   src={imgSrc}
+                  fill
                   alt={`Tuya Tours Slide ${index + 1}`}
                   className="w-full h-full object-cover"
+                  loading="lazy"
+                  priority={false}
+                  placeholder="blur"
+                  blurDataURL="data:image/webp;base64,..."
                 />
               </div>
             </SwiperSlide>
@@ -64,7 +70,8 @@ const SectionFour = () => {
           </h2>
           <p className="text-gray-700 dark:text-gray-400 text-base mb-6 leading-relaxed">
             {t("sc3PS")}
-            <span className="text-yellow-600 font-semibold">{t("sc3PS1")}</span>,{" "}
+            <span className="text-yellow-600 font-semibold">{t("sc3PS1")}</span>
+            ,{" "}
             <span className="text-yellow-600 font-semibold">{t("sc3PS2")}</span>{" "}
             {t("sc3PS3")}
             <span className="text-yellow-600 font-semibold">{t("sc3PS4")}</span>

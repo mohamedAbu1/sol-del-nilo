@@ -123,8 +123,10 @@ const Page = () => {
           {tour?.tourimage?.map((img, index) => (
             <ImageListItem key={index}>
               <Box sx={{ position: "relative" }}>
-                <img
+                <Image
                   src={`/assets/${img.url}`}
+                  width={800}
+                  height={200}
                   alt={img.name}
                   onClick={() => handleImageClick(index)}
                   style={{
@@ -134,6 +136,10 @@ const Page = () => {
                     cursor: "pointer",
                     transition: "transform 0.3s ease",
                   }}
+                  loading="eager"
+                  priority
+                  placeholder="blur"
+                  blurDataURL="data:image/webp;base64,..."
                 />
                 <Typography
                   variant="subtitle2"

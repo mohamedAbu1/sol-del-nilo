@@ -64,7 +64,10 @@ export default function ClientHome({ user }) {
 
   return (
     <>
-      <main id="section-one" className="relative w-full h-screen overflow-hidden">
+      <main
+        id="section-one"
+        className="relative w-full h-screen overflow-hidden"
+      >
         {/* Overlay */}
         <div className="absolute inset-0 bg-black/40 z-0 pointer-events-none" />
 
@@ -75,6 +78,9 @@ export default function ClientHome({ user }) {
             alt="Mobile background"
             fill
             className="object-cover"
+            priority
+            placeholder="blur"
+            blurDataURL="data:image/webp;base64,..."
           />
         </div>
 

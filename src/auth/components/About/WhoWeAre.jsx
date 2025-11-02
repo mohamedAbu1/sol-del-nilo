@@ -14,15 +14,15 @@ const WhoWeAre = () => {
       </div>
       <div className="flex-1">
         <Image
-          src={"/assets/Copilot_20250908_2314232.png"}
+          src={"/assets/Copilot_20250908_2314232.webp"}
           alt="Egyptian Woman"
           width={400}
           height={600}
+          loading="eager"
           priority
           placeholder="blur"
           blurDataURL="data:image/webp;base64,..."
           className="w-full max-w-sm mx-auto h-auto"
-          loading="eager"
         />
       </div>
     </section>

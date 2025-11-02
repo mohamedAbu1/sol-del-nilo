@@ -18,7 +18,7 @@ const SignUpTextHero = () => {
         transition={{ delay: 0.5, duration: 0.6 }}
       >
         <Image
-          src={"/assets/Copilot_20250908_2314232.png"}
+          src={"/assets/Copilot_20250908_2314232.webp"}
           alt="Logo"
           width={500}
           height={200}

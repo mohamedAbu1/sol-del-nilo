@@ -134,7 +134,7 @@ const LoginForm = () => {
         >
           <motion.div variants={itemVariants} style={{ zIndex: "9999" }}>
             <Image
-              src={"/assets/Copilot_20250908_2314232.png"}
+              src={"/assets/Copilot_20250908_2314232.webp"}
               alt="Logo"
               width={110}
               height={110}

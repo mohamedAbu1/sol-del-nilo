@@ -7,6 +7,8 @@ import { ThemeProvider } from "next-themes";
 import { AppProvider } from "@/context/AppContext";
 import { TripContextProvider } from "@/context/TripContext";
 import { AppQueryContextProvider } from "@/context/AppQueryContext";
+import { TourEditProvider } from "@/context/TourEditContext";
+import { TourImagesProvider } from "@/context/TourImagesContext";
 
 // ✅ تحميل الرسائل حسب اللغة
 export function generateStaticParams() {
@@ -36,11 +38,15 @@ export default async function LocaleLayout({ children, params }) {
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <TripContextProvider>
           <TripsContextProvider>
-            {" "}
-            {/* ✅ يجب أن يسبق AppQueryContextProvider */}
-            <AppQueryContextProvider>
-              <AppProvider>{children}</AppProvider>
-            </AppQueryContextProvider>
+            <TourImagesProvider>
+              <TourEditProvider>
+                {" "}
+                {/* ✅ يجب أن يسبق AppQueryContextProvider */}
+                <AppQueryContextProvider>
+                  <AppProvider>{children}</AppProvider>
+                </AppQueryContextProvider>
+              </TourEditProvider>
+            </TourImagesProvider>
           </TripsContextProvider>
         </TripContextProvider>
       </ThemeProvider>

@@ -28,6 +28,8 @@ export async function GET(request, { params }) {
 
 export async function PATCH(req, {params}) {
   const tourId = params.id;
+  console.log("📥 بيانات التعديل:", body);
+
   const body = await req.json();
 
   // تحقق من وجود id
@@ -49,12 +51,14 @@ export async function PATCH(req, {params}) {
     image,
   } = body;
 
-  if (
-    !title || !description || !price || !theDate || !TripDuration ||
-    !cityId || !categoryId || !rival || !DayPeople || !image
-  ) {
-    return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
-  }
+ if (
+  !title || !description || !price || !theDate || !TripDuration ||
+  !cityId || !categoryId || !rival || !DayPeople ||
+  !Array.isArray(image) || image.length < 4
+) {
+  return NextResponse.json({ error: "Missing or invalid fields" }, { status: 400 });
+}
+
 
   // تنفيذ التحديث
   const { error } = await supabase
@@ -78,4 +82,5 @@ export async function PATCH(req, {params}) {
   }
 
   return NextResponse.json({ message: "Tour updated successfully" }, { status: 200 });
+  console.log("✅ تم تعديل الرحلة بنجاح");
 }

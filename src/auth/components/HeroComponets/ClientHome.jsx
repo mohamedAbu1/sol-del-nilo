@@ -21,6 +21,7 @@ export default function ClientHome({ user }) {
   const [showBubble, setShowBubble] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentIndexMB, setCurrentIndexMB] = useState(0);
+  const [isBottom, setIsBottom] = useState(false);
 
   useEffect(() => {
     setHasMounted(true);
@@ -59,6 +60,18 @@ export default function ClientHome({ user }) {
     }, 15000);
     return () => clearInterval(interval);
   }, [hasMounted]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const fullHeight = document.body.scrollHeight;
+      setIsBottom(scrollY + windowHeight >= fullHeight - 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   if (!hasMounted) return null;
 
@@ -193,10 +206,48 @@ export default function ClientHome({ user }) {
             </motion.div>
           )}
         </div>
+
+        {/* 🔽 زر السهم للأسفل */}
+        <motion.div
+          initial={{ opacity: 1, y: 0 }}
+          animate={{ y: [0, 6, 0] }}
+          transition={{ repeat: Infinity, duration: 1.8 }}
+          className={`absolute bottom-6 left-1/2 transform -translate-x-1/2 z-30 transition-opacity duration-500 ${
+            isBottom ? "opacity-0" : "opacity-100"
+          }`}
+        >
+          <button
+            style={{ cursor: "pointer" }}
+            onClick={() =>
+              document
+                .getElementById("section-two")
+                ?.scrollIntoView({ behavior: "smooth" })
+            }
+            className="w-11 h-11 rounded-full bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white/20 transition duration-300"
+            aria-label="Scroll down"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-5 h-5 text-white"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </button>
+        </motion.div>
       </main>
 
       {/* الأقسام التالية */}
-      <SectionTow />
+      <section id="section-two">
+        <SectionTow />
+      </section>
       <SectionThree />
       <CitySection />
       <SectionFour />

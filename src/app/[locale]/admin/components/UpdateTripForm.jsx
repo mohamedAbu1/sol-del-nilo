@@ -19,6 +19,8 @@ import Preparation from "./components/Preparation";
 import BelowTheControlPanel from "./components/BelowTheControlPanel";
 import ImageCollection from "./components/ImageCollection";
 import { useTripsContext } from "@/context/TripsContext";
+import { useTourEdit } from "@/context/TourEditContext";
+import { useTourImages } from "@/context/TourImagesContext";
 
 const UpdateTripForm = () => {
   const {
@@ -31,31 +33,40 @@ const UpdateTripForm = () => {
     toursData,
     fetchTourById,
     populateFormFromTour,
-    updateTour,
+    setTour,
+  } = useTripsContext();
+
+  const { updateTour, isUpdating, updateError } = useTourEdit();
+
+  const {
     mainImages,
     setMainImages,
     activityImages,
     setActivityImages,
-    setSelectedImages,
-    setTour,
-  } = useTripsContext();
+    prepareImagesForSubmission,
+  } = useTourImages();
+
   const [toursID, setToursID] = useState("");
 
-  // ✅ تنظيف روابط الصور المؤقتة
+  // ✅ تحميل بيانات الرحلة وتوزيع الصور
   useEffect(() => {
     if (toursID) {
       fetchTourById(toursID).then((data) => {
         if (data) {
           setTour(data);
-          const loadedImages = populateFormFromTour(data);
-          setSelectedImages(loadedImages);
+          const { mainImages: loadedMain, activityImages: loadedActivity } =
+            populateFormFromTour(data);
+          setMainImages(loadedMain);
+          setActivityImages(loadedActivity);
         }
       });
     }
   }, [toursID]);
+
   const handleSelect = (e) => {
     setToursID(e.target.value);
   };
+
   const handleUpdate = async (e) => {
     e.preventDefault();
 
@@ -64,19 +75,18 @@ const UpdateTripForm = () => {
       return;
     }
 
-    const success = await updateTour(
-      toursID,
-      formData,
-      mainImages,
-      activityImages
-    );
+    const imagesData = prepareImagesForSubmission();
+    console.log("📦 الصور الجاهزة للإرسال:", imagesData);
+    if (!imagesData) return;
 
+    console.log("🚀 بدء التعديل...");
+    const success = await updateTour(toursID, imagesData);
+    console.log("✅ نتيجة التعديل:", success);
     if (success) {
       toast.success("✅ تم تحديث الرحلة بنجاح");
-      // إعادة تعيين النموذج أو التنقل إذا أردت
+      console.log("📋 بيانات النموذج:", formData);
     }
   };
-
   return (
     <>
       <div
@@ -151,14 +161,12 @@ const UpdateTripForm = () => {
 
           <form onSubmit={handleUpdate}>
             <Stack spacing={2}>
-              {/* 📝 الحقول النصية الأساسية */}
               <TopOfTheControlPanel2
                 formData={formData}
                 handleChange={handleChange}
                 setFormData={setFormData}
               />
 
-              {/* 🖼️ رفع الصور */}
               <ControlPanelImages
                 mainImages={mainImages}
                 setMainImages={setMainImages}
@@ -167,13 +175,12 @@ const UpdateTripForm = () => {
                 activityImages={activityImages}
                 setActivityImages={setActivityImages}
               />
-              {/* 📋 برنامج الرحلة */}
+
               <TripProgram
                 programs={formData.tripprogram}
                 setPrograms={handleProgramChange}
               />
 
-              {/* ✅ البنود التي يشملها البرنامج */}
               <TourIncludes
                 includes={formData.includes}
                 setIncludes={(data) =>
@@ -181,10 +188,8 @@ const UpdateTripForm = () => {
                 }
               />
 
-              {/* 🧾 التحضيرات */}
               <Preparation formData={formData} handleChange={handleChange} />
 
-              {/* 🏙️ المدينة والتصنيف */}
               <BelowTheControlPanel
                 cities={cities}
                 categories={categories}
@@ -193,7 +198,6 @@ const UpdateTripForm = () => {
                 handleChange={handleChange}
               />
 
-              {/* ✅ زر الحفظ */}
               <Button
                 type="submit"
                 variant="contained"
@@ -212,7 +216,6 @@ const UpdateTripForm = () => {
         </Box>
       </div>
 
-      {/* ✅ Toast لعرض التنبيهات */}
       <ToastContainer />
     </>
   );

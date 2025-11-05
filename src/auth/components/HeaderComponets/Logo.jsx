@@ -3,8 +3,6 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { useScreenSize } from "../../hooks/screenSize";
-import { motion } from "framer-motion";
-
 const Logo = ({ path }) => {
   const { width } = useScreenSize();
 

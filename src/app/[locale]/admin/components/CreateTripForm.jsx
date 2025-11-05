@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 import { useTripsContext } from "@/context/TripsContext";
-
+import { useTourImages } from "@/context/TourImagesContext";
 import BelowTheControlPanel from "./components/BelowTheControlPanel";
 import ControlPanelImages from "./components/ControlPanelImages";
 import TopOfTheControlPanel2 from "./components/TopOfTheControlPanel2";
@@ -22,10 +22,6 @@ const CreateTripForm = () => {
   const {
     formData,
     setFormData,
-    mainImages,
-    setMainImages,
-    activityImages,
-    setActivityImages,
     handleChange,
     handleProgramChange,
     handleSubmit,
@@ -33,6 +29,24 @@ const CreateTripForm = () => {
     cities,
     categories,
   } = useTripsContext();
+
+  const {
+    mainImages,
+    setMainImages,
+    activityImages,
+    setActivityImages,
+    prepareImagesForSubmission,
+  } = useTourImages();
+
+  // ✅ إرسال النموذج مع الصور الجاهزة
+  const handleCreate = async (e) => {
+    e.preventDefault();
+
+    const imagesData = prepareImagesForSubmission();
+    if (!imagesData) return;
+
+    await handleSubmit(e, imagesData); // تعديل handleSubmit لقبول الصور
+  };
 
   return (
     <>
@@ -63,7 +77,7 @@ const CreateTripForm = () => {
             إنشاء رحلة جديدة
           </Typography>
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleCreate}>
             <Stack spacing={2}>
               <TopOfTheControlPanel2
                 formData={formData}
@@ -93,10 +107,7 @@ const CreateTripForm = () => {
                 }
               />
 
-              <Preparation
-                formData={formData}
-                handleChange={handleChange}
-              />
+              <Preparation formData={formData} handleChange={handleChange} />
 
               <BelowTheControlPanel
                 cities={cities}

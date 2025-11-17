@@ -43,8 +43,6 @@ export async function POST(request) {
       tourId: newTour.id,
     }));
 
-    await supabase.from("tripprogram").insert(tripProgramData);
-
     // إدخال العناصر المشمولة
     const includesData = body.includes.map((step) => ({
       text: step.text,
@@ -55,8 +53,8 @@ export async function POST(request) {
 
     if (body.tourimage && Array.isArray(body.tourimage)) {
       const tourimageData = body.tourimage.map((step) => ({
-        name: step.name,
-        label: step.label?.trim() || "صورة بدون وصف",
+        label: step.name,
+        name: step.label?.trim() || "صورة بدون وصف",
         tourId: newTour.id,
         created_at: new Date().toISOString(),
       }));

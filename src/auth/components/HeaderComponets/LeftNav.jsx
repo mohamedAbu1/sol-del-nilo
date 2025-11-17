@@ -31,7 +31,7 @@ const LeftNav = ({ path, user, width }) => {
     >
       {user ? (
         <div className="flex gap-8.5">
-          <h3
+          {/* <h3
             style={{
               display: "flex",
               alignItems: "center",
@@ -44,7 +44,7 @@ const LeftNav = ({ path, user, width }) => {
           >
             <BsFillPersonVcardFill />
             {user.name}
-          </h3>
+          </h3> */}
           {hasMounted && width > 1024 && <LogoutBtn />}
         </div>
       ) : (
@@ -58,7 +58,7 @@ const LeftNav = ({ path, user, width }) => {
             className="flex items-center justify-center gap-2 flex-row"
           >
             <Button
-              variant="contained"
+              variant="outlined"
               endIcon={<BsDoorOpenFill />}
               style={{ backgroundColor: "#ff9800", color: "#fff" }}
               className="hover:text-gray-400"

@@ -36,7 +36,14 @@ const UpdateTripForm = () => {
     setTour,
   } = useTripsContext();
 
-  const { updateTour, isUpdating, updateError } = useTourEdit();
+  const {
+    updateTour,
+    isUpdating,
+    updateError,
+    handleUpdate,
+    handleSelect,
+    toursID,
+  } = useTourEdit();
 
   const {
     mainImages,
@@ -46,47 +53,7 @@ const UpdateTripForm = () => {
     prepareImagesForSubmission,
   } = useTourImages();
 
-  const [toursID, setToursID] = useState("");
-
-  // ✅ تحميل بيانات الرحلة وتوزيع الصور
-  useEffect(() => {
-    if (toursID) {
-      fetchTourById(toursID).then((data) => {
-        if (data) {
-          setTour(data);
-          const { mainImages: loadedMain, activityImages: loadedActivity } =
-            populateFormFromTour(data);
-          setMainImages(loadedMain);
-          setActivityImages(loadedActivity);
-        }
-      });
-    }
-  }, [toursID]);
-
-  const handleSelect = (e) => {
-    setToursID(e.target.value);
-  };
-
-  const handleUpdate = async (e) => {
-    e.preventDefault();
-
-    if (!toursID) {
-      toast.error("❌ يجب اختيار رحلة لتحديثها");
-      return;
-    }
-
-    const imagesData = prepareImagesForSubmission();
-    console.log("📦 الصور الجاهزة للإرسال:", imagesData);
-    if (!imagesData) return;
-
-    console.log("🚀 بدء التعديل...");
-    const success = await updateTour(toursID, imagesData);
-    console.log("✅ نتيجة التعديل:", success);
-    if (success) {
-      toast.success("✅ تم تحديث الرحلة بنجاح");
-      console.log("📋 بيانات النموذج:", formData);
-    }
-  };
+  console.log(activityImages);
   return (
     <>
       <div
@@ -159,7 +126,7 @@ const UpdateTripForm = () => {
             تحديث بيانات رحله
           </Typography>
 
-          <form onSubmit={handleUpdate}>
+          <form>
             <Stack spacing={2}>
               <TopOfTheControlPanel2
                 formData={formData}
@@ -199,8 +166,9 @@ const UpdateTripForm = () => {
               />
 
               <Button
-                type="submit"
+                type="button"
                 variant="contained"
+                  onClick={handleUpdate}
                 color="primary"
                 sx={{
                   backgroundColor: "#ff9800",

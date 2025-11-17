@@ -102,15 +102,15 @@ export default function TravelPlannerForm() {
             InputLabelProps={{ style: { color: "#f5f5f5" } }}
             InputProps={{
               style: { color: "#ffffff" },
-              startAdornment: (
-                <InputAdornment
-                  position="start"
-                  sx={{ display: { xs: "inline-flex", sm: "none" } }}
-                >
-                  <LocationOn sx={{ color: "#ff9800" }} />
-                </InputAdornment>
-              ),
-            }}
+              // startAdornment: (
+              //   <InputAdornment
+              //     position="start"
+              //     sx={{ display: { xs: "inline-flex", sm: "none" } }}
+              //   >
+              //     <LocationOn sx={{ color: "#ff9800" }} />
+              //   </InputAdornment>
+              // ),
+            }} 
             SelectProps={{
               IconComponent: () => (
                 <svg
@@ -352,14 +352,14 @@ export default function TravelPlannerForm() {
             InputLabelProps={{ style: { color: "#f5f5f5" } }}
             InputProps={{
               style: { color: "#ffffff" },
-              startAdornment: (
-                <InputAdornment
-                  position="start"
-                  sx={{ display: { xs: "inline-flex", sm: "none" } }}
-                >
-                  <Category sx={{ color: "#ff9800" }} />
-                </InputAdornment>
-              ),
+              // startAdornment: (
+              //   <InputAdornment
+              //     position="start"
+              //     sx={{ display: { xs: "inline-flex", sm: "none" } }}
+              //   >
+              //     <Category sx={{ color: "#ff9800" }} />
+              //   </InputAdornment>
+              // ),
             }}
             SelectProps={{
               IconComponent: () => (

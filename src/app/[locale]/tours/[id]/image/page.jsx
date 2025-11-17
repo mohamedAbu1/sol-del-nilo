@@ -21,8 +21,6 @@ const Page = () => {
   const params = useParams();
   const id = params?.id;
   const tour = tours.find((t) => t.id === id);
-  // const { id } = useParams();
-  // const [tour, setTour] = useState(null);
   const { width } = useScreenSize();
   const router = useRouter();
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
@@ -33,29 +31,7 @@ const Page = () => {
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   console.log(id);
   console.log(tour);
-  // useEffect(() => {
-  //   if (!id) return;
 
-  //   const fetchTourWithImages = async () => {
-  //     try {
-  //       const response = await fetch(`/api/tours/${id}`);
-  //       const result = await response.json();
-
-  //       if (!response.ok) {
-  //         console.error("❌ API Error:", result.error);
-  //         return;
-  //       }
-
-  //       setTour(result);
-  //       setLoading(false); // ✅ تم التحميل
-  //     } catch (error) {
-  //       console.error("❌ Fetch Error:", error.message);
-  //     }
-  //   };
-
-  //   fetchTourWithImages();
-  // }, [id]);
-  // console.log(tour)
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
   const handleImageClick = (index) => {
@@ -124,7 +100,7 @@ const Page = () => {
             <ImageListItem key={index}>
               <Box sx={{ position: "relative" }}>
                 <Image
-                  src={`/assets/${img.url}`}
+                  src={`/assets/${img.label}`}
                   width={800}
                   height={200}
                   alt={img.name}
@@ -189,8 +165,8 @@ const Page = () => {
             onClick={() => setFullScreenOpen(false)}
           >
             <motion.img
-              key={tour.tourimage[selectedIndex].url}
-              src={`/assets/${tour.tourimage[selectedIndex].url}`}
+              key={tour.tourimage[selectedIndex].label}
+              src={`/assets/${tour.tourimage[selectedIndex].label}`}
               alt={tour.tourimage[selectedIndex].name}
               initial={{ x: 100, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}

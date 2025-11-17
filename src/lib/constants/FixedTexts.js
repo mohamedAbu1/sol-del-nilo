@@ -1,5 +1,6 @@
 // todo هنا نقوم بكتابة العناصر الثابته في الموقع لاستخدمها في اكثر من مكان 
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+import "../../styles/globals.css";
 import { FaWhatsapp } from "react-icons/fa6";
 import { FaInstagram,FaTiktok } from "react-icons/fa";
 import { BiLogoFacebook, BiLogoGmail } from "react-icons/bi";
@@ -71,11 +72,11 @@ export const getCityName = (t) => [
 ]
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 export const MideaIcon = [
-   {titleIcon:"SoloNilo.facebook" ,Icon: <BiLogoFacebook /> ,path:"https://www.facebook.com/share/1bSxScbbn3/"},
-   {titleIcon:"SoloNilo.Whatsapp" ,Icon: <FaWhatsapp /> ,path:"https://wa.me/201010104875"},
-   {titleIcon:"SoloNilo.Instagram" ,Icon: <FaInstagram /> ,path:"https://www.instagram.com/egipto_milenario?igsh=MXF0azJzdzdyNTVibA=="},
-   {titleIcon:"SoloNilo.Tiktok" ,Icon: <FaTiktok /> ,path:"https://www.tiktok.com/@soldelnilo0?is_from_webapp=1&sender_device=pc"},
-   {titleIcon:"SoloNilo.Gmail" ,Icon: <BiLogoGmail /> ,path:"https://mail.google.com/mail/u/0/?hl=ar#inbox"},
+   {titleIcon:"SoloNilo.facebook" ,Icon: <BiLogoFacebook style={{color:"#1877F2"}}/> ,path:"https://www.facebook.com/share/1bSxScbbn3/"},
+   {titleIcon:"SoloNilo.Whatsapp" ,Icon: <FaWhatsapp style={{color:"#25D366"}} /> ,path:"https://wa.me/201010104875"},
+   {titleIcon:"SoloNilo.Instagram" ,Icon: <FaInstagram className="whatsapp-gradient"/> ,path:"https://www.instagram.com/egipto_milenario?igsh=MXF0azJzdzdyNTVibA=="},
+   {titleIcon:"SoloNilo.Tiktok" ,Icon: <FaTiktok style={{color:"#25F4EE"}}/> ,path:"https://www.tiktok.com/@soldelnilo0?is_from_webapp=1&sender_device=pc"},
+   {titleIcon:"SoloNilo.Gmail" ,Icon: <BiLogoGmail style={{color:"#DB4437"}}/> ,path:"https://mail.google.com/mail/u/0/?hl=ar#inbox"},
 ]
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 export const AdviceCard = [

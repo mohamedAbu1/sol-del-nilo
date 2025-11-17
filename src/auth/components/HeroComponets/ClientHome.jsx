@@ -12,7 +12,6 @@ import SectionFive from "./SectionFive";
 import SectionSix from "./SectionSix";
 import CitySection from "./CitySection";
 import { desktopImages, desktopImagesMB } from "@/lib/constants/FixedTexts";
-
 export default function ClientHome({ user }) {
   const [hasMounted, setHasMounted] = useState(false);
   const [showWelcomeText, setShowWelcomeText] = useState(true);
@@ -22,6 +21,7 @@ export default function ClientHome({ user }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentIndexMB, setCurrentIndexMB] = useState(0);
   const [isBottom, setIsBottom] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
     setHasMounted(true);
@@ -42,6 +42,19 @@ export default function ClientHome({ user }) {
       clearTimeout(timer4);
     };
   }, [hasMounted]);
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const fullHeight = document.body.scrollHeight;
+
+      setIsBottom(scrollY + windowHeight >= fullHeight - 50);
+      setShowScrollTop(scrollY > 50); // ✅ يظهر زر الصعود بعد 50 بكسل
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     if (!hasMounted) return;
@@ -223,12 +236,12 @@ export default function ClientHome({ user }) {
                 .getElementById("section-two")
                 ?.scrollIntoView({ behavior: "smooth" })
             }
-            className="w-11 h-11 rounded-full bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white/20 transition duration-300"
+            className="w-11 h-11 rounded-full bg-[#ff9800] border border-white/20 flex items-center justify-center hover:bg-white/20 transition duration-300"
             aria-label="Scroll down"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="w-5 h-5 text-white"
+              className="w-11 h-5 "
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -253,6 +266,37 @@ export default function ClientHome({ user }) {
       <SectionFour />
       <SectionFive />
       <SectionSix />
+      {showScrollTop && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }}
+          className="fixed bottom-6 right-6 z-50"
+        >
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            style={{cursor:"pointer"}}
+            className="w-10 h-10 rounded-full bg-[#ff9800] border border-white/20 text-white flex items-center justify-center hover:bg-white/20 transition duration-300"
+            aria-label="Scroll to top"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M5 15l7-7 7 7"
+              />
+            </svg>
+          </button>
+        </motion.div>
+      )}
     </>
   );
 }

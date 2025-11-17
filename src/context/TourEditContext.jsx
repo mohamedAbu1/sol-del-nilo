@@ -1,34 +1,101 @@
 "use client";
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { supabase } from "@/lib/supabaseClient";
 import axios from "axios";
+import { useTripsContext } from "./TripsContext";
+import { useTourImages } from "@/context/TourImagesContext";
+import { DOMAIN } from "@/lib/constants/FixedTexts";
 
 const TourEditContext = createContext();
 
 export const TourEditProvider = ({ children }) => {
-  const [formData, setFormData] = useState(null); // بيانات الرحلة الحالية
-  const [mainImages, setMainImages] = useState([]);
-  const [activityImages, setActivityImages] = useState([]);
+  const {
+    prepareImagesForSubmission,
+    setMainImages,
+    activityImages,
+    setActivityImages,
+  } = useTourImages();
+
+  const [formData, setFormData] = useState(null);
   const [isUpdating, setIsUpdating] = useState(false);
   const [updateError, setUpdateError] = useState(null);
+  const [isLoadingTour, setIsLoadingTour] = useState(false);
+  const [toursID, setToursID] = useState("");
 
-  // ✅ استخراج الصور بصيغة { name, label }
-  const extractImageObjects = (imagesArray) => {
-    return imagesArray.map((img) => ({
+  const { fetchTourById, populateFormFromTour, setTour } = useTripsContext();
+
+  // تحميل بيانات الرحلة عند اختيار ID
+  useEffect(() => {
+    if (!toursID) return;
+
+    const loadData = async () => {
+      const data = await fetchTourById(toursID);
+      if (!data) return;
+      console.log("📦 بيانات الرحلة من Supabase:", data);
+      setTour(data);
+
+      const { mainImages: loadedMain, activityImages: loadedActivity } =
+        populateFormFromTour(data);
+
+      setMainImages(loadedMain);
+      setActivityImages(loadedActivity);
+
+      const [_, peoplePart] = data.DayPeople?.split("/") || [];
+      setFormData({
+        title: data.title || "",
+        description: data.description || "",
+        price: data.price?.toString() || "",
+        TripDuration: data.TripDuration || "",
+        people: peoplePart || "1",
+        categoryId: data.categoryId || "",
+        cityId: data.cityId || "",
+        rival: data.rival || "",
+        theDate: data.theDate || "",
+        image: data.image || [],
+        tripprogram: data.tripprogram || [],
+        includes: data.includes || [],
+      });
+    };
+
+    loadData();
+  }, [toursID]);
+
+  // اختيار الرحلة
+  const handleSelect = (e) => {
+    setToursID(e.target.value);
+  };
+
+  // تعديل الحقول
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // تجهيز الصور للإرسال
+  const extractImageObjects = (imagesArray) =>
+    imagesArray.map((img) => ({
       name: img.name,
       label: img.label?.trim() || "صورة بدون وصف",
     }));
-  };
 
-  // ✅ تعديل الرحلة
-  const updateTour = async (tourId, { image, tourimage }) => {
-        console.log("🚀 دخلنا فعلاً دالة updateTour");
+  // تنفيذ التعديل
+  const handleUpdate = async (e) => {
+    if (e && e.preventDefault) e.preventDefault();
+
+    if (!toursID) {
+      toast.error("❌ يجب اختيار رحلة لتحديثها");
+      return;
+    }
 
     if (!formData) {
       toast.error("❌ لا توجد بيانات لتعديلها");
-      return false;
+      console.warn("formData is invalid:", formData);
+      return;
     }
+
+    const imagesData = prepareImagesForSubmission();
+    if (!imagesData) return;
 
     setIsUpdating(true);
 
@@ -36,37 +103,42 @@ export const TourEditProvider = ({ children }) => {
       const payload = {
         ...formData,
         price: Number(formData.price),
-        DayPeople: `${formData.people}`,
-        image,
+        DayPeople: `${formData.people}/People`,
+        image: imagesData.image,
       };
 
-      console.log("📤 إرسال البيانات إلى API:", payload);
-
-      const response = await axios.patch(`/api/tours/${tourId}`, payload);
-
-      console.log("📡 حالة الاستجابة:", response.status);
-      console.log("📡 بيانات الاستجابة:", response.data);
+      const response = await axios.patch(`/api/tours/${toursID}`, payload);
 
       if (response.status !== 200 && response.status !== 204) {
         toast.error("❌ فشل في تعديل الرحلة");
         return false;
       }
 
-      // حذف الصور القديمة
+      // حذف الصور القديمة أولًا
       const { data: existingImages, error: fetchError } = await supabase
         .from("tourimage")
         .select("id")
-        .eq("tourId", tourId);
+        .eq("tourId", toursID);
 
-      if (!fetchError && existingImages.length > 0) {
-        await supabase.from("tourimage").delete().eq("tourId", tourId);
+      if (existingImages?.length > 0) {
+        const { error: deleteError } = await supabase
+          .from("tourimage")
+          .delete()
+          .eq("tourId", toursID);
+
+        if (deleteError) {
+          console.warn("⚠️ فشل حذف الصور القديمة:", deleteError);
+        } else {
+          console.log("✅ تم حذف الصور القديمة");
+        }
       }
 
       // إدراج الصور الجديدة
-      const tourimageWithMeta = tourimage.map((img) => ({
-        ...img,
-        url: img.name,
-        tourId,
+      const tourimageWithMeta = imagesData.tourimage.map((img) => ({
+        url: `${DOMAIN}/assets/${img.name}`,
+        label: img.label?.trim() || "صورة بدون وصف",
+        name: img.name,
+        tourId: toursID,
         created_at: new Date().toISOString(),
       }));
 
@@ -82,8 +154,9 @@ export const TourEditProvider = ({ children }) => {
 
       return true;
     } catch (error) {
-      console.error("❌ خطأ أثناء التعديل:", error.message);
       toast.error("❌ حدث خطأ أثناء تعديل الرحلة");
+      setUpdateError(error.message);
+      console.error("updateTour error:", error);
       return false;
     } finally {
       setIsUpdating(false);
@@ -95,13 +168,15 @@ export const TourEditProvider = ({ children }) => {
       value={{
         formData,
         setFormData,
-        mainImages,
-        setMainImages,
-        activityImages,
+        handleChange,
+        isLoadingTour,
         setActivityImages,
-        updateTour,
+        extractImageObjects,
+        handleUpdate,
         isUpdating,
         updateError,
+        handleSelect,
+        toursID,
       }}
     >
       {children}

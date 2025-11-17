@@ -24,15 +24,17 @@ const SectionFive = () => {
       className="relative w-full h-auto px-4 sm:py-10 md:py-12 lg:py-0 overflow-hidden flex flex-col items-center"
     >
       {/* العنوان */}
-      <div className="text-center mb-12">
+      <div className="text-center mb-12 w-1/2">
         <span
           style={{ marginBottom: "10px" }}
           className="inline-block text-3xl text-gray-400 dark:text-white font-semibold px-3 py-1 rounded-full mb-3"
         >
           {t("sc3P")}
         </span>
+        <div className="h-1 bg-[#daa60b] dark:bg-yellow-700 rounded-full mb-4 w-full" />
+
         <h2
-          style={{ marginBottom: "15px" }}
+          style={{ padding: "15px" }}
           className="text-3xl lg:text-4xl font-bold text-[#daa60b] dark:text-yellow-700 uppercase"
         >
           {t("sc3P")}

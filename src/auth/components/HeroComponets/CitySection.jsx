@@ -29,11 +29,11 @@ const CitySection = () => {
       className="w-full min-h-screen py-10 flex flex-col items-center justify-start text-white px-4 sm:py-10 md:py-12 lg:py-0"
     >
       <div className="text-center mb-12 w-full max-w-4xl">
-        <h2 className="text-2xl font-bold text-white uppercase tracking-widest mb-2">
+        <h2  style={{padding:"15px"}} className="text-2xl font-bold text-white uppercase tracking-widest mb-2">
           {t("SCTitle")}
         </h2>
         <div className="h-1 bg-[#daa60b] dark:bg-yellow-700 rounded-full mb-4 w-full" />
-        <h3 className="text-3xl sm:text-4xl font-bold text-[#daa60b] dark:text-yellow-700 uppercase">
+        <h3  style={{padding:"15px"}} className="text-3xl sm:text-4xl font-bold text-[#daa60b] dark:text-yellow-700 uppercase">
           {t("SCTitle2")}
         </h3>
       </div>

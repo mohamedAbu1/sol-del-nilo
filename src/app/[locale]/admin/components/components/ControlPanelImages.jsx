@@ -93,12 +93,12 @@ const ControlPanelImages = ({ mainImages, setMainImages }) => {
 
                 {/* حقل اسم الصورة */}
                 <TextField
-                  value={img.name}
+                  value={img.label}
                   onChange={(e) => {
                     const newName = e.target.value;
                     setMainImages((prev) =>
                       prev.map((item, i) =>
-                        i === index ? { ...item, name: newName } : item
+                        i === index ? { ...item, label: newName } : item
                       )
                     );
                   }}
@@ -127,12 +127,12 @@ const ControlPanelImages = ({ mainImages, setMainImages }) => {
 
                 {/* حقل الاسم الخاص للصورة */}
                 <TextField
-                  value={img.label}
+                  value={img.name}
                   onChange={(e) => {
                     const newLabel = e.target.value;
                     setMainImages((prev) =>
                       prev.map((item, i) =>
-                        i === index ? { ...item, label: newLabel } : item
+                        i === index ? { ...item, name: newLabel } : item
                       )
                     );
                   }}

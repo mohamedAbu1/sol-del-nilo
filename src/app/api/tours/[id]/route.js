@@ -28,9 +28,9 @@ export async function GET(request, { params }) {
 
 export async function PATCH(req, {params}) {
   const tourId = params.id;
-  console.log("📥 بيانات التعديل:", body);
 
   const body = await req.json();
+  console.log("📥 بيانات التعديل:", body);
 
   // تحقق من وجود id
   if (!tourId) {

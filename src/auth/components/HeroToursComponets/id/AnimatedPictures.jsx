@@ -38,7 +38,7 @@ const AnimatedPictures = () => {
       </div>
     );
   }
-
+console.log(tour.image)
   return (
     <div
       style={{

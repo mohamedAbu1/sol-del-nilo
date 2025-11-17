@@ -25,8 +25,9 @@ const LogoutBtn = () => {
   return (
     <Button
       className="hidden lg:flex items-center justify-center gap-2 flex-row link bg-none hover:text-gray-400"
-      variant="contained"
-      style={{ backgroundColor: "#FF9800", color: "#fff" }}
+      variant="outlined"
+      color="warning"
+      style={{  color: "#fff" }}
       onClick={LogoutHandler}
     >
       {t("Btn2")} <BsDoorOpenFill />

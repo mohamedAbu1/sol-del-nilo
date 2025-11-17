@@ -95,6 +95,17 @@
   max-width: 300px;
   font-family: sans-serif;
 }
+.whatsapp-gradient {
+  background: radial-gradient(circle at 30% 107%, 
+    #fdf497 0%, 
+    #fdf497 5%, 
+    #fd5949 45%, 
+    #d6249f 60%, 
+    #285AEB 90%);
+  border-radius: 50%;
+  /* padding: 8px; */
+
+}
 
 .custom-date-wrapper label {
   color: #f5f5f5; /* ✅ لون label */
@@ -555,13 +566,11 @@ body {
 }
 
 .SocialMediaIcon {
-  font-size: 25px;
+  font-size: 35px;
   z-index: 40;
   padding: 10px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #2c2c2c, #3b3b3b); /* ✅ تدرج داكن أنيق */
   color: #ffffff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); /* ✅ ظل ناعم */
   transition: all 0.4s ease;
   position: relative;
   overflow: hidden;
@@ -589,12 +598,6 @@ body {
 
 .SocialMediaIcon:hover {
   transform: scale(1.1) rotate(2deg); /* ✅ حركة خفيفة */
-  background: linear-gradient(
-    135deg,
-    #ff9800,
-    #ffa726
-  ); /* ✅ تدرج برتقالي فاخر */
-  color: #212121; /* ✅ نص داكن */
   box-shadow: 0 6px 18px rgba(255, 152, 0, 0.5);
 }
 

@@ -43,11 +43,11 @@ export default function SectionThree() {
     >
       {/* ✅ العنوان */}
       <div className="text-center mb-12 w-full max-w-4xl">
-        <h2 className="text-2xl font-bold text-white uppercase tracking-widest mb-2 mt-4">
+        <h2  style={{padding:"15px"}} className="text-2xl font-bold text-white uppercase tracking-widest mb-2 mt-4">
           {t("sc2P")}
         </h2>
         <div className="h-1 bg-[#daa60b] dark:bg-yellow-700 rounded-full mb-4 w-full" />
-        <h3 className="text-3xl sm:text-4xl font-bold text-[#daa60b] dark:text-yellow-700 uppercase mb-4">
+        <h3  style={{padding:"15px"}} className="text-3xl sm:text-4xl font-bold text-[#daa60b] dark:text-yellow-700 uppercase mb-4">
           {t("sc2Title")}
         </h3>
       </div>

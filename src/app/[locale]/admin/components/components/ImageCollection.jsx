@@ -3,25 +3,33 @@ import React from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { Box, Button, TextField } from "@mui/material";
 import { toast } from "react-toastify";
+
 const ImageCollection = ({ activityImages, setActivityImages }) => {
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     const remainingSlots = 12 - activityImages.length;
 
     if (activityImages.length + files.length < 2) {
-      toast.error("❌ يجب ان تختار اكثر من صورتين");
+      toast.error("❌ يجب أن تختار أكثر من صورتين");
       return;
     }
 
     const limitedFiles = files.slice(0, remainingSlots);
     const newImages = limitedFiles.map((file) => ({
-      name: file.name, // ✅ اسم الملف الأصلي
-      label: "", // ✅ وصف خاص إن أردت
-      url: URL.createObjectURL(file), // ✅ للعرض
-      file,
+      name: file.name, // ✅ فقط اسم الصورة
+      label: "", // ✅ وصف اختياري
+      preview: URL.createObjectURL(file), // ✅ للعرض فقط
     }));
 
     setActivityImages((prev) => [...prev, ...newImages]);
+  };
+
+  const handleRemoveImage = (index) => {
+    const imageToRemove = activityImages[index];
+    if (imageToRemove?.preview) {
+      URL.revokeObjectURL(imageToRemove.preview);
+    }
+    setActivityImages((prev) => prev.filter((_, i) => i !== index));
   };
 
   return (
@@ -45,118 +53,112 @@ const ImageCollection = ({ activityImages, setActivityImages }) => {
             fontWeight: "700",
           }}
         >
-          اختر مجوعة الصور التي تريدها للرحله
+          اختر مجموعة الصور التي تريدها للرحلة
         </Button>
       </label>
 
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: 3, mt: 3 }}>
-        {Array.isArray(activityImages) &&
-          activityImages.map((img, index) => (
-            <Box
-              key={index}
-              position="relative"
-              sx={{ width: "auto", maxWidth: "300px" }}
+        {activityImages.map((img, index) => (
+          <Box
+            key={index}
+            position="relative"
+            sx={{ width: "auto", maxWidth: "300px" }}
+          >
+            <Button
+              size="small"
+              onClick={() => handleRemoveImage(index)}
+              sx={{
+                position: "absolute",
+                top: 0,
+                right: 0,
+                minWidth: "30px",
+                padding: "2px",
+                color: "#ff9800",
+                borderRadius: "50%",
+                zIndex: 1,
+              }}
             >
-              <Button
-                size="small"
-                onClick={() => {
-                  setActivityImages((prev) =>
-                    prev.filter((_, i) => i !== index)
-                  );
-                  URL.revokeObjectURL(img.url);
-                }}
-                sx={{
-                  position: "absolute",
-                  top: 0,
-                  right: 0,
-                  minWidth: "30px",
-                  padding: "2px",
-                  color: "#ff9800",
-                  borderRadius: "50%",
-                  zIndex: 1,
-                }}
-              >
-                <AiOutlineClose style={{ fontSize: "22px" }} />
-              </Button>
+              <AiOutlineClose style={{ fontSize: "22px" }} />
+            </Button>
 
-              <img
-                src={img.url}
-                alt={`image-${index}`}
-                style={{
-                  width: "100%",
-                  height: "auto",
-                  borderRadius: "12px",
-                  objectFit: "contain",
-                }}
-              />
+            <img
+              src={img.preview || img.url}
+              alt={`preview-${index}`}
+              style={{
+                width: "100%",
+                height: "auto",
+                borderRadius: "12px",
+                objectFit: "contain",
+              }}
+            />
 
-              <TextField
-                value={img.name}
-                onChange={(e) => {
-                  const newName = e.target.value;
-                  setActivityImages((prev) =>
-                    prev.map((item, i) =>
-                      i === index ? { ...item, name: newName } : item
-                    )
-                  );
-                }}
-                placeholder="اسم الصورة"
-                variant="outlined"
-                size="small"
-                sx={{
-                  mt: 1,
-                  width: "100%",
-                  input: {
-                    color: "#d4a85f",
-                    fontSize: "14px",
-                    fontWeight: "bold",
-                    fontFamily: "Cairo, sans-serif",
+            <TextField
+              value={img.label}
+              onChange={(e) => {
+                const newName = e.target.value;
+                setActivityImages((prev) =>
+                  prev.map((item, i) =>
+                    i === index ? { ...item, label: newName } : item
+                  )
+                );
+              }}
+              placeholder="اسم الصورة"
+              variant="outlined"
+              size="small"
+              sx={{
+                mt: 1,
+                width: "100%",
+                input: {
+                  color: "#d4a85f",
+                  fontSize: "14px",
+                  fontWeight: "bold",
+                  fontFamily: "Cairo, sans-serif",
+                },
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": { borderColor: "#d4a85f" },
+                  "&:hover fieldset": { borderColor: "#ff9800" },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#ff9800",
+                    borderWidth: "2px",
                   },
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": { borderColor: "#d4a85f" },
-                    "&:hover fieldset": { borderColor: "#ff9800" },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#ff9800",
-                      borderWidth: "2px",
-                    },
-                  },
-                }}
-              />
+                },
+              }}
+            />
 
-              <TextField
-                value={img.label}
-                onChange={(e) => {
-                  const newLabel = e.target.value;
-                  setActivityImages((prev) =>
-                    prev.map((item, i) =>
-                      i === index ? { ...item, label: newLabel } : item
-                    )
-                  );
-                }}
-                placeholder="اسم خاص للصورة"
-                variant="outlined"
-                size="small"
-                sx={{
-                  mt: 1,
-                  width: "100%",
-                  input: {
-                    color: "#d4a85f",
-                    fontSize: "14px",
-                    fontWeight: "bold",
-                    fontFamily: "Cairo, sans-serif",
+            <TextField
+              value={img.name}
+              onChange={(e) => {
+                const newLabel = e.target.value;
+                setActivityImages((prev) =>
+                  prev.map((item, i) =>
+                    i === index ? { ...item, name: newLabel } : item
+                  )
+                );
+              }}
+              placeholder="اسم خاص للصورة"
+              variant="outlined"
+              size="small"
+              sx={{
+                mt: 1,
+                width: "100%",
+                input: {
+                  color: "#d4a85f",
+                  fontSize: "14px",
+                  fontWeight: "bold",
+                  fontFamily: "Cairo, sans-serif",
+                },
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": { borderColor: "#d4a85f" },
+                  "&:hover fieldset": { borderColor: "#ff9800" },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#ff9800",
+                    borderWidth: "2px",
                   },
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": { borderColor: "#d4a85f" },
-                    "&:hover fieldset": { borderColor: "#ff9800" },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#ff9800",
-                      borderWidth: "2px",
-                    },
-                  },
-                }}
-              />
-            </Box>
-          ))}
+                },
+              }}
+            />
+          </Box>
+        ))}
       </Box>
     </Box>
   );

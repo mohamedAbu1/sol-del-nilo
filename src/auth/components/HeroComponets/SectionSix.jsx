@@ -31,17 +31,18 @@ const SectionSix = () => {
     >
       {/* المحتوى */}
       <div
-        style={{ marginTop: "60px", marginBottom: "60px" }}
+        style={{ padding:"25px"}}
         className="max-w-3xl text-center z-10"
       >
-        <h2 className="text-3xl lg:text-4xl font-bold mb-4">
-          {t("sc5Title")}
-        </h2>
-        <p className="text-base lg:text-lg text-gray-400 dark:text-gray-300 mb-8 leading-relaxed">
+        <h2 style={{padding:"15px"}} className="text-3xl lg:text-4xl font-bold mb-4">{t("sc5Title")}</h2>
+        <p style={{padding:"5px"}} className="text-base lg:text-lg text-gray-400 dark:text-gray-300 mb-8 leading-relaxed">
           {t("sc5P")}
         </p>
+        <div className="h-1 bg-[#daa60b] dark:bg-yellow-700 rounded-full mb-4 w-full" />
+
         <button
           onClick={() => router.push("/contact")}
+          style={{ cursor: "pointer",marginTop:"14px" }}
           className="px-6 py-3 text-gray-600 dark:text-white font-semibold rounded-full transition hover:scale-90 hover:text-yellow-400"
         >
           {t("sc5BTN")}
@@ -84,7 +85,11 @@ const SectionSix = () => {
                 : i.path;
 
               return (
-                <Link href={linkProps} key={index} style={{ color: "#ff9800", cursor:"pointer"}}>
+                <Link
+                  href={linkProps}
+                  key={index}
+                  style={{ color: "#ff9800", cursor: "pointer" }}
+                >
                   {i.label}
                 </Link>
               );

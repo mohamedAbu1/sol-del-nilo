@@ -3,6 +3,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { supabase } from "@/lib/supabaseClient";
 import { DOMAIN } from "@/lib/constants/FixedTexts";
+import { useTourImages } from "@/context/TourImagesContext"; // ✅ استدعاء السياق
 
 const TripsContext = createContext();
 
@@ -12,6 +13,7 @@ export const TripsContextProvider = ({ children }) => {
   const [tourError, setTourError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [toursData, setToursData] = useState([]);
+  const { setMainImages, setActivityImages } = useTourImages();
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -29,6 +31,8 @@ export const TripsContextProvider = ({ children }) => {
   const [cities, setCities] = useState([]);
   const [categories, setCategories] = useState([]);
   const [tour, setTour] = useState(null);
+
+  const { prepareImagesForSubmission } = useTourImages(); // ✅ استخدام السياق
 
   useEffect(() => {
     const fetchData = async () => {
@@ -84,10 +88,12 @@ export const TripsContextProvider = ({ children }) => {
   const fetchTourById = async (id) => {
     const { data, error } = await supabase
       .from("tour")
-      .select(`
+      .select(
+        `
         id, title, description, price, theDate, TripDuration, rival,
         DayPeople, cityId, categoryId, image, tripprogram(*), includes(*),payments(*),reviews(*),tourimage(*)
-      `)
+      `
+      )
       .eq("id", id)
       .single();
     if (error) {
@@ -106,67 +112,73 @@ export const TripsContextProvider = ({ children }) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
- const populateFormFromTour = (tour) => {
-  const [_, peoplePart] = tour.DayPeople?.split("/") || [];
+  const populateFormFromTour = (tour) => {
+    const [_, peoplePart] = tour.DayPeople?.split("/") || [];
 
-  const formattedImages =
-    tour.image?.map((img) => ({
-      name: img.name || img,
-      label: img.label || "",
-    })) || [];
+    const formattedImages =
+      tour.image?.map((img) => ({
+        name: img.name || img,
+        label: img.label || "",
+      })) || [];
 
-  const formattedTourImages =
-    tour.tourimage?.map((img) => ({
+    // const formattedTourImages =
+    //   tour.tourimage?.map((img) => ({
+    //     id: img.id,
+    //     name: img.name,
+    //     label: img.label || "",
+    //     url: img.url,
+    //   })) || [];
+    const formattedTourImages =
+      tour.tourimage?.map((img) => ({
+        id: img.id,
+        name: img.name, // ← هذا هو اسم الملف الفعلي
+        label: img.label || "", // ← هذا هو الوصف
+        url: img.url
+      })) || [];
+    const formPayload = {
+      title: tour.title || "",
+      description: tour.description || "",
+      price: tour.price?.toString() || "",
+      theDate: tour.theDate || "",
+      TripDuration: tour.TripDuration || "",
+      people: peoplePart?.replace("People", "") || "1",
+      cityId: tour.cityId || "",
+      categoryId: tour.categoryId || "",
+      rival: tour.rival || "",
+      image: formattedImages,
+      tripprogram:
+        tour.tripprogram?.map((item) => ({
+          time: item.time || "",
+          program: item.program || "",
+        })) || [],
+      includes:
+        tour.includes?.map((item) => ({
+          text: item.text || "",
+        })) || [],
+    };
+
+    setFormData(formPayload);
+
+    const mainImageObjects = formattedImages.map((img) => ({
+      name: img.name,
+      label: img.label,
+      url: `${DOMAIN}/assets/${img.name}`,
+      file: null,
+    }));
+
+    const activityImageObjects = formattedTourImages.map((img) => ({
       id: img.id,
       name: img.name,
-      label: img.url || "",
-      url: img.url,
-    })) || [];
+      label: img.label,
+      url: `${DOMAIN}/assets/${img.label}`,
+      file: null,
+    }));
 
-  const formPayload = {
-    title: tour.title || "",
-    description: tour.description || "",
-    price: tour.price?.toString() || "",
-    theDate: tour.theDate || "",
-    TripDuration: tour.TripDuration || "",
-    people: peoplePart?.replace("People", "") || "1",
-    cityId: tour.cityId || "",
-    categoryId: tour.categoryId || "",
-    rival: tour.rival || "",
-    image: formattedImages,
-    tripprogram:
-      tour.tripprogram?.map((item) => ({
-        time: item.time || "",
-        program: item.program || "",
-      })) || [],
-    includes:
-      tour.includes?.map((item) => ({
-        text: item.text || "",
-      })) || [],
+    return {
+      mainImages: mainImageObjects,
+      activityImages: activityImageObjects,
+    };
   };
-
-  setFormData(formPayload);
-
-  const mainImageObjects = formattedImages.map((img) => ({
-    name: img.name,
-    label: img.label,
-    url: `${DOMAIN}/assets/${img.name}`,
-    file: null,
-  }));
-
-  const activityImageObjects = formattedTourImages.map((img) => ({
-    id: img.id,
-    name: img.name,
-    label: img.label,
-    url: `${DOMAIN}/assets/${img.url}`,
-    file: null,
-  }));
-
-  return {
-    mainImages: mainImageObjects,
-    activityImages: activityImageObjects,
-  };
-};
 
   const isValid = () => {
     const requiredFields = [
@@ -209,16 +221,20 @@ export const TripsContextProvider = ({ children }) => {
 
     return true;
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isValid()) return;
+
+    const imagesData = prepareImagesForSubmission();
+    if (!imagesData) return;
 
     setIsSubmitting(true);
 
     const payload = {
       ...formData,
       price: Number(formData.price),
+      image: imagesData.image,
+      tourimage: imagesData.tourimage,
     };
 
     try {
@@ -233,10 +249,15 @@ export const TripsContextProvider = ({ children }) => {
       if (!res.ok) {
         toast.error("❌ فشل حفظ الرحلة");
         setTourError(result.error || "Unknown error");
-        console.error(result.error);
       } else {
         toast.success("✅ تم حفظ الرحلة بنجاح");
         setNewTour(result.data || payload);
+
+        // ✅ تفريغ الصور بعد الإرسال
+        setMainImages([]);
+        setActivityImages([]);
+
+        // ✅ إعادة تعيين النموذج
         setFormData({
           title: "",
           description: "",
@@ -251,13 +272,13 @@ export const TripsContextProvider = ({ children }) => {
           tripprogram: [{ time: "", program: "" }],
           includes: [{ text: "" }],
         });
+
         setTourError(null);
         setNewTour(null);
       }
     } catch (err) {
       toast.error("❌ حدث خطأ غير متوقع");
       setTourError(err);
-      console.error(err);
     }
 
     setIsSubmitting(false);
@@ -268,7 +289,6 @@ export const TripsContextProvider = ({ children }) => {
       toast.success("✅ تم إنشاء الرحلة بنجاح");
     }
   }, [newTour]);
-
   return (
     <TripsContext.Provider
       value={{

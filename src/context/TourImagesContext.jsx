@@ -10,26 +10,40 @@ export const TourImagesProvider = ({ children }) => {
 
   // ✅ استخراج الصور بصيغة { name, label }
   const extractImageObjects = (imagesArray) => {
-    return imagesArray.map((img) => ({
-      name: img.name,
-      label: img.label?.trim() || "صورة بدون وصف",
-    }));
+    console.log("📦 بدء استخراج الصور من المصفوفة:", imagesArray);
+
+    const extracted = imagesArray.map((img, index) => {
+      const result = {
+        name: img.name,
+        label: img.label?.trim() || "صورة بدون وصف",
+      };
+      console.log(`📸 [${index}] تم استخراج:`, result);
+      return result;
+    });
+
+    console.log("✅ تم استخراج الصور:", extracted);
+    return extracted;
   };
 
-  // ✅ تجهيز الصور للإرسال
+  // ✅ تجهيز الصور للإرسال بدون روابط أو ملفات
   const prepareImagesForSubmission = () => {
+    console.log("🚀 بدء تجهيز الصور للإرسال...");
+    console.log("🖼️ الصور الرئيسية:", mainImages);
+    console.log("🎯 صور الأنشطة:", activityImages);
+
     if (mainImages.length < 4 || mainImages.length > 12) {
+      console.warn("⚠️ عدد الصور الرئيسية غير مناسب:", mainImages.length);
       toast.error("❌ يجب اختيار ما بين 4 إلى 12 صورة للرحلة.");
       return null;
     }
 
     const image = extractImageObjects(mainImages);
-    const tourimage = activityImages.map((img) => ({
-      name: img.name,
-      label: img.label?.trim() || "صورة بدون وصف",
-    }));
+    const tourimage = extractImageObjects(activityImages);
 
-    return { image, tourimage };
+    const result = { image, tourimage };
+    console.log("📤 الصور الجاهزة للإرسال:", result);
+
+    return result;
   };
 
   return (

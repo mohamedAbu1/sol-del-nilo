@@ -36,9 +36,9 @@ export default async function LocaleLayout({ children, params }) {
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-        <TripContextProvider>
-          <TripsContextProvider>
-            <TourImagesProvider>
+        <TourImagesProvider>
+          <TripContextProvider>
+            <TripsContextProvider>
               <TourEditProvider>
                 {" "}
                 {/* ✅ يجب أن يسبق AppQueryContextProvider */}
@@ -46,9 +46,9 @@ export default async function LocaleLayout({ children, params }) {
                   <AppProvider>{children}</AppProvider>
                 </AppQueryContextProvider>
               </TourEditProvider>
-            </TourImagesProvider>
-          </TripsContextProvider>
-        </TripContextProvider>
+            </TripsContextProvider>
+          </TripContextProvider>
+        </TourImagesProvider>
       </ThemeProvider>
     </NextIntlClientProvider>
   );

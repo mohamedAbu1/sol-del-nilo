@@ -26,13 +26,13 @@ const SectionTow = forwardRef(() => {
   return (
     <section
       id="section-two"
-      style={{ marginTop: "10px" }}
+      // style={{ marginTop: "10px" }}
       className="w-full min-h-screen px-4 py-10 flex flex-col items-center justify-start text-white relative"
     >
       {/* ✅ العنوان */}
       <div className="text-center mb-12 w-full max-w-4xl">
         <div className="h-1 bg-[#daa60b] dark:bg-yellow-500 rounded-full mb-4 w-full" />
-        <h2 className="text-3xl sm:text-4xl font-bold text-[#daa60b] dark:text-yellow-700 tracking-wide uppercase mb-4">
+        <h2 style={{padding:"15px"}} className="text-3xl sm:text-4xl font-bold text-[#daa60b] dark:text-yellow-700 tracking-wide uppercase mb-4">
           {t("sc1Title")}
         </h2>
       </div>
@@ -96,15 +96,25 @@ const SectionTow = forwardRef(() => {
         {/* ✅ تنبيه عدم وجود رحلات */}
         {noToursMessage && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-            <div className="w-full max-w-md mx-4 bg-white dark:bg-gray-900 text-center rounded-xl shadow-xl px-6 py-8">
-              <h3 className="text-xl font-bold text-red-600 dark:text-yellow-400 mb-4">
+            <div
+              style={{ padding: "20px" }}
+              className="w-full max-w-md mx-4 bg-white dark:bg-gray-900 text-center rounded-xl shadow-xl px-6 py-8"
+            >
+              <h3
+                style={{ marginBottom: "10px" }}
+                className="text-xl font-bold text-red-600 dark:text-yellow-400 mb-4"
+              >
                 {noToursMessage}
               </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+              <p
+                style={{ marginBottom: "10px" }}
+                className="text-sm text-gray-600 dark:text-gray-300 mb-4"
+              >
                 Try choosing another category or adjusting the filters to get
                 results.
               </p>
               <button
+                style={{ padding: "8px", cursor: "pointer" }}
                 className="mt-6 px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-full transition"
                 onClick={() => setNoToursMessage("")}
               >

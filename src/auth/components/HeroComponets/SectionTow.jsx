@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useTripsContext } from "@/context/TripsContext";
 import { useTripContext } from "@/context/TripContext";
-
+import { motion } from "framer-motion";
 const SectionTow = forwardRef(() => {
   const { categories } = useTripsContext();
   const { tours } = useTripContext();
@@ -15,14 +15,33 @@ const SectionTow = forwardRef(() => {
   const [hasMounted, setHasMounted] = useState(false);
   const [today, setToday] = useState("2025-01-01");
   const [noToursMessage, setNoToursMessage] = useState("");
+  const [shuffledCategories, setShuffledCategories] = useState([]);
 
+  useEffect(() => {
+    setToday(new Date().toISOString().split("T")[0]);
+    setShuffledCategories(categories);
+  }, [categories]);
   useEffect(() => {
     setHasMounted(true);
     setToday(new Date().toISOString().split("T")[0]);
   }, []);
 
-  if (!hasMounted) return null;
-  console.log(categories);
+  // if (!hasMounted) return null;
+  // ✅ Shuffle كل دقيقة
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setShuffledCategories((prev) => {
+        const newArr = [...prev];
+        for (let i = newArr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
+        }
+        return newArr;
+      });
+    }, 20000); // كل دقيقة
+
+    return () => clearInterval(interval);
+  }, []);
   return (
     <section
       id="section-two"
@@ -32,98 +51,71 @@ const SectionTow = forwardRef(() => {
       {/* ✅ العنوان */}
       <div className="text-center mb-12 w-full max-w-4xl">
         <div className="h-1 bg-[#daa60b] dark:bg-yellow-500 rounded-full mb-4 w-full" />
-        <h2 style={{padding:"15px"}} className="text-3xl sm:text-4xl font-bold text-[#daa60b] dark:text-yellow-700 tracking-wide uppercase mb-4">
+        <h2
+          style={{ padding: "15px" }}
+          className="text-3xl sm:text-4xl font-bold text-[#daa60b] dark:text-yellow-700 tracking-wide uppercase mb-4"
+        >
           {t("sc1Title")}
         </h2>
       </div>
 
       {/* ✅ شبكة الكروت المتجاوبة */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-full max-w-7xl flex-wrap">
-        {categories.map((card, index) => (
-          <div
-            key={card.id || index}
-            className="relative rounded-3xl overflow-hidden shadow-2xl group hover:shadow-yellow-500/40 transition duration-500"
-          >
-            <Image
-              width={400}
-              height={200}
-              src={card.img ? `/assets/${card.img}` : "/assets/default.png"}
-              alt={card.name}
-              loading="eager"
-              priority
-              placeholder="blur"
-              blurDataURL="data:image/webp;base64,..."
-              className="w-full h-[320px] object-cover transform group-hover:scale-110 transition duration-700 ease-in-out"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t dark:from-black/70 to-transparent z-10" />
-            <div className="absolute bottom-6 left-6 z-20">
-              <h3 className="text-white sm:text-3xl font-bold tracking-wide mb-4 drop-shadow-lg text-[20px]">
-                {card.name}
-              </h3>
-              <button
-                className="btn-next-section3"
-                onClick={() => {
-                  const hasTours = tours.some((t) => {
-                    const category = t.category?.name || t.category || "";
-                    return category.toLowerCase() === card.name.toLowerCase();
-                  });
+    <div className="container flex flex-row flex-wrap gap-4">
+        {shuffledCategories.map((card, index) => (
+        <motion.div
+          key={card.id || index}
+          layout // ✅ مهم عشان أي تغيير في الترتيب يحصل بأنيمشن سلس
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.8, delay: index * 0.2, ease: "easeOut" }}
+          className="relative w-[24%] rounded-3xl overflow-hidden shadow-2xl group hover:shadow-yellow-500/40 transition duration-500"
+        >
+          <Image
+            width={400}
+            height={200}
+            src={card.img ? `/assets/${card.img}` : "/assets/default.png"}
+            alt={card.name}
+            className="w-full h-[320px] object-cover transform group-hover:scale-110 transition duration-700 ease-in-out"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t dark:from-black/70 to-transparent z-10" />
+          <div className="absolute bottom-6 left-6 z-20">
+            <h3 className="text-white sm:text-3xl font-bold tracking-wide mb-4 drop-shadow-lg text-[20px]">
+              {card.name}
+            </h3>
+            <button
+              className="btn-next-section3"
+              onClick={() => {
+                const hasTours = tours.some((t) => {
+                  const category = t.category?.name || t.category || "";
+                  return category.toLowerCase() === card.name.toLowerCase();
+                });
 
-                  if (hasTours) {
-                    const query = new URLSearchParams({
-                      destination: "All",
-                      category: card.name,
-                      date: today,
-                      duration: "5",
-                      minPrice: "0",
-                      maxPrice: "14000",
-                      search: "All",
-                    }).toString();
+                if (hasTours) {
+                  const query = new URLSearchParams({
+                    destination: "All",
+                    category: card.name,
+                    date: today,
+                    duration: "5",
+                    minPrice: "0",
+                    maxPrice: "14000",
+                    search: "All",
+                  }).toString();
 
-                    router.push(`/tours?${query}`);
-                  } else {
-                    setNoToursMessage(
-                      `Unfortunately, there are currently no trips available for this category: "${card.name}"`
-                    );
-                  }
-                }}
-              >
-                View All →
-              </button>
-            </div>
-          </div>
-        ))}
-
-        {/* ✅ تنبيه عدم وجود رحلات */}
-        {noToursMessage && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-            <div
-              style={{ padding: "20px" }}
-              className="w-full max-w-md mx-4 bg-white dark:bg-gray-900 text-center rounded-xl shadow-xl px-6 py-8"
+                  router.push(`/tours?${query}`);
+                } else {
+                  setNoToursMessage(
+                    `Unfortunately, there are currently no trips available for this category: "${card.name}"`
+                  );
+                }
+              }}
             >
-              <h3
-                style={{ marginBottom: "10px" }}
-                className="text-xl font-bold text-red-600 dark:text-yellow-400 mb-4"
-              >
-                {noToursMessage}
-              </h3>
-              <p
-                style={{ marginBottom: "10px" }}
-                className="text-sm text-gray-600 dark:text-gray-300 mb-4"
-              >
-                Try choosing another category or adjusting the filters to get
-                results.
-              </p>
-              <button
-                style={{ padding: "8px", cursor: "pointer" }}
-                className="mt-6 px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-full transition"
-                onClick={() => setNoToursMessage("")}
-              >
-                Close
-              </button>
-            </div>
+              View All →
+            </button>
           </div>
-        )}
-      </div>
+        </motion.div>
+      ))}
+    </div>
     </section>
   );
 });

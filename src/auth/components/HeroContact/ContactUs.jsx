@@ -9,6 +9,7 @@ import "react-phone-input-2/lib/material.css"; // ✅ ستايل متناسق م
 import { useTheme } from "next-themes";
 import { useTranslations } from "next-intl";
 import axios from "axios";
+import { motion } from "framer-motion";
 
 const ContactUs = ({ user }) => {
   const [name, setName] = useState("");
@@ -23,7 +24,14 @@ const ContactUs = ({ user }) => {
   const handleNameChange = (e) => setName(sanitizeInput(e.target.value));
   const handleSubjectChange = (e) => setSubject(sanitizeInput(e.target.value));
   const handleMessageChange = (e) => setMessage(sanitizeInput(e.target.value));
-
+const inputVariants = {
+  hidden: { opacity: 0, x: -100 },   // يبدأ خارج الشاشة من الشمال
+  visible: { opacity: 1, x: 0 },     // يدخل لمكانه الطبيعي
+};
+const emailVariants = {
+  hidden: { opacity: 0, x: 100 },    // يبدأ خارج الشاشة من اليمين
+  visible: { opacity: 1, x: 0 },     // يدخل لمكانه الطبيعي
+};
   const handleEmailBlur = () => {
     if (!email.endsWith("@gmail.com")) {
       toast.error("Email must end with @gmail.com");
@@ -38,8 +46,8 @@ const ContactUs = ({ user }) => {
   };
   useEffect(() => {
     if (process.env.NODE_ENV === "development") {
-    console.log("Current theme is:", theme);
-  }
+      console.log("Current theme is:", theme);
+    }
   }, [theme]);
 
   const handleSubmit = async () => {
@@ -97,250 +105,266 @@ const ContactUs = ({ user }) => {
       }}
     >
       {/* ✅ النموذج */}
-      <Box sx={{ flex: 1 }}>
-        <Typography
-          variant="h4" // ✅ حجم مناسب ومتجاوب
-          sx={{
-            mb: { xs: 2, md: 3 },
-            color: "#ffb300",
-            fontWeight: 700,
-            fontSize: { xs: "1.8rem", sm: "2.2rem", md: "2.5rem" },
-            textAlign: { xs: "center", md: "left" },
-          }}
-        >
-          {t("title")}
-        </Typography>
-
-        <Typography
-          variant="body1" // ✅ بديل احترافي لـ p
-          sx={{
-            mb: { xs: 3, md: 4 },
-            color: "grey",
-            fontSize: { xs: "0.95rem", sm: "1rem", md: "1.1rem" },
-            textAlign: { xs: "center", md: "left" },
-            lineHeight: 1.6,
-          }}
-        >
-          {t("p")}
-        </Typography>
-
-        <Grid
-          container
-          spacing={2}
-          sx={{ display: "flex", flexDirection: "column", gap: "40px" }}
-        >
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label="Name"
-              variant="outlined"
-              onChange={handleNameChange}
-              value={name}
-              sx={{
-                borderRadius: "20px",
-                input: {
-                  borderRadius: "20px",
-                  color: theme === "dark" ? "#fff" : "#2c2c2c",
-                  backgroundColor: theme === "dark" ? "#2c2c2c" : "#fff",
-                },
-                label: {
-                  color: "#ffb300",
-                },
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "#ffb300",
-                    borderRadius: "20px",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "#ffc107",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#ffb300",
-                  },
-                },
-              }}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label="Email"
-              variant="outlined"
-              value={email}
-              onChange={handleEmailChange}
-              onBlur={handleEmailBlur}
-              error={!!emailError}
-              helperText={emailError}
-              sx={{
-                borderRadius: "20px",
-                input: {
-                  color: theme === "dark" ? "#fff" : "#2c2c2c",
-                  backgroundColor: theme === "dark" ? "#2c2c2c" : "#fff",
-                  borderRadius: "20px",
-                },
-                label: {
-                  color: "#ffb300",
-                },
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "#ffb300",
-                    borderRadius: "20px",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "#ffc107",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#ffb300",
-                  },
-                },
-              }}
-            />
-          </Grid>
-          <Grid container spacing={2}>
-            <Box sx={{ width: "100%" }}>
-              <PhoneInput
-                country={"eg"}
-                value={phone}
-                onChange={setPhone}
-                enableSearch={true} // ✅ بحث عن الدولة
-                inputStyle={{
-                  width: "100%",
-                  color: theme === "dark" ? "#fff" : "#2c2c2c",
-                  backgroundColor: theme === "dark" ? "#2c2c2c" : "#fff",
-                  fontSize: "1rem",
-                  fontWeight: 500,
-                  borderRadius: "12px",
-                  border: "1px solid #ffb300",
-                  padding: "14px 59px",
-                }}
-                buttonStyle={{
-                  backgroundColor: "#ffb300",
-                  border: "none",
-                  borderTopLeftRadius: "12px",
-                  borderBottomLeftRadius: "12px",
-                }}
-                containerStyle={{
-                  width: "100%",
-                  borderRadius: "12px",
-                  boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
-                }}
-                dropdownStyle={{
-                  backgroundColor: "#212121",
-                  color: "#fff",
-                  border: "1px solid #ffb300",
-                }}
-                searchStyle={{
-                  backgroundColor: "#2c2c2c",
-                  color: "#fff",
-                  border: "1px solid #ffb300",
-                }}
-              />
-            </Box>
-          </Grid>
-
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Subject"
-              variant="outlined"
-              onChange={handleSubjectChange}
-              value={subject}
-              sx={{
-                input: {
-                  borderRadius: "20px",
-                  color: theme === "dark" ? "#fff" : "#2c2c2c",
-                  backgroundColor: theme === "dark" ? "#2c2c2c" : "#fff",
-                },
-                label: {
-                  color: "#ffb300",
-                },
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "#ffb300",
-                    borderRadius: "20px",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "#ffc107",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#ffb300",
-                  },
-                },
-              }}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Message"
-              variant="outlined"
-              multiline
-              minRows={4}
-              maxRows={10} // ✅ مرونة في التمدد
-              onChange={handleMessageChange}
-              value={message}
-              sx={{
-                width: "100%",
-                borderRadius: "20px",
-
-                "& .MuiInputBase-root": {
-                  color: theme === "dark" ? "#fff" : "#2c2c2c",
-                  backgroundColor: theme === "dark" ? "#2c2c2c" : "#fff",
-                  padding: "12px",
-                  borderRadius: "20px",
-                },
-                "& .MuiInputLabel-root": {
-                  color: "#ffb300", // ✅ لون عنوان الحقل
-                },
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "#ffb300", // ✅ حدود صفراء
-                    borderRadius: "20px",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "#ffc107",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#ffb300",
-                  },
-                },
-              }}
-            />
-          </Grid>
-
-          <Grid
-            item
-            xs={12}
+      <motion.div
+        variants={inputVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
+        <Box sx={{ flex: 1 }}>
+          <Typography
+            variant="h4" // ✅ حجم مناسب ومتجاوب
             sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              gap: "20px",
+              mb: { xs: 2, md: 3 },
+              color: "#ffb300",
+              fontWeight: 700,
+              fontSize: { xs: "1.8rem", sm: "2.2rem", md: "2.5rem" },
+              textAlign: { xs: "center", md: "left" },
             }}
           >
-            <Button
-              onClick={handleSubmit}
-              disabled={!isFormValid()}
-              variant="contained"
+            {t("title")}
+          </Typography>
+
+          <Typography
+            variant="body1" // ✅ بديل احترافي لـ p
+            sx={{
+              mb: { xs: 3, md: 4 },
+              color: "grey",
+              fontSize: { xs: "0.95rem", sm: "1rem", md: "1.1rem" },
+              textAlign: { xs: "center", md: "left" },
+              lineHeight: 1.6,
+            }}
+          >
+            {t("p")}
+          </Typography>
+
+          <Grid
+            container
+            spacing={2}
+            sx={{ display: "flex", flexDirection: "column", gap: "40px" }}
+          >
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Name"
+                variant="outlined"
+                onChange={handleNameChange}
+                value={name}
+                sx={{
+                  borderRadius: "20px",
+                  input: {
+                    borderRadius: "20px",
+                    color: theme === "dark" ? "#fff" : "#2c2c2c",
+                    backgroundColor: theme === "dark" ? "#2c2c2c" : "#fff",
+                  },
+                  label: {
+                    color: "#ffb300",
+                  },
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "#ffb300",
+                      borderRadius: "20px",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "#ffc107",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#ffb300",
+                    },
+                  },
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Email"
+                variant="outlined"
+                value={email}
+                onChange={handleEmailChange}
+                onBlur={handleEmailBlur}
+                error={!!emailError}
+                helperText={emailError}
+                sx={{
+                  borderRadius: "20px",
+                  input: {
+                    color: theme === "dark" ? "#fff" : "#2c2c2c",
+                    backgroundColor: theme === "dark" ? "#2c2c2c" : "#fff",
+                    borderRadius: "20px",
+                  },
+                  label: {
+                    color: "#ffb300",
+                  },
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "#ffb300",
+                      borderRadius: "20px",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "#ffc107",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#ffb300",
+                    },
+                  },
+                }}
+              />
+            </Grid>
+            <Grid container spacing={2}>
+              <Box sx={{ width: "100%" }}>
+                <PhoneInput
+                  country={"eg"}
+                  value={phone}
+                  onChange={setPhone}
+                  enableSearch={true} // ✅ بحث عن الدولة
+                  inputStyle={{
+                    width: "100%",
+                    color: theme === "dark" ? "#fff" : "#2c2c2c",
+                    backgroundColor: theme === "dark" ? "#2c2c2c" : "#fff",
+                    fontSize: "1rem",
+                    fontWeight: 500,
+                    borderRadius: "12px",
+                    border: "1px solid #ffb300",
+                    padding: "14px 59px",
+                  }}
+                  buttonStyle={{
+                    backgroundColor: "#ffb300",
+                    border: "none",
+                    borderTopLeftRadius: "12px",
+                    borderBottomLeftRadius: "12px",
+                  }}
+                  containerStyle={{
+                    width: "100%",
+                    borderRadius: "12px",
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+                  }}
+                  dropdownStyle={{
+                    backgroundColor: "#212121",
+                    color: "#fff",
+                    border: "1px solid #ffb300",
+                  }}
+                  searchStyle={{
+                    backgroundColor: "#2c2c2c",
+                    color: "#fff",
+                    border: "1px solid #ffb300",
+                  }}
+                />
+              </Box>
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Subject"
+                variant="outlined"
+                onChange={handleSubjectChange}
+                value={subject}
+                sx={{
+                  input: {
+                    borderRadius: "20px",
+                    color: theme === "dark" ? "#fff" : "#2c2c2c",
+                    backgroundColor: theme === "dark" ? "#2c2c2c" : "#fff",
+                  },
+                  label: {
+                    color: "#ffb300",
+                  },
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "#ffb300",
+                      borderRadius: "20px",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "#ffc107",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#ffb300",
+                    },
+                  },
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Message"
+                variant="outlined"
+                multiline
+                minRows={4}
+                maxRows={10} // ✅ مرونة في التمدد
+                onChange={handleMessageChange}
+                value={message}
+                sx={{
+                  width: "100%",
+                  borderRadius: "20px",
+
+                  "& .MuiInputBase-root": {
+                    color: theme === "dark" ? "#fff" : "#2c2c2c",
+                    backgroundColor: theme === "dark" ? "#2c2c2c" : "#fff",
+                    padding: "12px",
+                    borderRadius: "20px",
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "#ffb300", // ✅ لون عنوان الحقل
+                  },
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "#ffb300", // ✅ حدود صفراء
+                      borderRadius: "20px",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "#ffc107",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#ffb300",
+                    },
+                  },
+                }}
+              />
+            </Grid>
+
+            <Grid
+              item
+              xs={12}
               sx={{
-                backgroundColor: "#ffb300",
-                color: "#fff",
-                fontWeight: 600,
-                borderRadius: "8px",
-                px: 4,
-                py: 1,
-                "&:hover": {
-                  backgroundColor: "#ffc107",
-                },
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                gap: "20px",
               }}
             >
-              SEND MESSAGE
-            </Button>
+              <Button
+                onClick={handleSubmit}
+                disabled={!isFormValid()}
+                variant="contained"
+                sx={{
+                  backgroundColor: "#ffb300",
+                  color: "#fff",
+                  fontWeight: 600,
+                  borderRadius: "8px",
+                  px: 4,
+                  py: 1,
+                  "&:hover": {
+                    backgroundColor: "#ffc107",
+                  },
+                }}
+              >
+                SEND MESSAGE
+              </Button>
+            </Grid>
           </Grid>
-        </Grid>
-      </Box>
+        </Box>
+      </motion.div>
 
       {/* ✅ الأنيميشن */}
+       <motion.div
+          variants={emailVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          style={{ width: "100%", maxWidth: 600 }}
+        >
       <Box
         sx={{
           flex: 1,
@@ -349,12 +373,15 @@ const ContactUs = ({ user }) => {
           alignItems: "center",
         }}
       >
-        <Lottie
-          animationData={emailAnimation}
-          loop={true}
-          style={{ width: "100%", maxWidth: 600 }}
-        />
+       
+          <Lottie
+            animationData={emailAnimation}
+            loop={true}
+            style={{ width: "100%", maxWidth: 600 }}
+          />
       </Box>
+              </motion.div>
+
       <ToastContainer />
     </Box>
   );

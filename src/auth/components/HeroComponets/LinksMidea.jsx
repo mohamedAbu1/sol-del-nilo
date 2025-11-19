@@ -9,6 +9,22 @@ const LinksMidea = () => {
     visible: { opacity: 1, y: 0 },
   };
 
+  // 🎨 مصفوفة ألوان للخلفيات
+  const bgColors = [
+    "bg-blue-500",
+    "bg-green-500",
+    "bg-pink-500",
+    "bg-yellow-500",
+    "bg-red-500",
+  ];
+// const bgColors = [
+//     "bg-blue-500",
+//     "bg-red-500",
+//     "bg-green-500",
+//     "bg-yellow-500",
+//     "bg-purple-500",
+//     "bg-pink-500",
+//   ];
   return (
     <div
       style={{ marginTop: "40px" }}
@@ -28,7 +44,9 @@ const LinksMidea = () => {
             delay: index * 0.2,
             duration: 0.5,
           }}
-          className="SocialMediaIcon"
+          // ✅ إضافة خلفية مختلفة لكل أيقونة
+          className={`SocialMediaIcon ${bgColors[index % bgColors.length]} 
+                     text-white p-3 rounded-full shadow-md hover:scale-110 transition`}
         >
           {i.Icon}
         </motion.a>

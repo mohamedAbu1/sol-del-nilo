@@ -2,7 +2,7 @@
 import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
 import { GetTours } from "@/lib/constants/FixedTexts";
-
+import { motion } from "framer-motion";
 const SectionFive = () => {
   const t = useTranslations("HomeHeroPage");
 
@@ -44,8 +44,13 @@ const SectionFive = () => {
       {/* ✅ شبكة الكروت المتجاوبة */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-screen-xl">
         {Car.map((tour, index) => (
-          <div
+          <motion.div
             key={index}
+            layout // ✅ لو حبيت تضيف Shuffle لاحقًا
+            initial={{ opacity: 0, y: 50 }} // يبدأ شفاف وتحت
+            whileInView={{ opacity: 1, y: 0 }} // يظهر عند دخول الشاشة
+            viewport={{ once: true, amount: 0.2 }} // once: يحدث مرة واحدة فقط عند دخول 20% من الكارد
+            transition={{ duration: 0.8, delay: index * 0.2, ease: "easeOut" }}
             style={{ height: "440px" }}
             className="rounded-2xl overflow-hidden shadow-lg hover:shadow-yellow-500/40 transition duration-300 flex flex-col"
           >
@@ -73,7 +78,7 @@ const SectionFive = () => {
                 {tour.description}
               </p>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </section>

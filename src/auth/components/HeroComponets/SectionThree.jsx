@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { MdOutlineReviews } from "react-icons/md";
 import { BiDollar } from "react-icons/bi";
 import { useTripContext } from "@/context/TripContext";
-
+import { motion } from "framer-motion";
 export default function SectionThree() {
   const { tours } = useTripContext();
   const t = useTranslations("HomeHeroPage");
@@ -43,11 +43,17 @@ export default function SectionThree() {
     >
       {/* ✅ العنوان */}
       <div className="text-center mb-12 w-full max-w-4xl">
-        <h2  style={{padding:"15px"}} className="text-2xl font-bold text-white uppercase tracking-widest mb-2 mt-4">
+        <h2
+          style={{ padding: "15px" }}
+          className="text-2xl font-bold text-white uppercase tracking-widest mb-2 mt-4"
+        >
           {t("sc2P")}
         </h2>
         <div className="h-1 bg-[#daa60b] dark:bg-yellow-700 rounded-full mb-4 w-full" />
-        <h3  style={{padding:"15px"}} className="text-3xl sm:text-4xl font-bold text-[#daa60b] dark:text-yellow-700 uppercase mb-4">
+        <h3
+          style={{ padding: "15px" }}
+          className="text-3xl sm:text-4xl font-bold text-[#daa60b] dark:text-yellow-700 uppercase mb-4"
+        >
           {t("sc2Title")}
         </h3>
       </div>
@@ -55,8 +61,12 @@ export default function SectionThree() {
       {/* ✅ شبكة الكروت المتجاوبة */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-full max-w-screen-xl">
         {topTours.map((tour, index) => (
-          <div
+          <motion.div
             key={index}
+            initial={{ opacity: 0, y: 50 }} // يبدأ شفاف وتحت
+            whileInView={{ opacity: 1, y: 0 }} // يظهر عند دخول الشاشة
+            viewport={{ once: true, amount: 0.2 }} // once: يحدث مرة واحدة فقط، amount: يبدأ عند دخول 20% من الكارد
+            transition={{ duration: 0.8, delay: index * 0.2, ease: "easeOut" }}
             className="group relative bg-[#fff] dark:bg-neutral-900 rounded-3xl overflow-hidden shadow-xl hover:shadow-yellow-500/40 transition duration-300"
           >
             {/* صورة الجولة */}
@@ -71,7 +81,6 @@ export default function SectionThree() {
                 }
                 alt={tour.title}
                 loading="lazy"
-                priority={false}
                 placeholder="blur"
                 blurDataURL="data:image/webp;base64,..."
                 className="w-full h-[320px] object-cover transform group-hover:scale-110 transition duration-700 ease-in-out"
@@ -91,14 +100,8 @@ export default function SectionThree() {
             {/* تفاصيل الجولة */}
             <div className="p-5 flex flex-col justify-between h-[170px] bg-gradient-to-br from-white via-yellow-50 to-yellow-100 dark:from-neutral-900 dark:via-neutral-800 dark:to-neutral-900 rounded-b-3xl shadow-[0_4px_20px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_20px_rgba(255,255,255,0.05)] backdrop-blur-sm border-t border-yellow-200 dark:border-yellow-800 transition-all duration-300">
               {/* معلومات الجولة */}
-              <div
-                style={{ paddingLeft: "6px", paddingRight: "6px" }}
-                className=" rounded-md h-9/12"
-              >
-                <div
-                  style={{ padding: "6px" }}
-                  className="flex items-center justify-between mb-2"
-                >
+              <div className="rounded-md h-9/12 px-2">
+                <div style={{padding:"8px"}} className="flex items-center justify-between mb-2 px-2">
                   <p className="text-sm flex items-center gap-2 text-gray-600 dark:text-yellow-300">
                     <FaMapMarkerAlt className="text-yellow-500 dark:text-yellow-400" />
                     <span className="font-medium">{tour.city.name}</span>
@@ -108,33 +111,27 @@ export default function SectionThree() {
                     <span>{tour.reviews.length} Reviews</span>
                   </p>
                 </div>
-                <h4
-                  style={{ marginTop: "11px" }}
-                  className="text-[1.05rem] font-semibold text-gray-800 dark:text-white leading-snug line-clamp-2 tracking-wide"
-                >
+                <h4 style={{padding:"8px"}}  className="text-[1.05rem] font-semibold text-gray-800 dark:text-white leading-snug line-clamp-2 tracking-wide mt-3">
                   {tour.title}
                 </h4>
               </div>
 
               {/* التاريخ والزر */}
-              <div
-                style={{ padding: "10px" }}
-                className="flex items-center justify-between rounded-xl bg-white/70 dark:bg-neutral-800/60 shadow-inner backdrop-blur-md h-3/12"
-              >
-                <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+              <div className="flex items-center justify-between rounded-xl bg-white/70 dark:bg-neutral-800/60 shadow-inner backdrop-blur-md h-3/12 px-3 py-2">
+                <div style={{padding:"16px"}} className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
                   <FaCalendarAlt className="text-yellow-500 dark:text-yellow-400" />
                   <span>{tour.theDate}</span>
                 </div>
                 <button
                   onClick={() => router.push(`/tours/${tour.id}`)}
-                  style={{ padding: "7px", cursor: "pointer" }}
-                  className="bg-gradient-to-r from-yellow-400 to-orange-400 text-white dark:text-gray-900 font-semibold rounded-full shadow-lg hover:scale-105 hover:shadow-yellow-400/50 transition-all duration-300 text-sm lg:text-base"
+                  style={{padding:"6px"}}
+                  className="bg-gradient-to-r from-yellow-400 to-orange-400 text-white dark:text-gray-900 font-semibold rounded-full shadow-lg hover:scale-105 hover:shadow-yellow-400/50 transition-all duration-300 text-sm lg:text-base px-4 py-2"
                 >
                   Details →
                 </button>
               </div>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </section>

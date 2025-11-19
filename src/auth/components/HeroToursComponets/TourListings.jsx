@@ -1,5 +1,5 @@
 "use client";
-import { Drawer, Box, Pagination, Typography } from "@mui/material";
+import { Drawer, Box, Pagination } from "@mui/material";
 import SearchAndControls from "./SearchAndControls";
 import DailyTourCard from "./DailyTourCard ";
 import SidebarFiltersMB from "./SidebarFiltersMB";
@@ -21,6 +21,7 @@ const TourListings = () => {
     visibleTours,
   } = useAppQueryContext();
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
   return (
     <>
       <Drawer
@@ -52,22 +53,19 @@ const TourListings = () => {
         <SearchAndControls />
 
         <Box
-          key={fadeKey}
           sx={{
             px: { xs: 2, sm: 4 },
             pb: 4,
             width: "100%",
-            display: "flex",
-            flexDirection: viewMode === "list" ? "column" : "row",
-            flexWrap: viewMode === "grid" ? "wrap" : "nowrap",
+            display: "flex", // ✅ مهم
+            flexWrap: "wrap", // ✅ يخلي الكروت تنزل جنب بعض
             gap: 3,
-            justifyContent: viewMode === "grid" ? "center" : "flex-start",
-            animation: "fadeIn 0.5s ease-in-out",
+            justifyContent: "center", // ✅ يوزعهم في الوسط
           }}
         >
           {visibleTours.length > 0 ? (
             visibleTours.map((tour) => (
-              <DailyTourCard key={tour.id} tour={tour} viewMode={viewMode} />
+              <DailyTourCard tour={tour} viewMode={viewMode} />
             ))
           ) : (
             <div className="w-full text-center py-16 px-4 flex flex-col items-center justify-center">
@@ -91,10 +89,12 @@ const TourListings = () => {
                 />
               </svg>
               <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                للأسف، لا توجد رحلات متوفرة حاليًا لهذه الفئة
+                Unfortunately, there are currently no flights available for this
+                category.
               </h3>
               <p className="text-sm text-gray-500 dark:text-gray-400">
-                حاول اختيار فئة أخرى أو تعديل الفلاتر للحصول على نتائج.
+                Try selecting a different category or adjusting the filters to
+                get results.
               </p>
             </div>
           )}

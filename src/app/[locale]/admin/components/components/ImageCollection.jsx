@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 const ImageCollection = ({ activityImages, setActivityImages }) => {
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-    const remainingSlots = 12 - activityImages.length;
+    const remainingSlots = 25 - activityImages.length;
 
     if (activityImages.length + files.length < 2) {
       toast.error("❌ يجب أن تختار أكثر من صورتين");
@@ -16,9 +16,9 @@ const ImageCollection = ({ activityImages, setActivityImages }) => {
 
     const limitedFiles = files.slice(0, remainingSlots);
     const newImages = limitedFiles.map((file) => ({
-      name: file.name, // ✅ فقط اسم الصورة
-      label: "", // ✅ وصف اختياري
-      preview: URL.createObjectURL(file), // ✅ للعرض فقط
+      name: "", // الوصف أو النشاط
+      label: file.name, // اسم الملف
+      preview: URL.createObjectURL(file),
     }));
 
     setActivityImages((prev) => [...prev, ...newImages]);
@@ -93,12 +93,12 @@ const ImageCollection = ({ activityImages, setActivityImages }) => {
             />
 
             <TextField
-              value={img.label}
+              value={img.name}
               onChange={(e) => {
                 const newName = e.target.value;
                 setActivityImages((prev) =>
                   prev.map((item, i) =>
-                    i === index ? { ...item, label: newName } : item
+                    i === index ? { ...item, name: newName } : item
                   )
                 );
               }}
@@ -126,12 +126,12 @@ const ImageCollection = ({ activityImages, setActivityImages }) => {
             />
 
             <TextField
-              value={img.name}
+              value={img.label}
               onChange={(e) => {
                 const newLabel = e.target.value;
                 setActivityImages((prev) =>
                   prev.map((item, i) =>
-                    i === index ? { ...item, name: newLabel } : item
+                    i === index ? { ...item, label: newLabel } : item
                   )
                 );
               }}

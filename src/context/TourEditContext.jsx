@@ -103,7 +103,7 @@ export const TourEditProvider = ({ children }) => {
       const payload = {
         ...formData,
         price: Number(formData.price),
-        DayPeople: `${formData.people}/People`,
+        DayPeople: `${formData.people}`,
         image: imagesData.image,
       };
 
@@ -135,9 +135,9 @@ export const TourEditProvider = ({ children }) => {
 
       // إدراج الصور الجديدة
       const tourimageWithMeta = imagesData.tourimage.map((img) => ({
-        url: `${DOMAIN}/assets/${img.name}`,
-        label: img.label?.trim() || "صورة بدون وصف",
-        name: img.name,
+        url: `${DOMAIN}/assets/${img.label}`,
+        label: img.name?.trim() || "صورة بدون وصف",
+        name: img.label,
         tourId: toursID,
         created_at: new Date().toISOString(),
       }));

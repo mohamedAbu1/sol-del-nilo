@@ -12,7 +12,7 @@ import { TourImagesProvider } from "@/context/TourImagesContext";
 
 // ✅ تحميل الرسائل حسب اللغة
 export function generateStaticParams() {
-  return ["en", "es", "fs", "de", "it"].map((locale) => ({ locale }));
+  return ["en", "es", "fs", "de", "it","ar"].map((locale) => ({ locale }));
 }
 
 // ✅ التخطيط المحلي بدون عناصر html/head/body

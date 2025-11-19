@@ -6,7 +6,7 @@ import { TourSchema } from "@/lib/utils/CheckSchema";
 export async function POST(request) {
   try {
     const body = await request.json();
-
+console.log(body)
     const validation = TourSchema.safeParse(body);
     if (!validation.success) {
       return NextResponse.json(

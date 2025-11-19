@@ -96,6 +96,7 @@ export const TripsContextProvider = ({ children }) => {
       )
       .eq("id", id)
       .single();
+    console.log(data);
     if (error) {
       toast.error("❌ فشل في تحميل بيانات الرحلة");
       return null;
@@ -133,7 +134,7 @@ export const TripsContextProvider = ({ children }) => {
         id: img.id,
         name: img.name, // ← هذا هو اسم الملف الفعلي
         label: img.label || "", // ← هذا هو الوصف
-        url: img.url
+        url: img.url,
       })) || [];
     const formPayload = {
       title: tour.title || "",
@@ -170,7 +171,7 @@ export const TripsContextProvider = ({ children }) => {
       id: img.id,
       name: img.name,
       label: img.label,
-      url: `${DOMAIN}/assets/${img.label}`,
+      url: `${DOMAIN}/assets/${img.label}`, // 🟢 الصحيح
       file: null,
     }));
 
@@ -221,6 +222,74 @@ export const TripsContextProvider = ({ children }) => {
 
     return true;
   };
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (!isValid()) return;
+
+  //   const imagesData = prepareImagesForSubmission();
+  //   if (!imagesData) return;
+
+  //   setIsSubmitting(true);
+
+  //   const payload = {
+  //     ...formData,
+  //     price: Number(formData.price),
+  //     image: imagesData.image,
+  //     tourimage: imagesData.tourimage,
+  //     // 🟢 فلترة عناصر البرنامج
+  //     tripprogram: formData.tripprogram.filter(
+  //       (item) => item.time.trim() && item.program.trim()
+  //     ),
+  //     // 🟢 فلترة عناصر المرفقات
+  //     includes: formData.includes.filter((item) => item.text.trim()),
+  //   };
+
+  //   try {
+  //     const res = await fetch("/api/tours", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify(payload),
+  //     });
+
+  //     const result = await res.json();
+
+  //     if (!res.ok) {
+  //       toast.error("❌ فشل حفظ الرحلة");
+  //       setTourError(result.error || "Unknown error");
+  //     } else {
+  //       toast.success("✅ تم حفظ الرحلة بنجاح");
+  //       setNewTour(result.data || payload);
+
+  //       // ✅ تفريغ الصور بعد الإرسال
+  //       setMainImages([]);
+  //       setActivityImages([]);
+
+  //       // ✅ إعادة تعيين النموذج
+  //       setFormData({
+  //         title: "",
+  //         description: "",
+  //         price: "",
+  //         TripDuration: "",
+  //         people: "1",
+  //         categoryId: "",
+  //         cityId: "",
+  //         rival: "",
+  //         theDate: "",
+  //         image: [],
+  //         tripprogram: [], // 🟢 ابدأ بمصفوفة فاضية بدل عنصر فاضي
+  //         includes: [],
+  //       });
+
+  //       setTourError(null);
+  //       setNewTour(null);
+  //     }
+  //   } catch (err) {
+  //     toast.error("❌ حدث خطأ غير متوقع");
+  //     setTourError(err);
+  //   }
+
+  //   setIsSubmitting(false);
+  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isValid()) return;
@@ -230,60 +299,103 @@ export const TripsContextProvider = ({ children }) => {
 
     setIsSubmitting(true);
 
-    const payload = {
-      ...formData,
-      price: Number(formData.price),
-      image: imagesData.image,
-      tourimage: imagesData.tourimage,
-    };
-
     try {
-      const res = await fetch("/api/tours", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+      // 🟢 أولاً: إدخال الرحلة في جدول tour
+      const { data: newTour, error: tourError } = await supabase
+        .from("tour")
+        .insert([
+          {
+            title: formData.title,
+            description: formData.description,
+            price: Number(formData.price),
+            TripDuration: formData.TripDuration,
+            DayPeople: `${formData.people}`,
+            cityId: formData.cityId,
+            categoryId: formData.categoryId,
+            rival: formData.rival,
+            theDate: formData.theDate,
+            image: imagesData.image,
+          },
+        ])
+        .select()
+        .single();
+      console.log(newTour);
+      if (tourError) {
+        toast.error("❌ فشل حفظ الرحلة");
+        setTourError(tourError.message);
+        return;
+      }
+
+      // 🟢 ثانياً: إدخال البرنامج في جدول tripprogram
+      const tripprogramData = formData.tripprogram
+        .filter((item) => item.time.trim() && item.program.trim())
+        .map((item) => ({
+          time: item.time,
+          program: item.program,
+          tourId: newTour.id,
+        }));
+
+      if (tripprogramData.length > 0) {
+        await supabase.from("tripprogram").insert(tripprogramData);
+      }
+      console.log("🚀 tourimageData:", tourimageData);
+
+      // 🟢 ثالثاً: إدخال المرفقات في جدول includes
+      const includesData = formData.includes
+        .filter((item) => item.text.trim())
+        .map((item) => ({
+          text: item.text,
+          tourId: newTour.id,
+        }));
+
+      if (includesData.length > 0) {
+        await supabase.from("includes").insert(includesData);
+      }
+
+      // 🟢 رابعاً: إدخال صور الأنشطة في جدول tourimage
+      const tourimageData = imagesData.tourimage.map((img) => ({
+        name: img.name,
+        label: img.label,
+        url: `${DOMAIN}/assets/${img.name}`,
+        tourId: newTour.id,
+      }));
+
+      if (tourimageData.length > 0) {
+        await supabase.from("tourimage").insert(tourimageData);
+      }
+
+      toast.success("✅ تم حفظ الرحلة والبرنامج والمرفقات والصور بنجاح");
+
+      // ✅ تفريغ الصور بعد الإرسال
+      setMainImages([]);
+      setActivityImages([]);
+
+      // ✅ إعادة تعيين النموذج
+      setFormData({
+        title: "",
+        description: "",
+        price: "",
+        TripDuration: "",
+        people: "1",
+        categoryId: "",
+        cityId: "",
+        rival: "",
+        theDate: "",
+        image: [],
+        tripprogram: [],
+        includes: [],
       });
 
-      const result = await res.json();
-
-      if (!res.ok) {
-        toast.error("❌ فشل حفظ الرحلة");
-        setTourError(result.error || "Unknown error");
-      } else {
-        toast.success("✅ تم حفظ الرحلة بنجاح");
-        setNewTour(result.data || payload);
-
-        // ✅ تفريغ الصور بعد الإرسال
-        setMainImages([]);
-        setActivityImages([]);
-
-        // ✅ إعادة تعيين النموذج
-        setFormData({
-          title: "",
-          description: "",
-          price: "",
-          TripDuration: "",
-          people: "1",
-          categoryId: "",
-          cityId: "",
-          rival: "",
-          theDate: "",
-          image: [],
-          tripprogram: [{ time: "", program: "" }],
-          includes: [{ text: "" }],
-        });
-
-        setTourError(null);
-        setNewTour(null);
-      }
+      setTourError(null);
+      setNewTour(null);
     } catch (err) {
       toast.error("❌ حدث خطأ غير متوقع");
-      setTourError(err);
+      setTourError(err.message);
     }
 
     setIsSubmitting(false);
   };
-
+  console.log(toursData);
   useEffect(() => {
     if (newTour) {
       toast.success("✅ تم إنشاء الرحلة بنجاح");

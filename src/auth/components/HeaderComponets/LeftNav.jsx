@@ -59,8 +59,9 @@ const LeftNav = ({ path, user, width }) => {
           >
             <Button
               variant="outlined"
+              color="warning"
               endIcon={<BsDoorOpenFill />}
-              style={{ backgroundColor: "#ff9800", color: "#fff" }}
+              style={{ color: "#fff" }}
               className="hover:text-gray-400"
             >
               {t("Btn1")}

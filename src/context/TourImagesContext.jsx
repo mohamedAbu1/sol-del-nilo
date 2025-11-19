@@ -31,7 +31,7 @@ export const TourImagesProvider = ({ children }) => {
     console.log("🖼️ الصور الرئيسية:", mainImages);
     console.log("🎯 صور الأنشطة:", activityImages);
 
-    if (mainImages.length < 4 || mainImages.length > 12) {
+    if (mainImages.length < 4 || mainImages.length > 20) {
       console.warn("⚠️ عدد الصور الرئيسية غير مناسب:", mainImages.length);
       toast.error("❌ يجب اختيار ما بين 4 إلى 12 صورة للرحلة.");
       return null;

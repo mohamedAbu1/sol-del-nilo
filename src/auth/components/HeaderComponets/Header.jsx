@@ -21,6 +21,9 @@ import {
   ContactPathde,
   ContactPathEn,
   ContactPathEs,
+  ContactPathar,
+  AboutPathar,
+  ToursPathar,
 } from "@/lib/constants/FixedTexts";
 import ThemeToggle from "../ThemeToggle";
 import { useScreenSize } from "../../hooks/screenSize";
@@ -45,15 +48,18 @@ const Header = ({ user }) => {
     path === ToursPathde ||
     path === ToursPathfr ||
     path === ToursPathit ||
+    path === ToursPathar ||
     path === AboutPathEn ||
     path === AboutPathEs ||
     path === AboutPathde ||
     path === AboutPathfr ||
     path === AboutPathit ||
+    path === AboutPathar ||
     path === ContactPathEn ||
     path === ContactPathEs ||
     path === ContactPathfr ||
     path === ContactPathit ||
+    path === ContactPathar ||
     path === ContactPathde;
 
   return (

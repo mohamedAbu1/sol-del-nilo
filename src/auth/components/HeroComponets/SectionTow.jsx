@@ -60,62 +60,68 @@ const SectionTow = forwardRef(() => {
       </div>
 
       {/* ✅ شبكة الكروت المتجاوبة */}
-    <div className="container flex flex-row flex-wrap gap-4">
+      <div className="container flex flex-row flex-wrap gap-4">
         {shuffledCategories.map((card, index) => (
-        <motion.div
-          key={card.id || index}
-          layout // ✅ مهم عشان أي تغيير في الترتيب يحصل بأنيمشن سلس
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.8, delay: index * 0.2, ease: "easeOut" }}
-          className="relative w-[24%] rounded-3xl overflow-hidden shadow-2xl group hover:shadow-yellow-500/40 transition duration-500"
-        >
-          <Image
-            width={400}
-            height={200}
-            src={card.img ? `/assets/${card.img}` : "/assets/default.png"}
-            alt={card.name}
-            className="w-full h-[320px] object-cover transform group-hover:scale-110 transition duration-700 ease-in-out"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t dark:from-black/70 to-transparent z-10" />
-          <div className="absolute bottom-6 left-6 z-20">
-            <h3 className="text-white sm:text-3xl font-bold tracking-wide mb-4 drop-shadow-lg text-[20px]">
-              {card.name}
-            </h3>
-            <button
-              className="btn-next-section3"
-              onClick={() => {
-                const hasTours = tours.some((t) => {
-                  const category = t.category?.name || t.category || "";
-                  return category.toLowerCase() === card.name.toLowerCase();
-                });
+          <motion.div
+            key={card.id || index}
+            layout
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.8, delay: index * 0.2, ease: "easeOut" }}
+            className="
+    relative 
+    w-full sm:w-[48%] md:w-[31%] lg:w-[23%] 
+    rounded-3xl overflow-hidden shadow-2xl 
+    group hover:shadow-yellow-500/40 
+    transition duration-500
+  "
+          >
+            <Image
+              width={400}
+              height={200}
+              src={card.img ? `/assets/${card.img}` : "/assets/default.png"}
+              alt={card.name}
+              className="w-full h-[280px] sm:h-[300px] md:h-[320px] object-cover transform group-hover:scale-110 transition duration-700 ease-in-out"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t dark:from-black/70 to-transparent z-10" />
+            <div className="absolute bottom-6 left-6 z-20">
+              <h3 className="text-white sm:text-3xl font-bold tracking-wide mb-4 drop-shadow-lg text-[20px]">
+                {card.name}
+              </h3>
+              <button
+                className="btn-next-section3"
+                onClick={() => {
+                  const hasTours = tours.some((t) => {
+                    const category = t.category?.name || t.category || "";
+                    return category.toLowerCase() === card.name.toLowerCase();
+                  });
 
-                if (hasTours) {
-                  const query = new URLSearchParams({
-                    destination: "All",
-                    category: card.name,
-                    date: today,
-                    duration: "5",
-                    minPrice: "0",
-                    maxPrice: "14000",
-                    search: "All",
-                  }).toString();
+                  if (hasTours) {
+                    const query = new URLSearchParams({
+                      destination: "All",
+                      category: card.name,
+                      date: today,
+                      duration: "5",
+                      minPrice: "0",
+                      maxPrice: "14000",
+                      search: "All",
+                    }).toString();
 
-                  router.push(`/tours?${query}`);
-                } else {
-                  setNoToursMessage(
-                    `Unfortunately, there are currently no trips available for this category: "${card.name}"`
-                  );
-                }
-              }}
-            >
-              View All →
-            </button>
-          </div>
-        </motion.div>
-      ))}
-    </div>
+                    router.push(`/tours?${query}`);
+                  } else {
+                    setNoToursMessage(
+                      `Unfortunately, there are currently no trips available for this category: "${card.name}"`
+                    );
+                  }
+                }}
+              >
+                View All →
+              </button>
+            </div>
+          </motion.div>
+        ))}
+      </div>
     </section>
   );
 });

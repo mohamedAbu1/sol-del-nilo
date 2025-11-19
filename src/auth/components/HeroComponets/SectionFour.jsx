@@ -75,6 +75,7 @@ const SectionFour = () => {
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="w-full lg:w-1/2 text-start gap-9"
+          style={{paddingLeft:"13px"}}
         >
           <p className="text-sm uppercase text-gray-500 dark:text-gray-300 mb-2 tracking-wide">
             {t("sc4P")}

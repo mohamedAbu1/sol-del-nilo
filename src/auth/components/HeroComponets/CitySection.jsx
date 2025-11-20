@@ -7,12 +7,14 @@ import { useTripsContext } from "@/context/TripsContext";
 import { useState, useEffect } from "react";
 import { useTripContext } from "@/context/TripContext";
 import { motion } from "framer-motion";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+
 const CitySection = () => {
   const [noToursCity, setNoToursCity] = useState(null);
-  const [hasMounted, setHasMounted] = useState(false);
   const [today, setToday] = useState("2025-01-01");
+
   useEffect(() => {
-    setHasMounted(true);
     setToday(new Date().toISOString().split("T")[0]);
   }, []);
 
@@ -23,13 +25,18 @@ const CitySection = () => {
     if (Array.isArray(cities)) {
       setShuffledCities(cities);
     }
-  }, [cities]); // كل ما تتغير cities، حدّث shuffledCities
+  }, [cities]);
 
   const { tours } = useTripContext();
   const t = useTranslations("HomeHeroPage");
   const router = useRouter();
-  // ✅ Shuffle كل دقيقة
+
+  // ✅ Shuffle كل دقيقة (للشاشات الكبيرة فقط)
+  const theme = useTheme();
+  const isLaptopUp = useMediaQuery(theme.breakpoints.up("md"));
+
   useEffect(() => {
+    if (!isLaptopUp) return;
     const interval = setInterval(() => {
       setShuffledCities((prev) => {
         const newArr = [...prev];
@@ -39,10 +46,31 @@ const CitySection = () => {
         }
         return newArr;
       });
-    }, 20000); // كل دقيقة
-
+    }, 40000);
     return () => clearInterval(interval);
-  }, []);
+  }, [isLaptopUp]);
+
+  // ✅ Variants للأنيمشن على الموبايل
+  const mobileImageVariants = {
+    hidden: { opacity: 0, rotateY: -90 },
+    visible: { opacity: 1, rotateY: 0 },
+  };
+
+  // ✅ دالة التحويل عند الضغط على مدينة
+  const handleCityClick = (cityName) => {
+    const query = new URLSearchParams({
+      destination: cityName,   // اسم المدينة
+      category: "All",         // جميع الكاتيجوري
+      date: today,             // التاريخ الحالي
+      duration: "All",         // كل المدد
+      minPrice: "0",           // أقل سعر
+      maxPrice: "1400",        // أعلى سعر
+      search: "All",           // بحث عام
+    }).toString();
+
+    router.push(`/tours?${query}`);
+  };
+
   return (
     <section
       id="section-three"
@@ -66,25 +94,66 @@ const CitySection = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-full max-w-screen-xl">
-        {shuffledCities.map((city, index) => (
-          <motion.div
-            key={city.id || index}
-            layout // ✅ مهم عشان أي تغيير في الترتيب يحصل بأنيمشن سلس
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.8, delay: index * 0.2, ease: "easeOut" }}
-            className="group relative bg-[#fff] dark:bg-neutral-900 rounded-3xl overflow-hidden shadow-xl hover:shadow-yellow-500/40 transition duration-300"
-          >
-            <div className="relative">
-              <Image
-                style={{ cursor: "pointer" }}
-                width={400}
-                height={100}
+        {shuffledCities.map((city, index) => {
+          if (isLaptopUp) {
+            // ✅ أنيمشن للشاشات الكبيرة
+            return (
+              <motion.div
+                key={city.id || index}
+                layout
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{
+                  duration: 0.8,
+                  delay: index * 0.2,
+                  ease: "easeOut",
+                }}
+                className="group relative bg-[#fff] dark:bg-neutral-900 rounded-3xl overflow-hidden shadow-xl hover:shadow-yellow-500/40 transition duration-300 cursor-pointer"
+                onClick={() => handleCityClick(city.name)} // ✅ التحويل عند الضغط
+              >
+                <div className="relative">
+                  <Image
+                    width={400}
+                    height={100}
+                    src={city.img ? `/assets/${city.img}` : "/assets/default.png"}
+                    alt={city.name}
+                    loading="lazy"
+                    className="w-full h-[350px] object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div
+                    style={{ padding: "4px" }}
+                    className="absolute flex items-center gap-1.5 top-3 left-3 bg-yellow-500 text-black text-sm font-bold px-3 py-1 rounded-full shadow-md"
+                  >
+                    <FaMapMarkerAlt className="text-gray-500 dark:text-gray-800" />
+                    {city.name}
+                  </div>
+                  <button className="absolute top-3 right-3 text-yellow-600 text-xl rounded-full p-2 shadow-md hover:scale-110 transition">
+                    <FaHeart />
+                  </button>
+                </div>
+              </motion.div>
+            );
+          }
+
+          // ✅ أنيمشن مختلف للشاشات الصغيرة
+          return (
+            <motion.div
+              key={city.id || index}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 1, ease: "easeInOut" }}
+              variants={mobileImageVariants}
+              className="group relative bg-[#fff] dark:bg-neutral-900 rounded-3xl overflow-hidden shadow-xl hover:shadow-yellow-500/40 transition duration-300 cursor-pointer"
+              style={{ perspective: "1000px" }}
+              onClick={() => handleCityClick(city.name)} // ✅ التحويل عند الضغط
+            >
+              <motion.img
                 src={city.img ? `/assets/${city.img}` : "/assets/default.png"}
                 alt={city.name}
-                loading="lazy"
-                className="w-full h-[350px] object-cover transition-transform duration-500 group-hover:scale-105"
+                className="w-full h-[350px] object-cover"
+                variants={mobileImageVariants}
               />
               <div
                 style={{ padding: "4px" }}
@@ -96,9 +165,9 @@ const CitySection = () => {
               <button className="absolute top-3 right-3 text-yellow-600 text-xl rounded-full p-2 shadow-md hover:scale-110 transition">
                 <FaHeart />
               </button>
-            </div>
-          </motion.div>
-        ))}
+            </motion.div>
+          );
+        })}
 
         {noToursCity && (
           <div

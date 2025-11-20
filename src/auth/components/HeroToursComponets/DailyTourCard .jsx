@@ -1,5 +1,5 @@
 "use client";
-import { Box, Typography, useMediaQuery } from "@mui/material";
+import { Box, Typography, Button, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
@@ -12,18 +12,23 @@ const DailyTourCard = ({ tour, themee, viewMode }) => {
   const isGrid = viewMode === "grid";
   const router = useRouter();
 
+  // ✅ دالة التحويل لصفحة الرحلة حسب الـ id
+  const handleViewTour = () => {
+    router.push(`/tours/${tour.id}`);
+  };
+
   return (
     <MotionBox
-      initial={{ opacity: 0, y: 50 }}              // يبدأ شفاف وتحت
-      whileInView={{ opacity: 1, y: 0 }}           // يظهر تدريجيًا ويصعد لمكانه
-      viewport={{ once: true, amount: 0.2 }}       // يحدث مرة واحدة عند دخول 20% من العنصر
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
       sx={{
         width: {
-          xs: "100%",   // موبايل: الكارد ياخد العرض كله
-          sm: "48%",    // تابلت: كاردين في الصف
-          md: "31%",    // لابتوب: 3 كروت في الصف
-          lg: "31%",    // ديسكتوب: 4 كروت في الصف
+          xs: "100%",
+          sm: "48%",
+          md: "31%",
+          lg: "31%",
         },
         display: "flex",
         flexDirection: isGrid ? "column" : "row",
@@ -85,6 +90,24 @@ const DailyTourCard = ({ tour, themee, viewMode }) => {
         >
           {tour.description}
         </Typography>
+
+        {/* ✅ زر التحويل */}
+        <Button
+          variant="contained"
+          onClick={handleViewTour}
+          sx={{
+            mt: 2,
+            backgroundColor: "#ffb300",
+            color: "#fff",
+            fontWeight: 600,
+            borderRadius: "8px",
+            "&:hover": {
+              backgroundColor: "#ffc107",
+            },
+          }}
+        >
+          See the trip 
+        </Button>
       </Box>
     </MotionBox>
   );

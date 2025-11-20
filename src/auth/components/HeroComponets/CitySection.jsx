@@ -50,22 +50,16 @@ const CitySection = () => {
     return () => clearInterval(interval);
   }, [isLaptopUp]);
 
-  // ✅ Variants للأنيمشن على الموبايل
-  const mobileImageVariants = {
-    hidden: { opacity: 0, rotateY: -90 },
-    visible: { opacity: 1, rotateY: 0 },
-  };
-
   // ✅ دالة التحويل عند الضغط على مدينة
   const handleCityClick = (cityName) => {
     const query = new URLSearchParams({
-      destination: cityName,   // اسم المدينة
-      category: "All",         // جميع الكاتيجوري
-      date: today,             // التاريخ الحالي
-      duration: "All",         // كل المدد
-      minPrice: "0",           // أقل سعر
-      maxPrice: "1400",        // أعلى سعر
-      search: "All",           // بحث عام
+      destination: cityName,
+      category: "All",
+      date: today,
+      duration: "All",
+      minPrice: "0",
+      maxPrice: "1400",
+      search: "All",
     }).toString();
 
     router.push(`/tours?${query}`);
@@ -96,7 +90,7 @@ const CitySection = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-full max-w-screen-xl">
         {shuffledCities.map((city, index) => {
           if (isLaptopUp) {
-            // ✅ أنيمشن للشاشات الكبيرة
+            // ✅ أنيمشن للشاشات الكبيرة فقط
             return (
               <motion.div
                 key={city.id || index}
@@ -110,7 +104,7 @@ const CitySection = () => {
                   ease: "easeOut",
                 }}
                 className="group relative bg-[#fff] dark:bg-neutral-900 rounded-3xl overflow-hidden shadow-xl hover:shadow-yellow-500/40 transition duration-300 cursor-pointer"
-                onClick={() => handleCityClick(city.name)} // ✅ التحويل عند الضغط
+                onClick={() => handleCityClick(city.name)}
               >
                 <div className="relative">
                   <Image
@@ -136,36 +130,34 @@ const CitySection = () => {
             );
           }
 
-          // ✅ أنيمشن مختلف للشاشات الصغيرة
+          // ✅ بدون أنيمشن للشاشات الصغيرة
           return (
-            <motion.div
+            <div
               key={city.id || index}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 1, ease: "easeInOut" }}
-              variants={mobileImageVariants}
               className="group relative bg-[#fff] dark:bg-neutral-900 rounded-3xl overflow-hidden shadow-xl hover:shadow-yellow-500/40 transition duration-300 cursor-pointer"
-              style={{ perspective: "1000px" }}
-              onClick={() => handleCityClick(city.name)} // ✅ التحويل عند الضغط
+              onClick={() => handleCityClick(city.name)}
             >
-              <motion.img
-                src={city.img ? `/assets/${city.img}` : "/assets/default.png"}
-                alt={city.name}
-                className="w-full h-[350px] object-cover"
-                variants={mobileImageVariants}
-              />
-              <div
-                style={{ padding: "4px" }}
-                className="absolute flex items-center gap-1.5 top-3 left-3 bg-yellow-500 text-black text-sm font-bold px-3 py-1 rounded-full shadow-md"
-              >
-                <FaMapMarkerAlt className="text-gray-500 dark:text-gray-800" />
-                {city.name}
+              <div className="relative">
+                <Image
+                  width={400}
+                  height={100}
+                  src={city.img ? `/assets/${city.img}` : "/assets/default.png"}
+                  alt={city.name}
+                  loading="lazy"
+                  className="w-full h-[350px] object-cover"
+                />
+                <div
+                  style={{ padding: "4px" }}
+                  className="absolute flex items-center gap-1.5 top-3 left-3 bg-yellow-500 text-black text-sm font-bold px-3 py-1 rounded-full shadow-md"
+                >
+                  <FaMapMarkerAlt className="text-gray-500 dark:text-gray-800" />
+                  {city.name}
+                </div>
+                <button className="absolute top-3 right-3 text-yellow-600 text-xl rounded-full p-2 shadow-md hover:scale-110 transition">
+                  <FaHeart />
+                </button>
               </div>
-              <button className="absolute top-3 right-3 text-yellow-600 text-xl rounded-full p-2 shadow-md hover:scale-110 transition">
-                <FaHeart />
-              </button>
-            </motion.div>
+            </div>
           );
         })}
 

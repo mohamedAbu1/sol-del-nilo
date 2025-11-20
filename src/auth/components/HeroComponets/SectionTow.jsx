@@ -43,10 +43,6 @@ const SectionTow = forwardRef(() => {
 
     return () => clearInterval(interval);
   }, [isLaptopUp]);
-  const mobileImageVariants = {
-    hidden: { opacity: 0, rotateY: -90 }, // الصورة تبدأ كأنها مطوية
-    visible: { opacity: 1, rotateY: 0 }, // تنفتح كأنها ورقة جديدة
-  };
 
   return (
     <section
@@ -68,7 +64,7 @@ const SectionTow = forwardRef(() => {
       <div className="container flex flex-row flex-wrap gap-4">
         {shuffledCategories.map((card, index) => {
           if (isLaptopUp) {
-            // ✅ نفس الكود الحالي للشاشات الكبيرة
+            // ✅ أنيمشن للشاشات الكبيرة فقط
             return (
               <motion.div
                 key={card.id || index}
@@ -122,28 +118,23 @@ const SectionTow = forwardRef(() => {
                   >
                     View All →
                   </button>
-                </div>{" "}
+                </div>
               </motion.div>
             );
           }
 
-          // ✅ أنيمشن مختلف للشاشات الصغيرة
+          // ✅ بدون أنيمشن للشاشات الصغيرة
           return (
-            <motion.div
+            <div
               key={card.id || index}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 1, ease: "easeInOut" }}
-              variants={mobileImageVariants}
               className="relative w-full sm:w-[48%] md:w-[31%] lg:w-[23%] rounded-3xl overflow-hidden shadow-2xl group transition duration-500"
-              style={{ perspective: "1000px" }} // مهم علشان تأثير الورقة
             >
-              <motion.img
+              <Image
+                width={400}
+                height={200}
                 src={card.img ? `/assets/${card.img}` : "/assets/default.png"}
                 alt={card.name}
                 className="w-full h-[280px] sm:h-[300px] md:h-[320px] object-cover"
-                variants={mobileImageVariants}
               />
               <div className="absolute inset-0 bg-gradient-to-t dark:from-black/70 to-transparent z-10" />
               <div className="absolute bottom-6 left-6 z-20">
@@ -152,11 +143,9 @@ const SectionTow = forwardRef(() => {
                 </h3>
                 <button className="btn-next-section3">View All →</button>
               </div>
-            </motion.div>
+            </div>
           );
         })}
-
-     
       </div>
     </section>
   );

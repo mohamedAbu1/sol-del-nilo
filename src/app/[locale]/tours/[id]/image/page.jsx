@@ -14,131 +14,113 @@ import { motion, AnimatePresence } from "framer-motion";
 import Lodaing from "../../../lodaing";
 import Image from "next/image";
 import { useTripContext } from "@/context/TripContext";
-// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+const MotionImageListItem = motion(ImageListItem);
+
 const Page = () => {
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const { tours } = useTripContext();
   const params = useParams();
   const id = params?.id;
   const tour = tours.find((t) => t.id === id);
   const { width } = useScreenSize();
   const router = useRouter();
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [fullScreenOpen, setFullScreenOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-  console.log(id);
-  console.log(tour);
+  const [shuffledImages, setShuffledImages] = useState([]);
 
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  useEffect(() => {
+    if (tour?.tourimage) {
+      setShuffledImages(tour.tourimage);
+    }
+  }, [tour]);
+
+  // ✅ Shuffle الصور كل دقيقة
+  useEffect(() => {
+    if (!tour?.tourimage) return;
+    const interval = setInterval(() => {
+      setShuffledImages((prev) => {
+        const newArr = [...prev];
+        for (let i = newArr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
+        }
+        return newArr;
+      });
+    }, 30000); // كل دقيقة
+
+    return () => clearInterval(interval);
+  }, [tour]);
 
   const handleImageClick = (index) => {
     setSelectedIndex(index);
     setFullScreenOpen(true);
   };
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-
-  // ✅ التغيير التلقائي كل 4 ثواني
-  useEffect(() => {
-    let interval;
-
-    if (fullScreenOpen && tour?.tourimage?.length > 0) {
-      interval = setInterval(() => {
-        setSelectedIndex((prevIndex) => {
-          const nextIndex = prevIndex + 1;
-          return nextIndex >= tour.tourimage.length ? 0 : nextIndex;
-        });
-      }, 2000);
-    }
-
-    return () => clearInterval(interval);
-  }, [fullScreenOpen, tour]);
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-  console.log(tour);
 
   if (!tour) {
     return <Lodaing />;
   }
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
   return (
-    <Box
-      sx={{
-        padding: 4,
-        display: "flex",
-        flexDirection: "column",
-        flexWrap: "wrap",
-      }}
-    >
+    <Box sx={{ padding: 4, display: "flex", flexDirection: "column", flexWrap: "wrap" }}>
       <div className="w-full flex flex-row items-center justify-between gap-1.5">
-        <Typography
-          variant="h4"
-          style={{ fontSize: width <= 1024 ? "14px" : "24px" }}
-        >
+        <Typography variant="h4" style={{ fontSize: width <= 1024 ? "14px" : "24px" }}>
           {tour?.title || "Pictures of the last trip"}
         </Typography>
         <Button
           onClick={() => router.push(`/tours/${tour?.id}`)}
           className="btn-next-section3"
-          style={{
-            color: "#000",
-            marginBottom: "20px",
-            marginTop: "10px",
-          }}
+          style={{ color: "#000", marginBottom: "20px", marginTop: "10px" }}
         >
           Back
         </Button>
       </div>
 
-      {!id ? (
-        <Typography color="error">❌ Tour ID not found</Typography>
-      ) : (
-        <ImageList variant="masonry" cols={3} gap={12}>
-          {tour?.tourimage?.map((img, index) => (
-            <ImageListItem key={index}>
-              <Box sx={{ position: "relative" }}>
-                <Image
-                  src={`/assets/${img.label}`}
-                  width={800}
-                  height={200}
-                  alt={img.name}
-                  onClick={() => handleImageClick(index)}
-                  style={{
-                    borderRadius: "30px",
-                    boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
-                    display: "block",
-                    cursor: "pointer",
-                    transition: "transform 0.3s ease",
-                  }}
-                  loading="eager"
-                  priority
-                  placeholder="blur"
-                  blurDataURL="data:image/webp;base64,..."
-                />
-                <Typography
-                  variant="subtitle2"
-                  sx={{
-                    display: width <= 767 ? "none" : "flex",
-                    position: "absolute",
-                    bottom: 8,
-                    left: 8,
-                    backgroundColor: "rgba(44,44,44,0.6)",
-                    color: "#ffa726",
-                    padding: "4px 8px",
-                    borderRadius: "4px",
-                    fontSize: "0.85rem",
-                    textTransform: "capitalize",
-                  }}
-                >
-                  {img.name}
-                </Typography>
-              </Box>
-            </ImageListItem>
-          ))}
-        </ImageList>
-      )}
+      <ImageList variant="masonry" cols={3} gap={12}>
+        {shuffledImages.map((img, index) => (
+          <MotionImageListItem
+            key={img.label}
+            layout   // ✅ مهم علشان أي تغيير في الترتيب يحصل بأنيمشن سلس
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+          >
+            <Box sx={{ position: "relative" }}>
+              <Image
+                src={`/assets/${img.label}`}
+                width={800}
+                height={200}
+                alt={img.name}
+                onClick={() => handleImageClick(index)}
+                style={{
+                  borderRadius: "30px",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
+                  display: "block",
+                  cursor: "pointer",
+                  transition: "transform 0.3s ease",
+                }}
+                loading="eager"
+                priority
+              />
+              <Typography
+                variant="subtitle2"
+                sx={{
+                  display: width <= 767 ? "none" : "flex",
+                  position: "absolute",
+                  bottom: 8,
+                  left: 8,
+                  backgroundColor: "rgba(44,44,44,0.6)",
+                  color: "#ffa726",
+                  padding: "4px 8px",
+                  borderRadius: "4px",
+                  fontSize: "0.85rem",
+                  textTransform: "capitalize",
+                }}
+              >
+                {img.name}
+              </Typography>
+            </Box>
+          </MotionImageListItem>
+        ))}
+      </ImageList>
 
       {/* ✅ نافذة عرض الصورة بالحجم الكامل مع التغيير التلقائي */}
       <AnimatePresence>
@@ -154,7 +136,7 @@ const Page = () => {
               left: 0,
               width: "100vw",
               height: "100vh",
-              backgroundColor: "rgba(999,999,999,0.9)",
+              backgroundColor: "rgba(0,0,0,0.9)",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
@@ -165,9 +147,9 @@ const Page = () => {
             onClick={() => setFullScreenOpen(false)}
           >
             <motion.img
-              key={tour.tourimage[selectedIndex].label}
-              src={`/assets/${tour.tourimage[selectedIndex].label}`}
-              alt={tour.tourimage[selectedIndex].name}
+              key={shuffledImages[selectedIndex].label}
+              src={`/assets/${shuffledImages[selectedIndex].label}`}
+              alt={shuffledImages[selectedIndex].name}
               initial={{ x: 100, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: -100, opacity: 0 }}
@@ -176,7 +158,7 @@ const Page = () => {
                 maxWidth: "100%",
                 maxHeight: "100%",
                 borderRadius: "20px",
-                boxShadow: "0 4px 20px rgba(999,999,999,0.5)",
+                boxShadow: "0 4px 20px rgba(0,0,0,0.5)",
               }}
             />
           </motion.div>

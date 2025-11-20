@@ -141,7 +141,31 @@ const SectionTow = forwardRef(() => {
                 <h3 className="text-white sm:text-3xl font-bold tracking-wide mb-4 drop-shadow-lg text-[20px]">
                   {card.name}
                 </h3>
-                <button className="btn-next-section3">View All →</button>
+                <button
+                  className="btn-next-section3"
+                  onClick={() => {
+                    const hasTours = tours.some((t) => {
+                      const category = t.category?.name || t.category || "";
+                      return category.toLowerCase() === card.name.toLowerCase();
+                    });
+
+                    if (hasTours) {
+                      const query = new URLSearchParams({
+                        destination: "All",
+                        category: card.name,
+                        date: today,
+                        duration: "5",
+                        minPrice: "0",
+                        maxPrice: "14000",
+                        search: "All",
+                      }).toString();
+
+                      router.push(`/tours?${query}`);
+                    }
+                  }}
+                >
+                  View All →
+                </button>
               </div>
             </div>
           );

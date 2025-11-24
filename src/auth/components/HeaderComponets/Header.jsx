@@ -68,7 +68,7 @@ const Header = ({ user }) => {
         zIndex: "999",
         height: "120px",
         color: "var(--textLithe)",
-        border: "1px solid #6543",
+        // border: "1px solid #6543",
         borderRadius: "22px",
         marginTop: "8px",
       }}

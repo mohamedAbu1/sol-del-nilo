@@ -12,6 +12,7 @@ import SectionFive from "./SectionFive";
 import SectionSix from "./SectionSix";
 import CitySection from "./CitySection";
 import { desktopImages, desktopImagesMB } from "@/lib/constants/FixedTexts";
+import ScrollRestoration from "../ScrollRestoration";
 export default function ClientHome({ user }) {
   const [hasMounted, setHasMounted] = useState(false);
   const [showWelcomeText, setShowWelcomeText] = useState(true);
@@ -90,6 +91,8 @@ export default function ClientHome({ user }) {
 
   return (
     <>
+      <ScrollRestoration />
+
       <main
         id="section-one"
         className="relative w-full h-screen overflow-hidden"
@@ -103,10 +106,8 @@ export default function ClientHome({ user }) {
             src={desktopImagesMB[currentIndexMB]}
             alt="Mobile background"
             fill
-            className="object-cover"
+            className="object-cover bg-no-repeat bg-center"
             priority
-            placeholder="blur"
-            blurDataURL="data:image/webp;base64,..."
           />
         </div>
 
@@ -276,7 +277,7 @@ export default function ClientHome({ user }) {
         >
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            style={{cursor:"pointer"}}
+            style={{ cursor: "pointer" }}
             className="w-10 h-10 rounded-full bg-[#ff9800] border border-white/20 text-white flex items-center justify-center hover:bg-white/20 transition duration-300"
             aria-label="Scroll to top"
           >

@@ -23,11 +23,11 @@ export const AppQueryContextProvider = ({ children }) => {
   const [selectedDestinationId, setSelectedDestinationId] = useState("");
   const [duration, setDuration] = useState(5);
   // const [date, setDate] = useState("");
-const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const itemsPerPageRaw = searchParams.get("itemsPerPage");
   const itemsPerPage = isNaN(parseInt(itemsPerPageRaw))
-    ? 6
+    ? 9
     : parseInt(itemsPerPageRaw); // ✅ استخراج القيم من الكويري
 
   const cityFromQuery = searchParams.get("destination") || "";
@@ -138,7 +138,6 @@ const [selectedCategory, setSelectedCategory] = useState("");
         const res = await fetch(fullURL);
         const data = await res.json();
 
-
         if (res.ok && Array.isArray(data.tours)) {
           setTours(data.tours);
           setFadeKey((prev) => prev + 1);
@@ -196,9 +195,7 @@ const [selectedCategory, setSelectedCategory] = useState("");
       ).toLowerCase();
       const matchesSearch =
         searchText === "All" ||
-        tours.title.toLowerCase().includes(searchText.toLowerCase()) ||
-        tours.description?.toLowerCase().includes(searchText.toLowerCase());
-
+        tour.title.toLowerCase().includes(searchText.toLowerCase());
       const matchesCity =
         selectedDestinations.length === 0 ||
         selectedDestinations.map((c) => c.toLowerCase()).includes(tourCity);
@@ -234,40 +231,40 @@ const [selectedCategory, setSelectedCategory] = useState("");
 
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   // ✅ التعامل مع الفلاتر
-const handleToggle = (cityName) => {
-  const cityHasTours = tours.some((t) => {
-    const tourCity = (t.city?.name || t.city || "").toLowerCase();
-    return tourCity === cityName.toLowerCase();
-  });
+  const handleToggle = (cityName) => {
+    const cityHasTours = tours.some((t) => {
+      const tourCity = (t.city?.name || t.city || "").toLowerCase();
+      return tourCity === cityName.toLowerCase();
+    });
 
-  if (!cityHasTours) {
-    return;
-  }
+    if (!cityHasTours) {
+      return;
+    }
 
-  let updated;
+    let updated;
 
-  if (cityName === "ALL") {
-    updated = cities;
-  } else {
-    updated = selectedDestinations.includes(cityName)
-      ? selectedDestinations.filter((d) => d !== cityName)
-      : [...selectedDestinations, cityName];
-  }
+    if (cityName === "ALL") {
+      updated = cities;
+    } else {
+      updated = selectedDestinations.includes(cityName)
+        ? selectedDestinations.filter((d) => d !== cityName)
+        : [...selectedDestinations, cityName];
+    }
 
-  setSelectedDestinations(updated);
+    setSelectedDestinations(updated);
 
-  const queryParams = new URLSearchParams();
-  if (updated.length > 0) queryParams.set("destination", updated.join(","));
-  if (selectedCategories.length > 0)
-    queryParams.set("category", selectedCategories.join(","));
-  if (date) queryParams.set("date", date);
-  if (durationRange[1])
-    queryParams.set("duration", durationRange[1].toString());
-  queryParams.set("minPrice", priceRange[0].toString());
-  queryParams.set("maxPrice", priceRange[1].toString());
+    const queryParams = new URLSearchParams();
+    if (updated.length > 0) queryParams.set("destination", updated.join(","));
+    if (selectedCategories.length > 0)
+      queryParams.set("category", selectedCategories.join(","));
+    if (date) queryParams.set("date", date);
+    if (durationRange[1])
+      queryParams.set("duration", durationRange[1].toString());
+    queryParams.set("minPrice", priceRange[0].toString());
+    queryParams.set("maxPrice", priceRange[1].toString());
 
-  router.push(`/tours?${queryParams.toString()}`, { scroll: false });
-};
+    router.push(`/tours?${queryParams.toString()}`, { scroll: false });
+  };
 
   const handleToggleCategories = (categoryName) => {
     let updated;
@@ -317,7 +314,6 @@ const handleToggle = (cityName) => {
   }, {});
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
-
   return (
     <AppQueryContext.Provider
       value={{
@@ -362,6 +358,7 @@ const handleToggle = (cityName) => {
         currentPage,
         setSearchText,
         itemsPerPage,
+        searchText,
         setDuration,
         duration,
         date,

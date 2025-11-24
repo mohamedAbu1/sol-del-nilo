@@ -20,7 +20,12 @@ export const metadata = {
     icon: "./favicon.ico", // ✅ هذا يضمن تحميل الأيقونة بشكل صحيح
   },
 };
+import { Prata } from "next/font/google";
 
+const prata = Prata({
+  subsets: ["latin"],
+  weight: "400",
+});
 export default function RootLayout({ children, params }) {
   const lng = params?.locale || "ar"; // 👈 هنا نأخذ اللغة من الـ params
   console.log(lng);
@@ -30,7 +35,7 @@ export default function RootLayout({ children, params }) {
       // dir={lng === "ar" ? "rtl" : "ltr"}
       className="geist-font montserrat-font"
     >
-      <body suppressHydrationWarning={true}>{children}</body>
+      <body suppressHydrationWarning={true} className="prata.className">{children}</body>
     </html>
   );
 }

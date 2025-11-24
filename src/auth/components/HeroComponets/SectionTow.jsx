@@ -1,53 +1,163 @@
 "use client";
 import { useTranslations } from "next-intl";
-import React, { forwardRef, useEffect, useState } from "react";
-import Image from "next/image";
+import React, { useEffect, useState } from "react";
+import NextImage from "next/image";
 import { useRouter } from "next/navigation";
 import { useTripsContext } from "@/context/TripsContext";
 import { useTripContext } from "@/context/TripContext";
-import { motion } from "framer-motion";
-import { useTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
+import { motion, AnimatePresence } from "framer-motion";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { usePathname } from "next/navigation";
+import { Autoplay } from "swiper/modules";
+const animations = [
+  {
+    initial: { opacity: 0, x: 50 },
+    animate: { opacity: 1, x: 0 },
+    exit: { opacity: 0, x: -50 },
+  },
+  {
+    initial: { opacity: 0, y: 50 },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: -50 },
+  },
+  {
+    initial: { opacity: 0, scale: 1.2 },
+    animate: { opacity: 1, scale: 1 },
+    exit: { opacity: 0, scale: 0.8 },
+  },
+  {
+    initial: { opacity: 0, rotate: 10 },
+    animate: { opacity: 1, rotate: 0 },
+    exit: { opacity: 0, rotate: -10 },
+  },
+];
 
-const SectionTow = forwardRef(() => {
+const CategoryCard = ({ card, today, tours, router, toursCount }) => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [animIndex, setAnimIndex] = useState(0);
+  const [hovered, setHovered] = useState();
+  // ✅ تبديل الصور مع أنيميشن
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % (card.imges?.length || 1));
+      setAnimIndex(Math.floor(Math.random() * animations.length));
+    }, 10000);
+    return () => clearInterval(interval);
+  }, [card.imges]);
+  const pathname = usePathname(); // ✅ هنا عرفنا المتغير
+
+  const anim = animations[animIndex];
+
+  return (
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className="relative w-full h-[400px] max-w-[350px] md:max-w-[280px] rounded-[15px] overflow-hidden cursor-pointer
+             bg-neutral-900 transform transition-all duration-500
+             shadow-[0_8px_15px_rgba(0,0,0,0.3),0_15px_30px_rgba(0,0,0,0.4)]
+             hover:shadow-[0_15px_25px_rgba(0,0,0,0.5),0_25px_50px_rgba(0,0,0,0.6)]
+             hover:-rotate-x-2 hover:rotate-y-2"
+      style={{ perspective: "1200px" }}
+      onClick={() => {
+        sessionStorage.setItem(`scroll-${pathname}`, window.scrollY.toString());
+
+        const query = new URLSearchParams({
+          destination: "ALL",
+          category: card.name,
+          date: today,
+          duration: "All",
+          minPrice: "0",
+          maxPrice: "1400",
+          search: "All",
+        }).toString();
+        router.push(`/tours?${query}`);
+      }}
+    >
+      {/* ✅ صورة الكارد */}
+      <AnimatePresence mode="sync">
+        <motion.div
+          key={card.imges?.[currentImageIndex]}
+          initial={{ ...anim.initial, position: "absolute", inset: 0 }}
+          animate={{ ...anim.animate, position: "absolute", inset: 0 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1 }}
+        >
+          <NextImage
+            fill
+            src={
+              card.imges?.[currentImageIndex]
+                ? `/assets/${card.imges[currentImageIndex]}`
+                : "/assets/default.png"
+            }
+            alt={card.name}
+            className="object-cover w-full h-full"
+          />
+        </motion.div>
+      </AnimatePresence>
+
+      {/* ✅ طبقة التدرج */}
+      <div className="absolute inset-0 bg-gradient-to-t dark:from-black/70 to-transparent z-10" />
+
+      {/* ✅ النص مع الأنيميشن */}
+      <div className="absolute inset-0 flex flex-col items-center justify-end z-20">
+        {/* العنوان */}
+        <motion.h3
+          initial={{ y: -20, opacity: 1 }}
+          animate={hovered ? { y: -120, opacity: 1 } : { y: -20, opacity: 1 }}
+          exit={{ delay: 0.6 }}
+          transition={{ type: "spring", stiffness: 120, damping: 15 }}
+          className="text-white drop-shadow-lg"
+          style={{
+            fontSize: "25px",
+            fontFamily: "Prata, serif",
+            fontWeight: "bold",
+            letterSpacing: "0.05em",
+            textAlign: "center",
+            padding: "4px",
+          }}
+        >
+          {card.name}
+        </motion.h3>
+
+        {/* النص مرحبا محمد */}
+        <AnimatePresence>
+          {hovered && (
+            <motion.div
+              initial={{ opacity: 0, y: 30, scale: 0.95 }}
+              animate={{ opacity: 0.5, y: -90, scale: 1 }}
+              exit={{ opacity: 0, y: 30, scale: 0.95 }}
+              transition={{ duration: 0.6, ease: "easeInOut", delay: 0.2 }} // ✅ تأخير بسيط
+              className="text-white text-lg mt-2"
+            >
+              {`${toursCount} TOURS`}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+};
+
+const SectionTow = () => {
   const { categories } = useTripsContext();
   const { tours } = useTripContext();
   const t = useTranslations("HomeHeroPage");
   const router = useRouter();
 
   const [today, setToday] = useState("2025-01-01");
-  const [shuffledCategories, setShuffledCategories] = useState([]);
-
-  // ✅ نحدد إذا الشاشة أكبر من md (لابتوب وفوق)
-  const theme = useTheme();
-  const isLaptopUp = useMediaQuery(theme.breakpoints.up("md"));
 
   useEffect(() => {
     setToday(new Date().toISOString().split("T")[0]);
-    setShuffledCategories(categories);
-  }, [categories]);
-
-  useEffect(() => {
-    if (!isLaptopUp) return; // ✅ لو الشاشة أصغر من لابتوب → ما يعملش shuffle إطلاقًا
-
-    const interval = setInterval(() => {
-      setShuffledCategories((prev) => {
-        const newArr = [...prev];
-        for (let i = newArr.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
-        }
-        return newArr;
-      });
-    }, 40000);
-
-    return () => clearInterval(interval);
-  }, [isLaptopUp]);
+  }, []);
 
   return (
     <section
       id="section-two"
-      className="w-full min-h-screen px-4 py-10 flex flex-col items-center justify-start text-white relative"
+      className="w-full min-h-auto px-4 py-10 flex flex-col items-center justify-start text-white relative"
     >
       {/* ✅ العنوان */}
       <div className="text-center mb-12 w-full max-w-4xl">
@@ -60,119 +170,50 @@ const SectionTow = forwardRef(() => {
         </h2>
       </div>
 
-      {/* ✅ شبكة الكروت */}
-      <div className="container flex flex-row flex-wrap gap-4">
-        {shuffledCategories.map((card, index) => {
-          if (isLaptopUp) {
-            // ✅ أنيمشن للشاشات الكبيرة فقط
-            return (
-              <motion.div
-                key={card.id || index}
-                layout
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{
-                  duration: 0.8,
-                  delay: index * 0.2,
-                  ease: "easeOut",
-                }}
-                className="relative w-full sm:w-[48%] md:w-[31%] lg:w-[23%] rounded-3xl overflow-hidden shadow-2xl group hover:shadow-yellow-500/40 transition duration-500"
-              >
-                <Image
-                  width={400}
-                  height={200}
-                  src={card.img ? `/assets/${card.img}` : "/assets/default.png"}
-                  alt={card.name}
-                  className="w-full h-[280px] sm:h-[300px] md:h-[320px] object-cover transform group-hover:scale-110 transition duration-700 ease-in-out"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t dark:from-black/70 to-transparent z-10" />
-                <div className="absolute bottom-6 left-6 z-20">
-                  <h3 className="text-white sm:text-3xl font-bold tracking-wide mb-4 drop-shadow-lg text-[20px]">
-                    {card.name}
-                  </h3>
-                  <button
-                    className="btn-next-section3"
-                    onClick={() => {
-                      const hasTours = tours.some((t) => {
-                        const category = t.category?.name || t.category || "";
-                        return (
-                          category.toLowerCase() === card.name.toLowerCase()
-                        );
-                      });
+      {/* ✅ سلايدر الوجهات */}
+      <Swiper
+        modules={[Navigation, Pagination, Autoplay]}
+        spaceBetween={10}
+        slidesPerView={1}
+        centeredSlides={true}
+        breakpoints={{
+          640: { slidesPerView: 2 },
+          768: { slidesPerView: 3 },
+          1024: { slidesPerView: 3 },
+          1150: { slidesPerView: 4 },
+          1500: { slidesPerView: 5 },
+        }}
+        navigation
+        autoplay={{
+          delay: 2000, // كل ثانيتين
+          disableOnInteraction: false,
+        }}
+        speed={1500} // ✅ مدة الانتقال بين الكروت (بالمللي ثانية)
+        loop={true} // ✅ دوران دائري مستمر
+        loopFillGroupWithBlank={true} // ✅ يملأ الفراغات لو فيه نقص
+        className="w-[90%] h-1/2 flex justify-center items-center"
+      >
+        {categories.map((card, index) => {
+          const toursCount = tours.filter((t) => {
+            const categoryName = t.category?.name || t.category || "";
+            return categoryName.toLowerCase() === card.name.toLowerCase();
+          }).length;
 
-                      if (hasTours) {
-                        const query = new URLSearchParams({
-                          destination: "All",
-                          category: card.name,
-                          date: today,
-                          duration: "5",
-                          minPrice: "0",
-                          maxPrice: "14000",
-                          search: "All",
-                        }).toString();
-
-                        router.push(`/tours?${query}`);
-                      }
-                    }}
-                  >
-                    View All →
-                  </button>
-                </div>
-              </motion.div>
-            );
-          }
-
-          // ✅ بدون أنيمشن للشاشات الصغيرة
           return (
-            <div
-              key={card.id || index}
-              className="relative w-full sm:w-[48%] md:w-[31%] lg:w-[23%] rounded-3xl overflow-hidden shadow-2xl group transition duration-500"
-            >
-              <Image
-                width={400}
-                height={200}
-                src={card.img ? `/assets/${card.img}` : "/assets/default.png"}
-                alt={card.name}
-                className="w-full h-[280px] sm:h-[300px] md:h-[320px] object-cover"
+            <SwiperSlide key={card.id || index}>
+              <CategoryCard
+                card={card}
+                today={today}
+                tours={tours}
+                router={router}
+                toursCount={toursCount} // ✅ نمرر العدد الصحيح
               />
-              <div className="absolute inset-0 bg-gradient-to-t dark:from-black/70 to-transparent z-10" />
-              <div className="absolute bottom-6 left-6 z-20">
-                <h3 className="text-white sm:text-3xl font-bold tracking-wide mb-4 drop-shadow-lg text-[20px]">
-                  {card.name}
-                </h3>
-                <button
-                  className="btn-next-section3"
-                  onClick={() => {
-                    const hasTours = tours.some((t) => {
-                      const category = t.category?.name || t.category || "";
-                      return category.toLowerCase() === card.name.toLowerCase();
-                    });
-
-                    if (hasTours) {
-                      const query = new URLSearchParams({
-                        destination: "All",
-                        category: card.name,
-                        date: today,
-                        duration: "5",
-                        minPrice: "0",
-                        maxPrice: "14000",
-                        search: "All",
-                      }).toString();
-
-                      router.push(`/tours?${query}`);
-                    }
-                  }}
-                >
-                  View All →
-                </button>
-              </div>
-            </div>
+            </SwiperSlide>
           );
         })}
-      </div>
+      </Swiper>
     </section>
   );
-});
+};
 
 export default SectionTow;

@@ -136,7 +136,7 @@ const Page = () => {
               left: 0,
               width: "100vw",
               height: "100vh",
-              backgroundColor: "rgba(0,0,0,0.9)",
+              backgroundColor: "rgba(100,100,100,0.9)",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",

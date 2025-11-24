@@ -62,8 +62,8 @@ const YourBookingDetails = ({ tour, user }) => {
   return (
     <Box
       sx={{
-        // width: "100%",
-        maxWidth: 600,
+        width: "100%",
+        // maxWidth: 600,
         backgroundColor: "#0f172a",
         color: "#f1f5f9",
         borderRadius: 4,
@@ -71,9 +71,12 @@ const YourBookingDetails = ({ tour, user }) => {
         boxShadow: "0 0 20px rgba(0,0,0,0.3)",
         p: 4,
         marginTop: "60px",
-        marginBottom:"10px"
+        marginBottom:"10px",
+        display:"flex",
+        flexDirection:"column",
+        // alignItems:"center",
+        justifyContent:"center"
       }}
-      className="w-full xl:w-1/2"
     >
       <Typography variant="h5" fontWeight="bold" color="primary" gutterBottom>
         ✅ Your Booking Details

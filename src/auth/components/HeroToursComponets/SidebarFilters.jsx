@@ -31,8 +31,9 @@ const SidebarFilters = () => {
           borderRadius: "20px",
           p: 3,
           backgroundColor: theme === "dark" ? "#030712" : "#fff",
-          boxShadow: 4,
+          // boxShadow: 4,
           color: "#fff",
+          border: "1px solid #ffb300"
         }}
       >
         <Typography

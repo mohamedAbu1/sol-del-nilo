@@ -22,8 +22,7 @@ export default async function TourPage({ params }) {
     //  ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
     return (
-      <main className="flex flex-col items-center justify-center">
-        <Header user={user} />
+      <main className="w-full flex flex-col items-center justify-center">
         <BadySC user={user}/>
       </main>
     );

@@ -65,7 +65,7 @@ const TourListings = () => {
         >
           {visibleTours.length > 0 ? (
             visibleTours.map((tour) => (
-              <DailyTourCard tour={tour} viewMode={viewMode} />
+              <DailyTourCard key={tour.id} tour={tour} viewMode={viewMode} />
             ))
           ) : (
             <div className="w-full text-center py-16 px-4 flex flex-col items-center justify-center">

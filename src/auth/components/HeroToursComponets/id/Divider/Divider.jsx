@@ -1,7 +1,7 @@
 import { Divider } from "@mui/material";
 
 const Dividering = () => {
-  return <Divider sx={{ backgroundColor: "#FF9800", width: "45%" }} />;
+  return <Divider sx={{ backgroundColor: "#FF9800", width: "45%", marginTop:"10px" }} />;
 };
 
 export default Dividering;

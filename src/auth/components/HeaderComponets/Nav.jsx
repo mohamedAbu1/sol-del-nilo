@@ -9,7 +9,7 @@ import { useScreenSize } from "../../hooks/screenSize";
 const Nav = ({ path, user, slug }) => {
   const { width } = useScreenSize();
   const t = useTranslations("Header");
-
+  console.log(path);
   const boxVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1 },
@@ -54,15 +54,16 @@ const Nav = ({ path, user, slug }) => {
         ].map((item, index) => (
           <motion.li
             key={index}
-            style={{
-              fontWeight: "600",
-              fontSize,
-            }}
             variants={boxVariants}
             initial="hidden"
             animate="visible"
             transition={{ delay: 0.5, duration: 0.5 }}
-            className={item.active ? "text-[#d4a85f]" : "text-gray-400"}
+            className={item.active ? "text-[#d4a85f]" : "text-[#fff]"}
+            style={{
+              textShadow: "2px 2px 6px rgba(0, 0, 0, 0.6)", // ظل ناعم
+              fontWeight: "600",
+              fontSize: "18px",
+            }}
           >
             <Link
               href={item.href}
@@ -76,15 +77,16 @@ const Nav = ({ path, user, slug }) => {
 
         {user?.role === "ADMIN" && hasMounted && width > 1279 && (
           <motion.li
-            style={{
-              fontWeight: "600",
-              fontSize,
-            }}
             variants={boxVariants}
             initial="hidden"
             animate="visible"
             transition={{ delay: 0.5, duration: 0.5 }}
-            className={slug === "admin" ? "text-[#d4a85f]" : "text-gray-400"}
+            style={{
+              textShadow: "2px 2px 6px rgba(0, 0, 0, 0.6)", // ظل ناعم
+              fontWeight: "600",
+              fontSize: "18px",
+            }}
+            className={slug === "admin" ? "text-[#d4a85f]" : "text-[#fff]"}
           >
             <Link
               href="/admin"

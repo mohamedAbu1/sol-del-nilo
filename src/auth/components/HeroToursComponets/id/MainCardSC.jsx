@@ -141,18 +141,17 @@ const MainCardSC = ({ user }) => {
     setHasBooked(userHasBooking);
   }, [tour, user]);
   if (!tour) {
-    return <div>⏳ جاري تحميل تفاصيل الرحلة...</div>;
+    return <div>Loading trip details... ⏳</div>;
   }
   return (
     <div
       style={{
-        width: "100%",
         paddingRight: width <= 600 ? "0px" : "60px",
         paddingLeft: width <= 600 ? "0px" : "60px",
       }}
-      className="flex flex-col xl:flex-row justify-center"
+      className="w-full flex flex-col  justify-center"
     >
-      <div className="w-full xl:w-1/2">
+      <div className="w-full">
         <InformationCard
           tour={tour}
           nan={nanValue}

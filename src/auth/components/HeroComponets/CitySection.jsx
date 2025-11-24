@@ -6,70 +6,128 @@ import { useRouter } from "next/navigation";
 import { useTripsContext } from "@/context/TripsContext";
 import { useState, useEffect } from "react";
 import { useTripContext } from "@/context/TripContext";
-import { motion } from "framer-motion";
-import { useTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
+import { motion, AnimatePresence } from "framer-motion";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { usePathname } from "next/navigation";
+const CityCard = ({ city, index, today, router, toursCount }) => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [hovered, setHovered] = useState(false);
+  const pathname = usePathname(); // ✅ هنا عرفنا المتغير
+  console.log(toursCount);
+  // ✅ تبديل الصور داخل الكارد كل 8 ثواني
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % (city.imges?.length || 1));
+    }, 8000);
+    return () => clearInterval(interval);
+  }, [city.imges]);
+
+  return (
+    <div
+      key={city.id || index}
+      className="group relative bg-[#fff] dark:bg-neutral-900 rounded-3xl overflow-hidden shadow-xl hover:shadow-yellow-500/40 transition duration-300 cursor-pointer"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onClick={() => {
+        sessionStorage.setItem(`scroll-${pathname}`, window.scrollY.toString());
+        const query = new URLSearchParams({
+          destination: city.name,
+          category: "All",
+          date: today,
+          duration: "All",
+          minPrice: "0",
+          maxPrice: "1400",
+          search: "All",
+        }).toString();
+        router.push(`/tours?${query}`);
+      }}
+    >
+      <div className="relative w-full h-[350px]">
+        <AnimatePresence mode="sync">
+          <motion.div
+            key={city.imges?.[currentImageIndex]}
+            initial={{ opacity: 0, scale: 1.1 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 1 }}
+            className="absolute inset-0"
+          >
+            <Image
+              fill
+              src={
+                city.imges?.[currentImageIndex]
+                  ? `/assets/${city.imges[currentImageIndex]}`
+                  : "/assets/default.png"
+              }
+              alt={city.name}
+              className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+            />
+          </motion.div>
+        </AnimatePresence>
+
+        {/* ✅ اسم المدينة */}
+
+        {/* ✅ زر القلب */}
+        <div className="absolute inset-0 flex flex-col items-center justify-end z-20">
+          {/* العنوان */}
+          <motion.h3
+            initial={{ y: -20, opacity: 1 }}
+            animate={hovered ? { y: -120, opacity: 1 } : { y: -20, opacity: 1 }}
+            exit={{ delay: 0.6 }}
+            transition={{ type: "spring", stiffness: 120, damping: 15 }}
+            className="text-white drop-shadow-lg"
+            style={{
+              fontSize: "25px",
+              fontFamily: "Prata, serif",
+              fontWeight: "bold",
+              letterSpacing: "0.05em",
+              textAlign: "center",
+              padding: "4px",
+            }}
+          >
+            {city.name}
+          </motion.h3>
+
+          {/* النص مرحبا محمد */}
+          <AnimatePresence>
+            {hovered && (
+              <motion.div
+                initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                animate={{ opacity: 0.7, y: -90, scale: 1 }}
+                exit={{ opacity: 0, y: 30, scale: 0.95 }}
+                transition={{ duration: 0.6, ease: "easeInOut", delay: 0.2 }} // ✅ تأخير بسيط
+                className="text-white text-lg mt-2"
+              >
+                {`${toursCount} TOURS`}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const CitySection = () => {
-  const [noToursCity, setNoToursCity] = useState(null);
   const [today, setToday] = useState("2025-01-01");
-
   useEffect(() => {
     setToday(new Date().toISOString().split("T")[0]);
   }, []);
 
   const { cities } = useTripsContext();
-  const [shuffledCities, setShuffledCities] = useState([]);
-
-  useEffect(() => {
-    if (Array.isArray(cities)) {
-      setShuffledCities(cities);
-    }
-  }, [cities]);
-
   const { tours } = useTripContext();
   const t = useTranslations("HomeHeroPage");
   const router = useRouter();
-
-  // ✅ Shuffle كل دقيقة (للشاشات الكبيرة فقط)
-  const theme = useTheme();
-  const isLaptopUp = useMediaQuery(theme.breakpoints.up("md"));
-
-  useEffect(() => {
-    if (!isLaptopUp) return;
-    const interval = setInterval(() => {
-      setShuffledCities((prev) => {
-        const newArr = [...prev];
-        for (let i = newArr.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
-        }
-        return newArr;
-      });
-    }, 40000);
-    return () => clearInterval(interval);
-  }, [isLaptopUp]);
-
-  // ✅ دالة التحويل عند الضغط على مدينة
-  const handleCityClick = (cityName) => {
-    const query = new URLSearchParams({
-      destination: cityName,
-      category: "All",
-      date: today,
-      duration: "All",
-      minPrice: "0",
-      maxPrice: "1400",
-      search: "All",
-    }).toString();
-
-    router.push(`/tours?${query}`);
-  };
 
   return (
     <section
       id="section-three"
       style={{ marginTop: "30px" }}
-      className="w-full min-h-screen py-10 flex flex-col items-center justify-start text-white px-4 sm:py-10 md:py-12 lg:py-0"
+      className="w-full min-h-auto py-10 flex flex-col items-center justify-start text-white px-4 sm:py-10 md:py-12 lg:py-0"
     >
       <div className="text-center mb-12 w-full max-w-4xl">
         <h2
@@ -87,94 +145,58 @@ const CitySection = () => {
         </h3>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-full max-w-screen-xl">
-        {shuffledCities.map((city, index) => {
-          if (isLaptopUp) {
-            // ✅ أنيمشن للشاشات الكبيرة فقط
-            return (
-              <motion.div
-                key={city.id || index}
-                layout
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{
-                  duration: 0.8,
-                  delay: index * 0.2,
-                  ease: "easeOut",
-                }}
-                className="group relative bg-[#fff] dark:bg-neutral-900 rounded-3xl overflow-hidden shadow-xl hover:shadow-yellow-500/40 transition duration-300 cursor-pointer"
-                onClick={() => handleCityClick(city.name)}
-              >
-                <div className="relative">
-                  <Image
-                    width={400}
-                    height={100}
-                    src={city.img ? `/assets/${city.img}` : "/assets/default.png"}
-                    alt={city.name}
-                    loading="lazy"
-                    className="w-full h-[350px] object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div
-                    style={{ padding: "4px" }}
-                    className="absolute flex items-center gap-1.5 top-3 left-3 bg-yellow-500 text-black text-sm font-bold px-3 py-1 rounded-full shadow-md"
-                  >
-                    <FaMapMarkerAlt className="text-gray-500 dark:text-gray-800" />
-                    {city.name}
-                  </div>
-                  <button className="absolute top-3 right-3 text-yellow-600 text-xl rounded-full p-2 shadow-md hover:scale-110 transition">
-                    <FaHeart />
-                  </button>
-                </div>
-              </motion.div>
-            );
-          }
+      {/* ✅ سلايدر المدن */}
+      <Swiper
+        modules={[Navigation, Pagination, Autoplay]}
+        spaceBetween={20}
+        slidesPerView={1}
+        centeredSlides={true}
+        breakpoints={{
+          640: { slidesPerView: 2 },
+          768: { slidesPerView: 3 },
+          1024: { slidesPerView: 4 },
+        }}
+        navigation
+        autoplay={{
+          delay: 2000, // كل 4 ثواني
+          disableOnInteraction: false,
+        }}
+        speed={1200} // ✅ حركة ناعمة
+        loop={true} // ✅ دوران دائري مستمر
+        loopFillGroupWithBlank={true}
+        className="w-[90%] h-1/2 flex justify-center items-center"
+      >
+        {cities.map((city, index) => {
+          console.log("City:", city.name);
+          tours.forEach((t) => {
+            console.log("Tour destination:", t.destination);
+          });
+          const toursCount = tours.filter((t) => {
+            const destinationName = (
+              t.city?.name ||
+              t.city ||
+              ""
+            ).toLowerCase();
+            return destinationName.includes(city.name.toLowerCase());
+          }).length;
 
-          // ✅ بدون أنيمشن للشاشات الصغيرة
           return (
-            <div
-              key={city.id || index}
-              className="group relative bg-[#fff] dark:bg-neutral-900 rounded-3xl overflow-hidden shadow-xl hover:shadow-yellow-500/40 transition duration-300 cursor-pointer"
-              onClick={() => handleCityClick(city.name)}
-            >
-              <div className="relative">
-                <Image
-                  width={400}
-                  height={100}
-                  src={city.img ? `/assets/${city.img}` : "/assets/default.png"}
-                  alt={city.name}
-                  loading="lazy"
-                  className="w-full h-[350px] object-cover"
-                />
-                <div
-                  style={{ padding: "4px" }}
-                  className="absolute flex items-center gap-1.5 top-3 left-3 bg-yellow-500 text-black text-sm font-bold px-3 py-1 rounded-full shadow-md"
-                >
-                  <FaMapMarkerAlt className="text-gray-500 dark:text-gray-800" />
-                  {city.name}
-                </div>
-                <button className="absolute top-3 right-3 text-yellow-600 text-xl rounded-full p-2 shadow-md hover:scale-110 transition">
-                  <FaHeart />
-                </button>
-              </div>
-            </div>
+            <SwiperSlide key={city.id || index}>
+              <CityCard
+                city={city}
+                index={index}
+                today={today}
+                router={router}
+                toursCount={toursCount}
+              />
+            </SwiperSlide>
           );
         })}
-
-        {noToursCity && (
-          <div
-            style={{ opacity: "0.9" }}
-            className="fixed inset-0 bg-black flex items-center justify-center z-50"
-          >
-            <div
-              style={{ padding: "10px" }}
-              className="bg-white text-black px-6 py-4 rounded-xl shadow-lg text-xl font-bold"
-            >
-              There are currently no tours to {noToursCity}
-            </div>
-          </div>
-        )}
-      </div>
+        <div
+          style={{ marginTop: "60px" }}
+          className="h-1 bg-[#daa60b] dark:bg-yellow-700 rounded-full mb-4 w-full"
+        />
+      </Swiper>
     </section>
   );
 };

@@ -1,30 +1,54 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import { MideaIcon } from "../../../lib/constants/FixedTexts";
-
+import {
+  FaFacebookF,
+  FaInstagram,
+  FaWhatsapp,
+  FaYoutube,
+} from "react-icons/fa";
+import { SiTiktok, SiGmail } from "react-icons/si";
+// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const LinksMidea = () => {
   const boxVariants = {
     hidden: { opacity: 0, y: +100 },
     visible: { opacity: 1, y: 0 },
   };
-
-  // 🎨 مصفوفة ألوان للخلفيات
-  const bgColors = [
-    "bg-blue-500",
-    "bg-green-500",
-    "bg-pink-500",
-    "bg-yellow-500",
-    "bg-red-500",
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  const MideaIcon = [
+    {
+      titleIcon: "Facebook",
+      path: "https://facebook.com",
+      Icon: <FaFacebookF />,
+      color: "#1877F2",
+    },
+    {
+      titleIcon: "Instagram",
+      path: "https://instagram.com",
+      Icon: <FaInstagram />,
+      gradient: "linear-gradient(45deg, #feda75, #d62976, #962fbf, #4f5bd5)",
+    },
+    {
+      titleIcon: "TikTok",
+      path: "https://tiktok.com",
+      Icon: <SiTiktok />,
+      color: "#25F4EE",
+    },
+    {
+      titleIcon: "WhatsApp",
+      path: "https://wa.me",
+      Icon: <FaWhatsapp />,
+      color: "#25D366",
+    },
+    {
+      titleIcon: "Gmail",
+      path: "https://mail.google.com",
+      Icon: <SiGmail />,
+      color: "#D14836",
+    },
   ];
-// const bgColors = [
-//     "bg-blue-500",
-//     "bg-red-500",
-//     "bg-green-500",
-//     "bg-yellow-500",
-//     "bg-purple-500",
-//     "bg-pink-500",
-//   ];
+  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
   return (
     <div
       style={{ marginTop: "40px" }}
@@ -44,9 +68,11 @@ const LinksMidea = () => {
             delay: index * 0.2,
             duration: 0.5,
           }}
-          // ✅ إضافة خلفية مختلفة لكل أيقونة
-          className={`SocialMediaIcon ${bgColors[index % bgColors.length]} 
-                     text-white p-3 rounded-full shadow-md hover:scale-110 transition`}
+          style={{
+            background: i.gradient || i.color,
+            color: "white",
+          }}
+          className="SocialMediaIcon p-3 rounded-full shadow-md hover:scale-110 transition"
         >
           {i.Icon}
         </motion.a>

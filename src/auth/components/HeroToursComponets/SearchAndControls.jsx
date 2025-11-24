@@ -42,7 +42,7 @@ const SearchAndControls = () => {
           px: 4,
           py: 2,
           borderRadius: "16px",
-          boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+          // boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",

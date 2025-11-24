@@ -102,7 +102,6 @@ const CommentsReviews = ({ comments = [], tour, user ,userName}) => {
             // backgroundColor: "#fff",
             p: 2,
             borderRadius: 6,
-            mb: 2,
             border: "1px solid gray",
             display: "flex",
             flexDirection: "row",

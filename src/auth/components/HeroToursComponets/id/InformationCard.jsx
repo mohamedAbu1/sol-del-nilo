@@ -10,7 +10,7 @@ import { motion, useInView } from "framer-motion";
 import { useScreenSize } from "@/auth/hooks/screenSize";
 import { BiDollar } from "react-icons/bi";
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
-import { useRouter } from "next/navigation";
+import AnimatedPictures from "./AnimatedPictures";
 
 const AnimatedSection = ({ children }) => {
   const ref = useRef(null);
@@ -47,7 +47,6 @@ const InformationCard = ({
   setBookingData,
 }) => {
   const { width2 } = useScreenSize();
-  const router = useRouter();
   console.log(selectedOptions);
   //   const includesArray = tour?.includes?.split(",").map((text, index) => ({
   //   id: index,
@@ -58,7 +57,7 @@ const InformationCard = ({
     <Box
       sx={{
         width: "100%",
-        maxWidth: "900px",
+        // maxWidth: "900px",
         mt: 6,
         textAlign: "start",
         px: 2,
@@ -98,151 +97,144 @@ const InformationCard = ({
         >
           {tour.description}
         </Typography>
-        <Button
-          className="btn-next-section3"
-          style={{ marginBottom: "20px", color: "#000" }}
-          onClick={() => {
-            if (tour?.id) {
-              router.push(`/tours/${tour.id}/image`);
-            }
-          }}
-        >
-          last trip
-        </Button>
       </AnimatedSection>
 
       <Dividering />
       <Dividering />
       <Dividering />
+      <AnimatedPictures />
 
+      <Dividering />
+      <Dividering />
+      <Dividering />
       <AnimatedSection>
-        <div className="flex flex-col">
-          <h1
-            style={{
-              fontWeight: "700",
-              color: "#FF9800",
-              marginBottom: "12px",
-              fontSize: "clamp(20px, 4vw, 36px)",
-            }}
-            className="capitalize"
-          >
-            Full day trip
-          </h1>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {[
-              {
-                label: "Number of participants",
-                icon: <HiOutlineUserGroup style={{ fontSize: "20px" }} />,
-                value:
-                  typeof nan === "number" && !isNaN(nan)
-                    ? nan
-                    : parseInt(tour.DayPeople),
-                style: {
-                  fontSize: "clamp(12px, 2vw, 18px)",
+        <div className="w-full flex flex-col md:flex-row items-center justify-around gap-4">
+          <div className="flex flex-col w-full md:w-1/2">
+            <h1
+              style={{
+                fontWeight: "700",
+                color: "#FF9800",
+                marginBottom: "12px",
+                fontSize: "clamp(20px, 4vw, 36px)",
+              }}
+              className="capitalize"
+            >
+              Full day trip
+            </h1>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {[
+                {
+                  label: "Number of participants",
+                  icon: <HiOutlineUserGroup style={{ fontSize: "20px" }} />,
+                  value:
+                    typeof nan === "number" && !isNaN(nan)
+                      ? nan
+                      : parseInt(tour.DayPeople),
+                  style: {
+                    fontSize: "clamp(12px, 2vw, 18px)",
+                  },
                 },
-              },
-              {
-                label: "the price",
-                icon: <BiDollar style={{ fontSize: "20px" }} />,
-                value: parseFloat(finalPriceAfterRival).toFixed(2),
-                style: { fontSize: "clamp(14px, 2vw, 18px)" },
-              },
-              {
-                label: "Proposed date",
-                icon: <BsCalendarDate style={{ fontSize: "20px" }} />,
-                value: tour.theDate,
-                style: { fontSize: "clamp(14px, 2vw, 18px)" },
-              },
-              {
-                label: "Trip duration",
-                icon: <AiOutlineClockCircle style={{ fontSize: "22px" }} />,
-                value: `${tour.TripDuration} Day`,
-                style: { fontSize: "clamp(14px, 2vw, 20px)" },
-              },
-            ]?.map((item, index) => (
-              <div
-                key={index}
-                style={{
-                  padding: "10px",
-                  borderLeft: "2px solid #FF9800",
-                  borderBottom: "2px solid #FF9800",
-                  borderRight:
-                    index % 2 === 1 ? "2px solid #FF9800" : undefined,
-                }}
-              >
-                <h1
+                {
+                  label: "the price",
+                  icon: <BiDollar style={{ fontSize: "20px" }} />,
+                  value: parseFloat(finalPriceAfterRival).toFixed(2),
+                  style: { fontSize: "clamp(14px, 2vw, 18px)" },
+                },
+                {
+                  label: "Proposed date",
+                  icon: <BsCalendarDate style={{ fontSize: "20px" }} />,
+                  value: tour.theDate,
+                  style: { fontSize: "clamp(14px, 2vw, 18px)" },
+                },
+                {
+                  label: "Trip duration",
+                  icon: <AiOutlineClockCircle style={{ fontSize: "22px" }} />,
+                  value: `${tour.TripDuration} Day`,
+                  style: { fontSize: "clamp(14px, 2vw, 20px)" },
+                },
+              ]?.map((item, index) => (
+                <div
+                  key={index}
                   style={{
-                    fontWeight: "700",
-                    color: "#d4a85f",
-                    fontSize: "clamp(16px, 2vw, 24px)",
+                    padding: "10px",
+                    borderLeft: "2px solid #FF9800",
+                    borderBottom: "2px solid #FF9800",
+                    borderRight:
+                      index % 2 === 1 ? "2px solid #FF9800" : undefined,
                   }}
-                  className="capitalize text-gray-400"
                 >
-                  {item.label}
-                </h1>
-                <div className="flex items-center justify-center text-gray-600 uppercase gap-2">
-                  {item.icon}
-                  <p
-                    style={item.style}
-                    className="text-gray-600 dark:text-gray-400"
+                  <h1
+                    style={{
+                      fontWeight: "700",
+                      color: "#d4a85f",
+                      fontSize: "clamp(16px, 2vw, 24px)",
+                    }}
+                    className="capitalize text-gray-400"
                   >
-                    {item.value}
-                  </p>
-                  {item.icon}
+                    {item.label}
+                  </h1>
+                  <div className="flex items-center justify-center text-gray-600 uppercase gap-2">
+                    {item.icon}
+                    <p
+                      style={item.style}
+                      className="text-gray-600 dark:text-gray-400"
+                    >
+                      {item.value}
+                    </p>
+                    {item.icon}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+          </div>
+          <div
+            style={{
+              marginTop: "10px",
+              marginBottom: "10px",
+              borderTopLeftRadius: "10px",
+              borderBottomLeftRadius: "10px",
+            }}
+            className="w-full md:w-1/2 overflow-x-auto mt-6"
+          >
+            <table className="w-full border border-[#d4a85f] text-left bg-white">
+              <tbody>
+                {tour?.tripprogram?.map((i) => (
+                  <tr key={i.id} className="border-b border-[#d4a85f]">
+                    <th
+                      className="bg-[#d4a85f] text-white px-6 py-4 w-1/5"
+                      style={{
+                        padding: "15px",
+                        fontSize: "clamp(14px, 2vw, 18px)",
+                      }}
+                    >
+                      🕒 {i.time}
+                    </th>
+                    <td
+                      className="px-6 py-4 text-gray-600 capitalize  dark:bg-[#1a1b1b]  dark:text-gray-400"
+                      style={{
+                        textAlign: "start",
+                        paddingLeft: "20px",
+                        fontSize: "clamp(14px, 2vw, 18px)",
+                      }}
+                    >
+                      {i.program}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </AnimatedSection>
-      <AnimatedSection>
-        <div
-          style={{
-            marginTop: "10px",
-            marginBottom: "10px",
-            borderTopLeftRadius: "10px",
-            borderBottomLeftRadius: "10px",
-          }}
-          className="overflow-x-auto mt-6"
-        >
-          <table className="w-full border border-[#d4a85f] text-left bg-white">
-            <tbody>
-              {tour?.tripprogram?.map((i) => (
-                <tr key={i.id} className="border-b border-[#d4a85f]">
-                  <th
-                    className="bg-[#d4a85f] text-white px-6 py-4 w-1/5"
-                    style={{
-                      padding: "15px",
-                      fontSize: "clamp(14px, 2vw, 18px)",
-                    }}
-                  >
-                    🕒 {i.time}
-                  </th>
-                  <td
-                    className="px-6 py-4 text-gray-600 capitalize  dark:bg-[#1a1b1b]  dark:text-gray-400"
-                    style={{
-                      textAlign: "start",
-                      paddingLeft: "20px",
-                      fontSize: "clamp(14px, 2vw, 18px)",
-                    }}
-                  >
-                    {i.program}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </AnimatedSection>
 
       <Dividering />
       <Dividering />
       <Dividering />
 
       <AnimatedSection>
-        <div className="w-full flex flex-col md:flex-col gap-6">
+        <div className="w-full flex flex-col md:flex-row gap-6">
           {" "}
-          <div className="w-[100%] lg:w-[100%]">
+          <div className="w-1/2">
             <h1
               style={{
                 fontWeight: "700",
@@ -290,12 +282,13 @@ const InformationCard = ({
               </ul>
             </div>
           </div>
-          <Dividering />
+          {/* <Dividering /> */}
           <div
             style={{
               // borderLeft: "2px dotted #FF9800",
               padding: "10px",
             }}
+            className="w-[50%]"
           >
             <h1
               style={{

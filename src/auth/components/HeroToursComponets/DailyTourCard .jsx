@@ -3,7 +3,11 @@ import { Box, Typography, Button, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-
+import AccessAlarmsIcon from "@mui/icons-material/AccessAlarms";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import LocationPinIcon from "@mui/icons-material/LocationPin";
+import CategoryIcon from "@mui/icons-material/Category";
+import { useAppQueryContext } from "@/context/AppQueryContext";
 const MotionBox = motion(Box);
 
 const DailyTourCard = ({ tour, themee, viewMode }) => {
@@ -16,9 +20,10 @@ const DailyTourCard = ({ tour, themee, viewMode }) => {
   const handleViewTour = () => {
     router.push(`/tours/${tour.id}`);
   };
-
+  console.log(tour);
   return (
     <MotionBox
+      key={tour.id}
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
@@ -78,19 +83,72 @@ const DailyTourCard = ({ tour, themee, viewMode }) => {
         >
           {tour.title}
         </Typography>
-
-        <Typography
-          variant="body2"
-          sx={{
-            color: themee === "dark" ? "#ccc" : "gray",
-            fontSize: "0.95rem",
-            lineHeight: 1.6,
-            mb: 2,
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-around",
+            alignItems: "center",
           }}
         >
-          {tour.description}
-        </Typography>
-
+          <Typography
+            variant="body2"
+            sx={{
+              color: themee === "dark" ? "#ccc" : "gray",
+              fontSize: "0.95rem",
+              lineHeight: 1.6,
+              mb: 2,
+            }}
+          >
+            <AccessAlarmsIcon style={{ fontSize: "1.20rem" }} />{" "}
+            {`${tour.TripDuration} D`}
+          </Typography>
+          <Typography
+            variant="body2"
+            sx={{
+              color: themee === "dark" ? "#ccc" : "gray",
+              fontSize: "0.95rem",
+              lineHeight: 1.6,
+              mb: 2,
+            }}
+          >
+            <LocationPinIcon />
+            {tour.city.name}
+          </Typography>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-around",
+            alignItems: "center",
+          }}
+        >
+          <Typography
+            variant="body2"
+            sx={{
+              color: themee === "dark" ? "#ccc" : "gray",
+              fontSize: "0.95rem",
+              lineHeight: 1.6,
+              mb: 2,
+            }}
+          >
+            <AttachMoneyIcon />
+            {tour.price}
+          </Typography>
+          <Typography
+            variant="body2"
+            sx={{
+              color: themee === "dark" ? "#ccc" : "gray",
+              fontSize: "0.95rem",
+              lineHeight: 1.6,
+              mb: 2,
+            }}
+          >
+            <CategoryIcon style={{ paddingRight: "5px" }} />
+            {tour.category.name}
+          </Typography>
+        </div>
         {/* ✅ زر التحويل */}
         <Button
           variant="contained"
@@ -106,7 +164,7 @@ const DailyTourCard = ({ tour, themee, viewMode }) => {
             },
           }}
         >
-          See the trip 
+          See the trip
         </Button>
       </Box>
     </MotionBox>

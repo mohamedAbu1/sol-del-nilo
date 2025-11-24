@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-const imag2 = "/assets/Copilot_20250910_005440.png";
+const imag2 = "/assets/Copilot_20250910_005440.webp";
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const ImageHeroRegisterCover = () => {
   return (
@@ -16,7 +16,7 @@ const ImageHeroRegisterCover = () => {
         className="hidden lg:flex w-full h-full absolute inset-0"
       >
         <Image
-          src={"/assets/Temple_of_the_Elephants.png"}
+          src={"/assets/Temple_of_the_Elephants.webp"}
           alt="background"
           fill
           loading="eager"

@@ -3,6 +3,7 @@ import Header from "@/auth/components/HeaderComponets/Header";
 import { vrefyTokenForPage } from "@/lib/utils/veryfyToken";
 import { cookies } from "next/headers";
 import { generateMetadata } from "./metadata";
+import FaceContactPage from "@/auth/components/HeroContact/FaceContactPage";
 export { generateMetadata };
 
 const Contact = async () => {
@@ -11,7 +12,7 @@ const Contact = async () => {
   const user = vrefyTokenForPage(token);
   return (
     <main className="w-full h-auto flex flex-col items-center justify-center m-auto">
-      <Header user={user} />
+      <FaceContactPage user={user} />
       <ContactUs user={user} />
     </main>
   );

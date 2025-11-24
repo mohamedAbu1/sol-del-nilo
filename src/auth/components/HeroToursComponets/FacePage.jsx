@@ -60,11 +60,10 @@ const FacePage = ({ user }) => {
       className="absolute inset-0 bg-cover bg-center"
       style={{ backgroundImage: `url('${imagePath}')` }}
     >
-      <div className="container relative z-20 flex flex-col h-full justify-between">
-        {/* ✅ الهيدر */}
-        <div className="w-full px-6 pt-6 lg:ml-[190px]">
-          <Header user={user} />
-        </div>
+      <div className="w-full px-15 pt-6 flex items-center justify-center">
+        <Header user={user} />
+      </div>
+      <div className="container relative z-20 flex flex-col h-full justify-between">       
 
         {/* ✅ العنوان في منتصف الصورة */}
         <div

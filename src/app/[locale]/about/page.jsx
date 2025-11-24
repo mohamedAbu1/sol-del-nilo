@@ -11,6 +11,7 @@ import SideDecor from "@/auth/components/SideDecor ";
 import RightSideDecor from "@/auth/components/RightSideDecor";
 import SectionSix from "@/auth/components/HeroComponets/SectionSix";
 import TopAboutPage from "@/auth/components/About/TopAboutPage";
+import FaceAboutPage from "@/auth/components/About/FaceAboutPage";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 export default async function AboutUsPage() {
   const cookieStore = await cookies(); // ✅ استخدم await
@@ -23,8 +24,9 @@ export default async function AboutUsPage() {
       className="flex flex-col items-center justify-center font-serif min-h-screen px-6 py-16 animate-fadeIn"
     >
       <SideDecor />
+      <FaceAboutPage user={user} />
+
       <div className="container flex flex-col items-center justify-center">
-        <Header user={user} />
         <TopAboutPage />
 
         <div className="animate-slideUp delay-300">

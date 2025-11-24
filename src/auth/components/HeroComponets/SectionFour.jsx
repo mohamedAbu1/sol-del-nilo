@@ -46,13 +46,13 @@ const SectionFour = () => {
             className="w-full h-full"
           >
             {[
-              "/assets/ahmed-shabana-ADa9bb3tqR4-unsplash.jpg",
-              "/assets/calin-stan-Mv15X2n8JVE-unsplash.jpg",
-              "/assets/osama-elsayed-BbBiTUnFlxk-unsplash.jpg",
-              "/assets/osama-elsayed-M7ij157xsOs-unsplash.jpg",
-              "/assets/alex-azabache-V8zu2yXPFF8-unsplash.jpg",
-              "/assets/mounir-abdi-q2PA7sfj8z8-unsplash.jpg",
-              "/assets/chris-andrawes-15wKOQqZNt4-unsplash.jpg",
+              "/assets/ahmed-shabana-ADa9bb3tqR4-unsplash.webp",
+              "/assets/calin-stan-Mv15X2n8JVE-unsplash.webp",
+              "/assets/osama-elsayed-BbBiTUnFlxk-unsplash.webp",
+              "/assets/osama-elsayed-M7ij157xsOs-unsplash.webp",
+              "/assets/alex-azabache-V8zu2yXPFF8-unsplash.webp",
+              "/assets/mounir-abdi-q2PA7sfj8z8-unsplash.webp",
+              "/assets/chris-andrawes-15wKOQqZNt4-unsplash.webp",
             ].map((imgSrc, index) => (
               <SwiperSlide key={index}>
                 <div className="w-full h-[85vh]">

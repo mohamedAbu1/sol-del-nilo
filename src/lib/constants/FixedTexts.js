@@ -139,13 +139,13 @@ export const AdviceCard = [
 
 export const desktopImages = [
   "/assets/travco-travel-c4259777-fab7-4d77-bd9f-d99e1d3fc377.webp",
-  "/assets/_8989_slider1.jpg",
-  "/assets/_12294_slider2.jpg",
-  "/assets/_1402__8989_slider3.jpg",
+  "/assets/_8989_slider1.webp",
+  "/assets/_12294_slider2.webp",
+  "/assets/_1402__8989_slider3.webp",
 ];
 export const desktopImagesMB = [
-  "/assets/_12294_slider2.jpg",
-  "/assets/_8989_slider1.jpg",
+  "/assets/_12294_slider2.webp",
+  "/assets/_8989_slider1.webp",
   "/assets/548898267_18083849644930067_2023880468351303706_n.webp",
   "/assets/553312854_18084731197930067_1648342695818561037_n.webp",
 ];

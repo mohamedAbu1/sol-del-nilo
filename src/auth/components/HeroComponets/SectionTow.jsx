@@ -172,24 +172,16 @@ const SectionTow = () => {
 
       {/* ✅ سلايدر الوجهات */}
       <Swiper
-        modules={Autoplay}
-        spaceBetween={10}
-        slidesPerView={1}
-        centeredSlides={true}
-        breakpoints={{
-          640: { slidesPerView: 2 },
-          768: { slidesPerView: 3 },
-          1024: { slidesPerView: 3 },
-          1150: { slidesPerView: 4 },
-          1500: { slidesPerView: 5 },
-        }}
-        autoplay={{
-          delay: 2000, // كل ثانيتين
-          disableOnInteraction: false,
-        }}
-        speed={1500} // ✅ مدة الانتقال بين الكروت (بالمللي ثانية)
-        loop={true} // ✅ دوران دائري مستمر
-        loopFillGroupWithBlank={true} // ✅ يملأ الفراغات لو فيه نقص
+         spaceBetween={20}
+          slidesPerView={1}
+          modules={[Autoplay]} // ✅ هنا لازم تضيفه
+          autoplay={{
+            delay: 2000, // كل 4 ثواني
+            disableOnInteraction: false,
+          }}
+          speed={1200} // ✅ حركة ناعمة
+          loop={true} // ✅ دوران دائري مستمر
+          loopFillGroupWithBlank={true}فيه نقص
         className="w-[90%] h-1/2 flex justify-center items-center"
       >
         {categories.map((card, index) => {

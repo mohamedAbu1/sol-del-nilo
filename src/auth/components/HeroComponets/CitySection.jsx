@@ -147,22 +147,16 @@ const CitySection = () => {
 
       {/* ✅ سلايدر المدن */}
       <Swiper
-        modules={Autoplay}
-        spaceBetween={20}
-        slidesPerView={1}
-        centeredSlides={true}
-        breakpoints={{
-          640: { slidesPerView: 2 },
-          768: { slidesPerView: 3 },
-          1024: { slidesPerView: 4 },
-        }}
-        autoplay={{
-          delay: 2000, // كل 4 ثواني
-          disableOnInteraction: false,
-        }}
-        speed={1200} // ✅ حركة ناعمة
-        loop={true} // ✅ دوران دائري مستمر
-        loopFillGroupWithBlank={true}
+         spaceBetween={20}
+          slidesPerView={1}
+          modules={[Autoplay]} // ✅ هنا لازم تضيفه
+          autoplay={{
+            delay: 2000, // كل 4 ثواني
+            disableOnInteraction: false,
+          }}
+          speed={1200} // ✅ حركة ناعمة
+          loop={true} // ✅ دوران دائري مستمر
+          loopFillGroupWithBlank={true}
         className="w-[90%] h-1/2 flex justify-center items-center"
       >
         {cities.map((city, index) => {

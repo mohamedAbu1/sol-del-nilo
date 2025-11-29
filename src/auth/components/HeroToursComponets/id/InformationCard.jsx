@@ -95,14 +95,14 @@ const InformationCard = ({
     "Edfu",
     "the Sphinx",
     "Egyptian Museum",
-    "the Catacombs of Kom El Shoqafa",
+    "catacombs of Kom El Shoqafa",
     "Qaitbay",
     "Lighthouse of Alexandria,",
   ];
 
   const parseDescription = (text) => {
     let parts = text.split(
-      /(Philae Temple|Lighthouse of Alexandria|Philae|Qaitbay|the Catacombs of Kom El Shoqafa|Egyptian Museum|Hatshepsut|the Sphinx|Pyramids|Edfu|Karnak Temple|Karnak|sphinx|Luxor Temple|Luxor|Valley of the Kings|Abu Simbel Temple|Abu Simbel)/g
+      /(Philae Temple|Lighthouse of Alexandria|Philae|Qaitbay|catacombs of Kom El Shoqafa|Egyptian Museum|Hatshepsut|the Sphinx|Pyramids|Edfu|Karnak Temple|Karnak|sphinx|Luxor Temple|Luxor|Valley of the Kings|Abu Simbel Temple|Abu Simbel)/g
     ); // Regex يلتقط أسماء الأماكن
     return parts.map((part, idx) => {
       if (archaeologicalPlaces.includes(part.trim())) {

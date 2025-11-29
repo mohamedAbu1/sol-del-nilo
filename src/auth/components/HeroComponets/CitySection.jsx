@@ -1,6 +1,6 @@
 "use client";
 import { useTranslations } from "next-intl";
-import { FaHeart, FaMapMarkerAlt } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useTripsContext } from "@/context/TripsContext";
@@ -8,16 +8,15 @@ import { useState, useEffect } from "react";
 import { useTripContext } from "@/context/TripContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import { Autoplay } from "swiper/modules";
 import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
 import { usePathname } from "next/navigation";
+
 const CityCard = ({ city, index, today, router, toursCount }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [hovered, setHovered] = useState(false);
-  const pathname = usePathname(); // ✅ هنا عرفنا المتغير
-  console.log(toursCount);
+  const pathname = usePathname();
+
   // ✅ تبديل الصور داخل الكارد كل 8 ثواني
   useEffect(() => {
     const interval = setInterval(() => {
@@ -25,7 +24,7 @@ const CityCard = ({ city, index, today, router, toursCount }) => {
     }, 8000);
     return () => clearInterval(interval);
   }, [city.imges]);
-
+console.log(city.imges?.[currentImageIndex])
   return (
     <div
       key={city.id || index}
@@ -49,7 +48,7 @@ const CityCard = ({ city, index, today, router, toursCount }) => {
       <div className="relative w-full h-[350px]">
         <AnimatePresence mode="sync">
           <motion.div
-            key={city.imges?.[currentImageIndex]}
+            key={city.imges?.[currentImageIndex] || `city-${index}`}
             initial={{ opacity: 0, scale: 1.1 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
@@ -64,20 +63,18 @@ const CityCard = ({ city, index, today, router, toursCount }) => {
                   : "/assets/default.png"
               }
               alt={city.name}
-              className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+              onError={() =>
+                console.log("Image not found:", city.imges?.[currentImageIndex])
+              }
             />
           </motion.div>
         </AnimatePresence>
 
         {/* ✅ اسم المدينة */}
-
-        {/* ✅ زر القلب */}
         <div className="absolute inset-0 flex flex-col items-center justify-end z-20">
-          {/* العنوان */}
           <motion.h3
             initial={{ y: -20, opacity: 1 }}
             animate={hovered ? { y: -120, opacity: 1 } : { y: -20, opacity: 1 }}
-            exit={{ delay: 0.6 }}
             transition={{ type: "spring", stiffness: 120, damping: 15 }}
             className="text-white drop-shadow-lg"
             style={{
@@ -92,14 +89,14 @@ const CityCard = ({ city, index, today, router, toursCount }) => {
             {city.name}
           </motion.h3>
 
-          {/* النص مرحبا محمد */}
+          {/* ✅ عدد الرحلات */}
           <AnimatePresence>
             {hovered && (
               <motion.div
                 initial={{ opacity: 0, y: 30, scale: 0.95 }}
                 animate={{ opacity: 0.7, y: -90, scale: 1 }}
                 exit={{ opacity: 0, y: 30, scale: 0.95 }}
-                transition={{ duration: 0.6, ease: "easeInOut", delay: 0.2 }} // ✅ تأخير بسيط
+                transition={{ duration: 0.6, ease: "easeInOut", delay: 0.2 }}
                 className="text-white text-lg mt-2"
               >
                 {`${toursCount} TOURS`}
@@ -122,7 +119,7 @@ const CitySection = () => {
   const { tours } = useTripContext();
   const t = useTranslations("HomeHeroPage");
   const router = useRouter();
-
+  console.log(cities);
   return (
     <section
       id="section-three"
@@ -147,23 +144,23 @@ const CitySection = () => {
 
       {/* ✅ سلايدر المدن */}
       <Swiper
-         spaceBetween={20}
-          slidesPerView={1}
-          modules={[Autoplay]} // ✅ هنا لازم تضيفه
-          autoplay={{
-            delay: 2000, // كل 4 ثواني
-            disableOnInteraction: false,
-          }}
-          speed={1200} // ✅ حركة ناعمة
-          loop={true} // ✅ دوران دائري مستمر
-          loopFillGroupWithBlank={true}
-        className="w-[90%] h-1/2 flex justify-center items-center"
+        spaceBetween={20}
+        breakpoints={{
+          0: { slidesPerView: 1 }, // الهواتف
+          640: { slidesPerView: 2 }, // التابلت
+          1024: { slidesPerView: 3 }, // اللابتوب
+          1400: { slidesPerView: 4 }, // الشاشات الكبيرة
+        }}
+        modules={[Autoplay]}
+        autoplay={{
+          delay: 2000,
+          disableOnInteraction: false,
+        }}
+        speed={1200}
+        loop={true}
+        className="w-[90%] flex justify-center items-center"
       >
         {cities.map((city, index) => {
-          console.log("City:", city.name);
-          tours.forEach((t) => {
-            console.log("Tour destination:", t.destination);
-          });
           const toursCount = tours.filter((t) => {
             const destinationName = (
               t.city?.name ||
@@ -174,7 +171,14 @@ const CitySection = () => {
           }).length;
 
           return (
-            <SwiperSlide key={city.id || index}>
+            <SwiperSlide
+              key={city.id || index}
+              // style={{
+              //   display: "flex",
+              //   alignItems: "center",
+              //   justifyContent: "center",
+              // }}
+            >
               <CityCard
                 city={city}
                 index={index}
@@ -185,11 +189,9 @@ const CitySection = () => {
             </SwiperSlide>
           );
         })}
-        <div
-          style={{ marginTop: "60px" }}
-          className="h-1 bg-[#daa60b] dark:bg-yellow-700 rounded-full mb-4 w-full"
-        />
       </Swiper>
+              <div style={{marginTop:"20px"}} className="w-[80%] h-1 bg-[#daa60b] dark:bg-yellow-700 rounded-full mb-4" />
+
     </section>
   );
 };

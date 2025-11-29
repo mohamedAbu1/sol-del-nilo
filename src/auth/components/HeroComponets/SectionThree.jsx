@@ -87,7 +87,7 @@ export default function SectionThree() {
           }}
           speed={1200} // ✅ حركة ناعمة
           loop={true} // ✅ دوران دائري مستمر
-          loopFillGroupWithBlank={true}
+          // loopFillGroupWithBlank={true}
         >
           {topTours.map((tour, index) => (
             <SwiperSlide

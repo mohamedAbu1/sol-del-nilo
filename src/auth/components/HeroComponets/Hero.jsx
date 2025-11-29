@@ -18,9 +18,9 @@ const Hero = ({ showBubble }) => {
       className="w-full h-full flex flex-col items-center justify-end md:justify-center gap-5 z-20"
     >
       <TextHero />
-      {hasMounted && showBubble && <TravelPlannerForm />}
+      <TravelPlannerForm />
       <BtnHero />
-      <LinksMidea />
+      {showBubble && <LinksMidea />}
     </section>
   );
 };

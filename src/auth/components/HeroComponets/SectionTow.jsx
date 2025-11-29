@@ -172,16 +172,32 @@ const SectionTow = () => {
 
       {/* ✅ سلايدر الوجهات */}
       <Swiper
-         spaceBetween={20}
-          slidesPerView={1}
-          modules={[Autoplay]} // ✅ هنا لازم تضيفه
-          autoplay={{
-            delay: 2000, // كل 4 ثواني
-            disableOnInteraction: false,
-          }}
-          speed={1200} // ✅ حركة ناعمة
-          loop={true} // ✅ دوران دائري مستمر
-          loopFillGroupWithBlank={true}فيه نقص
+        spaceBetween={20}
+        breakpoints={{
+          // الهواتف (أقل من 640px)
+          0: {
+            slidesPerView: 1,
+          },
+          // التابلت (من 640px إلى أقل من 1024px)
+          640: {
+            slidesPerView: 3,
+          },
+          // اللابتوب وما فوق (1024px وأكبر)
+          1024: {
+            slidesPerView: 4,
+          },
+          1400:{
+            slidesPerView: 5,
+          }
+        }}
+        modules={[Autoplay]} // ✅ هنا لازم تضيفه
+        autoplay={{
+          delay: 2000, // كل 4 ثواني
+          disableOnInteraction: false,
+        }}
+        speed={1200} // ✅ حركة ناعمة
+        loop={true} // ✅ دوران دائري مستمر
+        // loopFillGroupWithBlank={true}
         className="w-[90%] h-1/2 flex justify-center items-center"
       >
         {categories.map((card, index) => {
@@ -191,7 +207,7 @@ const SectionTow = () => {
           }).length;
 
           return (
-            <SwiperSlide key={card.id || index}>
+            <SwiperSlide key={card.id || index} style={{display:"flex" ,alignItems:"center", justifyContent:"center"}}>
               <CategoryCard
                 card={card}
                 today={today}

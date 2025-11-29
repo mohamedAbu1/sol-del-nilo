@@ -151,14 +151,14 @@ export default function ClientHome({ user }) {
           </AnimatePresence>
 
           <div className="relative z-10 flex w-full h-full">
-            <div className="flex-[0.77] h-full flex items-center justify-center px-4 relative overflow-hidden">
+            <div className="flex-[1] h-full flex items-center justify-center px-4 relative overflow-hidden">
               {showHero && (
                 <motion.div
                   initial={{ x: 0, scale: 1, rotateY: 0 }}
                   animate={
                     heroMoved
-                      ? { x: 0, scale: 0.95, rotateY: -10 }
-                      : { x: "15vw", scale: 1, rotateY: 0 }
+                      ? { x: 0, scale: 0.95, rotateY: 0 }
+                      : { x: 0, scale: 1, rotateY: 0 }
                   }
                   transition={{ duration: 1.2, ease: "easeInOut" }}
                   style={{ perspective: 1000, zIndex: 10 }}
@@ -169,7 +169,7 @@ export default function ClientHome({ user }) {
               )}
             </div>
 
-            <div className="flex-[0.3] h-full flex items-center justify-start px-4">
+            {/* <div className="flex-[0.3] h-full flex items-center justify-start px-4">
               {showBubble && (
                 <motion.div
                   initial={{ scale: 0, opacity: 0 }}
@@ -179,7 +179,7 @@ export default function ClientHome({ user }) {
                   <WelcomeMessageBubble />
                 </motion.div>
               )}
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -213,7 +213,7 @@ export default function ClientHome({ user }) {
                   : { x: 0, scale: 1, rotateY: 0 }
               }
               transition={{ duration: 1.2, ease: "easeInOut" }}
-              style={{ perspective: 1000 }}
+              style={{ perspective: 0 }}
               className="w-full h-9/12 flex items-center justify-center"
             >
               <Hero showBubble={showBubble} />

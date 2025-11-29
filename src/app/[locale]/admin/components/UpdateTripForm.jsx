@@ -34,16 +34,11 @@ const UpdateTripForm = () => {
     fetchTourById,
     populateFormFromTour,
     setTour,
+    handleUpdate,
   } = useTripsContext();
 
-  const {
-    updateTour,
-    isUpdating,
-    updateError,
-    handleUpdate,
-    handleSelect,
-    toursID,
-  } = useTourEdit();
+  const { updateTour, isUpdating, updateError, handleSelect, toursID } =
+    useTourEdit();
 
   const {
     mainImages,
@@ -168,7 +163,7 @@ const UpdateTripForm = () => {
               <Button
                 type="button"
                 variant="contained"
-                  onClick={handleUpdate}
+                onClick={handleUpdate}
                 color="primary"
                 sx={{
                   backgroundColor: "#ff9800",

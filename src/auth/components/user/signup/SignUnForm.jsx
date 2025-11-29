@@ -17,7 +17,9 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { ToastContainer, toast } from "react-toastify";
-
+import { signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -35,7 +37,13 @@ const itemVariants = {
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const containsArabic = (text) => /[\u0600-\u06FF]/.test(text);
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  // const { data: session } = useSession();
 
+  // useEffect(() => {
+  //   if (session) {
+  //     console.log("✅ بيانات المستخدم:", session.user);
+  //   }
+  // }, [session]);
 const SignUnForm = () => {
   const allowedDomains = [
     "@gmail.com",
@@ -312,6 +320,12 @@ const SignUnForm = () => {
               >
                 Create account
               </Button>
+              {/* <Button
+                onClick={() => {signIn("google", { callbackUrl: "/" });}}
+                style={{ zIndex: "9999" }}
+              >
+                Sign in with Google
+              </Button> */}
             </form>
           </motion.div>
 

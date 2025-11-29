@@ -53,6 +53,7 @@ const SectionFour = () => {
               "/assets/alex-azabache-V8zu2yXPFF8-unsplash.webp",
               "/assets/mounir-abdi-q2PA7sfj8z8-unsplash.webp",
               "/assets/chris-andrawes-15wKOQqZNt4-unsplash.webp",
+              "/assets/temps-SunriseBalloonFlight_-Colorful-hot-air--balloons….webp",
             ].map((imgSrc, index) => (
               <SwiperSlide key={index}>
                 <div className="w-full h-[85vh]">

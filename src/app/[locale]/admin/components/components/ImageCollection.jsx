@@ -7,29 +7,56 @@ import { toast } from "react-toastify";
 const ImageCollection = ({ activityImages, setActivityImages }) => {
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-    const remainingSlots = 25 - activityImages.length;
+    console.log("🟠 [handleImageChange] raw files:", files);
 
-    if (activityImages.length + files.length < 2) {
+    const remainingSlots = 25 - activityImages.length;
+    const totalAfter = activityImages.length + files.length;
+
+    if (totalAfter < 2) {
       toast.error("❌ يجب أن تختار أكثر من صورتين");
       return;
     }
 
-    const limitedFiles = files.slice(0, remainingSlots);
-    const newImages = limitedFiles.map((file) => ({
-      name: "", // الوصف أو النشاط
-      label: file.name, // اسم الملف
-      preview: URL.createObjectURL(file),
-    }));
+    const limitedFiles = files.slice(0, Math.max(0, remainingSlots));
 
-    setActivityImages((prev) => [...prev, ...newImages]);
+    const newImages = limitedFiles.map((file, idx) => {
+      const obj = {
+        name: file.name,       // اسم الصورة فقط
+        label: "",             // وصف أو اسم مخصص
+        url: `/assets/${file.name}`, // المسار المحلي للعرض والاستخدام لاحقًا
+      };
+      console.log(`🟢 [handleImageChange] newImage[${idx}]:`, obj);
+      return obj;
+    });
+
+    const nextState = [...activityImages, ...newImages];
+    console.log("🟢 [handleImageChange] next activityImages:", nextState);
+
+    setActivityImages(nextState);
   };
 
   const handleRemoveImage = (index) => {
     const imageToRemove = activityImages[index];
-    if (imageToRemove?.preview) {
-      URL.revokeObjectURL(imageToRemove.preview);
-    }
-    setActivityImages((prev) => prev.filter((_, i) => i !== index));
+    console.log("🟠 [handleRemoveImage] remove index:", index, imageToRemove);
+    const next = activityImages.filter((_, i) => i !== index);
+    console.log("🟢 [handleRemoveImage] next activityImages:", next);
+    setActivityImages(next);
+  };
+
+  const handleChangeName = (index, newName) => {
+    setActivityImages((prev) =>
+      prev.map((item, i) =>
+        i === index ? { ...item, name: newName } : item
+      )
+    );
+  };
+
+  const handleChangeLabel = (index, newLabel) => {
+    setActivityImages((prev) =>
+      prev.map((item, i) =>
+        i === index ? { ...item, label: newLabel } : item
+      )
+    );
   };
 
   return (
@@ -82,7 +109,7 @@ const ImageCollection = ({ activityImages, setActivityImages }) => {
             </Button>
 
             <img
-              src={img.preview || img.url}
+              src={img.url}
               alt={`preview-${index}`}
               style={{
                 width: "100%",
@@ -94,14 +121,7 @@ const ImageCollection = ({ activityImages, setActivityImages }) => {
 
             <TextField
               value={img.name}
-              onChange={(e) => {
-                const newName = e.target.value;
-                setActivityImages((prev) =>
-                  prev.map((item, i) =>
-                    i === index ? { ...item, name: newName } : item
-                  )
-                );
-              }}
+              onChange={(e) => handleChangeName(index, e.target.value)}
               placeholder="اسم الصورة"
               variant="outlined"
               size="small"
@@ -127,14 +147,7 @@ const ImageCollection = ({ activityImages, setActivityImages }) => {
 
             <TextField
               value={img.label}
-              onChange={(e) => {
-                const newLabel = e.target.value;
-                setActivityImages((prev) =>
-                  prev.map((item, i) =>
-                    i === index ? { ...item, label: newLabel } : item
-                  )
-                );
-              }}
+              onChange={(e) => handleChangeLabel(index, e.target.value)}
               placeholder="اسم خاص للصورة"
               variant="outlined"
               size="small"

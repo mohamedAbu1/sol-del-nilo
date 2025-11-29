@@ -29,13 +29,14 @@ const Page = () => {
   const [fullScreenOpen, setFullScreenOpen] = useState(false);
   const [shuffledImages, setShuffledImages] = useState([]);
 
+  // ✅ تحميل الصور
   useEffect(() => {
     if (tour?.tourimage) {
       setShuffledImages(tour.tourimage);
     }
   }, [tour]);
 
-  // ✅ Shuffle الصور كل دقيقة
+  // ✅ Shuffle الصور كل 30 ثانية
   useEffect(() => {
     if (!tour?.tourimage) return;
     const interval = setInterval(() => {
@@ -47,10 +48,24 @@ const Page = () => {
         }
         return newArr;
       });
-    }, 30000); // كل دقيقة
+    }, 30000);
 
     return () => clearInterval(interval);
   }, [tour]);
+
+  // ✅ سلايدر تلقائي عند فتح الصورة بالحجم الكامل
+  useEffect(() => {
+    if (!fullScreenOpen || selectedIndex === null) return;
+
+    const interval = setInterval(() => {
+      setSelectedIndex((prevIndex) => {
+        const nextIndex = (prevIndex + 1) % shuffledImages.length;
+        return nextIndex;
+      });
+    }, 3000); // كل 3 ثواني تتغير الصورة
+
+    return () => clearInterval(interval);
+  }, [fullScreenOpen, selectedIndex, shuffledImages.length]);
 
   const handleImageClick = (index) => {
     setSelectedIndex(index);
@@ -62,9 +77,19 @@ const Page = () => {
   }
 
   return (
-    <Box sx={{ padding: 4, display: "flex", flexDirection: "column", flexWrap: "wrap" }}>
+    <Box
+      sx={{
+        padding: 4,
+        display: "flex",
+        flexDirection: "column",
+        flexWrap: "wrap",
+      }}
+    >
       <div className="w-full flex flex-row items-center justify-between gap-1.5">
-        <Typography variant="h4" style={{ fontSize: width <= 1024 ? "14px" : "24px" }}>
+        <Typography
+          variant="h4"
+          style={{ fontSize: width <= 1024 ? "14px" : "24px" }}
+        >
           {tour?.title || "Pictures of the last trip"}
         </Typography>
         <Button
@@ -76,16 +101,17 @@ const Page = () => {
         </Button>
       </div>
 
+      {/* ✅ عرض الصور */}
       <ImageList variant="masonry" cols={3} gap={12}>
         {shuffledImages.map((img, index) => (
           <MotionImageListItem
             key={img.label}
-            layout   // ✅ مهم علشان أي تغيير في الترتيب يحصل بأنيمشن سلس
+            layout
             transition={{ duration: 0.8, ease: "easeInOut" }}
           >
             <Box sx={{ position: "relative" }}>
               <Image
-                src={`/assets/${img.label}`}
+                src={img.url}
                 width={800}
                 height={200}
                 alt={img.name}
@@ -100,6 +126,7 @@ const Page = () => {
                 loading="eager"
                 priority
               />
+
               <Typography
                 variant="subtitle2"
                 sx={{
@@ -115,14 +142,14 @@ const Page = () => {
                   textTransform: "capitalize",
                 }}
               >
-                {img.name}
+                {img.label}
               </Typography>
             </Box>
           </MotionImageListItem>
         ))}
       </ImageList>
 
-      {/* ✅ نافذة عرض الصورة بالحجم الكامل مع التغيير التلقائي */}
+      {/* ✅ نافذة عرض الصورة بالحجم الكامل مع السلايدر */}
       <AnimatePresence>
         {fullScreenOpen && selectedIndex !== null && (
           <motion.div
@@ -147,8 +174,8 @@ const Page = () => {
             onClick={() => setFullScreenOpen(false)}
           >
             <motion.img
-              key={shuffledImages[selectedIndex].label}
-              src={`/assets/${shuffledImages[selectedIndex].label}`}
+              key={shuffledImages[selectedIndex].name}
+              src={shuffledImages[selectedIndex].url}
               alt={shuffledImages[selectedIndex].name}
               initial={{ x: 100, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}

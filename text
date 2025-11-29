@@ -2218,3 +2218,168 @@ export const useAppQueryContext = () => useContext(AppQueryContext);
 //     return NextResponse.json({ error: "فشل في حذف المستخدم" }, { status: 500 });
 //   }
 // }
+
+
+
+
+
+
+
+
+
+   <Pagination
+          count={Math.ceil(sortedTours.length / itemsPerPage)}
+          page={currentPage}
+          onChange={(e, value) => setCurrentPage(value)}
+          variant="outlined"
+          shape="rounded"
+          size="medium"
+          sx={{
+            alignSelf: "center",
+            mb: 4,
+            "& .MuiPaginationItem-root": {
+              fontWeight: 600,
+              borderRadius: "12px",
+              border: `1px solid ${theme === "dark" ? "#444" : "#ccc"}`,
+              color: theme === "dark" ? "#eee" : "#333",
+              backgroundColor: theme === "dark" ? "#1e1e1e" : "#fff",
+              transition: "all 0.3s ease",
+              "&:hover": {
+                backgroundColor: theme === "dark" ? "#333" : "#f0f0f0",
+              },
+              "&.Mui-selected": {
+                backgroundColor: theme === "dark" ? "#ffb300" : "#ffc107",
+                color: theme === "dark" ? "#212121" : "#fff",
+                borderColor: theme === "dark" ? "#ffb300" : "#ffc107",
+                boxShadow:
+                  theme === "dark"
+                    ? "0 0 10px rgba(255,179,0,0.4)"
+                    : "0 0 10px rgba(255,193,7,0.4)",
+              },
+            },
+          }}
+        />
+
+
+
+
+
+
+
+
+
+        
+          // const handleSubmit = async (e) => {
+          //   e.preventDefault();
+          //   if (!isValid()) return;
+        
+          //   // ✅ تحقق من وجود الرحلة قبل التعديل
+          //   if (!tour || !tour.id) {
+          //     toast.error("❌ لا توجد رحلة محددة للتعديل");
+          //     return;
+          //   }
+        
+          //   console.log("🟠 [handleSubmit] includes before submission:", formData.includes);
+          //   console.log("🟠 [handleSubmit] tripprogram before submission:", formData.tripprogram);
+          //   console.log("🔥 mainImages:", mainImages);
+          //   console.log("🔥 activityImages:", activityImages);
+        
+          //   const imagesData = prepareImagesForSubmission();
+          //   if (!imagesData) return;
+        
+          //   setIsSubmitting(true);
+        
+          //   try {
+          //     // ✅ تجهيز الصور الرئيسية (اسم + label + مسار ثابت)
+          //     const uploadedMainImages = imagesData.image.map((img) => ({
+          //       name: img.name,
+          //       label: img.label,
+          //       url: `/assets/${img.name}`,
+          //     }));
+        
+          //     // ✅ تعديل بيانات الرحلة
+          //     const { data: updatedTour, error: tourError } = await supabase
+          //       .from("tour")
+          //       .update({
+          //         title: formData.title,
+          //         description: formData.description,
+          //         price: Number(formData.price),
+          //         TripDuration: formData.TripDuration,
+          //         DayPeople: `${formData.people}`,
+          //         cityId: formData.cityId,
+          //         categoryId: formData.categoryId,
+          //         rival: formData.rival,
+          //         theDate: formData.theDate,
+          //         image: uploadedMainImages,
+          //         includes: formData.includes,       // ✅ إرسال المرفقات
+          //         tripprogram: formData.tripprogram, // ✅ إرسال برنامج الرحلة
+          //       })
+          //       .eq("id", tour.id) // ✅ تعديل الرحلة الحالية
+          //       .select()
+          //       .single();
+        
+          //     if (tourError) {
+          //       toast.error("❌ فشل تعديل الرحلة");
+          //       setTourError(tourError.message);
+          //       return;
+          //     }
+        
+          //     console.log("📤 includes sent:", formData.includes);
+          //     console.log("📤 tripprogram sent:", formData.tripprogram);
+        
+          //     // ✅ حذف صور النشاطات القديمة المرتبطة بالرحلة
+          //     await supabase.from("tourimage").delete().eq("tourId", tour.id);
+        
+          //     // ✅ تجهيز صور النشاطات الجديدة
+          //     const tourimageData = imagesData.tourimage.map((img) => ({
+          //       name: img.name,
+          //       label: img.label,
+          //       url: `/assets/${img.name}`,
+          //       tourId: tour.id,
+          //       created_at: new Date().toISOString(),
+          //     }));
+        
+          //     console.log("📤 tourimageData قبل الإدخال:", tourimageData);
+        
+          //     if (tourimageData.length > 0) {
+          //       const { error: insertError } = await supabase
+          //         .from("tourimage")
+          //         .insert(tourimageData);
+        
+          //       if (insertError) {
+          //         console.error("❌ خطأ في إدخال tourimage:", insertError);
+          //       } else {
+          //         console.log("✅ تم إدخال صور النشاطات الجديدة بنجاح");
+          //       }
+          //     }
+        
+          //     // ✅ بعد نجاح تعديل الرحلة
+          //     toast.success("✅ تم تعديل الرحلة بنجاح");
+          //     setTourError(null);
+        
+          //     // ✅ إعادة تهيئة الحقول
+          //     setMainImages([]);
+          //     setActivityImages([]);
+          //     setFormData({
+          //       title: "",
+          //       description: "",
+          //       price: "",
+          //       TripDuration: "",
+          //       people: "1",
+          //       categoryId: "",
+          //       cityId: "",
+          //       rival: "",
+          //       theDate: "",
+          //       image: [],
+          //       tripprogram: [{ time: "", program: "" }],
+          //       includes: [{ text: "" }],
+          //     });
+          //   } catch (err) {
+          //     console.error(err);
+          //     toast.error("❌ حدث خطأ غير متوقع");
+          //     setTourError(err.message);
+          //   }
+        
+          //   setIsSubmitting(false);
+          // };
+        

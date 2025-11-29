@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import { LocationOn, Category, Event } from "@mui/icons-material";
 import { useTripsContext } from "@/context/TripsContext";
 import { useAppQueryContext } from "@/context/AppQueryContext";
+import { toast } from "react-toastify"; // ✅ لو مش موجود
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 export default function TravelPlannerForm() {
   const { cities, categories } = useTripsContext();
@@ -42,7 +43,38 @@ export default function TravelPlannerForm() {
   const [date, setDate] = useState("");
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const today = new Date().toISOString().split("T")[0];
+
+  const validateFields = () => {
+    if (!selectedDestinationId || !selectedDestinationId.name) {
+      toast.error("❌ برجاء اختيار الوجهة (Destination)");
+      return false;
+    }
+
+    if (!duration) {
+      toast.error("❌ برجاء اختيار مدة الرحلة (Duration)");
+      return false;
+    }
+
+    if (!selectedCategories) {
+      toast.error("❌ برجاء اختيار الفئة (Category)");
+      return false;
+    }
+
+    if (!date) {
+      toast.error("❌ برجاء اختيار التاريخ (Date)");
+      return false;
+    }
+
+    if (!priceRange || priceRange.length !== 2) {
+      toast.error("❌ برجاء تحديد نطاق السعر (Price Range)");
+      return false;
+    }
+
+    return true;
+  };
+
   const handleSearch = () => {
+    if (!validateFields()) return; // ✅ يمنع البحث لو في حقل ناقص
     const query = new URLSearchParams({
       destination: selectedDestinationId.name || "", // ✅ استخدم id فقط
       duration: duration.toString(),
@@ -102,15 +134,7 @@ export default function TravelPlannerForm() {
             InputLabelProps={{ style: { color: "#f5f5f5" } }}
             InputProps={{
               style: { color: "#ffffff" },
-              // startAdornment: (
-              //   <InputAdornment
-              //     position="start"
-              //     sx={{ display: { xs: "inline-flex", sm: "none" } }}
-              //   >
-              //     <LocationOn sx={{ color: "#ff9800" }} />
-              //   </InputAdornment>
-              // ),
-            }} 
+            }}
             SelectProps={{
               IconComponent: () => (
                 <svg
@@ -436,6 +460,13 @@ export default function TravelPlannerForm() {
               onClick={handleSearch}
               variant="contained"
               size="large"
+              disabled={
+                !selectedDestinationId ||
+                !duration ||
+                !selectedCategories ||
+                !date ||
+                !priceRange
+              }
               sx={{
                 backgroundColor: "#ff9800",
                 color: "#fff",

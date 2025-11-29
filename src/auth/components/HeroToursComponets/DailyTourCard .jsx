@@ -51,7 +51,11 @@ const DailyTourCard = ({ tour, themee, viewMode }) => {
       {/* ✅ صورة الرحلة */}
       <Box
         component="img"
-        src={`/assets/${tour.image[0].name}`}
+        src={
+          tour.image?.[0]?.name
+            ? `/assets/${tour.image[0].name}`
+            : "/assets/default.jpg" // ✅ صورة افتراضية لو مفيش صورة
+        }
         alt={tour.title}
         sx={{
           width: isGrid ? "100%" : "40%",

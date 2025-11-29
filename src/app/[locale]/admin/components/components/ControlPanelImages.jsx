@@ -19,22 +19,15 @@ const ControlPanelImages = ({ mainImages, setMainImages }) => {
 
     const limitedFiles = files.slice(0, remainingSlots);
     const newImages = limitedFiles.map((file) => ({
-      name: file.name,
-      label: "",
-      url: URL.createObjectURL(file),
-      file,
+      name: file.name,                // اسم الصورة
+      label: "",                      // وصف أو اسم مخصص
+      url: `/assets/${file.name}`,    // ✅ المسار المحلي لاستخدامه لاحقًا
     }));
-    if (
-      mainImages.length + files.length > 10 ||
-      mainImages.length + files.length < 2
-    ) {
-      toast.error("❌ يجب اختيار ما بين 2 إلى 10 صورة.");
-      return;
-    }
 
     const updatedImages = [...mainImages, ...newImages];
     setMainImages(updatedImages); // للعرض
   };
+
   return (
     <>
       <Box>
@@ -69,7 +62,6 @@ const ControlPanelImages = ({ mainImages, setMainImages }) => {
                   size="small"
                   onClick={() => {
                     setMainImages((prev) => prev.filter((_, i) => i !== index));
-                    URL.revokeObjectURL(img.url);
                   }}
                   sx={{
                     position: "absolute",

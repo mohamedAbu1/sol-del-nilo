@@ -313,6 +313,9 @@ export const AppQueryContextProvider = ({ children }) => {
     return acc;
   }, {});
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  const selectedCity = selectedDestinations[0] || cityFromQuery || "";
+
+  const selectedType = selectedCategories[0] || categoryFromQuery || "";
 
   return (
     <AppQueryContext.Provider
@@ -360,6 +363,8 @@ export const AppQueryContextProvider = ({ children }) => {
         itemsPerPage,
         searchText,
         setDuration,
+        selectedCity,
+        selectedType,
         duration,
         date,
         selectedDestinationId,

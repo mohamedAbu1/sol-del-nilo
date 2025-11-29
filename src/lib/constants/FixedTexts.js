@@ -144,7 +144,7 @@ export const desktopImages = [
   "/assets/_1402__8989_slider3.webp",
 ];
 export const desktopImagesMB = [
-  "/assets/_12294_slider2.webp",
+  "/assets/temps-SunriseBalloonFlight_-Colorful-hot-air--balloons….webp",
   "/assets/_8989_slider1.webp",
   "/assets/548898267_18083849644930067_2023880468351303706_n.webp",
   "/assets/553312854_18084731197930067_1648342695818561037_n.webp",
@@ -153,21 +153,21 @@ export const desktopImagesMB = [
 
 export const GetTours = (t) => [
   {
-    title: "Chery Tiggo 3 2025",
+    title: "SEDAN",
     description: t("SCSD"),
     duration: "1 Day",
-    image: "/assets/Copilot_20251013_105157.webp",
+    image: "/assets/Copilot_20251126_103743.webp",
   },
   {
-    title: "Toyota Hiace",
+    title: "VAN",
     description: t("SCSD2"),
     duration: "5 Days",
-    image: "/assets/Copilot_20251013_110329.webp",
+    image: "/assets/BCO.e442b673-50cf-46ac-9d95-18c90ba23bfc.webp",
   },
   {
-    title: "Toyota Coaster",
+    title: "COASTER",
     description: t("SCSD3"),
     duration: "4 Days",
-    image: "/assets/Copilot_20251013_110540.webp",
+    image: "/assets/Copilot_20251126_103242.webp",
   },
 ];

@@ -8,37 +8,30 @@ export const TourImagesProvider = ({ children }) => {
   const [mainImages, setMainImages] = useState([]);
   const [activityImages, setActivityImages] = useState([]);
 
-  // ✅ استخراج الصور بصيغة { name, label }
-  const extractImageObjects = (imagesArray) => {
-    console.log("📦 بدء استخراج الصور من المصفوفة:", imagesArray);
-
-    const extracted = imagesArray.map((img, index) => {
-      const result = {
-        name: img.name,
-        label: img.label?.trim() || "صورة بدون وصف",
-      };
-      console.log(`📸 [${index}] تم استخراج:`, result);
-      return result;
-    });
-
-    console.log("✅ تم استخراج الصور:", extracted);
-    return extracted;
-  };
-
-  // ✅ تجهيز الصور للإرسال بدون روابط أو ملفات
+  // ✅ تجهيز الصور للإرسال (تخزين الاسم فقط واستخدامه لاحقًا عبر /assets/اسم-الصورة)
   const prepareImagesForSubmission = () => {
     console.log("🚀 بدء تجهيز الصور للإرسال...");
     console.log("🖼️ الصور الرئيسية:", mainImages);
     console.log("🎯 صور الأنشطة:", activityImages);
 
     if (mainImages.length < 4 || mainImages.length > 20) {
-      console.warn("⚠️ عدد الصور الرئيسية غير مناسب:", mainImages.length);
       toast.error("❌ يجب اختيار ما بين 4 إلى 12 صورة للرحلة.");
       return null;
     }
 
-    const image = extractImageObjects(mainImages);
-    const tourimage = extractImageObjects(activityImages);
+    // الصور الرئيسية
+    const image = mainImages.map((img) => ({
+      name: img.name,
+      label: img.label?.trim() || "صورة بدون وصف",
+      url: `/assets/${img.name}`, // ✅ المسار المحلي
+    }));
+
+    // صور الأنشطة
+    const tourimage = activityImages.map((img) => ({
+      name: img.name,
+      label: img.label?.trim() || "صورة بدون وصف",
+      url: `/assets/${img.name}`, // ✅ المسار المحلي
+    }));
 
     const result = { image, tourimage };
     console.log("📤 الصور الجاهزة للإرسال:", result);

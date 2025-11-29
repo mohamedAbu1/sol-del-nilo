@@ -135,9 +135,10 @@ export const TourEditProvider = ({ children }) => {
 
       // إدراج الصور الجديدة
       const tourimageWithMeta = imagesData.tourimage.map((img) => ({
-        url: `${DOMAIN}/assets/${img.label}`,
-        label: img.name?.trim() || "صورة بدون وصف",
-        name: img.label,
+        name: img.name, // اسم الملف
+        label: img.label, // الوصف
+        url: `/assets/${img.name}`, // المسار المحلي
+
         tourId: toursID,
         created_at: new Date().toISOString(),
       }));

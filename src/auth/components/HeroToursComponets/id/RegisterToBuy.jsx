@@ -15,6 +15,7 @@ const RegisterToBuy = () => {
   return (
     <div
       ref={ref}
+      style={{ marginBottom: "20px" }}
       className="w-full flex items-center justify-center px-4 py-10"
     >
       <motion.div
@@ -30,7 +31,19 @@ const RegisterToBuy = () => {
         </h1>
         <Link
           href="/login"
-          className="text-[clamp(1rem,2.5vw,1.4rem)] hover:text-black transition-colors duration-300"
+          className="
+    inline-block
+    px-6 py-3
+    bg-[#ffb300]
+    text-white
+    font-semibold
+    rounded-lg
+    text-[clamp(1rem,2.5vw,1.4rem)]
+    transition-all duration-300
+    hover:bg-[#ffca28]
+    shadow-md
+  "
+          style={{ marginBottom: "5px", padding: "5px" }}
         >
           Login
         </Link>

@@ -16,11 +16,11 @@ const MainCardSC = ({ user }) => {
   const tour = tours.find((t) => t.id === tourId);
   const { width } = useScreenSize(); // ✅ يجب أن يبقى هنا
   const [tourGuidePrice, setTourGuidePrice] = useState({
-    Spanish: 20,
-    English: 15,
-    German: 25,
-    French: 35,
-    Italian: 45,
+    Spanish: 50,
+    English: 50,
+    German: 50,
+    French: 50,
+    Italian: 50,
   });
   const [guidePriceTotal, setGuidePriceTotal] = useState(0);
   const [guideLanguages, setGuideLanguages] = useState({
@@ -68,10 +68,11 @@ const MainCardSC = ({ user }) => {
       { key: "4", label: "Guided access to Tutankhamun’s tomb 🏛️", price: 600 },
     ],
     Aswan: [
-      { key: "1", label: "Felucca ride to Botanical Garden 🚤", price: 500 },
-      { key: "2", label: "Nile dinner cruise 🛶", price: 700 },
-      { key: "3", label: "Khan El Khalili food walk 🛍️", price: 500 },
-      { key: "4", label: "Cultural show 🎭", price: 700 },
+      { key: "1", label: "Nubian village 🏘️", price: 50 },
+      { key: "2", label: "Obelisk and High Dam 🗿", price: 60 },
+      { key: "3", label: "Elephantine and Botanical Island 🌴", price: 50 },
+      { key: "4", label: "Nubian Museum 🏛️", price: 40 },
+      { key: "5", label: "Sound and light of the elephant 🎆", price: 60 },
     ],
     Giza: [
       { key: "1", label: "🐪 Camel ride around pyramids", price: 800 },
@@ -119,8 +120,8 @@ const MainCardSC = ({ user }) => {
 
   const nanValue = parseInt(bookingData.people) || 1;
   const tourPrice = parseFloat(tour?.price || "0");
-  const basePrice = tourPrice * nanValue;
-
+  // const basePrice = tourPrice * nanValue;
+  const basePrice = tourPrice;
   const selectedOptions = cityOptions[city] || [];
   const extrasFromSelectedOptions = [...selectedOptions, ...selectedOptions2]
     .filter((option) => bookingData[option.key])
@@ -175,7 +176,12 @@ const MainCardSC = ({ user }) => {
 
       {user &&
         (hasBooked ? (
-          <YourBookingDetails tour={tour} user={user} hasBooked={hasBooked} setHasBooked={setHasBooked}/>
+          <YourBookingDetails
+            tour={tour}
+            user={user}
+            hasBooked={hasBooked}
+            setHasBooked={setHasBooked}
+          />
         ) : (
           <PaymentForm
             tour={tour}

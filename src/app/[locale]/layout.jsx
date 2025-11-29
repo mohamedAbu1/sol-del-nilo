@@ -9,6 +9,7 @@ import { TripContextProvider } from "@/context/TripContext";
 import { AppQueryContextProvider } from "@/context/AppQueryContext";
 import { TourEditProvider } from "@/context/TourEditContext";
 import { TourImagesProvider } from "@/context/TourImagesContext";
+import { SessionProvider } from "next-auth/react";
 
 // ✅ تحميل الرسائل حسب اللغة
 export function generateStaticParams() {

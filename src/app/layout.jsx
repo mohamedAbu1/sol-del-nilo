@@ -1,4 +1,5 @@
 // app/layout.tsx
+import { SessionProvider } from "next-auth/react";
 import "../styles/globals.css";
 import { Geist, Geist_Mono, Montserrat } from "next/font/google";
 
@@ -21,6 +22,7 @@ export const metadata = {
   },
 };
 import { Prata } from "next/font/google";
+import { Providers } from "./providers";
 
 const prata = Prata({
   subsets: ["latin"],
@@ -35,7 +37,7 @@ export default function RootLayout({ children, params }) {
       // dir={lng === "ar" ? "rtl" : "ltr"}
       className="geist-font montserrat-font"
     >
-      <body suppressHydrationWarning={true} className="prata.className">{children}</body>
+      <body suppressHydrationWarning={true} className="prata.className"><Providers>{children}</Providers></body>
     </html>
   );
 }

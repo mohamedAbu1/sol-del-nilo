@@ -4,109 +4,174 @@ import "react-clock/dist/Clock.css";
 import { TextField, Button } from "@mui/material";
 import { toast } from "react-toastify";
 
-// ✅ دالة التحقق من وجود حروف عربية
+// ✅ منع اللغة العربية
 const containsArabic = (text) => /[\u0600-\u06FF]/.test(text);
 
-const TripProgram = ({ programs, setPrograms }) => {
-  // ✅ تحديث قيمة الحقول مع منع اللغة العربية في "النشاط"
-  const handleChange2 = (index, field, value) => {
+const TripProgram = ({ tripDuration, programs, setPrograms }) => {
+  // ✅ تحديث قيمة الحقول
+  const handleChange = (dayIndex, programIndex, field, value) => {
     const updated = [...programs];
-    updated[index][field] = value;
+
+    if (tripDuration > 1) {
+      updated[dayIndex].programs[programIndex][field] = value;
+    } else {
+      updated[programIndex][field] = value;
+    }
+
     setPrograms(updated);
   };
 
-  // ✅ إضافة مجموعة جديدة من الحقول
-  const handleAdd = () => {
-    setPrograms([...programs, { time: "", program: "" }]);
+  // ✅ إضافة نشاط جديد
+  const handleAddProgram = (dayIndex) => {
+    const updated = [...programs];
+
+    if (tripDuration > 1) {
+      updated[dayIndex].programs.push({ time: "", program: "" });
+    } else {
+      updated.push({ time: "", program: "" });
+    }
+
+    setPrograms(updated);
   };
 
   return (
-    <div className="space-y-4">
-      {programs.map((item, index) => (
-        <div key={index} className="flex gap-4">
-          {/* 🕒 حقل الوقت */}
-          <TextField
-            label="الوقت"
-            type="time"
-            value={item.time || ""}
-            onChange={(e) => handleChange2(index, "time", e.target.value)}
-            InputLabelProps={{ shrink: true }}
-            sx={{
-              width: "18%",
-              input: {
-                color: "#d4a85f",
-                fontSize: "18px",
-                fontWeight: "bold",
-                fontFamily: "Cairo, sans-serif",
-              },
-              "& .MuiOutlinedInput-root": {
-                "& fieldset": { borderColor: "#ff9800" },
-                "&:hover fieldset": { borderColor: "#ff9800" },
-                "&.Mui-focused fieldset": {
-                  borderColor: "#d4a85f",
-                  borderWidth: "2px",
-                },
-              },
-              "& .MuiInputLabel-root": { color: "#d4a85f" },
-              "& .MuiInputLabel-root.Mui-focused": {
-                color: "#ff9800",
-              },
-            }}
-          />
+    <div className="space-y-10">
+      {/* ✅ حالة يوم واحد */}
+      {tripDuration <= 1 && (
+        <div className="space-y-4">
+          {programs.map((item, index) => (
+            <div key={index} className="flex gap-4">
+              {/* الوقت */}
+              <TextField
+                label="الوقت"
+                type="time"
+                value={item.time}
+                onChange={(e) =>
+                  handleChange(null, index, "time", e.target.value)
+                }
+                InputLabelProps={{ shrink: true }}
+                sx={{
+                  width: "18%",
+                  input: {
+                    color: "#d4a85f",
+                    fontSize: "18px",
+                    fontWeight: "bold",
+                    fontFamily: "Cairo, sans-serif",
+                  },
+                }}
+              />
 
-          {/* 📝 حقل النشاط مع منع اللغة العربية */}
-          <TextField
-            label="النشاط"
-            type="text"
-            value={item.program || ""}
-            onInput={(e) => {
-              const value = e.target.value;
-              const cleanValue = value.replace(/[\u0600-\u06FF]/g, "");
-              if (value !== cleanValue) {
-                toast.error("❌ يمنع استخدام اللغة العربية");
-              }
-              handleChange2(index, "program", cleanValue);
-            }}
+              {/* النشاط */}
+              <TextField
+                label="النشاط"
+                type="text"
+                value={item.program}
+                onInput={(e) => {
+                  const value = e.target.value;
+                  const cleanValue = value.replace(/[\u0600-\u06FF]/g, "");
+                  if (value !== cleanValue)
+                    toast.error("❌ يمنع استخدام العربية");
+                  handleChange(null, index, "program", cleanValue);
+                }}
+                sx={{
+                  width: "80%",
+                  input: {
+                    color: "#d4a85f",
+                    fontSize: "18px",
+                    fontWeight: "bold",
+                    fontFamily: "Cairo, sans-serif",
+                  },
+                }}
+              />
+            </div>
+          ))}
+
+          <Button
+            onClick={() => handleAddProgram(null)}
+            variant="contained"
             sx={{
-              width: "80%",
-              input: {
-                color: "#d4a85f",
-                fontSize: "18px",
-                fontWeight: "bold",
-                fontFamily: "Cairo, sans-serif",
-              },
-              "& .MuiOutlinedInput-root": {
-                "& fieldset": { borderColor: "#d4a85f" },
-                "&:hover fieldset": { borderColor: "#ff9800" },
-                "&.Mui-focused fieldset": {
-                  borderColor: "#ff9800",
-                  borderWidth: "2px",
-                },
-              },
-              "& .MuiInputLabel-root": { color: "#d4a85f" },
-              "& .MuiInputLabel-root.Mui-focused": {
-                color: "#ff9800",
-              },
+              mt: "10px",
+              backgroundColor: "#ff9800",
+              fontWeight: "bold",
+              fontSize: "16px",
+              fontFamily: "Cairo, sans-serif",
+              "&:hover": { backgroundColor: "#d4a85f" },
             }}
-          />
+          >
+            ➕ إضافة نشاط جديد
+          </Button>
         </div>
-      ))}
+      )}
 
-      {/* ➕ زر إضافة نشاط جديد */}
-      <Button
-        onClick={handleAdd}
-        variant="contained"
-        sx={{
-          mt: "10px",
-          backgroundColor: "#ff9800",
-          fontWeight: "bold",
-          fontSize: "16px",
-          fontFamily: "Cairo, sans-serif",
-          "&:hover": { backgroundColor: "#d4a85f" },
-        }}
-      >
-        ➕ إضافة نشاط جديد
-      </Button>
+      {/* ✅ حالة عدة أيام */}
+      {tripDuration > 1 &&
+        programs.map((day, dayIndex) => (
+          <div key={dayIndex} className="space-y-4">
+            <h2 className="text-2xl font-bold text-[#d4a85f]">Day {day.day}</h2>
+
+            {day.programs.map((item, programIndex) => (
+              <div key={programIndex} className="flex gap-4">
+                {/* الوقت */}
+                <TextField
+                  label="الوقت"
+                  type="time"
+                  value={item.time}
+                  onChange={(e) =>
+                    handleChange(dayIndex, programIndex, "time", e.target.value)
+                  }
+                  InputLabelProps={{ shrink: true }}
+                  sx={{
+                    width: "18%",
+                    input: {
+                      color: "#d4a85f",
+                      fontSize: "18px",
+                      fontWeight: "bold",
+                      fontFamily: "Cairo, sans-serif",
+                    },
+                  }}
+                />
+
+                {/* النشاط */}
+                <TextField
+                  label="النشاط"
+                  type="text"
+                  value={item.program}
+                  onInput={(e) => {
+                    const value = e.target.value;
+                    const cleanValue = value.replace(/[\u0600-\u06FF]/g, "");
+                    if (value !== cleanValue)
+                      toast.error("❌ يمنع استخدام العربية");
+                    handleChange(dayIndex, programIndex, "program", cleanValue);
+                  }}
+                  sx={{
+                    width: "80%",
+                    input: {
+                      color: "#d4a85f",
+                      fontSize: "18px",
+                      fontWeight: "bold",
+                      fontFamily: "Cairo, sans-serif",
+                    },
+                  }}
+                />
+              </div>
+            ))}
+
+            <Button
+              onClick={() => handleAddProgram(dayIndex)}
+              variant="contained"
+              sx={{
+                mt: "10px",
+                backgroundColor: "#ff9800",
+                fontWeight: "bold",
+                fontSize: "16px",
+                fontFamily: "Cairo, sans-serif",
+                "&:hover": { backgroundColor: "#d4a85f" },
+              }}
+            >
+              ➕ إضافة نشاط جديد لليوم {day.day}
+            </Button>
+          </div>
+        ))}
     </div>
   );
 };

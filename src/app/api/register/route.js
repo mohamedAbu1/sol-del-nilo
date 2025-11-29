@@ -1,9 +1,9 @@
-
 import { supabase } from "@/lib/supabaseClient";
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
-import { UserSchema } from "@/lib/utils/CheckSchema"; // Zod للتحقق من صحة البيانات
-import { setCookie, generateToken } from "@/lib/utils/JWToken"; // توليد وتخزين JWT
+import { UserSchema } from "@/lib/utils/CheckSchema"; 
+import { setCookie } from "@/lib/utils/JWToken"; 
+import crypto from "crypto"; // لإنتاج باسورد وهمي عند الحاجة
 
 export async function POST(request) {
   try {
@@ -20,7 +20,12 @@ export async function POST(request) {
       );
     }
 
-    const { name, email, password } = parsed.data;
+    let { name, email, password } = parsed.data;
+
+    // ✅ لو المستخدم جاء من Google → نولّد باسورد وهمي
+    if (!password || password.trim() === "") {
+      password = crypto.randomUUID(); // باسورد وهمي
+    }
 
     // ✅ التحقق من وجود المستخدم مسبقًا
     const { data: existingUser, error: findError } = await supabase
@@ -69,7 +74,6 @@ export async function POST(request) {
       );
     }
 
-    // ✅ التحقق من وجود بيانات بعد الإدخال
     if (!newUser || !newUser[0]) {
       console.error("❌ لم يتم استرجاع بيانات المستخدم بعد الإدخال");
       return NextResponse.json(
@@ -87,7 +91,6 @@ export async function POST(request) {
       isActive: newUser[0].isActive,
     };
 
-    // ✅ تخزين JWT في الكوكيز
     const cookie = setCookie(payload);
 
     const response = NextResponse.json(
@@ -98,7 +101,6 @@ export async function POST(request) {
       { status: 200 }
     );
 
-    // ✅ التحقق من الكوكي قبل إضافته
     if (cookie) {
       response.headers.set("Set-Cookie", cookie);
     } else {

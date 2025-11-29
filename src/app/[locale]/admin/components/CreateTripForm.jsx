@@ -24,7 +24,7 @@ const CreateTripForm = () => {
     setFormData,
     handleChange,
     handleProgramChange,
-    handleSubmit,
+    handleCreate,
     isSubmitting,
     cities,
     categories,
@@ -39,13 +39,13 @@ const CreateTripForm = () => {
   } = useTourImages();
 
   // ✅ إرسال النموذج مع الصور الجاهزة
-  const handleCreate = async (e) => {
+  const handleCreatea = async (e) => {
     e.preventDefault();
 
     const imagesData = prepareImagesForSubmission();
     if (!imagesData) return;
 
-    await handleSubmit(e, imagesData); // تعديل handleSubmit لقبول الصور
+    await handleCreate(e, imagesData); // تعديل handleSubmit لقبول الصور
   };
 
   return (
@@ -77,38 +77,36 @@ const CreateTripForm = () => {
             إنشاء رحلة جديدة
           </Typography>
 
-          <form onSubmit={handleCreate}>
+          <form onSubmit={handleCreatea}>
             <Stack spacing={2}>
               <TopOfTheControlPanel2
                 formData={formData}
                 handleChange={handleChange}
                 setFormData={setFormData}
               />
-
               <ControlPanelImages
                 mainImages={mainImages}
                 setMainImages={setMainImages}
               />
-
               <ImageCollection
                 activityImages={activityImages}
                 setActivityImages={setActivityImages}
               />
-
               <TripProgram
+                tripDuration={Number(formData.TripDuration)}
                 programs={formData.tripprogram}
-                setPrograms={handleProgramChange}
+                setPrograms={(p) =>
+                  setFormData({ ...formData, tripprogram: p })
+                }
               />
-
+              
               <TourIncludes
                 includes={formData.includes}
                 setIncludes={(data) =>
                   setFormData((prev) => ({ ...prev, includes: data }))
                 }
               />
-
               <Preparation formData={formData} handleChange={handleChange} />
-
               <BelowTheControlPanel
                 cities={cities}
                 categories={categories}
@@ -116,7 +114,6 @@ const CreateTripForm = () => {
                 cityId={formData.cityId}
                 handleChange={handleChange}
               />
-
               <Button
                 type="submit"
                 variant="contained"

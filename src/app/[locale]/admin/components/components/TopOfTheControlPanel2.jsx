@@ -218,16 +218,29 @@ const TopOfTheControlPanel2 = ({ formData, handleChange, setFormData }) => {
           type="text" // نستخدم "text" للتحكم الكامل في الإدخال
           value={formData.TripDuration || ""}
           onChange={(e) => {
-            // إزالة أي رموز أو حروف غير رقمية
             const cleaned = e.target.value.replace(/[^0-9]/g, "");
+            const limited = cleaned.slice(0, 2);
 
-            // تحديد الحد الأقصى (اختياري)
-            const limited = cleaned.slice(0, 2); // مثلًا لا يزيد عن رقمين
+            const days = Number(limited);
 
-            setFormData((prev) => ({
-              ...prev,
-              TripDuration: limited, // تخزين كنص رقمي فقط
-            }));
+            setFormData((prev) => {
+              let updatedProgram;
+
+              if (days <= 1) {
+                updatedProgram = [{ id: 1, time: "", program: "" }];
+              } else {
+                updatedProgram = Array.from({ length: days }, (_, index) => ({
+                  day: index + 1,
+                  programs: [{ time: "", program: "" }],
+                }));
+              }
+
+              return {
+                ...prev,
+                TripDuration: limited,
+                tripprogram: updatedProgram,
+              };
+            });
           }}
           inputProps={{
             inputMode: "numeric",

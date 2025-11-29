@@ -20,7 +20,7 @@ const AnimatedPictures = () => {
       setActiveIndex((prevIndex) =>
         prevIndex === tour.image.length - 1 ? 0 : prevIndex + 1
       );
-    }, 5000); // مدة التبديل بالمللي ثانية
+    }, 3000); // مدة التبديل بالمللي ثانية
 
     return () => clearInterval(interval); // تنظيف عند الخروج
   }, [tour.image.length]);

@@ -17,6 +17,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import PlaceName from "@/auth/components/HeroToursComponets/id/PlaceName";
 import CategoryIcon from "@mui/icons-material/Category";
 import MapIcon from "@mui/icons-material/Map";
+import CheckIcon from "@mui/icons-material/Check";
 const AnimatedSection = ({ children }) => {
   const ref = useRef(null);
   const [hasAnimated, setHasAnimated] = useState(false);
@@ -90,11 +91,18 @@ const InformationCard = ({
     "Abu Simbel",
     "Valley of the Kings",
     "Hatshepsut",
+    "Pyramids",
+    "Edfu",
+    "the Sphinx",
+    "Egyptian Museum",
+    "the Catacombs of Kom El Shoqafa",
+    "Qaitbay",
+    "Lighthouse of Alexandria,",
   ];
 
   const parseDescription = (text) => {
     let parts = text.split(
-      /(Philae Temple|Philae|Hatshepsut|Karnak Temple|Karnak|sphinx|Luxor Temple|Luxor|Valley of the Kings|Abu Simbel Temple|Abu Simbel)/g
+      /(Philae Temple|Lighthouse of Alexandria|Philae|Qaitbay|the Catacombs of Kom El Shoqafa|Egyptian Museum|Hatshepsut|the Sphinx|Pyramids|Edfu|Karnak Temple|Karnak|sphinx|Luxor Temple|Luxor|Valley of the Kings|Abu Simbel Temple|Abu Simbel)/g
     ); // Regex يلتقط أسماء الأماكن
     return parts.map((part, idx) => {
       if (archaeologicalPlaces.includes(part.trim())) {
@@ -179,12 +187,14 @@ const InformationCard = ({
       <Dividering />
       <Dividering />
       <AnimatedPictures />
-
       <Dividering2 />
       <Dividering2 />
       <Dividering2 />
       <AnimatedSection>
-        <div style={{padding:"20px"}} className="w-full flex flex-col md:flex-row items-center justify-around gap-4">
+        <div
+          style={{ padding: "20px" }}
+          className="w-full flex flex-col md:flex-row items-center justify-around gap-4"
+        >
           <div className="flex flex-col w-full md:w-1/2">
             <h1
               style={{
@@ -400,11 +410,9 @@ const InformationCard = ({
           )}
         </div>
       </AnimatedSection>
-
       <Dividering2 />
       <Dividering2 />
       <Dividering2 />
-
       <AnimatedSection>
         <div
           style={{ marginTop: "35px" }}
@@ -514,10 +522,10 @@ const InformationCard = ({
                         e.currentTarget.style.color = "initial";
                       }}
                     >
-                      <FaCircle
+                      <CheckIcon
                         style={{
                           color: "#FF9800",
-                          fontSize: "10px",
+                          fontSize: "24px",
                           transition: "color 0.3s ease",
                         }}
                       />

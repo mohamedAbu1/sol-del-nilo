@@ -898,6 +898,11 @@ body {
   transition: all 0.4s ease;
   overflow: hidden;
 }
+.css-1toxriw-MuiList-root-MuiMenu-list {
+  background-color: #1E1E2F  !important; /* Golden Amber */
+  color: white; /* النص أبيض علشان يبان */
+}
+
 
 .btn-next-section3::before {
   content: "";

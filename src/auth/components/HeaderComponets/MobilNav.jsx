@@ -61,6 +61,7 @@ const MobilNav = ({ slug, user }) => {
             "aria-labelledby": "fade-button",
           },
         }}
+        
         slots={{ transition: Fade }}
         anchorEl={anchorEl}
         open={open}
@@ -89,7 +90,7 @@ const MobilNav = ({ slug, user }) => {
             <Link
               href={linkProps}
               key={index}
-              style={{ color: slug === i.path ? "#ff9800" : "#000" }}
+              style={{ backgroundColor:"red", color: slug === i.path ? "#ff9800" : "#fff" }}
             >
               <MenuItem onClick={handleClose}>{i.label}</MenuItem>
             </Link>

@@ -62,7 +62,7 @@ const Page = () => {
         const nextIndex = (prevIndex + 1) % shuffledImages.length;
         return nextIndex;
       });
-    }, 3000); // كل 3 ثواني تتغير الصورة
+    }, 2000); // كل 3 ثواني تتغير الصورة
 
     return () => clearInterval(interval);
   }, [fullScreenOpen, selectedIndex, shuffledImages.length]);

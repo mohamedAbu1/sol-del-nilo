@@ -120,7 +120,7 @@ function TourCard({ tour, index, router, pathname }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.8, delay: index * 0.2, ease: "easeOut" }}
-      className="w-[92%] group relative bg-[#fff] dark:bg-neutral-900 rounded-3xl overflow-hidden shadow-xl hover:shadow-yellow-500/40 transition duration-300"
+      className="w-[92%] md:w-full group relative bg-[#fff] dark:bg-neutral-900 rounded-3xl overflow-hidden shadow-xl hover:shadow-yellow-500/40 transition duration-300"
     >
       {/* صورة الجولة */}
       <div className="relative">

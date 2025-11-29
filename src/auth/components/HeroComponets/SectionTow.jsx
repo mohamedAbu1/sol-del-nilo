@@ -172,7 +172,7 @@ const SectionTow = () => {
 
       {/* ✅ سلايدر الوجهات */}
       <Swiper
-        modules={[Navigation, Pagination, Autoplay]}
+        modules={Autoplay}
         spaceBetween={10}
         slidesPerView={1}
         centeredSlides={true}
@@ -183,7 +183,6 @@ const SectionTow = () => {
           1150: { slidesPerView: 4 },
           1500: { slidesPerView: 5 },
         }}
-        navigation
         autoplay={{
           delay: 2000, // كل ثانيتين
           disableOnInteraction: false,

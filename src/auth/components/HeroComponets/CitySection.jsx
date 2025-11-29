@@ -147,7 +147,7 @@ const CitySection = () => {
 
       {/* ✅ سلايدر المدن */}
       <Swiper
-        modules={[Navigation, Pagination, Autoplay]}
+        modules={Autoplay}
         spaceBetween={20}
         slidesPerView={1}
         centeredSlides={true}
@@ -156,7 +156,6 @@ const CitySection = () => {
           768: { slidesPerView: 3 },
           1024: { slidesPerView: 4 },
         }}
-        navigation
         autoplay={{
           delay: 2000, // كل 4 ثواني
           disableOnInteraction: false,

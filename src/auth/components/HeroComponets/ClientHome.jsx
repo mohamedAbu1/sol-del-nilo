@@ -13,6 +13,8 @@ import SectionSix from "./SectionSix";
 import CitySection from "./CitySection";
 import { desktopImages, desktopImagesMB } from "@/lib/constants/FixedTexts";
 import ScrollRestoration from "../ScrollRestoration";
+import SingUp from "../SingUp";
+import { useAppContext } from "@/context/AppContext";
 export default function ClientHome({ user }) {
   const [hasMounted, setHasMounted] = useState(false);
   const [showWelcomeText, setShowWelcomeText] = useState(true);
@@ -88,7 +90,7 @@ export default function ClientHome({ user }) {
   }, []);
 
   if (!hasMounted) return null;
-
+  const { open } = useAppContext();
   return (
     <>
       <ScrollRestoration />
@@ -112,15 +114,16 @@ export default function ClientHome({ user }) {
         </div>
 
         {/* Desktop background */}
-        <div className="hidden lg:flex w-full h-full relative">
-          <AnimatePresence mode="wait">
+        <div className="hidden lg:flex w-full h-full relative overflow-hidden">
+          <AnimatePresence mode="sync">
             <motion.div
               key={desktopImages[currentIndex]}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 1.5 }}
-              className="absolute top-0 left-0 w-full h-full z-[-1]"
+              transition={{ duration: 1.5, ease: "easeInOut" }}
+              className="absolute inset-0"
+              style={{ zIndex: 1 }}
             >
               <Image
                 src={desktopImages[currentIndex]}
@@ -133,6 +136,16 @@ export default function ClientHome({ user }) {
               />
             </motion.div>
           </AnimatePresence>
+
+          {/* ✅ طبقة خلفية ثابتة تمنع ظهور الشاشة السوداء */}
+          <div className="absolute inset-0 z-0">
+            <Image
+              src={desktopImages[currentIndex]}
+              alt="background fallback"
+              fill
+              className="object-cover"
+            />
+          </div>
 
           <AnimatePresence>
             {showWelcomeText && (
@@ -267,6 +280,7 @@ export default function ClientHome({ user }) {
       <SectionFour />
       <SectionFive />
       <SectionSix />
+      {open && <SingUp />}
       {showScrollTop && (
         <motion.div
           initial={{ opacity: 0 }}

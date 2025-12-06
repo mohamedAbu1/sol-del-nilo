@@ -120,53 +120,63 @@ function TourCard({ tour, index, router, pathname }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.8, delay: index * 0.2, ease: "easeOut" }}
-      className="w-[92%] md:w-full group relative bg-[#fff] dark:bg-neutral-900 rounded-3xl overflow-hidden shadow-xl hover:shadow-yellow-500/40 transition duration-300"
+      className="relative w-full h-[400px] rounded-xl overflow-hidden shadow-lg border border-neutral-800 group"
     >
-      {/* صورة الجولة */}
-      <div className="relative">
-        <Image
-          width={300}
-          height={200}
-          src={
-            tour.image?.[0]?.name
-              ? `/assets/${tour.image[0].name}`
-              : "/assets/default.jpg"
-          }
-          alt={tour.title}
-          className="w-full h-[320px] object-cover transform group-hover:scale-110 transition duration-700 ease-in-out"
-        />
-        <div style={{padding:"5px"}} className="absolute top-3 left-3 bg-yellow-500 text-gray-700 text-sm font-bold rounded-full shadow-md flex items-center gap-1 px-2 py-1">
-          <BiDollar className="text-gray-500 dark:text-gray-700" />
-          {tour.price}
-        </div>
-        <button className="absolute top-3 right-3 text-yellow-600 text-xl rounded-full p-2 shadow-md hover:scale-110 transition">
-          <FaHeart />
-        </button>
-      </div>
+      {/* ✅ الصورة كخلفية للكارد بالكامل + تأثير الاقتراب */}
+      <Image
+        src={
+          tour.image?.[0]?.name
+            ? `/assets/${tour.image[0].name}`
+            : "/assets/default.jpg"
+        }
+        alt={tour.title}
+        fill
+        className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+      />
 
-      {/* تفاصيل الجولة */}
-      <div className="p-5 flex flex-col justify-between h-[170px] bg-gradient-to-br from-white via-yellow-50 to-yellow-100 dark:from-neutral-900 dark:via-neutral-800 dark:to-neutral-900 rounded-b-3xl shadow backdrop-blur-sm border-t border-yellow-200 dark:border-yellow-800 transition-all duration-300">
-        <div className="flex items-center justify-between mb-2">
-          <p style={{paddingLeft:"5px"}} className="text-sm flex items-center gap-2 text-gray-600 dark:text-yellow-300">
-            <FaMapMarkerAlt className="text-yellow-500 dark:text-yellow-400" />
-            <span className="font-medium">{tour.city.name}</span>
-          </p>
-          <p style={{paddingRight:"5px"}} className="text-sm flex items-center gap-2 text-gray-600 dark:text-yellow-300">
-            <MdOutlineReviews className="text-yellow-500 dark:text-yellow-400" />
-            <span>{tour.reviews.length} Reviews</span>
-          </p>
-        </div>
-        <h4 style={{padding:"6px"}} className="text-[1.05rem] font-semibold text-gray-800 dark:text-white leading-snug line-clamp-2 tracking-wide mt-3">
-          {tour.title}
-        </h4>
+      {/* ✅ طبقة تعتيم لتحسين وضوح النص */}
+      <div className="absolute inset-0 bg-black/50 z-10" />
 
-        <div className="flex items-center justify-between rounded-xl bg-white/70 dark:bg-neutral-800/60 shadow-inner backdrop-blur-md px-3 py-2 mt-3">
-          <div style={{paddingLeft:"10px"}} className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
-            <FaCalendarAlt className="text-yellow-500 dark:text-yellow-400" />
-            <span>{tour.theDate}</span>
-          </div>
+      {/* ✅ المحتوى فوق الصورة بالكامل */}
+      <div className="absolute inset-0 z-20 flex flex-col justify-between p-4">
+
+        {/* ✅ السعر | المدينة | المراجعات */}
+        <div
+          style={{ padding: "10px", marginTop: "215px" }}
+          className="flex items-center gap-3 text-gray-200 text-sm"
+        >
+          <span className="font-bold text-yellow-500 px-2 py-1 rounded">
+            ${tour.price}
+          </span>
+
+          <span className="text-gray-200 flex items-center gap-1 px-2 py-1 rounded">
+            <FaMapMarkerAlt className="text-yellow-500" />
+            {tour.city.name}
+          </span>
+
+          <span className="flex items-center gap-1 text-gray-200 px-2 py-1 rounded">
+            ⭐ {tour.reviews.length} Review
+          </span>
+        </div>
+
+        {/* ✅ العنوان + التاريخ + الزر */}
+        <div
+          style={{ padding: "10px" }}
+          className="flex flex-col gap-3 bg-gradient-to-t from-black/70 via-black/40 to-transparent p-3 rounded-xl"
+        >
+          {/* ✅ العنوان */}
+          <h4 className="text-lg font-semibold text-white leading-snug line-clamp-2">
+            {tour.title}
+          </h4>
+
+          {/* ✅ التاريخ */}
+          <p className="text-gray-200 text-sm flex items-center gap-2">
+            <FaCalendarAlt className="text-yellow-500" />
+            {tour.theDate}
+          </p>
+
+          {/* ✅ زر VIEW TOUR */}
           <button
-          style={{padding:"6px"}}
             onClick={() => {
               sessionStorage.setItem(
                 `scroll-${pathname}`,
@@ -174,12 +184,15 @@ function TourCard({ tour, index, router, pathname }) {
               );
               router.push(`/tours/${tour.id}`);
             }}
-            className="bg-gradient-to-r from-yellow-400 to-orange-400 text-white dark:text-gray-900 font-semibold rounded-full shadow-lg hover:scale-105 hover:shadow-yellow-400/50 transition-all duration-300 text-sm px-4 py-2"
+            style={{ padding: "5px", cursor: "pointer" }}
+            className="bg-yellow-500 text-neutral-900 font-semibold rounded-md px-4 py-2 text-sm hover:bg-yellow-600 transition"
           >
-            Details →
+            VIEW TOUR
           </button>
         </div>
       </div>
     </motion.div>
   );
 }
+
+

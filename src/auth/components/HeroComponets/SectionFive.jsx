@@ -2,13 +2,15 @@
 import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
 import { GetTours } from "@/lib/constants/FixedTexts";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
+
 const SectionFive = () => {
   const t = useTranslations("HomeHeroPage");
 
-  // ✅ منع التفاعل قبل تحميل المتصفح
   const [hasMounted, setHasMounted] = useState(false);
   const [Car, setCar] = useState([]);
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
     setHasMounted(true);
@@ -16,71 +18,104 @@ const SectionFive = () => {
     setCar(tours || []);
   }, [t]);
 
-  if (!hasMounted) return null;
+  // ✅ تغيير الكارد كل 6 ثواني
+  useEffect(() => {
+    if (Car.length === 0) return;
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % Car.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, [Car]);
+
+  if (!hasMounted || Car.length === 0) return null;
+
+  const current = Car[index];
 
   return (
     <section
       id="section-five"
-      className="relative w-full h-auto px-4 sm:py-10 md:py-12 lg:py-0 overflow-hidden flex flex-col items-center"
+      style={{padding:"20px"}}
+      className="relative w-full h-auto px-4 py-16 overflow-hidden flex flex-col items-center"
     >
       {/* العنوان */}
-      <div className="text-center mb-12 w-1/2">
-        <span
-          style={{ marginBottom: "10px" }}
-          className="inline-block text-3xl text-gray-400 dark:text-white font-semibold px-3 py-1 rounded-full mb-3"
-        >
+      <div style={{marginBottom:"20px"}} className="text-center mb-12 w-full max-w-2xl">
+        <span className="inline-block text-3xl text-gray-400 dark:text-white font-semibold mb-3">
           {t("sc3P")}
         </span>
+
         <div className="h-1 bg-[#daa60b] dark:bg-yellow-700 rounded-full mb-4 w-full" />
 
-        <h2
-          style={{ padding: "15px" }}
-          className="text-3xl lg:text-4xl font-bold text-[#daa60b] dark:text-yellow-700 uppercase"
-        >
+        <h2 className="text-3xl lg:text-4xl font-bold text-[#daa60b] dark:text-yellow-700 uppercase">
           {t("sc3P")}
         </h2>
       </div>
 
-      {/* ✅ شبكة الكروت المتجاوبة */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-screen-xl">
-        {Car.map((tour, index) => (
+      {/* ✅ الكارد المتغير */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={index}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
+          className="flex flex-col md:flex-row items-center justify-between gap-10 mt-10 w-full max-w-5xl"
+        >
+          {/* ✅ الصورة اليسار */}
           <motion.div
-            key={index}
-            layout // ✅ لو حبيت تضيف Shuffle لاحقًا
-            initial={{ opacity: 0, y: 50 }} // يبدأ شفاف وتحت
-            whileInView={{ opacity: 1, y: 0 }} // يظهر عند دخول الشاشة
-            viewport={{ once: true, amount: 0.2 }} // once: يحدث مرة واحدة فقط عند دخول 20% من الكارد
-            transition={{ duration: 0.8, delay: index * 0.2, ease: "easeOut" }}
-            style={{ height: "440px" }}
-            className="rounded-2xl overflow-hidden shadow-lg hover:shadow-yellow-500/40 transition duration-300 flex flex-col"
+            initial={{ opacity: 0, x: -40 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -40 }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+            className="w-[260px] md:w-[380px]"
           >
-            {/* الصورة */}
-            <div className="relative h-[300px] bg-transparent overflow-visible">
-              <img
-                src={tour.image}
-                alt={tour.title}
-                className="absolute -top-10 left-1/2 transform -translate-x-1/2 w-[100%] h-auto object-cover z-10 rounded-2xl"
-              />
-            </div>
-
-            {/* التفاصيل */}
-            <div
-              style={{ padding: "10px" }}
-              className="h-1/2 p-5 flex flex-col justify-between flex-grow"
-            >
-              <h3 className="text-lg font-bold text-gray-600 dark:text-gray-200 mb-2">
-                {tour.title}
-              </h3>
-              <p
-                style={{ fontSize: "15px" }}
-                className="text-gray-500 dark:text-gray-400 mb-4"
-              >
-                {tour.description}
-              </p>
-            </div>
+            <Image
+              src={current.image}
+              alt={current.title}
+              width={500}
+              height={500}
+              className="object-contain"
+            />
           </motion.div>
-        ))}
-      </div>
+
+          {/* ✅ النص */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 40 }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+            className="text-center max-w-md"
+          >
+            <h3 className="text-2xl font-bold mb-3 text-[#daa60b] dark:text-yellow-500">
+              {current.title}
+            </h3>
+
+            <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+              {current.description}
+            </p>
+
+            <button style={{padding:"5px", marginTop:'10px'}} className="mt-6 px-8 py-3 bg-gradient-to-r from-yellow-500 via-white to-yellow-500 text-black font-semibold rounded-full shadow-lg hover:scale-105 transition">
+              {t("sc3BTN") || "Book Now"}
+            </button>
+          </motion.div>
+
+          {/* ✅ الصورة اليمين (انعكاس) */}
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 40 }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+            className="w-[260px] md:w-[380px]"
+          >
+            <Image
+              src={current.image}
+              alt={current.title}
+              width={500}
+              height={500}
+              className="object-contain scale-x-[-1]"
+            />
+          </motion.div>
+        </motion.div>
+      </AnimatePresence>
     </section>
   );
 };

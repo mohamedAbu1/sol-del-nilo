@@ -31,30 +31,36 @@ const SectionSix = () => {
       className="relative w-full h-screen text-gray-600 dark:text-white flex flex-col items-center justify-center px-6 lg:px-20 overflow-hidden"
     >
       {/* المحتوى */}
-     <motion.div
-  style={{ padding: "25px" }}
-  className="max-w-3xl text-center z-10"
-  initial={{ opacity: 0, y: 50 }}              // يبدأ شفاف وتحت
-  whileInView={{ opacity: 1, y: 0 }}           // يظهر تدريجيًا ويصعد لمكانه
-  viewport={{ once: true, amount: 0.2 }}       // يحدث مرة واحدة فقط عند دخول 20% من العنصر
-  transition={{ duration: 1, ease: "easeOut" }} // مدة الحركة وسلاستها
->
-  <h2 style={{ padding: "15px" }} className="text-3xl lg:text-4xl font-bold mb-4">
-    {t("sc5Title")}
-  </h2>
-  <p style={{ padding: "5px" }} className="text-base lg:text-lg text-gray-400 dark:text-gray-300 mb-8 leading-relaxed">
-    {t("sc5P")}
-  </p>
-  <div className="h-1 bg-[#daa60b] dark:bg-yellow-700 rounded-full mb-4 w-full" />
+      <motion.div
+        style={{ padding: "25px" }}
+        className="max-w-3xl text-center z-10"
+        initial={{ opacity: 0, y: 50 }} // يبدأ شفاف وتحت
+        whileInView={{ opacity: 1, y: 0 }} // يظهر تدريجيًا ويصعد لمكانه
+        viewport={{ once: true, amount: 0.2 }} // يحدث مرة واحدة فقط عند دخول 20% من العنصر
+        transition={{ duration: 1, ease: "easeOut" }} // مدة الحركة وسلاستها
+      >
+        <h2
+          style={{ padding: "15px" }}
+          className="text-3xl lg:text-4xl font-bold mb-4"
+        >
+          {t("sc5Title")}
+        </h2>
+        <p
+          style={{ padding: "5px" }}
+          className="text-base lg:text-lg text-gray-400 dark:text-gray-300 mb-8 leading-relaxed"
+        >
+          {t("sc5P")}
+        </p>
+        <div className="h-1 bg-[#daa60b] dark:bg-yellow-700 rounded-full mb-4 w-full" />
 
-  <button
-    onClick={() => router.push("/contact")}
-    style={{ cursor: "pointer", marginTop: "14px" }}
-    className="px-6 py-3 text-gray-600 dark:text-white font-semibold rounded-full transition hover:scale-90 hover:text-yellow-400"
-  >
-    {t("sc5BTN")}
-  </button>
-</motion.div>
+        <button
+          onClick={() => router.push("/contact")}
+          style={{ cursor: "pointer", marginTop: "14px" }}
+          className="px-6 py-3 text-gray-600 dark:text-white font-semibold rounded-full transition hover:scale-90 hover:text-yellow-400"
+        >
+          {t("sc5BTN")}
+        </button>
+      </motion.div>
       {/* خلفية الأعمدة الفرعونية */}
       <section className="relative w-full h-[81vh] overflow-hidden">
         <div
@@ -64,50 +70,50 @@ const SectionSix = () => {
         <div className="absolute inset-0 bg-black opacity-60" />
 
         {/* محتوى الفوتر */}
- <motion.footer
-  className="relative z-10 w-full h-full flex flex-col items-center justify-center text-center text-white px-6"
-  initial={{ opacity: 0, y: 50 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  viewport={{ once: true, amount: 0.2 }}
-  transition={{ duration: 1, ease: "easeOut" }}
->
-  <h2 className="text-xl lg:text-2xl font-bold mb-2 text-yellow-400">
-    SolDelNilo © 2025
-  </h2>
-  <p className="text-sm text-gray-300 mb-4 max-w-xl">{t("sc5P2")}</p>
-
-  {/* روابط الفوتر */}
-  <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-400">
-    {NavPath.map((i, index) => {
-      const isTours = i.path === "/tours";
-      const linkProps = isTours
-        ? {
-            pathname: "/tours",
-            query: {
-              destination: "All",
-              category: "All",
-              date: today,
-              duration: "61",
-              minPrice: "0",
-              maxPrice: "14000",
-              search: "",
-            },
-          }
-        : i.path;
-
-      return (
-        <Link
-          href={linkProps}
-          key={index}
-          style={{ color: "#ff9800", cursor: "pointer" }}
+        <motion.footer
+          className="relative z-10 w-full h-full flex flex-col items-center justify-center text-center text-white px-6"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 1, ease: "easeOut" }}
         >
-          {i.label}
-        </Link>
-      );
-    })}
-  </div>
-  <LinksMidea />
-</motion.footer>
+          <h2 className="text-xl lg:text-2xl font-bold mb-2 text-yellow-400">
+            SolDelNilo © 2025
+          </h2>
+          <p className="text-sm text-gray-300 mb-4 max-w-xl">{t("sc5P2")}</p>
+
+          {/* روابط الفوتر */}
+          <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-400">
+            {NavPath.map((i, index) => {
+              const isTours = i.path === "/tours";
+              const linkProps = isTours
+                ? {
+                    pathname: "/tours",
+                    query: {
+                      destination: "All",
+                      category: "All",
+                      date: today,
+                      duration: "61",
+                      minPrice: "0",
+                      maxPrice: "14000",
+                      search: "",
+                    },
+                  }
+                : i.path;
+
+              return (
+                <Link
+                  href={linkProps}
+                  key={index}
+                  style={{ color: "#ff9800", cursor: "pointer" }}
+                >
+                  {i.label}
+                </Link>
+              );
+            })}
+          </div>
+          <LinksMidea />
+        </motion.footer>
       </section>
     </section>
   );

@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import LogoutBtn from "./LogoutBtn";
 import { Button } from "@mui/material";
 import { useTranslations } from "next-intl";
+import { useAppContext } from "@/context/AppContext";
 
 const LeftNav = ({ path, user, width }) => {
   const boxVariants = {
@@ -21,6 +22,7 @@ const LeftNav = ({ path, user, width }) => {
     setHasMounted(true);
   }, []);
 
+  const { setOpen } = useAppContext();
   return (
     <motion.div
       variants={boxVariants}
@@ -53,20 +55,21 @@ const LeftNav = ({ path, user, width }) => {
             style={{ color: path === "/en/tours" ? "#ff9800" : "#d4a85f" }}
             className="hidden xl:flex text-2xl"
           />
-          <Link
+          {/* <Link
             href={"/register"}
             className="flex items-center justify-center gap-2 flex-row"
+          > */}
+          <Button
+            variant="outlined"
+            color="warning"
+            endIcon={<BsDoorOpenFill />}
+            style={{ color: "#fff" }}
+            className="hover:text-gray-400"
+            onClick={() => setOpen(true)}
           >
-            <Button
-              variant="outlined"
-              color="warning"
-              endIcon={<BsDoorOpenFill />}
-              style={{ color: "#fff" }}
-              className="hover:text-gray-400"
-            >
-              {t("Btn1")}
-            </Button>
-          </Link>
+            {t("Btn1")}
+          </Button>
+          {/* </Link> */}
         </>
       )}
     </motion.div>

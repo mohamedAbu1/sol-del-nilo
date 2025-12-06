@@ -20,6 +20,7 @@ export const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [selectedType, setSelectedType] = useState(null);
+    const [open, setOpen] = useState(false);
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   useEffect(() => {
     if (theme) {
@@ -101,6 +102,8 @@ export const AppProvider = ({ children }) => {
         handleDelete,
         theme,
         router,
+        setOpen,
+        open,
       }}
     >
       {children}

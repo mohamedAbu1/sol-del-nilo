@@ -543,7 +543,7 @@ const InformationCard = ({
             </div>
           </div>
           {/* <Dividering /> */}
-          <div
+          {/* <div
             style={
               {
                 // borderLeft: "2px dotted #FF9800",
@@ -642,7 +642,7 @@ const InformationCard = ({
                 ))}
               </FormGroup>
             </div>
-          </div>
+          </div> */}
         </div>
       </AnimatedSection>
     </Box>

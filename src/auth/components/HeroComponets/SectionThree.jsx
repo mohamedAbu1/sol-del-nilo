@@ -92,6 +92,13 @@ export default function SectionThree() {
           {topTours.map((tour, index) => (
             <SwiperSlide
               key={index}
+              breakpoints={{
+                0: { slidesPerView: 1.25 }, // ⭐ يظهر كارد + جزء من الكارد التالي
+                480: { slidesPerView: 1.4 }, // ⭐ أفضل للهواتف الكبيرة
+                640: { slidesPerView: 2 },
+                1024: { slidesPerView: 3 },
+                1400: { slidesPerView: 4 },
+              }}
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -139,7 +146,6 @@ function TourCard({ tour, index, router, pathname }) {
 
       {/* ✅ المحتوى فوق الصورة بالكامل */}
       <div className="absolute inset-0 z-20 flex flex-col justify-between p-4">
-
         {/* ✅ السعر | المدينة | المراجعات */}
         <div
           style={{ padding: "10px", marginTop: "215px" }}
@@ -194,5 +200,3 @@ function TourCard({ tour, index, router, pathname }) {
     </motion.div>
   );
 }
-
-

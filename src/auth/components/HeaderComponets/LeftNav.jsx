@@ -8,6 +8,7 @@ import LogoutBtn from "./LogoutBtn";
 import { Button } from "@mui/material";
 import { useTranslations } from "next-intl";
 import { useAppContext } from "@/context/AppContext";
+import { useRouter } from "next/navigation";
 
 const LeftNav = ({ path, user, width }) => {
   const boxVariants = {
@@ -15,7 +16,7 @@ const LeftNav = ({ path, user, width }) => {
     visible: { opacity: 1, scale: 1 },
   };
   const t = useTranslations("Header");
-
+  const router = useRouter();
   // ✅ منع التفاعل قبل تحميل المتصفح
   const [hasMounted, setHasMounted] = useState(false);
   useEffect(() => {
@@ -65,7 +66,7 @@ const LeftNav = ({ path, user, width }) => {
             endIcon={<BsDoorOpenFill />}
             style={{ color: "#fff" }}
             className="hover:text-gray-400"
-            onClick={() => setOpen(true)}
+            onClick={() => router.push("/register")}
           >
             {t("Btn1")}
           </Button>

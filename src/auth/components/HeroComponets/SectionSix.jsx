@@ -78,7 +78,7 @@ const SectionSix = () => {
           transition={{ duration: 1, ease: "easeOut" }}
         >
           <h2 className="text-xl lg:text-2xl font-bold mb-2 text-yellow-400">
-            SolDelNilo © 2025
+            Luxor & Aswan © 2025
           </h2>
           <p className="text-sm text-gray-300 mb-4 max-w-xl">{t("sc5P2")}</p>
 

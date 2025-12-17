@@ -174,21 +174,11 @@ const SectionTow = () => {
       <Swiper
         spaceBetween={20}
         breakpoints={{
-          // الهواتف (أقل من 640px)
-          0: {
-            slidesPerView: 1,
-          },
-          // التابلت (من 640px إلى أقل من 1024px)
-          640: {
-            slidesPerView: 3,
-          },
-          // اللابتوب وما فوق (1024px وأكبر)
-          1024: {
-            slidesPerView: 4,
-          },
-          1400:{
-            slidesPerView: 5,
-          }
+          0: { slidesPerView: 1.25 }, // ⭐ يظهر كارد + جزء من الكارد التالي
+          480: { slidesPerView: 1.4 }, // ⭐ أفضل للهواتف الكبيرة
+          640: { slidesPerView: 2 },
+          1024: { slidesPerView: 3 },
+          1400: { slidesPerView: 4 },
         }}
         modules={[Autoplay]} // ✅ هنا لازم تضيفه
         autoplay={{
@@ -207,7 +197,14 @@ const SectionTow = () => {
           }).length;
 
           return (
-            <SwiperSlide key={card.id || index} style={{display:"flex" ,alignItems:"center", justifyContent:"center"}}>
+            <SwiperSlide
+              key={card.id || index}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               <CategoryCard
                 card={card}
                 today={today}

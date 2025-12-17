@@ -24,7 +24,6 @@ const CityCard = ({ city, index, today, router, toursCount }) => {
     }, 8000);
     return () => clearInterval(interval);
   }, [city.imges]);
-console.log(city.imges?.[currentImageIndex])
   return (
     <div
       key={city.id || index}
@@ -63,9 +62,6 @@ console.log(city.imges?.[currentImageIndex])
                   : "/assets/default.png"
               }
               alt={city.name}
-              onError={() =>
-                console.log("Image not found:", city.imges?.[currentImageIndex])
-              }
             />
           </motion.div>
         </AnimatePresence>
@@ -119,7 +115,6 @@ const CitySection = () => {
   const { tours } = useTripContext();
   const t = useTranslations("HomeHeroPage");
   const router = useRouter();
-  console.log(cities);
   return (
     <section
       id="section-three"
@@ -146,10 +141,11 @@ const CitySection = () => {
       <Swiper
         spaceBetween={20}
         breakpoints={{
-          0: { slidesPerView: 1 }, // الهواتف
-          640: { slidesPerView: 2 }, // التابلت
-          1024: { slidesPerView: 3 }, // اللابتوب
-          1400: { slidesPerView: 4 }, // الشاشات الكبيرة
+          0: { slidesPerView: 1.25 }, // ⭐ يظهر كارد + جزء من الكارد التالي
+          480: { slidesPerView: 1.4 }, // ⭐ أفضل للهواتف الكبيرة
+          640: { slidesPerView: 2 },
+          1024: { slidesPerView: 3 },
+          1400: { slidesPerView: 4 },
         }}
         modules={[Autoplay]}
         autoplay={{
@@ -190,8 +186,10 @@ const CitySection = () => {
           );
         })}
       </Swiper>
-              <div style={{marginTop:"20px"}} className="w-[80%] h-1 bg-[#daa60b] dark:bg-yellow-700 rounded-full mb-4" />
-
+      <div
+        style={{ marginTop: "20px" }}
+        className="w-[80%] h-1 bg-[#daa60b] dark:bg-yellow-700 rounded-full mb-4"
+      />
     </section>
   );
 };

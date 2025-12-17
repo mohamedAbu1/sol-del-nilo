@@ -8,6 +8,7 @@ import { useScreenSize } from "@/auth/hooks/screenSize";
 import YourBookingDetails from "./YourBookingDetails";
 import { useTripContext } from "@/context/TripContext";
 import { useParams } from "next/navigation";
+import AddOnTours from "./AddOnTours";
 
 const MainCardSC = ({ user }) => {
   const { tours } = useTripContext();
@@ -23,6 +24,7 @@ const MainCardSC = ({ user }) => {
     Italian: 50,
   });
   const [guidePriceTotal, setGuidePriceTotal] = useState(0);
+  const [selectedExtras2, setSelectedExtras2] = useState([]);
   const [guideLanguages, setGuideLanguages] = useState({
     Spanish: false,
     English: false,
@@ -144,6 +146,12 @@ const MainCardSC = ({ user }) => {
   if (!tour) {
     return <div>Loading trip details... ⏳</div>;
   }
+
+ 
+  const addOnTours = tours.filter(
+    (t) => t.category.name === "Options Tours" && t.city?.name === city
+  );
+console.log(addOnTours)
   return (
     <div
       style={{
@@ -163,6 +171,11 @@ const MainCardSC = ({ user }) => {
           selectedOptions2={selectedOptions2}
           bookingData={bookingData}
           setBookingData={setBookingData}
+        />
+        <AddOnTours
+          addons={addOnTours}
+          selectedExtras={selectedExtras2}
+          setSelectedExtras={setSelectedExtras2}
         />
         {user && (
           <CommentsReviews

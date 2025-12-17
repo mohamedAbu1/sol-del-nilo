@@ -327,7 +327,7 @@ export const TripsContextProvider = ({ children }) => {
         .single();
 
       if (error) throw error;
-
+    
       // ✅ إدخال صور النشاطات في جدول tourimage
       const tourimageData = imagesData.tourimage
         .filter(
@@ -451,6 +451,7 @@ export const TripsContextProvider = ({ children }) => {
         .eq("id", tour.id);
 
       if (error) throw error;
+
       console.log("✅ تم تحديث بيانات الرحلة الأساسية");
 
       // ✅ صور النشاطات (حذف ثم إدخال الجديد فقط مع فلترة التكرار)

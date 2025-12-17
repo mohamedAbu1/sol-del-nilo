@@ -16,6 +16,7 @@ import ScrollRestoration from "../ScrollRestoration";
 import SingUp from "../SingUp";
 import { useAppContext } from "@/context/AppContext";
 export default function ClientHome({ user }) {
+    const { open } = useAppContext();   // ✅ هنا في الأعلى
   const [hasMounted, setHasMounted] = useState(false);
   const [showWelcomeText, setShowWelcomeText] = useState(true);
   const [showHero, setShowHero] = useState(false);
@@ -90,7 +91,6 @@ export default function ClientHome({ user }) {
   }, []);
 
   if (!hasMounted) return null;
-  const { open } = useAppContext();
   return (
     <>
       <ScrollRestoration />
@@ -280,7 +280,7 @@ export default function ClientHome({ user }) {
       <SectionFour />
       <SectionFive />
       <SectionSix />
-      {open && <SingUp />}
+      {/* {open && <SingUp />} */}
       {showScrollTop && (
         <motion.div
           initial={{ opacity: 0 }}

@@ -9,7 +9,6 @@ import { useScreenSize } from "../../hooks/screenSize";
 const Nav = ({ path, user, slug }) => {
   const { width } = useScreenSize();
   const t = useTranslations("Header");
-  console.log(path);
   const boxVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1 },

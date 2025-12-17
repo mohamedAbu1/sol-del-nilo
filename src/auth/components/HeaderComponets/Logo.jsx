@@ -24,7 +24,7 @@ const Logo = ({ path }) => {
       <Link href={"/"}>
         <Image
           className="Logo"
-          src={"/assets/Copilot_20250908_2314232.webp"}
+          src={"/assets/Copilot_20251209_142706-removebg-preview.webp"}
           alt="logo img"
           width={imageSize}
           height={imageSize}

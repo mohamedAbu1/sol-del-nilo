@@ -12,7 +12,7 @@ const SignUpTextHero = () => {
   const logoSrc =
     muiTheme.palette.mode === "dark"
       ? "/assets/Copilot_20251209_142706-removebg-preview.webp" // صورة خاصة بالـ Dark Mode
-      : "/assets/Copilot_20251208_084907.webp"; // صورة خاصة بالـ Light Mode
+      : "/assets/Copilot_20251209_142706-removebg-preview.webp"; // صورة خاصة بالـ Light Mode
 
   return (
     <motion.section

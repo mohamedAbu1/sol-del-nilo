@@ -13,7 +13,7 @@ const WhoWeAre = () => {
   const imageSrc =
     muiTheme.palette.mode === "dark"
       ? "/assets/Copilot_20251209_142706-removebg-preview.webp" // صورة خاصة بالـ Dark Mode
-      : "/assets/Copilot_20251208_084907.webp"; // صورة خاصة بالـ Light Mode
+      : "/assets/Copilot_20251209_142706-removebg-preview.webp"; // صورة خاصة بالـ Light Mode
 
   return (
     <section className="mb-12 flex flex-col lg:flex-row items-center gap-10">

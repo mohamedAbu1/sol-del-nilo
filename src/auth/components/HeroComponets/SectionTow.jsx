@@ -39,7 +39,7 @@ const CategoryCard = ({ card, today, router, toursCount, muiTheme }) => {
       onMouseLeave={() => setHovered(false)}
       className="relative w-full h-[400px] max-w-[350px] md:max-w-[280px] rounded-[15px] overflow-hidden cursor-pointer transform transition-all duration-500"
       style={{
-        backgroundColor: muiTheme.palette.background.paper, // ✅ خلفية الكارد من الثيم
+         // ✅ خلفية الكارد من الثيم
         boxShadow: `0 8px 15px rgba(0,0,0,0.3), 0 15px 30px rgba(0,0,0,0.4)`,
         perspective: "1200px",
       }}
@@ -75,13 +75,13 @@ const CategoryCard = ({ card, today, router, toursCount, muiTheme }) => {
         </motion.div>
       </AnimatePresence>
 
-      {/* ✅ طبقة التدرج */}
+      {/* ✅ طبقة التدرج
       <div
         className="absolute inset-0 z-10"
         style={{
           background: `linear-gradient(to top, ${muiTheme.palette.background.default}B3, transparent)`, // ✅ تدرج من خلفية الثيم
         }}
-      />
+      /> */}
 
       {/* ✅ النص */}
       <div className="absolute inset-0 flex flex-col items-center justify-end z-20">
@@ -96,7 +96,7 @@ const CategoryCard = ({ card, today, router, toursCount, muiTheme }) => {
             letterSpacing: "0.05em",
             textAlign: "center",
             padding: "4px",
-            color: muiTheme.palette.text.primary, // ✅ النص من الثيم
+            color: muiTheme.palette.secondary.main, // ✅ النص من الثيم
             textShadow: "2px 2px 6px rgba(0,0,0,0.6)",
           }}
         >
@@ -110,7 +110,7 @@ const CategoryCard = ({ card, today, router, toursCount, muiTheme }) => {
               animate={{ opacity: 0.7, y: -90, scale: 1 }}
               exit={{ opacity: 0, y: 30, scale: 0.95 }}
               transition={{ duration: 0.6, ease: "easeInOut", delay: 0.2 }}
-              style={{ color: muiTheme.palette.secondary.main, fontSize: "18px", fontWeight: 600 }}
+              style={{ color: muiTheme.palette.secondary.contrastText, fontSize: "18px", fontWeight: 600 }}
             >
               {`${toursCount} TOURS`}
             </motion.div>

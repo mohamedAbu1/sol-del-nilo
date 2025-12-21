@@ -105,7 +105,7 @@ export default function TravelPlannerForm() {
     >
       <Grid container spacing={3} sx={{ justifyContent: "center" }}>
         {/* Destination */}
-        <Grid item xs={12} sm={6} md={4} lg={5}>
+        <Grid item xs={12} sm={6} md={4} lg={3}>
           <TextField
             select
             label="Destination"
@@ -113,29 +113,28 @@ export default function TravelPlannerForm() {
             value={selectedDestinationId}
             onChange={(e) => setSelectedDestinationId(e.target.value)}
             InputLabelProps={{
-              style: { color: muiTheme.palette.text.secondary }, // ✅ النصوص الثانوية
+              style: { color: muiTheme.palette.text.secondary },
             }}
             InputProps={{
-              style: { color: muiTheme.palette.text.secondary }, // ✅ النصوص الأساسية
+              style: { color: muiTheme.palette.text.secondary },
             }}
             SelectProps={{
               MenuProps: {
                 PaperProps: {
                   sx: {
                     borderRadius: "20px",
-                    backgroundColor: muiTheme.palette.background.default, // ✅ خلفية القائمة من الثيم
-                    color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
+                    backgroundColor: muiTheme.palette.background.default,
+                    color: muiTheme.palette.text.primary,
                   },
                 },
               },
             }}
             sx={{
-              width:"200px",
               "& .MuiOutlinedInput-root": {
-                "& fieldset": { borderColor: muiTheme.palette.primary.main }, // ✅ اللون الأساسي
+                "& fieldset": { borderColor: muiTheme.palette.primary.main },
                 "&:hover fieldset": {
                   borderColor: muiTheme.palette.secondary.main,
-                }, // ✅ اللون الثانوي عند hover
+                },
                 "&.Mui-focused fieldset": {
                   borderColor: muiTheme.palette.secondary.main,
                 },
@@ -150,249 +149,275 @@ export default function TravelPlannerForm() {
           </TextField>
         </Grid>
 
-        {/* زر البحث */}
-       
         {/* Duration */}
-       {/* Duration */}
-      <Grid item xs={12} sm={6} md={4} lg={3}>
-        <TextField
-          label="Duration (Days)"
-          value={duration || ""}
-          onClick={handleDurationClick}
-          fullWidth
-          readOnly
-          InputLabelProps={{ style: { color: muiTheme.palette.text.secondary } }}
-          InputProps={{ style: { color: muiTheme.palette.text.secondary } }}
-          sx={{
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": { borderColor: muiTheme.palette.primary.main },
-              "&:hover fieldset": { borderColor: muiTheme.palette.secondary.main },
-              "&.Mui-focused fieldset": { borderColor: muiTheme.palette.secondary.main },
-            },
-          }}
-        />
-
-        <Popover
-          open={openDuration}
-          anchorEl={anchorElDuration}
-          onClose={handleDurationClose}
-          anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-          PaperProps={{
-            sx: {
-              backgroundColor: muiTheme.palette.background.paper,
-              color: muiTheme.palette.text.primary,
-              borderRadius: "20px",
-              p: 2,
-            },
-          }}
-        >
-          <Box sx={{ width: 250 }}>
-            <Typography gutterBottom>Choose Duration</Typography>
-            <Slider
-              value={duration}
-              onChange={(e, val) => setDuration(val)}
-              valueLabelDisplay="auto"
-              step={1}
-              min={1}
-              max={15}
-              marks={[
-                { value: 1, label: "1" },
-                { value: 5, label: "5" },
-                { value: 10, label: "10" },
-                { value: 15, label: "15" },
-              ]}
-              sx={{ color: muiTheme.palette.primary.main }}
-            />
-            <Button
-              variant="contained"
-              size="small"
-              sx={{
-                mt: 2,
-                backgroundColor: muiTheme.palette.primary.main,
-                color: muiTheme.palette.getContrastText(muiTheme.palette.primary.main),
-                "&:hover": { backgroundColor: muiTheme.palette.secondary.main },
-              }}
-              onClick={handleDurationClose}
-            >
-              Done
-            </Button>
-          </Box>
-        </Popover>
-      </Grid>
-
-      {/* Price Range */}
-      <Grid item xs={12} sm={6} md={4} lg={3}>
-        <TextField
-          label="Price Range ($)"
-          value={`$${priceRange[0]} - $${priceRange[1]}`}
-          onClick={handlePriceClick}
-          fullWidth
-          readOnly
-          InputLabelProps={{ style: { color: muiTheme.palette.text.secondary } }}
-          InputProps={{ style: { color: muiTheme.palette.text.secondary } }}
-          sx={{
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": { borderColor: muiTheme.palette.primary.main },
-              "&:hover fieldset": { borderColor: muiTheme.palette.secondary.main },
-              "&.Mui-focused fieldset": { borderColor: muiTheme.palette.secondary.main },
-            },
-          }}
-        />
-
-        <Popover
-          open={openPrice}
-          anchorEl={anchorElPrice}
-          onClose={handlePriceClose}
-          anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-          PaperProps={{
-            sx: {
-              backgroundColor: muiTheme.palette.background.paper,
-              color: muiTheme.palette.text.primary,
-              borderRadius: "20px",
-              p: 2,
-            },
-          }}
-        >
-          <Box sx={{ width: 250 }}>
-            <Typography gutterBottom>Adjust Price Range</Typography>
-            <Slider
-              value={priceRange}
-              onChange={(e, newValue) => setPriceRange(newValue)}
-              valueLabelDisplay="auto"
-              min={0}
-              max={14000}
-              sx={{
-                color: muiTheme.palette.primary.main,
-                "& .MuiSlider-valueLabel": {
-                  color: muiTheme.palette.getContrastText(muiTheme.palette.primary.main),
-                  backgroundColor: muiTheme.palette.primary.main,
-                  borderRadius: "4px",
-                  fontWeight: "bold",
+        <Grid item xs={12} sm={6} md={4} lg={3}>
+          <TextField
+            label="Duration (Days)"
+            value={duration || ""}
+            onClick={handleDurationClick}
+            fullWidth
+            readOnly
+            InputLabelProps={{
+              style: { color: muiTheme.palette.text.secondary },
+            }}
+            InputProps={{ style: { color: muiTheme.palette.text.secondary } }}
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": { borderColor: muiTheme.palette.primary.main },
+                "&:hover fieldset": {
+                  borderColor: muiTheme.palette.secondary.main,
                 },
-                "& .MuiSlider-markLabel": {
-                  color: muiTheme.palette.text.secondary,
-                },
-              }}
-            />
-            <Button
-              variant="contained"
-              size="small"
-              sx={{
-                mt: 2,
-                backgroundColor: muiTheme.palette.primary.main,
-                color: muiTheme.palette.getContrastText(muiTheme.palette.primary.main),
-                "&:hover": { backgroundColor: muiTheme.palette.secondary.main },
-              }}
-              onClick={handlePriceClose}
-            >
-              Done
-            </Button>
-          </Box>
-        </Popover>
-      </Grid>
-        {/* Category */}
-      <Grid item xs={12} sm={6} md={4} lg={3}>
-        <TextField
-          select
-          label="Category"
-          fullWidth
-          value={selectedCategories}
-          onChange={(e) => setSelectedCategories(e.target.value)}
-          InputLabelProps={{ style: { color: muiTheme.palette.text.secondary } }}
-          InputProps={{
-            style: { color: muiTheme.palette.text.secondary },
-          }}
-          SelectProps={{
-            MenuProps: {
-              PaperProps: {
-                sx: {
-                  borderRadius: "20px",
-                  backgroundColor: muiTheme.palette.background.paper, // ✅ خلفية القائمة من الثيم
-                  color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
+                "&.Mui-focused fieldset": {
+                  borderColor: muiTheme.palette.secondary.main,
                 },
               },
-            },
-          }}
-          sx={{
-            width:"200px",
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": { borderColor: muiTheme.palette.primary.main },
-              "&:hover fieldset": { borderColor: muiTheme.palette.secondary.main },
-              "&.Mui-focused fieldset": { borderColor: muiTheme.palette.secondary.main },
-            },
-          }}
-        >
-          {categories.map((cat) => (
-            <MenuItem key={cat.id} value={cat.name}>
-              {cat.name}
-            </MenuItem>
-          ))}
-        </TextField>
-      </Grid>
+            }}
+          />
+          {/* Popover يبقى زي ما هو */}
 
-      {/* Date Picker */}
-      <Grid item xs={12} sm={6} md={4} lg={3}>
-        <Box sx={{ width: "100%" }}>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <Event
-              sx={{
-                color: muiTheme.palette.primary.main, // ✅ الأيقونة من اللون الأساسي
-                display: { xs: "inline-flex", sm: "none" },
-              }}
-            />
-            <input
-              type="date"
-              id="start-date"
-              name="start-date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              min={today}
-              style={{
-                backgroundColor: muiTheme.palette.background.default, // ✅ خلفية من الثيم
-                color: muiTheme.palette.text.secondary, // ✅ النصوص من الثيم
-                border: `2px solid ${muiTheme.palette.primary.main}`, // ✅ الحدود من اللون الأساسي
-                borderRadius: "8px",
-                padding: "14px",
-                fontSize: "16px",
-                width: "100%",
-                outline: "none",
-              }}
-            />
+          <Popover
+            open={openDuration}
+            anchorEl={anchorElDuration}
+            onClose={handleDurationClose}
+            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+            PaperProps={{
+              sx: {
+                backgroundColor: muiTheme.palette.background.paper,
+                color: muiTheme.palette.text.primary,
+                borderRadius: "20px",
+                p: 2,
+              },
+            }}
+          >
+            <Box sx={{ width: 250 }}>
+              <Typography gutterBottom>Choose Duration</Typography>
+              <Slider
+                value={duration}
+                onChange={(e, val) => setDuration(val)}
+                valueLabelDisplay="auto"
+                step={1}
+                min={1}
+                max={15}
+                marks={[
+                  { value: 1, label: "1" },
+                  { value: 5, label: "5" },
+                  { value: 10, label: "10" },
+                  { value: 15, label: "15" },
+                ]}
+                sx={{ color: muiTheme.palette.primary.main }}
+              />
+              <Button
+                variant="contained"
+                size="small"
+                sx={{
+                  mt: 2,
+                  backgroundColor: muiTheme.palette.primary.main,
+                  color: muiTheme.palette.getContrastText(
+                    muiTheme.palette.primary.main
+                  ),
+                  "&:hover": {
+                    backgroundColor: muiTheme.palette.secondary.main,
+                  },
+                }}
+                onClick={handleDurationClose}
+              >
+                Done
+              </Button>
+            </Box>
+          </Popover>
+        </Grid>
+
+        {/* Price Range */}
+        <Grid item xs={12} sm={6} md={4} lg={3}>
+          <TextField
+            label="Price Range ($)"
+            value={`$${priceRange[0]} - $${priceRange[1]}`}
+            onClick={handlePriceClick}
+            fullWidth
+            readOnly
+            InputLabelProps={{
+              style: { color: muiTheme.palette.text.secondary },
+            }}
+            InputProps={{ style: { color: muiTheme.palette.text.secondary } }}
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": { borderColor: muiTheme.palette.primary.main },
+                "&:hover fieldset": {
+                  borderColor: muiTheme.palette.secondary.main,
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: muiTheme.palette.secondary.main,
+                },
+              },
+            }}
+          />
+
+          <Popover
+            open={openPrice}
+            anchorEl={anchorElPrice}
+            onClose={handlePriceClose}
+            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+            PaperProps={{
+              sx: {
+                backgroundColor: muiTheme.palette.background.paper,
+                color: muiTheme.palette.text.primary,
+                borderRadius: "20px",
+                p: 2,
+              },
+            }}
+          >
+            <Box sx={{ width: 250 }}>
+              <Typography gutterBottom>Adjust Price Range</Typography>
+              <Slider
+                value={priceRange}
+                onChange={(e, newValue) => setPriceRange(newValue)}
+                valueLabelDisplay="auto"
+                min={0}
+                max={14000}
+                sx={{
+                  color: muiTheme.palette.primary.main,
+                  "& .MuiSlider-valueLabel": {
+                    color: muiTheme.palette.getContrastText(
+                      muiTheme.palette.primary.main
+                    ),
+                    backgroundColor: muiTheme.palette.primary.main,
+                    borderRadius: "4px",
+                    fontWeight: "bold",
+                  },
+                  "& .MuiSlider-markLabel": {
+                    color: muiTheme.palette.text.secondary,
+                  },
+                }}
+              />
+              <Button
+                variant="contained"
+                size="small"
+                sx={{
+                  mt: 2,
+                  backgroundColor: muiTheme.palette.primary.main,
+                  color: muiTheme.palette.getContrastText(
+                    muiTheme.palette.primary.main
+                  ),
+                  "&:hover": {
+                    backgroundColor: muiTheme.palette.secondary.main,
+                  },
+                }}
+                onClick={handlePriceClose}
+              >
+                Done
+              </Button>
+            </Box>
+          </Popover>
+        </Grid>
+
+        {/* Category */}
+        <Grid item xs={12} sm={6} md={4} lg={3}>
+          <TextField
+            select
+            label="Category"
+            fullWidth
+            value={selectedCategories}
+            onChange={(e) => setSelectedCategories(e.target.value)}
+            InputLabelProps={{
+              style: { color: muiTheme.palette.text.secondary },
+            }}
+            InputProps={{ style: { color: muiTheme.palette.text.secondary } }}
+            SelectProps={{
+              MenuProps: {
+                PaperProps: {
+                  sx: {
+                    borderRadius: "20px",
+                    backgroundColor: muiTheme.palette.background.paper,
+                    color: muiTheme.palette.text.primary,
+                  },
+                },
+              },
+            }}
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": { borderColor: muiTheme.palette.primary.main },
+                "&:hover fieldset": {
+                  borderColor: muiTheme.palette.secondary.main,
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: muiTheme.palette.secondary.main,
+                },
+              },
+            }}
+          >
+            {categories.map((cat) => (
+              <MenuItem key={cat.id} value={cat.name}>
+                {cat.name}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Grid>
+
+        {/* Date Picker */}
+        <Grid item xs={12} sm={6} md={4} lg={3}>
+          <Box sx={{ width: "100%" }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <Event
+                sx={{
+                  color: muiTheme.palette.primary.main,
+                  display: { xs: "inline-flex", sm: "none" },
+                }}
+              />
+              <input
+                type="date"
+                id="start-date"
+                name="start-date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                min={today}
+                style={{
+                  backgroundColor: muiTheme.palette.background.default,
+                  color: muiTheme.palette.text.secondary,
+                  border: `2px solid ${muiTheme.palette.primary.main}`,
+                  borderRadius: "8px",
+                  padding: "14px",
+                  fontSize: "16px",
+                  width: "100%", // ✅ عرض كامل
+                  outline: "none",
+                }}
+              />
+            </Box>
           </Box>
-        </Box>
-      </Grid>
+        </Grid>
+
         {/* Search Button */}
-           <Grid item xs={12}>
-      <Box display="flex" justifyContent="center">
-        <Button
-          onClick={handleSearch}
-          variant="contained"
-          size="large"
-          disabled={
-            !selectedDestinationId ||
-            !duration ||
-            !selectedCategories ||
-            !date ||
-            !priceRange
-          }
-          sx={{
-            backgroundColor: muiTheme.palette.primary.main, // ✅ اللون الأساسي من الثيم
-            color: muiTheme.palette.getContrastText(muiTheme.palette.primary.main), // ✅ النصوص متناسقة مع الخلفية
-            fontWeight: "bold",
-            borderRadius: "8px",
-            px: 4,
-            py: 1.5,
-            textTransform: "none",
-            boxShadow: `0 4px 10px ${muiTheme.palette.primary.main}50`, // ✅ ظل بنفس لون الثيم
-            "&:hover": {
-              backgroundColor: muiTheme.palette.secondary.main, // ✅ اللون الثانوي عند الـ hover
-            },
-          }}
-        >
-          <BiSearch style={{ fontSize: "18px", marginRight: "8px" }} /> Search
-        </Button>
-      </Box>
-    </Grid>
+        <Grid item xs={12}>
+          <Box display="flex" justifyContent="center">
+            <Button
+              onClick={handleSearch}
+              variant="contained"
+              size="large"
+              disabled={
+                !selectedDestinationId ||
+                !duration ||
+                !selectedCategories ||
+                !date ||
+                !priceRange
+              }
+              sx={{
+                backgroundColor: muiTheme.palette.primary.main,
+                color: muiTheme.palette.getContrastText(
+                  muiTheme.palette.primary.main
+                ),
+                fontWeight: "bold",
+                borderRadius: "8px",
+                px: 4,
+                py: 1.5,
+                textTransform: "none",
+                boxShadow: `0 4px 10px ${muiTheme.palette.primary.main}50`,
+                "&:hover": { backgroundColor: muiTheme.palette.secondary.main },
+              }}
+            >
+              <BiSearch style={{ fontSize: "18px", marginRight: "8px" }} />{" "}
+              Search
+            </Button>
+          </Box>
+        </Grid>
       </Grid>
     </Box>
   );

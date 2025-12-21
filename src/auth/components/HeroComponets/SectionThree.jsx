@@ -115,7 +115,7 @@ function TourCard({ tour, index, router, pathname, muiTheme }) {
       />
 
       {/* ✅ طبقة تعتيم */}
-      <div className="absolute inset-0 bg-black/50 z-10" />
+      <div className="absolute inset-0 bg-black/10 z-10" />
 
       {/* ✅ المحتوى */}
       <div className="absolute inset-0 z-20 flex flex-col justify-between p-4">
@@ -140,7 +140,7 @@ function TourCard({ tour, index, router, pathname, muiTheme }) {
 
         {/* ✅ العنوان + التاريخ + الزر */}
         <div style={{ padding: "10px" }} className="flex flex-col gap-3 bg-gradient-to-t from-black/70 via-black/40 to-transparent p-3 rounded-xl">
-          <h4 className="text-lg font-semibold leading-snug line-clamp-2" style={{ color: muiTheme.palette.text.primary }}>
+          <h4 className="text-lg font-semibold leading-snug line-clamp-2" style={{ color: muiTheme.palette.secondary.main }}>
             {tour.title}
           </h4>
 
@@ -154,9 +154,11 @@ function TourCard({ tour, index, router, pathname, muiTheme }) {
               sessionStorage.setItem(`scroll-${pathname}`, window.scrollY.toString());
               router.push(`/tours/${tour.id}`);
             }}
-            className="font-semibold rounded-md px-4 py-2 text-sm transition"
+            className="font-semibold rounded-md text-sm transition"
             style={{
-              backgroundColor: muiTheme.palette.primary.main,
+              cursor:"pointer",
+              padding:"8px",
+              background: `linear-gradient(350deg, ${muiTheme.palette.secondary.main}, ${muiTheme.palette.primary.main})`, // ✅ زر متدرج من ألوان الثيم
               color: muiTheme.palette.getContrastText(muiTheme.palette.primary.main),
             }}
           >

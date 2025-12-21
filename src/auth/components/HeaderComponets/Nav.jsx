@@ -66,8 +66,8 @@ const Nav = ({ path, user, slug }) => {
               fontWeight: "600",
               fontSize,
               color: item.active
-                ? muiTheme.palette.primary.main // ✅ اللون الأساسي عند التفعيل
-                : muiTheme.palette.text.primary, // ✅ النص الأساسي من الثيم
+                ? muiTheme.palette.secondary.main // ✅ اللون الأساسي عند التفعيل
+                : muiTheme.palette.secondary.contrastText, // ✅ النص الأساسي من الثيم
             }}
           >
             <Link
@@ -93,7 +93,7 @@ const Nav = ({ path, user, slug }) => {
               color:
                 slug === "admin"
                   ? muiTheme.palette.primary.main
-                  : muiTheme.palette.text.primary,
+                  : muiTheme.palette.secondary.contrastText,
             }}
           >
             <Link

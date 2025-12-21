@@ -46,10 +46,13 @@ const MobilNav = ({ slug, user }) => {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
         sx={{
+          backgroundColor: "transparent", // ✅ يخلي الخلفية دايمًا شفافة
           zIndex: 9999,
           fontSize: "25px",
           color: muiTheme.palette.primary.main, // ✅ اللون الأساسي من الثيم
           "&:hover": {
+            backgroundColor: "transparent", // ✅ حتى عند الـ hover
+
             color: muiTheme.palette.secondary.main, // ✅ اللون الثانوي عند الـ hover
           },
         }}

@@ -11,7 +11,7 @@ const BookTourButton = ({
   user,
   setNan,
   options,
-  finalPriceAfterRival,
+  TTfinalPriceAfterRival,
   setHasBooked,
   selectedExtras,
   nan,
@@ -44,7 +44,7 @@ const BookTourButton = ({
   };
   const handleBooking = async () => {
     const bookingPayload = {
-      amount_cents: Math.round(finalPriceAfterRival * 100),
+      amount_cents: Math.round(TTfinalPriceAfterRival * 100),
       name: user.name,
       email: user.email,
       userId: user.id,
@@ -91,7 +91,7 @@ const BookTourButton = ({
           tourTitle: tour.title,
           date: tour.theDate,
           time: bookingTime,
-          price: parseFloat(finalPriceAfterRival).toFixed(2),
+          price: parseFloat(TTfinalPriceAfterRival).toFixed(2),
         }),
       });
 
@@ -230,7 +230,7 @@ const BookTourButton = ({
 
             <Typography sx={{ color: muiTheme.palette.text.secondary, display: "flex", gap: "15px", fontWeight: "800" }}>
               <strong style={{ color: muiTheme.palette.text.primary }}>Final Price:</strong>{" "}
-              {parseFloat(finalPriceAfterRival).toFixed(2)} USD
+              {parseFloat(TTfinalPriceAfterRival).toFixed(2)} USD
             </Typography>
             {(selectedExtras || "No Option").map((i) => (
               <Typography

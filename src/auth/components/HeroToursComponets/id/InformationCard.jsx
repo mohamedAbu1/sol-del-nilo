@@ -121,22 +121,22 @@ const InformationCard = ({
     {
       title: "2-3 pax",
       dec: "Price per person for 2-3 pax",
-      prise: parseFloat(finalPriceAfterRival).toFixed(2) / 2,
+      prise: parseFloat(finalPriceAfterRival).toFixed(2) - 50,
     },
     {
       title: "4-8 pax",
       dec: "Price per person for 4-8 pax",
-      prise: parseFloat(finalPriceAfterRival).toFixed(2) / 3,
+      prise: parseFloat(finalPriceAfterRival).toFixed(2) - 100,
     },
     {
       title: "9-15 pax",
       dec: "Price per person for 9-15 pax",
-      prise: parseFloat(finalPriceAfterRival).toFixed(2) / 4,
+      prise: parseFloat(finalPriceAfterRival).toFixed(2) - 150,
     },
     {
       title: "16-50 pax",
       dec: "Price per person for 16-50 pax",
-      prise: parseFloat(finalPriceAfterRival).toFixed(2) / 5,
+      prise: parseFloat(finalPriceAfterRival).toFixed(2) - 200,
     },
   ];
   return (

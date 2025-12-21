@@ -83,7 +83,7 @@ const CityCard = ({ city, index, today, router, toursCount }) => {
               letterSpacing: "0.05em",
               textAlign: "center",
               padding: "4px",
-              color: muiTheme.palette.text.primary, // ✅ النص من الثيم
+              color: muiTheme.palette.secondary.main, // ✅ النص من الثيم
               textShadow: "2px 2px 6px rgba(0,0,0,0.6)",
             }}
           >
@@ -99,7 +99,7 @@ const CityCard = ({ city, index, today, router, toursCount }) => {
                 exit={{ opacity: 0, y: 30, scale: 0.95 }}
                 transition={{ duration: 0.6, ease: "easeInOut", delay: 0.2 }}
                 style={{
-                  color: muiTheme.palette.secondary.main, // ✅ اللون الثانوي من الثيم
+                  color: muiTheme.palette.secondary.contrastText, // ✅ اللون الثانوي من الثيم
                   fontSize: "18px",
                   fontWeight: 600,
                 }}

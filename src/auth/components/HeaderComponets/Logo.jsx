@@ -22,7 +22,7 @@ const Logo = ({ path }) => {
   const logoSrc =
     resolvedTheme === "dark"
       ? "/assets/Copilot_20251209_142706-removebg-preview.webp" // اللوجو الخاص بالدارك مود
-      : "/assets/Copilot_20251208_084907.webp"; // اللوجو الخاص باللايت مود
+      : "/assets/Copilot_20251209_142706-removebg-preview.webp"; // اللوجو الخاص باللايت مود
 
   return (
     <div

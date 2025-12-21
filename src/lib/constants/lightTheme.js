@@ -4,65 +4,50 @@ const lightTheme = createTheme({
   palette: {
     mode: "light",
     primary: {
-      main: "#1976d2", // الأزرق الأساسي
+      main: "#2E2E2E", // ممكن تخليه رمادي غامق أو أي لون أساسي
       contrastText: "#ffffff",
     },
     secondary: {
-      main: "#2196f3", // الأزرق الفاتح
+      main: "#f1b732", // ✅ الذهبي
       contrastText: "#ffffff",
     },
     background: {
-      default: "#ffffff", // خلفية بيضاء
-      paper: "#f9f9f9",   // أبيض أنعم للكروت
+      default: "#ffffff",
+      paper: "#f9f9f9",
     },
     text: {
-      primary: "#2E2E2E",   // ✅ رمادي غامق أنيق بدل الأسود
-      secondary: "#666666", // ✅ رمادي متوسط للنصوص الثانوية
+      primary: "#2E2E2E",
+      secondary: "#666666",
     },
   },
   typography: {
     fontFamily: "Roboto, Cairo, sans-serif",
+    h1: {
+      fontWeight: 700,
+      color: "#f1b732", // ✅ العنوان الكبير بالذهبي
+    },
+    h2: {
+      fontWeight: 700,
+      color: "#f1b732", // ✅ العنوان الثاني بالذهبي
+    },
+    h3: {
+      fontWeight: 700,
+      color: "#f1b732", // ✅ العنوان الثالث بالذهبي
+    },
+    h4: {
+      fontWeight: 700,
+      color: "#f1b732", // ✅ العنوان الرابع بالذهبي
+    },
+    h5: {
+      fontWeight: 700,
+      color: "#f1b732", // ✅ العنوان الخامس بالذهبي
+    },
     h6: {
       fontWeight: 700,
-      color: "#1A3A6D", // ✅ عناوين بأزرق داكن أنيق
+      color: "#f1b732", // ✅ العنوان السادس بالذهبي
     },
     body1: {
-      color: "#2E2E2E", // ✅ نصوص أساسية واضحة ومريحة
-    },
-  },
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          borderRadius: "8px",
-          fontWeight: 600,
-          backgroundColor: "#1976d2",
-          color: "#fff",
-          "&:hover": {
-            backgroundColor: "#2196f3",
-          },
-        },
-      },
-    },
-    MuiCard: {
-      styleOverrides: {
-        root: {
-          backgroundColor: "#f9f9f9",
-          border: "1px solid #1976d2",
-          boxShadow: "0 4px 12px rgba(25, 118, 210, 0.2)",
-          color: "#2E2E2E", // ✅ نص واضح داخل الكارت
-        },
-      },
-    },
-    MuiIconButton: {
-      styleOverrides: {
-        root: {
-          color: "#1976d2",
-          "&:hover": {
-            color: "#2196f3",
-          },
-        },
-      },
+      color: "#2E2E2E",
     },
   },
 });

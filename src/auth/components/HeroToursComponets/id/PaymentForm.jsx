@@ -29,7 +29,7 @@ const PaymentForm = ({
   bookingData,
   setBookingData,
   finalPrice,
-  finalPriceAfterRival,
+  TTfinalPriceAfterRival,
   selectedExtras,
   nan,
 }) => {
@@ -717,7 +717,7 @@ const PaymentForm = ({
                     tour={tour}
                     user={user}
                     setNan={setNan}
-                    finalPriceAfterRival={finalPriceAfterRival}
+                    TTfinalPriceAfterRival={TTfinalPriceAfterRival}
                     selectedExtras={selectedExtras}
                     nan={nan}
                     setHasBooked={setHasBooked}

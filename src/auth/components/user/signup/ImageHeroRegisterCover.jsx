@@ -10,12 +10,12 @@ const ImageHeroRegisterCover = () => {
   const largeScreenImage =
     muiTheme.palette.mode === "dark"
       ? "/assets/Temple_of_the_Elephants.webp" // صورة للـ Dark Mode
-      : "/assets/dmitrii-zhodzishskii-4rXHE9XeW_A-unsplash.webp"; // صورة للـ Light Mode
+      : "/assets/Temple_of_the_Elephants.webp"; // صورة للـ Light Mode
 
   const smallScreenImage =
     muiTheme.palette.mode === "dark"
       ? "/assets/Copilot_20250910_005440.webp" // صورة للـ Dark Mode
-      : "/assets/nils-lr0qXcaJFik-unsplash.webp"; // صورة للـ Light Mode
+      : "/assets/Copilot_20250910_005440.webp"; // صورة للـ Light Mode
 
   return (
     <>

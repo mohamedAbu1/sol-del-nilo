@@ -26,7 +26,7 @@ const TextHero = () => {
       <h1
         className="text-[clamp(1.5rem,6vw,3.8rem)] font-bold text-center"
         style={{
-          color: muiTheme.palette.primary.main, // ✅ اللون الأساسي من الثيم
+          color: muiTheme.palette.secondary.main, // ✅ اللون الأساسي من الثيم
         }}
       >
         {sentence}

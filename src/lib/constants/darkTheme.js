@@ -7,7 +7,8 @@ const darkTheme = createTheme({
       main: "#FFD700", // الذهبي الأساسي
     },
     secondary: {
-      main: "#FFC107", // درجة ذهبي أفتح
+      main: "#FFC107",
+      contrastText:"#ffffff", // درجة ذهبي أفتح
     },
     background: {
       default: "#000000", // خلفية سوداء

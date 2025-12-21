@@ -5,11 +5,11 @@ import Destination from "./components/Destination";
 import PriceRange from "./components/PriceRange";
 import DurationRange from "./components/DurationRange";
 import Categories from "./components/Categories";
-import { useAppContext } from "@/context/AppContext";
 import { motion } from "framer-motion";
+import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم
 
 const SidebarFilters = () => {
-  const { theme } = useAppContext();
+  const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي
 
   return (
     <motion.div
@@ -18,8 +18,8 @@ const SidebarFilters = () => {
         width: "25%",
         minWidth: "25%",
         borderRadius: "20px",
-        backgroundColor: theme === "dark" ? "#030712" : "#fff",
-        color: "#fff",
+        backgroundColor: muiTheme.palette.background.paper, // ✅ خلفية من الثيم
+        color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
       }}
       initial={{ opacity: 0, x: -200 }}              // يبدأ خارج الشاشة من الشمال
       animate={{ opacity: 1, x: 0 }}                 // يدخل لمكانه الطبيعي
@@ -30,15 +30,18 @@ const SidebarFilters = () => {
           width: "100%",
           borderRadius: "20px",
           p: 3,
-          backgroundColor: theme === "dark" ? "#030712" : "#fff",
-          // boxShadow: 4,
-          color: "#fff",
-          border: "1px solid #ffb300"
+          backgroundColor: muiTheme.palette.background.paper, // ✅ خلفية من الثيم
+          color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
+          border: `1px solid ${muiTheme.palette.primary.main}`, // ✅ الحدود من اللون الأساسي
         }}
       >
         <Typography
           variant="h6"
-          sx={{ color: "#ffb300", mb: 3, fontWeight: "bold" }}
+          sx={{
+            color: muiTheme.palette.primary.main, // ✅ العنوان بلون أساسي من الثيم
+            mb: 3,
+            fontWeight: "bold",
+          }}
         >
           Filter Tours
         </Typography>

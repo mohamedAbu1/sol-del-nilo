@@ -1,174 +1,138 @@
 "use client";
-import { Button } from "@mui/material";
+import { Button, Divider, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { FaHome } from "react-icons/fa";
 import { BsFillPersonFill } from "react-icons/bs";
 import { FiSettings } from "react-icons/fi";
 import { Link } from "@/i18n/navigation";
 import { HiOutlineInformationCircle } from "react-icons/hi";
-import { MdOutlineBrowserUpdated } from "react-icons/md";
-import { MdOutlineCreate } from "react-icons/md";
+import { MdOutlineBrowserUpdated, MdOutlineCreate } from "react-icons/md";
 import { useTripsContext } from "@/context/TripsContext";
 import { useScreenSize } from "@/auth/hooks/screenSize";
+import { useTheme } from "@mui/material/styles";
+
 const Sidebar = () => {
-  const { width, height } = useScreenSize();
+  const { width } = useScreenSize();
   const { setActiveSection, activeSection } = useTripsContext();
-  const [hover, sitHover] = useState(null);
+  const [hover, setHover] = useState(null);
+  const muiTheme = useTheme();
+
+  const activeColor = muiTheme.palette.secondary.main;
+  const defaultColor = muiTheme.palette.text.primary;
+  const bgColor = muiTheme.palette.background.paper;
+
+  const navItems = [
+    { key: "home", label: "Home", icon: <FaHome /> },
+    { key: "CreateTrip", label: "Create a trip", icon: <MdOutlineCreate /> },
+    {
+      key: "UserInformation",
+      label: "User information",
+      icon: <HiOutlineInformationCircle />,
+    },
+    {
+      key: "UpdateTrip",
+      label: "Update trip",
+      icon: <MdOutlineBrowserUpdated />,
+    },
+    {
+      key: "Reservation",
+      label: "Reservation information",
+      icon: <HiOutlineInformationCircle />,
+    },
+  ];
+
   return (
-    <section
+    <aside
       style={{
         width: width * 0.25,
         height: "100vh",
-        borderTopRightRadius: "80px",
-        borderBottomRightRadius: "80px",
-        backgroundColor: "#292c2e",
+        borderTopRightRadius: "40px",
+        borderBottomRightRadius: "40px",
+        background: `linear-gradient(180deg, ${muiTheme.palette.background.default} 0%, ${muiTheme.palette.background.paper} 100%)`,
+        boxShadow: muiTheme.shadows[6],
       }}
-      className="container flex flex-col items-center pt-2"
+      className="flex flex-col items-center py-6"
     >
-      <div
-        style={{ color: "#FFFFFF" }}
-        className="h-1/6 flex flex-row items-center justify-center gap-3"
-      >
-        <BsFillPersonFill style={{ fontSize: "27px" }} />
-        <h1 className="text-2xl capitalize">mohamed ahmed</h1>
+      {/* User Info */}
+      <div style={{paddingTop:"25px"}} className="flex flex-row items-center justify-center gap-3 mb-6">
+        <BsFillPersonFill style={{ fontSize: "30px", color: activeColor }} />
+        <Typography
+          variant="h6"
+          sx={{ color: muiTheme.palette.text.primary, fontWeight: "600",}}
+        >
+          Mohamed Ahmed
+        </Typography>
       </div>
-      <ul className="h-3/4 flex flex-col gap-9" style={{ color: "#FFFFFF" }}>
-        <li
-          onMouseEnter={() => sitHover("Home")}
-          onMouseLeave={() => sitHover(null)}
-          style={{
-            color:
-              hover === "Home" || activeSection === "home"
-                ? "#ff9800"
-                : "#FFFFFF",
-          }}
-          className="flex items-center justify-center text-center"
-        >
-          <FaHome style={{ fontSize: "28px" }} />
-          <Button
+
+      <Divider sx={{ width: "80%", mb: 4 }} />
+
+      {/* Navigation */}
+      <ul className="flex flex-col gap-2 w-full px-4">
+        {navItems.map((item) => (
+          <li
+            key={item.key}
+            onMouseEnter={() => setHover(item.key)}
+            onMouseLeave={() => setHover(null)}
+            className="flex items-center gap-3 px-3 py-2 rounded-md cursor-pointer"
             style={{
+              width:"80%",
+              paddingLeft:"20px",
+              transition: "all 0.3s ease",
               color:
-                hover === "Home" || activeSection === "home"
-                  ? "#ff9800"
-                  : "#FFFFFF",
+                hover === item.key || activeSection === item.key
+                  ? activeColor
+                  : defaultColor,
             }}
-            onClick={() => setActiveSection("home")}
           >
-            Home
-          </Button>
-        </li>
-        <li
-          className="flex items-center justify-center"
-          onMouseEnter={() => sitHover("Create")}
-          onMouseLeave={() => sitHover(null)}
-          style={{
-            color:
-              hover === "Create" || activeSection === "CreateTrip"
-                ? "#ff9800"
-                : "#FFFFFF",
-          }}
-        >
-          <MdOutlineCreate style={{ fontSize: "28px" }} />
-          <Button
-            style={{
-              color:
-                hover === "Create" || activeSection === "CreateTrip"
-                  ? "#ff9800"
-                  : "#FFFFFF",
-            }}
-            onClick={() => setActiveSection("CreateTrip")}
-          >
-            Create a trip
-          </Button>
-        </li>
-        <li
-          className="flex items-center justify-center"
-          onMouseEnter={() => sitHover("information")}
-          onMouseLeave={() => sitHover(null)}
-          style={{
-            color:
-              hover === "information" || activeSection === "UserInformation"
-                ? "#ff9800"
-                : "#FFFFFF",
-          }}
-        >
-          <HiOutlineInformationCircle style={{ fontSize: "28px" }} />
-          <Button
-            style={{
-              color:
-                hover === "information" || activeSection === "UserInformation"
-                  ? "#ff9800"
-                  : "#FFFFFF",
-            }}
-            onClick={() => setActiveSection("UserInformation")}
-          >
-            User information
-          </Button>
-        </li>
-        <li
-          className="flex items-center justify-center"
-          onMouseEnter={() => sitHover("Update")}
-          onMouseLeave={() => sitHover(null)}
-          style={{
-            color:
-              hover === "Update" || activeSection === "UpdateTrip"
-                ? "#ff9800"
-                : "#FFFFFF",
-          }}
-        >
-          <MdOutlineBrowserUpdated style={{ fontSize: "28px" }} />
-          <Button
-            style={{
-              color:
-                hover === "Update" || activeSection === "UpdateTrip"
-                  ? "#ff9800"
-                  : "#FFFFFF",
-            }}
-            onClick={() => setActiveSection("UpdateTrip")}
-          >
-            Update trip
-          </Button>
-        </li>
-        <li
-          className="flex items-center justify-center"
-          onMouseEnter={() => sitHover("Reservation")}
-          onMouseLeave={() => sitHover(null)}
-          style={{
-            color:
-              hover === "Reservation" || activeSection === "Reservation"
-                ? "#ff9800"
-                : "#FFFFFF",
-          }}
-        >
-          <HiOutlineInformationCircle style={{ fontSize: "28px" }} />
-          <Button
-            style={{
-              color:
-                hover === "Reservation" || activeSection === "Reservation"
-                  ? "#ff9800"
-                  : "#FFFFFF",
-            }}
-            onClick={() => setActiveSection("Reservation")}
-          >
-            Reservation information
-          </Button>
-        </li>
+            <span style={{ fontSize: "22px" }}>{item.icon}</span>
+            <Button
+              variant="text" // ✅ زر بدون خلفية
+              sx={{
+                backgroundColor: "transparent", // ✅ بدون خلفية
+                justifyContent: "flex-start",
+                color:
+                  hover === item.key || activeSection === item.key
+                    ? activeColor
+                    : defaultColor,
+                fontWeight:
+                  hover === item.key || activeSection === item.key
+                    ? "700"
+                    : "500",
+                textTransform: "none",
+                fontSize: "15px",
+                "&:hover": {
+                  textDecoration: "underline", // ✅ تأثير أنيق عند المرور
+                  backgroundColor: "transparent", // ✅ بدون خلفية
+                },
+              }}
+              onClick={() => setActiveSection(item.key)}
+              fullWidth
+            >
+              {item.label}
+            </Button>
+          </li>
+        ))}
       </ul>
-      <div className=" flex flex-row items-center justify-center gap-3">
-        <FiSettings style={{ fontSize: "27px", color: "#ff9800" }} />
+
+      <Divider sx={{ width: "80%", mt: "auto", mb: 3 }} />
+
+      {/* Footer */}
+      <div  style={{paddingBottom:"25px"}}  className="flex flex-row items-center justify-center gap-3">
+        <FiSettings style={{ fontSize: "22px", color: activeColor }} />
         <Link
           href={"/"}
           style={{
-            color: hover === "SolDelNile" ? "#ff9800" : "#FFFFFF",
-            fontWeight: "700",
+            color: hover === "SolDelNile" ? activeColor : defaultColor,
+            fontWeight: "600",
+            transition: "color 0.3s ease",
           }}
-          onMouseEnter={() => sitHover("SolDelNile")}
-          onMouseLeave={() => sitHover(null)}
+          onMouseEnter={() => setHover("SolDelNile")}
+          onMouseLeave={() => setHover(null)}
         >
-          Back to SolDelNile
+          Back to Luxor & Aswan
         </Link>
       </div>
-    </section>
+    </aside>
   );
 };
 

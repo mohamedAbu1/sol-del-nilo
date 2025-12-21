@@ -147,11 +147,10 @@ const MainCardSC = ({ user }) => {
     return <div>Loading trip details... ⏳</div>;
   }
 
- 
   const addOnTours = tours.filter(
     (t) => t.category.name === "Options Tours" && t.city?.name === city
   );
-console.log(addOnTours)
+  console.log(addOnTours);
   return (
     <div
       style={{
@@ -172,11 +171,14 @@ console.log(addOnTours)
           bookingData={bookingData}
           setBookingData={setBookingData}
         />
-        <AddOnTours
-          addons={addOnTours}
-          selectedExtras={selectedExtras2}
-          setSelectedExtras={setSelectedExtras2}
-        />
+        {tour.category.name !== "Options Tours" && (
+          <AddOnTours
+            addons={addOnTours}
+            selectedExtras={selectedExtras2}
+            setSelectedExtras={setSelectedExtras2}
+          />
+        )}
+
         {user && (
           <CommentsReviews
             comments={tour.reviews}

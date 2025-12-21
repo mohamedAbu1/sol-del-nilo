@@ -2,9 +2,11 @@
 import React, { useEffect, useState } from "react";
 import { getHeroText } from "@/lib/constants/FixedTexts";
 import { useTranslations } from "next-intl";
+import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم
 
 const TextHero = () => {
   const t = useTranslations("HomeHeroPage");
+  const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي (light/dark)
 
   const [hasMounted, setHasMounted] = useState(false);
   const [sentence, setSentence] = useState("");
@@ -21,10 +23,20 @@ const TextHero = () => {
 
   return (
     <div className="w-full flex flex-col items-center justify-center gap-6 px-4 py-8">
-      <h1 className="text-[clamp(1.5rem,6vw,3.8rem)] font-bold text-[#FF9800] text-center">
+      <h1
+        className="text-[clamp(1.5rem,6vw,3.8rem)] font-bold text-center"
+        style={{
+          color: muiTheme.palette.primary.main, // ✅ اللون الأساسي من الثيم
+        }}
+      >
         {sentence}
       </h1>
-      <p className="text-[clamp(1rem,4vw,2rem)] text-white text-center font-semibold">
+      <p
+        className="text-[clamp(1rem,4vw,2rem)] text-center font-semibold"
+        style={{
+          color: muiTheme.palette.text.primary, // ✅ النص الأساسي من الثيم
+        }}
+      >
         {sentence2}
       </p>
     </div>

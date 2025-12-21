@@ -18,6 +18,7 @@ import PlaceName from "@/auth/components/HeroToursComponets/id/PlaceName";
 import CategoryIcon from "@mui/icons-material/Category";
 import MapIcon from "@mui/icons-material/Map";
 import CheckIcon from "@mui/icons-material/Check";
+import { useTheme } from "@mui/material/styles";
 const AnimatedSection = ({ children }) => {
   const ref = useRef(null);
   const [hasAnimated, setHasAnimated] = useState(false);
@@ -99,7 +100,7 @@ const InformationCard = ({
     "Qaitbay",
     "Lighthouse of Alexandria,",
   ];
-
+  const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي
   const parseDescription = (text) => {
     let parts = text.split(
       /(Philae Temple|Lighthouse of Alexandria|Philae|Qaitbay|catacombs of Kom El Shoqafa|Egyptian Museum|Hatshepsut|the Sphinx|Pyramids|Edfu|Karnak Temple|Karnak|sphinx|Luxor Temple|Luxor|Valley of the Kings|Abu Simbel Temple|Abu Simbel)/g
@@ -156,7 +157,7 @@ const InformationCard = ({
               textTransform: "uppercase",
               fontSize: "clamp(32px, 6vw, 45px)",
               fontWeight: "700",
-              color: "#FF9800",
+              color: muiTheme.palette.primary.main, // ✅ اللون الأساسي من الثيم
             }}
           >
             {tour.title}
@@ -176,13 +177,12 @@ const InformationCard = ({
             fontSize: "clamp(14px, 2vw, 16px)",
             textTransform: "capitalize",
             pb: 2,
+            color: muiTheme.palette.text.secondary, // ✅ النصوص من الثيم
           }}
-          className="text-gray-600 dark:text-gray-400"
         >
           {parseDescription(tour.description)}
         </Typography>
       </AnimatedSection>
-
       <Dividering />
       <Dividering />
       <Dividering />
@@ -196,51 +196,36 @@ const InformationCard = ({
           className="w-full flex flex-col md:flex-row items-center justify-around gap-4"
         >
           <div className="flex flex-col w-full md:w-1/2">
-            <h1
-              style={{
+            <Typography
+              variant="h4"
+              sx={{
                 fontWeight: "700",
-                color: "#FF9800",
+                color: muiTheme.palette.primary.main, // ✅ العنوان من الثيم
                 marginBottom: "12px",
                 fontSize: "clamp(20px, 4vw, 36px)",
+                textTransform: "capitalize",
               }}
-              className="capitalize"
             >
               Overview
-            </h1>
+            </Typography>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {[
-                // {
-                //   label: "Number of participants",
-                //   icon: <HiOutlineUserGroup style={{ fontSize: "20px" }} />,
-                //   value:
-                //     typeof nan === "number" && !isNaN(nan)
-                //       ? nan
-                //       : parseInt(tour.DayPeople),
-                //   style: {
-                //     fontSize: "clamp(12px, 2vw, 18px)",
-                //   },
-                // },
-                // {
-                //   label: "the price",
-                //   icon: <BiDollar style={{ fontSize: "20px" }} />,
-                //   value: "سشي",
-                //   style: { fontSize: "clamp(14px, 2vw, 18px)" },
-                // },
                 {
                   label: "Age Range",
-                  icon: <PersonIcon style={{ fontSize: "20px" }} />,
+                  icon: <PersonIcon fontSize="small" />,
                   value: "All ages",
                   style: { fontSize: "clamp(14px, 2vw, 18px)" },
                 },
                 {
                   label: "Run",
-                  icon: <MapIcon style={{ fontSize: "20px" }} />,
+                  icon: <MapIcon fontSize="small" />,
                   value: "Daily",
                   style: { fontSize: "clamp(14px, 2vw, 18px)" },
                 },
                 {
                   label: "Category",
-                  icon: <CategoryIcon style={{ fontSize: "20px" }} />,
+                  icon: <CategoryIcon fontSize="small" />,
                   value: tour?.category?.name,
                   style: { fontSize: "clamp(14px, 2vw, 18px)" },
                 },
@@ -250,36 +235,36 @@ const InformationCard = ({
                   value: `${tour.TripDuration} Day`,
                   style: { fontSize: "clamp(14px, 2vw, 20px)" },
                 },
-              ]?.map((item, index) => (
+              ].map((item, index) => (
                 <div
                   key={index}
                   style={{
                     padding: "10px",
-                    borderLeft: "2px solid #FF9800",
-                    borderBottom: "2px solid #FF9800",
+                    borderLeft: `2px solid ${muiTheme.palette.primary.main}`,
+                    borderBottom: `2px solid ${muiTheme.palette.primary.main}`,
                     borderRight:
-                      index % 2 === 1 ? "2px solid #FF9800" : undefined,
+                      index % 2 === 1
+                        ? `2px solid ${muiTheme.palette.primary.main}`
+                        : undefined,
                   }}
                 >
-                  <h1
-                    style={{
+                  <Typography
+                    variant="subtitle1"
+                    sx={{
                       fontWeight: "700",
-                      color: "#d4a85f",
+                      color: muiTheme.palette.secondary.main, // ✅ النصوص الثانوية من الثيم
                       fontSize: "clamp(16px, 2vw, 24px)",
+                      textTransform: "capitalize",
                     }}
-                    className="capitalize text-gray-400"
                   >
                     {item.label}
-                  </h1>
-                  <div className="flex items-center justify-center text-gray-600 uppercase gap-2">
+                  </Typography>
+                  <div
+                    className="flex items-center justify-center uppercase gap-2"
+                    style={{ color: muiTheme.palette.text.secondary }}
+                  >
                     {item.icon}
-
-                    <p
-                      style={item.style}
-                      className="text-gray-600 dark:text-gray-400"
-                    >
-                      {item.value}
-                    </p>
+                    <p style={item.style}>{item.value}</p>
                     {item.icon}
                   </div>
                 </div>
@@ -292,22 +277,38 @@ const InformationCard = ({
               style={{ borderRadius: "6px" }}
               className="w-full md:w-1/2 overflow-x-auto mt-6"
             >
-              <table className="w-full border border-[#d4a85f] text-left bg-white">
+              <table
+                className="w-full text-left"
+                style={{
+                  border: `1px solid ${muiTheme.palette.secondary.main}`,
+                  backgroundColor: muiTheme.palette.background.paper,
+                }}
+              >
                 <tbody>
                   {tour?.tripprogram?.map((i) => (
-                    <tr key={i.id} className="border-b border-[#d4a85f]">
+                    <tr
+                      key={i.id}
+                      style={{
+                        borderBottom: `1px solid ${muiTheme.palette.divider}`,
+                      }}
+                    >
                       <th
                         style={{
-                          borderBottom: "1px solid #ffff",
+                          backgroundColor: muiTheme.palette.secondary.main,
+                          color: muiTheme.palette.common.white,
                           padding: "10px",
                         }}
-                        className="bg-[#d4a85f] text-white px-6 py-4 w-1/5"
+                        className="px-6 py-4 w-1/5"
                       >
                         🕒 {i.time}
                       </th>
                       <td
-                        style={{ padding: "10px" }}
-                        className="px-6 py-4 text-gray-600 capitalize dark:bg-[#1a1b1b] dark:text-gray-400"
+                        style={{
+                          padding: "10px",
+                          color: muiTheme.palette.text.secondary,
+                          backgroundColor: muiTheme.palette.background.default,
+                        }}
+                        className="px-6 py-4 capitalize"
                       >
                         {i.program}
                       </td>
@@ -318,14 +319,21 @@ const InformationCard = ({
             </div>
           ) : (
             <div className="w-full md:w-1/2 mt-10 space-y-12">
-              {/* ✅ جدول اليوم الحالي */}
               <div
                 key={currentDay}
-                className="border border-[#d4a85f] rounded-xl shadow-md bg-white dark:bg-[#1a1b1b] overflow-hidden"
+                style={{
+                  border: `1px solid ${muiTheme.palette.secondary.main}`,
+                  backgroundColor: muiTheme.palette.background.paper,
+                }}
+                className="rounded-xl shadow-md overflow-hidden"
               >
                 <div
-                  style={{ paddingLeft: "12px" }}
-                  className="bg-[#d4a85f] text-white px-6 py-4 text-xl font-bold"
+                  style={{
+                    backgroundColor: muiTheme.palette.secondary.main,
+                    color: muiTheme.palette.common.white,
+                    paddingLeft: "12px",
+                  }}
+                  className="px-6 py-4 text-xl font-bold"
                 >
                   Day {currentDay}
                 </div>
@@ -333,16 +341,26 @@ const InformationCard = ({
                 <div className="overflow-x-auto">
                   <table className="w-full text-left">
                     <thead>
-                      <tr className="bg-[#f7f3eb] dark:bg-[#222]">
+                      <tr
+                        style={{
+                          backgroundColor: muiTheme.palette.action.hover,
+                        }}
+                      >
                         <th
-                          style={{ paddingLeft: "6px" }}
-                          className="px-6 py-3 text-[#d4a85f] font-semibold w-1/4"
+                          style={{
+                            paddingLeft: "6px",
+                            color: muiTheme.palette.secondary.main,
+                          }}
+                          className="px-6 py-3 font-semibold w-1/4"
                         >
                           Time
                         </th>
                         <th
-                          style={{ paddingLeft: "6px" }}
-                          className="px-6 py-3 text-[#d4a85f] font-semibold"
+                          style={{
+                            paddingLeft: "6px",
+                            color: muiTheme.palette.secondary.main,
+                          }}
+                          className="px-6 py-3 font-semibold"
                         >
                           Activity
                         </th>
@@ -352,20 +370,26 @@ const InformationCard = ({
                       {groupedProgram[currentDay].map((i, idx) => (
                         <tr
                           key={idx}
-                          className="border-t border-[#d4a85f]/40 hover:bg-[#fff7e6] dark:hover:bg-[#2a2a2a]"
+                          style={{
+                            borderTop: `1px solid ${muiTheme.palette.divider}`,
+                          }}
+                          className="hover:bg-gray-50 dark:hover:bg-[#2a2a2a]"
                         >
                           <td
                             style={{
-                              borderBottom: "1px solid #ffff",
                               padding: "10px",
+                              color: muiTheme.palette.text.primary,
                             }}
-                            className="px-6 py-4 font-medium text-gray-700 dark:text-gray-300"
+                            className="px-6 py-4 font-medium"
                           >
                             🕒 {i.time}
                           </td>
                           <td
-                            style={{ padding: "10px" }}
-                            className="px-6 py-4 text-gray-600 dark:text-gray-400 capitalize"
+                            style={{
+                              padding: "10px",
+                              color: muiTheme.palette.text.secondary,
+                            }}
+                            className="px-6 py-4 capitalize"
                           >
                             {i.program}
                           </td>
@@ -376,13 +400,15 @@ const InformationCard = ({
                 </div>
               </div>
 
-              {/* ✅ أرقام التنقل في الأسفل */}
+              {/* ✅ أرقام التنقل */}
               <div
                 style={{ marginTop: "15px" }}
                 className="flex justify-center space-x-2 mt-4"
               >
                 {days.map((day, idx) => (
                   <button
+                    key={day}
+                    onClick={() => setCurrentDayIndex(idx)}
                     style={{
                       width: "25px",
                       height: "25px",
@@ -393,14 +419,15 @@ const InformationCard = ({
                       marginRight: "5px",
                       padding: "6px",
                       borderRadius: "50%",
+                      backgroundColor:
+                        currentDayIndex === idx
+                          ? muiTheme.palette.secondary.main
+                          : muiTheme.palette.action.hover,
+                      color:
+                        currentDayIndex === idx
+                          ? muiTheme.palette.common.white
+                          : muiTheme.palette.text.primary,
                     }}
-                    key={day}
-                    onClick={() => setCurrentDayIndex(idx)}
-                    className={`px-3 py-1 rounded ${
-                      currentDayIndex === idx
-                        ? "bg-[#d4a85f] text-white"
-                        : "bg-gray-200 text-gray-700"
-                    }`}
                   >
                     {day}
                   </button>
@@ -418,24 +445,25 @@ const InformationCard = ({
           style={{ marginTop: "35px" }}
           className="w-full flex flex-col md:flex-row gap-6"
         >
+          {/* ✅ Tour Prices */}
           <div className="w-full md:w-1/2">
-            <h1
-              style={{
+            <Typography
+              variant="h4"
+              sx={{
                 fontWeight: "700",
-                color: "#FF9800",
+                color: muiTheme.palette.primary.main, // ✅ العنوان من الثيم
                 marginBottom: "12px",
                 fontSize: "clamp(20px, 4vw, 36px)",
+                textTransform: "capitalize",
               }}
-              className="capitalize"
             >
               Tour Prices
-            </h1>
+            </Typography>
             <div style={{ padding: "20px" }}>
               <ul
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  flexWrap: "wrap",
                   gap: "16px",
                   listStyle: "none",
                   padding: 0,
@@ -444,14 +472,24 @@ const InformationCard = ({
               >
                 {paxOptions.map((i, index) => (
                   <li
-                    style={{ padding: "15px" }}
                     key={index}
-                    className="flex items-center gap-3 border border-gray-300 rounded-2xl p-4 
-             transition-all duration-300 ease-in-out 
-             hover:bg-[#FF9800] hover:text-white cursor-pointer"
+                    style={{
+                      padding: "15px",
+                      border: `1px solid ${muiTheme.palette.divider}`,
+                      borderRadius: "16px",
+                      transition: "all 0.3s ease",
+                      cursor: "pointer",
+                    }}
+                    className="flex items-center gap-3 hover:shadow-md"
                   >
                     {/* ✅ الأيقونة */}
-                    <PersonIcon className="text-[#FF9800] text-[28px] transition-colors duration-300 group-hover:text-white" />
+                    <PersonIcon
+                      sx={{
+                        color: muiTheme.palette.primary.main,
+                        fontSize: "28px",
+                        transition: "color 0.3s ease",
+                      }}
+                    />
 
                     {/* ✅ المحتوى */}
                     <div className="w-full flex flex-row items-center justify-between">
@@ -459,40 +497,54 @@ const InformationCard = ({
                         <span className="text-[clamp(14px,2vw,18px)] font-semibold capitalize">
                           {i.title}
                         </span>
-                        <p className="text-gray-600 group-hover:text-white">
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            color: muiTheme.palette.text.secondary,
+                            transition: "color 0.3s ease",
+                          }}
+                        >
                           {i.dec}
-                        </p>
+                        </Typography>
                       </div>
 
                       {/* ✅ السعر */}
                       <span className="flex flex-row items-center font-bold">
                         {Math.floor(i.prise)}
-                        <BiDollar className="ml-1 text-[20px]" />
+                        <BiDollar
+                          style={{
+                            marginLeft: "4px",
+                            fontSize: "20px",
+                            color: muiTheme.palette.text.primary,
+                          }}
+                        />
                       </span>
                     </div>
                   </li>
                 ))}
               </ul>
             </div>
-          </div>{" "}
+          </div>
+
+          {/* ✅ Program Includes */}
           <div className="w-full md:w-1/2">
-            <h1
-              style={{
+            <Typography
+              variant="h4"
+              sx={{
                 fontWeight: "700",
-                color: "#FF9800",
+                color: muiTheme.palette.primary.main, // ✅ العنوان من الثيم
                 marginBottom: "12px",
                 fontSize: "clamp(20px, 4vw, 36px)",
+                textTransform: "capitalize",
               }}
-              className="capitalize"
             >
               The program includes
-            </h1>
+            </Typography>
             <div style={{ padding: "20px" }}>
               <ul
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  flexWrap: "wrap",
                   gap: "16px",
                   listStyle: "none",
                   padding: 0,
@@ -507,24 +559,27 @@ const InformationCard = ({
                         display: "flex",
                         alignItems: "center",
                         gap: "8px",
-                        border: "1px solid gray",
+                        border: `1px solid ${muiTheme.palette.divider}`,
                         borderRadius: "20px",
                         padding: "15px",
                         transition: "all 0.3s ease",
                         cursor: "pointer",
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = "#FF9800";
-                        e.currentTarget.style.color = "#fff";
+                        e.currentTarget.style.backgroundColor =
+                          muiTheme.palette.primary.main;
+                        e.currentTarget.style.color =
+                          muiTheme.palette.common.white;
                       }}
                       onMouseLeave={(e) => {
                         e.currentTarget.style.backgroundColor = "transparent";
-                        e.currentTarget.style.color = "initial";
+                        e.currentTarget.style.color =
+                          muiTheme.palette.text.primary;
                       }}
                     >
                       <CheckIcon
-                        style={{
-                          color: "#FF9800",
+                        sx={{
+                          color: muiTheme.palette.primary.main,
                           fontSize: "24px",
                           transition: "color 0.3s ease",
                         }}
@@ -542,107 +597,6 @@ const InformationCard = ({
               </ul>
             </div>
           </div>
-          {/* <Dividering /> */}
-          {/* <div
-            style={
-              {
-                // borderLeft: "2px dotted #FF9800",
-                // padding: "10px",
-              }
-            }
-            className="w-full md:w-1/2"
-          >
-            <h1
-              style={{
-                fontWeight: "700",
-                color: "#FF9800",
-                marginBottom: "12px",
-                fontSize: "clamp(20px, 4vw, 36px)",
-              }}
-              className="capitalize"
-            >
-              Options
-            </h1>
-            <div>
-              <FormGroup sx={{ gap: "20px" }}>
-                {selectedOptions?.map((option) => (
-                  <FormControlLabel
-                    key={option.key}
-                    control={
-                      <Checkbox
-                        checked={bookingData[option.key] === true}
-                        onChange={(e) =>
-                          setBookingData((prev) => ({
-                            ...prev,
-                            [option.key]: e.target.checked,
-                          }))
-                        }
-                        sx={{
-                          color: "gray",
-                          "&.Mui-checked": {
-                            color: "#FF9800",
-                          },
-                        }}
-                      />
-                    }
-                    label={option.label}
-                    value={option.price}
-                    sx={{
-                      color: "#d4a85f",
-                      fontWeight: "bold",
-                      border: "1px solid gray",
-                      borderRadius: "12px",
-                      padding: "10px 15px",
-                      transition: "all 0.3s ease",
-                      "&:hover": {
-                        backgroundColor: "#FF9800",
-                        color: "#fff",
-                      },
-                    }}
-                  />
-                ))}
-              </FormGroup>
-
-              <FormGroup sx={{ gap: "20px" }}>
-                {(selectedOptions2 || [])?.map((option) => (
-                  <FormControlLabel
-                    key={option.key}
-                    control={
-                      <Checkbox
-                        checked={bookingData[option.key] === true}
-                        onChange={(e) =>
-                          setBookingData((prev) => ({
-                            ...prev,
-                            [option.key]: e.target.checked,
-                          }))
-                        }
-                        sx={{
-                          color: "gray",
-                          "&.Mui-checked": {
-                            color: "#FF9800",
-                          },
-                        }}
-                      />
-                    }
-                    label={option.label}
-                    value={option.price}
-                    sx={{
-                      color: "#d4a85f",
-                      fontWeight: "bold",
-                      border: "1px solid gray",
-                      borderRadius: "12px",
-                      padding: "10px 15px",
-                      transition: "all 0.3s ease",
-                      "&:hover": {
-                        backgroundColor: "#FF9800",
-                        color: "#fff",
-                      },
-                    }}
-                  />
-                ))}
-              </FormGroup>
-            </div>
-          </div> */}
         </div>
       </AnimatedSection>
     </Box>

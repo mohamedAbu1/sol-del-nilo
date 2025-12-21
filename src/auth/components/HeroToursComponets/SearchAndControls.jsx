@@ -14,11 +14,11 @@ import ViewModuleIcon from "@mui/icons-material/ViewModule";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import { FiFilter } from "react-icons/fi";
 import { useAppQueryContext } from "@/context/AppQueryContext";
-import { useAppContext } from "@/context/AppContext";
 import { motion } from "framer-motion";
+import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم
 
 const SearchAndControls = () => {
-  const { theme } = useAppContext();
+  const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي
 
   const {
     setOpenDrawer,
@@ -32,25 +32,25 @@ const SearchAndControls = () => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: 200 }}              // يبدأ خارج الشاشة من اليمين
-      animate={{ opacity: 1, x: 0 }}                 // يدخل لمكانه الطبيعي
-      transition={{ duration: 0.8, ease: "easeOut" }} // مدة الحركة وسلاستها
+      initial={{ opacity: 0, x: 200 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
     >
       <Box
         sx={{
-          color: "#fff",
           px: 4,
           py: 2,
           borderRadius: "16px",
-          // boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
           flexWrap: "wrap",
           gap: 2,
           marginBottom: "15px",
+          backgroundColor: muiTheme.palette.background.paper, // ✅ خلفية من الثيم
+          color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
+          boxShadow: muiTheme.shadows[3], // ✅ ظل من الثيم
         }}
-        className="bg-white dark:bg-[#030712]"
       >
         {/* ✅ حقل البحث */}
         <Box sx={{ flex: 1, minWidth: 250 }}>
@@ -63,21 +63,21 @@ const SearchAndControls = () => {
             InputProps={{
               startAdornment: (
                 <IconButton>
-                  <SearchIcon sx={{ color: "#ffb300" }} />
+                  <SearchIcon sx={{ color: muiTheme.palette.primary.main }} />
                 </IconButton>
               ),
               sx: {
-                color: theme === "dark" ? "#fff" : "#2c2c2c",
-                backgroundColor: theme === "dark" ? "#030712" : "#fff",
+                color: muiTheme.palette.text.primary,
+                backgroundColor: muiTheme.palette.background.paper,
                 borderRadius: "12px",
                 "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#ff9800",
+                  borderColor: muiTheme.palette.primary.main,
                 },
                 "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#ffb300",
+                  borderColor: muiTheme.palette.secondary.main,
                 },
                 "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#ffb300",
+                  borderColor: muiTheme.palette.secondary.main,
                 },
               },
             }}
@@ -90,13 +90,15 @@ const SearchAndControls = () => {
           startIcon={<FiFilter />}
           sx={{
             display: { xs: "flex", xl: "none" },
-            color: "#ffb300",
-            borderColor: "#ffb300",
+            color: muiTheme.palette.primary.main,
+            borderColor: muiTheme.palette.primary.main,
             fontWeight: "500",
             textTransform: "none",
             "&:hover": {
-              backgroundColor: "#ffb300",
-              color: "#212121",
+              backgroundColor: muiTheme.palette.primary.main,
+              color: muiTheme.palette.getContrastText(
+                muiTheme.palette.primary.main
+              ),
             },
           }}
           onClick={() => setOpenDrawer(true)}
@@ -110,17 +112,17 @@ const SearchAndControls = () => {
           onChange={(e) => setSortBy(e.target.value)}
           size="small"
           sx={{
-            color: theme === "dark" ? "#fff" : "#2c2c2c",
+            color: muiTheme.palette.text.primary,
             borderRadius: "8px",
             fontWeight: "500",
             "& .MuiOutlinedInput-notchedOutline": {
-              borderColor: "#ff9800",
+              borderColor: muiTheme.palette.primary.main,
             },
             "&:hover .MuiOutlinedInput-notchedOutline": {
-              borderColor: "#ffb300",
+              borderColor: muiTheme.palette.secondary.main,
             },
             "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-              borderColor: "#ffb300",
+              borderColor: muiTheme.palette.secondary.main,
             },
           }}
         >
@@ -140,12 +142,22 @@ const SearchAndControls = () => {
         >
           <ToggleButton value="grid">
             <ViewModuleIcon
-              sx={{ color: viewMode === "grid" ? "#ff9800" : "#212121" }}
+              sx={{
+                color:
+                  viewMode === "grid"
+                    ? muiTheme.palette.primary.main
+                    : muiTheme.palette.text.secondary,
+              }}
             />
           </ToggleButton>
           <ToggleButton value="list">
             <ViewListIcon
-              sx={{ color: viewMode === "list" ? "#ff9800" : "#212121" }}
+              sx={{
+                color:
+                  viewMode === "list"
+                    ? muiTheme.palette.primary.main
+                    : muiTheme.palette.text.secondary,
+              }}
             />
           </ToggleButton>
         </ToggleButtonGroup>

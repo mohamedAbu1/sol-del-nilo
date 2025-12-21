@@ -4,9 +4,11 @@ import Image from "next/image";
 import { AdviceCard } from "@/lib/constants/FixedTexts";
 import { motion } from "framer-motion";
 import { useScreenSize } from "../../hooks/screenSize";
+import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم
 
 const GeneralAdvice = () => {
-  const { width, height } = useScreenSize();
+  const { width } = useScreenSize();
+  const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي
 
   return (
     <div
@@ -17,7 +19,7 @@ const GeneralAdvice = () => {
         style={{
           fontSize: "clamp(2rem, 4vw, 3.5rem)",
           textTransform: "capitalize",
-          color: "#ff9800",
+          color: muiTheme.palette.primary.main, // ✅ العنوان من اللون الأساسي
           fontWeight: "bold",
           marginBottom: "2rem",
         }}
@@ -37,16 +39,16 @@ const GeneralAdvice = () => {
               display: "flex",
               flexDirection: width <= 1024 ? "column" : "row-reverse",
               alignItems: width <= 1024 ? "" : "center",
-              // background: "linear-gradient(to left, #dcedc8, #fff8e1)",
-              border: "1px solid #ff9800",
+              border: `1px solid ${muiTheme.palette.primary.main}`, // ✅ الحدود من الثيم
               borderRadius: "20px",
-              boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
+              boxShadow: `0 8px 24px ${muiTheme.palette.primary.main}30`, // ✅ ظل بنفس لون الثيم
               overflow: "hidden",
               maxWidth: "700px",
               width: "100%",
               height: "100%",
-              minHeight: "500px", // ✅ هنا التعديل
+              minHeight: "500px",
               transition: "box-shadow 0.3s ease",
+              backgroundColor: muiTheme.palette.background.paper, // ✅ خلفية الكارد من الثيم
             }}
           >
             <div
@@ -69,18 +71,18 @@ const GeneralAdvice = () => {
               style={{
                 flex: 1,
                 padding: "1.5rem",
-                color: "#333",
+                color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
-                height: "100%", // ✅ هنا التعديل
+                height: "100%",
               }}
             >
               <h2
                 style={{
                   fontSize: "1.25rem",
                   marginBottom: "0.75rem",
-                  color: "#ff9800",
+                  color: muiTheme.palette.secondary.main, // ✅ العنوان من اللون الثانوي
                   fontWeight: "600",
                 }}
               >
@@ -90,7 +92,7 @@ const GeneralAdvice = () => {
                 style={{
                   fontSize: "1rem",
                   lineHeight: "1.6",
-                  color: "#999",
+                  color: muiTheme.palette.text.secondary, // ✅ النصوص الثانوية من الثيم
                 }}
               >
                 {i.description}

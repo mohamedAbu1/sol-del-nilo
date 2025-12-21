@@ -17,6 +17,7 @@ import TripProgram from "./components/TripProgram";
 import Preparation from "./components/Preparation";
 import TourIncludes from "./components/TourIncludes";
 import ImageCollection from "./components/ImageCollection";
+import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم
 
 const CreateTripForm = () => {
   const {
@@ -38,6 +39,8 @@ const CreateTripForm = () => {
     prepareImagesForSubmission,
   } = useTourImages();
 
+  const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي
+
   // ✅ إرسال النموذج مع الصور الجاهزة
   const handleCreatea = async (e) => {
     e.preventDefault();
@@ -45,7 +48,7 @@ const CreateTripForm = () => {
     const imagesData = prepareImagesForSubmission();
     if (!imagesData) return;
 
-    await handleCreate(e, imagesData); // تعديل handleSubmit لقبول الصور
+    await handleCreate(e, imagesData);
   };
 
   return (
@@ -56,9 +59,15 @@ const CreateTripForm = () => {
       >
         <Typography
           variant="h3"
-          sx={{ fontWeight: "700", color: "#FFF", textAlign: "center" }}
+          sx={{
+            fontWeight: "700",
+            color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
+            textAlign: "center",
+          }}
         >
-          Create <span style={{ color: "#ff9800" }}>a new</span> trip
+          Create{" "}
+          <span style={{ color: muiTheme.palette.secondary.main }}>a new</span>{" "}
+          trip
         </Typography>
 
         <Box
@@ -67,13 +76,18 @@ const CreateTripForm = () => {
             mx: "auto",
             mt: 5,
             p: 3,
-            boxShadow: 3,
+            boxShadow: muiTheme.shadows[3], // ✅ ظل من الثيم
             borderRadius: 4,
-            border: "1px solid grey",
-            color: "#FFF",
+            border: `1px solid ${muiTheme.palette.divider}`, // ✅ حدود من الثيم
+            color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
+            backgroundColor: muiTheme.palette.background.paper, // ✅ خلفية من الثيم
           }}
         >
-          <Typography variant="h5" gutterBottom>
+          <Typography
+            variant="h5"
+            gutterBottom
+            sx={{ color: muiTheme.palette.text.primary }}
+          >
             إنشاء رحلة جديدة
           </Typography>
 
@@ -99,7 +113,6 @@ const CreateTripForm = () => {
                   setFormData({ ...formData, tripprogram: p })
                 }
               />
-              
               <TourIncludes
                 includes={formData.includes}
                 setIncludes={(data) =>
@@ -120,11 +133,16 @@ const CreateTripForm = () => {
                 disabled={isSubmitting}
                 sx={{
                   mt: 2,
-                  backgroundColor: "#ff9800",
+                  backgroundColor: muiTheme.palette.secondary.main, // ✅ زر من الثيم
+                  color: muiTheme.palette.getContrastText(
+                    muiTheme.palette.secondary.main
+                  ),
                   fontWeight: "bold",
                   fontSize: "16px",
                   fontFamily: "Cairo, sans-serif",
-                  "&:hover": { backgroundColor: "#d4a85f" },
+                  "&:hover": {
+                    backgroundColor: muiTheme.palette.primary.main, // ✅ لون hover من الثيم
+                  },
                 }}
               >
                 {isSubmitting ? (

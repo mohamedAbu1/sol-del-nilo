@@ -19,10 +19,7 @@ export default async function AboutUsPage() {
   const user = vrefyTokenForPage(token);
 
   return (
-    <main
-      style={{ color: "#ff9800" }}
-      className="flex flex-col items-center justify-center font-serif min-h-screen px-6 py-16 animate-fadeIn"
-    >
+    <main className="flex flex-col items-center justify-center font-serif min-h-screen px-6 py-16 animate-fadeIn">
       <SideDecor />
       <FaceAboutPage user={user} />
 

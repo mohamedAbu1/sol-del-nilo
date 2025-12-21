@@ -1,11 +1,14 @@
 "use client";
 import { TextField, Button } from "@mui/material";
 import { toast } from "react-toastify";
+import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم
 
 // ✅ دالة التحقق من وجود حروف عربية
 const containsArabic = (text) => /[\u0600-\u06FF]/.test(text);
 
 const TourIncludes = ({ includes = [1], setIncludes }) => {
+  const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي
+
   // ✅ تحديث قيمة عنصر معين مع منع اللغة العربية
   const handleChange = (index, value) => {
     const cleanValue = value.replace(/[\u0600-\u06FF]/g, "");
@@ -34,22 +37,22 @@ const TourIncludes = ({ includes = [1], setIncludes }) => {
           sx={{
             width: "100%",
             input: {
-              color: "#d4a85f",
+              color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
               fontSize: "18px",
               fontWeight: "bold",
               fontFamily: "Cairo, sans-serif",
             },
             "& .MuiOutlinedInput-root": {
-              "& fieldset": { borderColor: "#d4a85f" },
-              "&:hover fieldset": { borderColor: "#ff9800" },
+              "& fieldset": { borderColor: muiTheme.palette.secondary.main },
+              "&:hover fieldset": { borderColor: muiTheme.palette.primary.main },
               "&.Mui-focused fieldset": {
-                borderColor: "#ff9800",
+                borderColor: muiTheme.palette.secondary.main,
                 borderWidth: "2px",
               },
             },
-            "& .MuiInputLabel-root": { color: "#d4a85f" },
+            "& .MuiInputLabel-root": { color: muiTheme.palette.secondary.main },
             "& .MuiInputLabel-root.Mui-focused": {
-              color: "#ff9800",
+              color: muiTheme.palette.primary.main,
             },
           }}
         />
@@ -60,11 +63,12 @@ const TourIncludes = ({ includes = [1], setIncludes }) => {
         variant="contained"
         sx={{
           mt: "10px",
-          backgroundColor: "#ff9800",
+          backgroundColor: muiTheme.palette.secondary.main, // ✅ زر من الثيم
+          color: muiTheme.palette.getContrastText(muiTheme.palette.secondary.main),
           fontWeight: "bold",
           fontSize: "16px",
           fontFamily: "Cairo, sans-serif",
-          "&:hover": { backgroundColor: "#d4a85f" },
+          "&:hover": { backgroundColor: muiTheme.palette.primary.main },
         }}
       >
         ➕ إضافة بند جديد

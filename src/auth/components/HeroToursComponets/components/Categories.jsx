@@ -12,10 +12,9 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useAppQueryContext } from "@/context/AppQueryContext";
 import { useTripsContext } from "@/context/TripsContext";
-import { useAppContext } from "@/context/AppContext";
-// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم
+
 const Categories = () => {
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const {
     expandedCategories,
     setExpandedCategories,
@@ -24,15 +23,15 @@ const Categories = () => {
     categoryCounts,
   } = useAppQueryContext();
   const { categories } = useTripsContext();
-  const { theme } = useAppContext();
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي
+
   return (
     <Accordion
       expanded={expandedCategories}
       onChange={() => setExpandedCategories((prev) => !prev)}
       sx={{
-        backgroundColor: theme === "dark" ? "#030712" : "#fff",
-        color: theme === "dark" ? "#fff" : "#030712",
+        backgroundColor: muiTheme.palette.background.paper, // ✅ الخلفية من الثيم
+        color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
         borderRadius: "12px",
         boxShadow: "none",
         mb: 2,
@@ -40,18 +39,20 @@ const Categories = () => {
       }}
     >
       <AccordionSummary
-        expandIcon={<ExpandMoreIcon sx={{ color: "#ffb300" }} />}
+        expandIcon={
+          <ExpandMoreIcon sx={{ color: muiTheme.palette.primary.main }} /> // ✅ أيقونة من الثيم
+        }
         sx={{
           borderBottom:
             !expandedCategories && selectedCategories.length === 0
-              ? "1px solid #ff9800"
+              ? `1px solid ${muiTheme.palette.primary.main}` // ✅ الحدود من الثيم
               : "none",
           "& .MuiAccordionSummary-content": { margin: 0 },
         }}
       >
         <Typography
           variant="subtitle2"
-          sx={{ color: "#ffb300", fontWeight: "bold" }}
+          sx={{ color: muiTheme.palette.primary.main, fontWeight: "bold" }} // ✅ العنوان من الثيم
         >
           Categories
         </Typography>
@@ -59,7 +60,7 @@ const Categories = () => {
 
       <AccordionDetails
         sx={{
-          borderBottom: "1px solid #ff9800",
+          borderBottom: `1px solid ${muiTheme.palette.divider}`, // ✅ الحدود من الثيم
           "& .MuiAccordionSummary-content": { margin: 0 },
         }}
       >
@@ -72,8 +73,8 @@ const Categories = () => {
                 disabled
                 onChange={() => handleToggleCategories("ALL")}
                 sx={{
-                  color: "#ff9800",
-                  "&.Mui-checked": { color: "#ff9800" },
+                  color: muiTheme.palette.secondary.main, // ✅ اللون من الثيم
+                  "&.Mui-checked": { color: muiTheme.palette.secondary.main },
                 }}
               />
             }
@@ -92,16 +93,19 @@ const Categories = () => {
                     checked={selectedCategories.includes(card.name)}
                     onChange={() => handleToggleCategories(card.name)}
                     sx={{
-                      color: "#ff9800",
-                      "&.Mui-checked": { color: "#ff9800" },
+                      color: muiTheme.palette.secondary.main, // ✅ اللون من الثيم
+                      "&.Mui-checked": { color: muiTheme.palette.secondary.main },
                     }}
                   />
                 }
                 label={card.name}
               />
-              <h4 className="text-gray-700 text-[16px]">
+              <Typography
+                variant="body2"
+                sx={{ color: muiTheme.palette.text.secondary }} // ✅ النصوص الثانوية من الثيم
+              >
                 {categoryCounts[card.name] || 0}
-              </h4>
+              </Typography>
             </div>
           ))}
         </FormGroup>

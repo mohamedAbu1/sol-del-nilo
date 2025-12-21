@@ -1,18 +1,32 @@
 "use client";
 import React from "react";
 import { useTranslations } from "next-intl";
+import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم
+import { Typography } from "@mui/material";
 
 const TopAboutPage = () => {
   const t = useTranslations("AboutPage");
+  const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي
 
   return (
     <div
       style={{ marginTop: "22px" }}
       className="text-center animate-slideUp delay-100"
     >
-      <h1 className="text-5xl font-bold tracking-wide animate-pulseSlow">
+      <Typography
+        variant="h3"
+        sx={{
+          fontWeight: "bold",
+          fontSize: "clamp(24px, 5vw, 42px)",
+          textAlign: "center",
+          color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
+          fontFamily: "Cairo, sans-serif",
+        }}
+        className="animate-pulseSlow"
+      >
         {t("title")}
-      </h1>
+      </Typography>
+
       <div className="animate-rotateSunSlow">
         <svg
           width="300"
@@ -21,8 +35,14 @@ const TopAboutPage = () => {
           xmlns="http://www.w3.org/2000/svg"
         >
           <rect width="300" height="300" fill="none" />
-          <circle cx="150" cy="120" r="40" fill="#ff9800" />
-          <g stroke="#ff9800" strokeWidth="4">
+          {/* ✅ الشمس بلون من الثيم */}
+          <circle
+            cx="150"
+            cy="120"
+            r="40"
+            fill={muiTheme.palette.secondary.main}
+          />
+          <g stroke={muiTheme.palette.secondary.main} strokeWidth="4">
             {Array.from({ length: 16 }).map((_, i) => {
               const spread = 120;
               const startAngle = 180 - spread / 2;
@@ -40,13 +60,13 @@ const TopAboutPage = () => {
           </g>
           <path
             d="M60 180 Q90 160 120 180 T180 180 T240 180"
-            stroke="#ff9800"
+            stroke={muiTheme.palette.secondary.main}
             strokeWidth="4"
             fill="none"
           />
           <path
             d="M60 200 Q90 180 120 200 T180 200 T240 200"
-            stroke="#ff9800"
+            stroke={muiTheme.palette.secondary.main}
             strokeWidth="4"
             fill="none"
           />

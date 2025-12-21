@@ -2,10 +2,11 @@
 import React from "react";
 import Header from "@/auth/components/HeaderComponets/Header";
 import { useAppQueryContext } from "@/context/AppQueryContext";
+import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم
 
 const FacePage = ({ user }) => {
   const { cityFromQuery, categoryFromQuery } = useAppQueryContext();
-
+  const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي
 
   // 🗺️ خريطة المدن والصور
   const cityImages = {
@@ -19,7 +20,6 @@ const FacePage = ({ user }) => {
     Giza: "/assets/_2182_1.webp",
   };
 
-  // 🗺️ خريطة المدن والصور
   const categoryImages = {
     "Cultural & Historical": "/assets/_2182_1.webp",
     "Adventure Trips": "/assets/banner-adventure.webp",
@@ -31,12 +31,11 @@ const FacePage = ({ user }) => {
     "Eco & Nature Tours": "/assets/david-knieradl-dX6p6tGCWEo-unsplash.webp",
     "Wellness & Medical": "/assets/photo-1575923640658-37d9c2ad9f92.webp",
     "Shopping Tours": "/assets/_16668_2.webp",
-    "Spirituality": "/assets/bernd-dittrich-YFF5YC7HLo0-unsplash.webp",
+    Spirituality: "/assets/bernd-dittrich-YFF5YC7HLo0-unsplash.webp",
     "Group Tours": "/assets/_8651_Untitled-1.webp",
+    "Options Tours": "/assets/_9822_1.webp",
   };
-  // const imagePath2 =
-  //   cityImages[categoryImages] ||
-  //   "/assets/travco-travel-c4259777-fab7-4d77-bd9f-d99e1d3fc377.webp";
+
   const defaultImage =
     "/assets/travco-travel-c4259777-fab7-4d77-bd9f-d99e1d3fc377.webp";
 
@@ -63,18 +62,15 @@ const FacePage = ({ user }) => {
       <div className="w-full px-15 pt-6 flex items-center justify-center">
         <Header user={user} />
       </div>
-      <div className="container relative z-20 flex flex-col h-full justify-between">       
-
+      <div className="container relative z-20 flex flex-col h-full justify-between">
         {/* ✅ العنوان في منتصف الصورة */}
-        <div
-          //   style={{ marginTop: "160px" }}
-          className="flex flex-row items-center justify-center flex-1 text-center"
-        >
+        <div className="flex flex-row items-center justify-center flex-1 text-center">
           <h1
-            className="text-4xl lg:text-7xl font-serif tracking-widest capitalize text-white text-center"
+            className="text-4xl lg:text-7xl font-serif tracking-widest capitalize text-center"
             style={{
-              textShadow: "2px 2px 6px rgba(0, 0, 0, 0.6)", // ظل ناعم
-              WebkitTextStroke: "1px #000", // حدود للحروف
+              color: muiTheme.palette.text.primary, // ✅ النص الأساسي من الثيم
+              textShadow: `2px 2px 6px ${muiTheme.palette.grey[900]}90`, // ✅ ظل ناعم من الثيم
+              WebkitTextStroke: `1px ${muiTheme.palette.background.default}`, // ✅ حدود للحروف من الثيم
               fontWeight: "600",
             }}
           >
@@ -88,8 +84,11 @@ const FacePage = ({ user }) => {
           </h1>
 
           <h1
-            style={{ width: categoryFromQuery !== "All" ? "30%" : "45%" }}
-            className="text-2xl lg:text-6xl font-serif tracking-widest uppercase text-[#fff]"
+            style={{
+              width: categoryFromQuery !== "All" ? "30%" : "45%",
+              color: muiTheme.palette.secondary.main, // ✅ النص الثانوي من الثيم
+            }}
+            className="text-2xl lg:text-6xl font-serif tracking-widest uppercase"
           ></h1>
         </div>
       </div>

@@ -3,12 +3,13 @@ import React from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { Box, Button, TextField } from "@mui/material";
 import { toast } from "react-toastify";
+import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم
 
 const ImageCollection = ({ activityImages, setActivityImages }) => {
+  const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي
+
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-    console.log("🟠 [handleImageChange] raw files:", files);
-
     const remainingSlots = 25 - activityImages.length;
     const totalAfter = activityImages.length + files.length;
 
@@ -19,43 +20,28 @@ const ImageCollection = ({ activityImages, setActivityImages }) => {
 
     const limitedFiles = files.slice(0, Math.max(0, remainingSlots));
 
-    const newImages = limitedFiles.map((file, idx) => {
-      const obj = {
-        name: file.name,       // اسم الصورة فقط
-        label: "",             // وصف أو اسم مخصص
-        url: `/assets/${file.name}`, // المسار المحلي للعرض والاستخدام لاحقًا
-      };
-      console.log(`🟢 [handleImageChange] newImage[${idx}]:`, obj);
-      return obj;
-    });
+    const newImages = limitedFiles.map((file) => ({
+      name: file.name,
+      label: "",
+      url: `/assets/${file.name}`,
+    }));
 
-    const nextState = [...activityImages, ...newImages];
-    console.log("🟢 [handleImageChange] next activityImages:", nextState);
-
-    setActivityImages(nextState);
+    setActivityImages([...activityImages, ...newImages]);
   };
 
   const handleRemoveImage = (index) => {
-    const imageToRemove = activityImages[index];
-    console.log("🟠 [handleRemoveImage] remove index:", index, imageToRemove);
-    const next = activityImages.filter((_, i) => i !== index);
-    console.log("🟢 [handleRemoveImage] next activityImages:", next);
-    setActivityImages(next);
+    setActivityImages((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleChangeName = (index, newName) => {
     setActivityImages((prev) =>
-      prev.map((item, i) =>
-        i === index ? { ...item, name: newName } : item
-      )
+      prev.map((item, i) => (i === index ? { ...item, name: newName } : item))
     );
   };
 
   const handleChangeLabel = (index, newLabel) => {
     setActivityImages((prev) =>
-      prev.map((item, i) =>
-        i === index ? { ...item, label: newLabel } : item
-      )
+      prev.map((item, i) => (i === index ? { ...item, label: newLabel } : item))
     );
   };
 
@@ -74,10 +60,13 @@ const ImageCollection = ({ activityImages, setActivityImages }) => {
           variant="contained"
           component="span"
           sx={{
-            backgroundColor: "#ff9800",
-            color: "#ffffff",
+            backgroundColor: muiTheme.palette.secondary.main,
+            color: muiTheme.palette.getContrastText(muiTheme.palette.secondary.main),
             fontSize: "18px",
             fontWeight: "700",
+            "&:hover": {
+              backgroundColor: muiTheme.palette.primary.main,
+            },
           }}
         >
           اختر مجموعة الصور التي تريدها للرحلة
@@ -89,7 +78,13 @@ const ImageCollection = ({ activityImages, setActivityImages }) => {
           <Box
             key={index}
             position="relative"
-            sx={{ width: "auto", maxWidth: "300px" }}
+            sx={{
+              width: "auto",
+              maxWidth: "300px",
+              border: `1px solid ${muiTheme.palette.divider}`,
+              borderRadius: "12px",
+              p: 1,
+            }}
           >
             <Button
               size="small"
@@ -100,9 +95,12 @@ const ImageCollection = ({ activityImages, setActivityImages }) => {
                 right: 0,
                 minWidth: "30px",
                 padding: "2px",
-                color: "#ff9800",
+                color: muiTheme.palette.secondary.main,
                 borderRadius: "50%",
                 zIndex: 1,
+                "&:hover": {
+                  color: muiTheme.palette.primary.main,
+                },
               }}
             >
               <AiOutlineClose style={{ fontSize: "22px" }} />
@@ -119,6 +117,7 @@ const ImageCollection = ({ activityImages, setActivityImages }) => {
               }}
             />
 
+            {/* اسم الصورة */}
             <TextField
               value={img.name}
               onChange={(e) => handleChangeName(index, e.target.value)}
@@ -129,22 +128,27 @@ const ImageCollection = ({ activityImages, setActivityImages }) => {
                 mt: 1,
                 width: "100%",
                 input: {
-                  color: "#d4a85f",
+                  color: muiTheme.palette.text.primary,
                   fontSize: "14px",
                   fontWeight: "bold",
                   fontFamily: "Cairo, sans-serif",
                 },
                 "& .MuiOutlinedInput-root": {
-                  "& fieldset": { borderColor: "#d4a85f" },
-                  "&:hover fieldset": { borderColor: "#ff9800" },
+                  "& fieldset": { borderColor: muiTheme.palette.secondary.main },
+                  "&:hover fieldset": { borderColor: muiTheme.palette.primary.main },
                   "&.Mui-focused fieldset": {
-                    borderColor: "#ff9800",
+                    borderColor: muiTheme.palette.secondary.main,
                     borderWidth: "2px",
                   },
+                },
+                "& .MuiInputLabel-root": { color: muiTheme.palette.secondary.main },
+                "& .MuiInputLabel-root.Mui-focused": {
+                  color: muiTheme.palette.primary.main,
                 },
               }}
             />
 
+            {/* اسم خاص للصورة */}
             <TextField
               value={img.label}
               onChange={(e) => handleChangeLabel(index, e.target.value)}
@@ -155,18 +159,22 @@ const ImageCollection = ({ activityImages, setActivityImages }) => {
                 mt: 1,
                 width: "100%",
                 input: {
-                  color: "#d4a85f",
+                  color: muiTheme.palette.text.primary,
                   fontSize: "14px",
                   fontWeight: "bold",
                   fontFamily: "Cairo, sans-serif",
                 },
                 "& .MuiOutlinedInput-root": {
-                  "& fieldset": { borderColor: "#d4a85f" },
-                  "&:hover fieldset": { borderColor: "#ff9800" },
+                  "& fieldset": { borderColor: muiTheme.palette.secondary.main },
+                  "&:hover fieldset": { borderColor: muiTheme.palette.primary.main },
                   "&.Mui-focused fieldset": {
-                    borderColor: "#ff9800",
+                    borderColor: muiTheme.palette.secondary.main,
                     borderWidth: "2px",
                   },
+                },
+                "& .MuiInputLabel-root": { color: muiTheme.palette.secondary.main },
+                "& .MuiInputLabel-root.Mui-focused": {
+                  color: muiTheme.palette.primary.main,
                 },
               }}
             />

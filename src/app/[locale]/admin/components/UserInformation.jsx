@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -12,100 +12,88 @@ import {
   Button,
   CircularProgress,
 } from "@mui/material";
-import { useEffect } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useAppContext } from "@/context/AppContext";
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم
 
 const UserInformation = () => {
   const { users, loading, handleDelete, fetchUserActivities } = useAppContext();
-    // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي
 
   useEffect(() => {
     if (users?.id) fetchUserActivities(users.id);
   }, [users]);
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
   return (
-    <div className="w-full" style={{ backgroundColor: "#181a1b" }}>
+    <div
+      className="w-full"
+      style={{ backgroundColor: muiTheme.palette.background.default }}
+    >
       <TableContainer
         component={Paper}
-        sx={{ mt: 4, backgroundColor: "#181a1b" }}
+        sx={{
+          mt: 4,
+          backgroundColor: muiTheme.palette.background.paper,
+          boxShadow: muiTheme.shadows[3],
+          borderRadius: 2,
+        }}
       >
         {loading ? (
-          <CircularProgress />
+          <CircularProgress color="secondary" />
         ) : (
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>
-                  <strong
-                    className="text-gray-400"
-                    style={{ fontWeight: "700" }}
-                  >
-                    Users Email
-                  </strong>
-                </TableCell>
-                <TableCell>
-                  <strong
-                    className="text-gray-400"
-                    style={{ fontWeight: "700" }}
-                  >
-                    Users Name
-                  </strong>
-                </TableCell>
-                <TableCell>
-                  <strong
-                    className="text-gray-400"
-                    style={{ fontWeight: "700" }}
-                  >
-                    Users Sign Up
-                  </strong>
-                </TableCell>
-                <TableCell>
-                  <strong
-                    className="text-gray-400"
-                    style={{ fontWeight: "700" }}
-                  >
-                    isActivate
-                  </strong>
-                </TableCell>
-                <TableCell>
-                  <strong
-                    className="text-gray-400"
-                    style={{ fontWeight: "700" }}
-                  >
-                    Role
-                  </strong>
-                </TableCell>
-                <TableCell>
-                  <strong
-                    className="text-gray-400"
-                    style={{ fontWeight: "700" }}
-                  >
-                    Delete User
-                  </strong>
-                </TableCell>
+                {[
+                  "Users Email",
+                  "Users Name",
+                  "Users Sign Up",
+                  "isActivate",
+                  "Role",
+                  "Delete User",
+                ].map((header, idx) => (
+                  <TableCell key={idx}>
+                    <strong
+                      style={{
+                        fontWeight: "700",
+                        color: muiTheme.palette.text.secondary,
+                      }}
+                    >
+                      {header}
+                    </strong>
+                  </TableCell>
+                ))}
               </TableRow>
             </TableHead>
             <TableBody>
               {users.map((user) => (
-                <TableRow key={user.id}>
-                  <TableCell sx={{ color: "grey", fontWeight: "700" }}>
+                <TableRow
+                  key={user.id}
+                  sx={{
+                    "&:hover": {
+                      backgroundColor: muiTheme.palette.action.hover,
+                    },
+                  }}
+                >
+                  <TableCell
+                    sx={{ color: muiTheme.palette.text.primary, fontWeight: "700" }}
+                  >
                     {user.email}
                   </TableCell>
                   <TableCell
                     className="capitalize"
-                    sx={{ color: "grey", fontWeight: "700" }}
+                    sx={{ color: muiTheme.palette.text.primary, fontWeight: "700" }}
                   >
                     {user.name}
                   </TableCell>
-                  <TableCell sx={{ color: "grey", fontWeight: "700" }}>
+                  <TableCell
+                    sx={{ color: muiTheme.palette.text.primary, fontWeight: "700" }}
+                  >
                     {user.created_at}
                   </TableCell>
                   <TableCell>
                     <Chip
-                      label={user.isActive ? "active" : "Not active"}
+                      label={user.isActive ? "Active" : "Not Active"}
                       color={user.isActive ? "success" : "error"}
                       size="small"
                     />
@@ -117,22 +105,24 @@ const UserInformation = () => {
                       size="small"
                     />
                   </TableCell>
-                  <TableCell style={{}}>
-                    <Chip
-                      sx={{}}
-                      label={
-                        <>
-                          <Button
-                            onClick={() => handleDelete(user.id)}
-                            variant="outlined"
-                            endIcon={<DeleteIcon />}
-                          >
-                            Delete
-                          </Button>
-                        </>
-                      }
-                      size="small"
-                    />
+                  <TableCell>
+                    <Button
+                      onClick={() => handleDelete(user.id)}
+                      variant="outlined"
+                      endIcon={<DeleteIcon />}
+                      sx={{
+                        color: muiTheme.palette.error.main,
+                        borderColor: muiTheme.palette.error.main,
+                        "&:hover": {
+                          backgroundColor: muiTheme.palette.error.light,
+                          color: muiTheme.palette.getContrastText(
+                            muiTheme.palette.error.light
+                          ),
+                        },
+                      }}
+                    >
+                      Delete
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}

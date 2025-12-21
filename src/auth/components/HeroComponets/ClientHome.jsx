@@ -14,9 +14,10 @@ import CitySection from "./CitySection";
 import { desktopImages, desktopImagesMB } from "@/lib/constants/FixedTexts";
 import ScrollRestoration from "../ScrollRestoration";
 import SingUp from "../SingUp";
+import { useTheme } from "@mui/material/styles";
 import { useAppContext } from "@/context/AppContext";
 export default function ClientHome({ user }) {
-    const { open } = useAppContext();   // ✅ هنا في الأعلى
+  const { open } = useAppContext(); // ✅ هنا في الأعلى
   const [hasMounted, setHasMounted] = useState(false);
   const [showWelcomeText, setShowWelcomeText] = useState(true);
   const [showHero, setShowHero] = useState(false);
@@ -30,10 +31,10 @@ export default function ClientHome({ user }) {
   useEffect(() => {
     setHasMounted(true);
   }, []);
+  const muiTheme = useTheme();
 
   useEffect(() => {
     if (!hasMounted) return;
-
     const timer1 = setTimeout(() => setShowWelcomeText(false), 1000);
     const timer2 = setTimeout(() => setShowHero(true), 2100);
     const timer3 = setTimeout(() => setHeroMoved(true), 6000);
@@ -156,8 +157,22 @@ export default function ClientHome({ user }) {
                 transition={{ duration: 0.8 }}
                 className="absolute inset-0 flex items-center justify-center z-20"
               >
-                <h1 className="text-white text-5xl font-bold text-center">
-                  Welcome to <span className="text-yellow-400">SolDelNilo</span>
+                <h1
+                  style={{
+                    color: muiTheme.palette.text.primary, // ✅ النص الأساسي من الثيم
+                    fontSize: "3rem",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
+                  Welcome to{" "}
+                  <span
+                    style={{
+                      color: muiTheme.palette.secondary.main, // ✅ النص المميز من الثيم
+                    }}
+                  >
+                    Luxor & Aswan
+                  </span>
                 </h1>
               </motion.div>
             )}
@@ -205,15 +220,31 @@ export default function ClientHome({ user }) {
         <div className="lg:hidden relative z-10 flex flex-col items-center justify-center h-full px-4 py-8 space-y-8 text-center">
           <AnimatePresence>
             {showWelcomeText && (
-              <motion.h1
+              <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.8 }}
-                className="text-white text-3xl font-bold"
+                className="absolute inset-0 flex items-center justify-center z-20"
               >
-                Welcome to <span className="text-yellow-400">SolDelNilo</span>
-              </motion.h1>
+                <h1
+                  style={{
+                    color: muiTheme.palette.text.primary, // ✅ النص الأساسي من الثيم
+                    fontSize: "3rem",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
+                  Welcome to{" "}
+                  <span
+                    style={{
+                      color: muiTheme.palette.secondary.main, // ✅ النص المميز من الثيم
+                    }}
+                  >
+                    Luxor & Aswan
+                  </span>
+                </h1>
+              </motion.div>
             )}
           </AnimatePresence>
 
@@ -244,18 +275,41 @@ export default function ClientHome({ user }) {
           }`}
         >
           <button
-            style={{ cursor: "pointer" }}
+            style={{
+              cursor: "pointer",
+              width: "44px",
+              height: "44px",
+              borderRadius: "50%",
+              backgroundColor: muiTheme.palette.primary.main, // ✅ اللون الأساسي من الثيم
+              border: `1px solid ${muiTheme.palette.divider}`, // ✅ الحدود من الثيم
+              color: muiTheme.palette.getContrastText(
+                muiTheme.palette.primary.main
+              ), // ✅ النصوص متناسقة مع الخلفية
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              transition: "all 0.3s ease",
+            }}
             onClick={() =>
               document
                 .getElementById("section-two")
                 ?.scrollIntoView({ behavior: "smooth" })
             }
-            className="w-11 h-11 rounded-full bg-[#ff9800] border border-white/20 flex items-center justify-center hover:bg-white/20 transition duration-300"
             aria-label="Scroll down"
+            onMouseEnter={
+              (e) =>
+                (e.currentTarget.style.backgroundColor =
+                  muiTheme.palette.secondary.main) // ✅ عند الـ hover يتحول للون الثانوي
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor =
+                muiTheme.palette.primary.main)
+            }
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="w-11 h-5 "
+              width="28"
+              height="20"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -291,13 +345,36 @@ export default function ClientHome({ user }) {
         >
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            style={{ cursor: "pointer" }}
-            className="w-10 h-10 rounded-full bg-[#ff9800] border border-white/20 text-white flex items-center justify-center hover:bg-white/20 transition duration-300"
+            style={{
+              cursor: "pointer",
+              width: "40px",
+              height: "40px",
+              borderRadius: "50%",
+              backgroundColor: muiTheme.palette.primary.main, // ✅ اللون الأساسي من الثيم
+              border: `1px solid ${muiTheme.palette.divider}`, // ✅ الحدود من الثيم
+              color: muiTheme.palette.getContrastText(
+                muiTheme.palette.primary.main
+              ), // ✅ النصوص متناسقة مع الخلفية
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              transition: "all 0.3s ease",
+            }}
             aria-label="Scroll to top"
+            onMouseEnter={
+              (e) =>
+                (e.currentTarget.style.backgroundColor =
+                  muiTheme.palette.secondary.main) // ✅ عند الـ hover يتحول للون الثانوي
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor =
+                muiTheme.palette.primary.main)
+            }
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="w-5 h-5"
+              width="20"
+              height="20"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"

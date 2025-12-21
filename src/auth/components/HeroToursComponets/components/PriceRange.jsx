@@ -9,10 +9,9 @@ import {
   Popover,
 } from "@mui/material";
 import { useAppQueryContext } from "@/context/AppQueryContext";
-import { useAppContext } from "@/context/AppContext";
-// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم
+
 const PriceRange = () => {
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const {
     priceRange,
     setPriceRange,
@@ -21,12 +20,13 @@ const PriceRange = () => {
     handlePriceClick,
     handlePriceClose,
   } = useAppQueryContext();
-  const { theme } = useAppContext();
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+  const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي
+
   return (
     <Box
       sx={{
-        borderBottom: "1px solid #ff9800",
+        borderBottom: `1px solid ${muiTheme.palette.primary.main}`, // ✅ الحدود من الثيم
         "& .MuiAccordionSummary-content": {
           margin: 4,
         },
@@ -41,7 +41,7 @@ const PriceRange = () => {
         variant="standard"
         InputLabelProps={{
           style: {
-            color: "#ffb300",
+            color: muiTheme.palette.secondary.main, // ✅ لون الليبل من الثيم
             fontWeight: "600",
             fontSize: "0.95rem",
             letterSpacing: "0.5px",
@@ -49,8 +49,8 @@ const PriceRange = () => {
         }}
         InputProps={{
           style: {
-            color: theme === "dark" ? "#fff" : "#030712",
-            backgroundColor: theme === "dark" ? "#030712" : "#fff",
+            color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
+            backgroundColor: muiTheme.palette.background.paper, // ✅ الخلفية من الثيم
             fontSize: "1rem",
             fontWeight: "500",
             letterSpacing: "0.3px",
@@ -62,7 +62,7 @@ const PriceRange = () => {
           borderRadius: "14px",
           px: 2,
           py: 1.5,
-          backgroundColor: theme === "dark" ? "#030712" : "#fff",
+          backgroundColor: muiTheme.palette.background.paper,
           transition: "box-shadow 0.3s ease",
           "& .MuiInputBase-input": {
             fontFamily: "'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif",
@@ -77,8 +77,8 @@ const PriceRange = () => {
         anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
         PaperProps={{
           sx: {
-            backgroundColor: theme === "dark" ? "#030712" : "#fff",
-            color: theme === "dark" ? "#fff" : "#030712",
+            backgroundColor: muiTheme.palette.background.paper, // ✅ خلفية من الثيم
+            color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
             borderRadius: "20px",
             p: 2,
           },
@@ -88,8 +88,7 @@ const PriceRange = () => {
           <Typography
             gutterBottom
             sx={{
-              color: theme === "dark" ? "#fff" : "#030712",
-              backgroundColor: theme === "dark" ? "#030712" : "#fff",
+              color: muiTheme.palette.text.primary,
               fontSize: "1rem",
               fontWeight: "500",
               letterSpacing: "0.3px",
@@ -104,10 +103,12 @@ const PriceRange = () => {
             min={0}
             max={14000}
             sx={{
-              color: "#ff9800",
+              color: muiTheme.palette.primary.main, // ✅ اللون الأساسي من الثيم
               "& .MuiSlider-valueLabel": {
-                color: "#fff",
-                backgroundColor: "#ff9800",
+                color: muiTheme.palette.getContrastText(
+                  muiTheme.palette.primary.main
+                ),
+                backgroundColor: muiTheme.palette.primary.main,
                 borderRadius: "4px",
                 fontWeight: "bold",
               },
@@ -118,9 +119,11 @@ const PriceRange = () => {
             size="small"
             sx={{
               mt: 2,
-              backgroundColor: "#ff9800",
-              color: "#000",
-              "&:hover": { backgroundColor: "#ffa726" },
+              backgroundColor: muiTheme.palette.primary.main, // ✅ زر من الثيم
+              color: muiTheme.palette.getContrastText(
+                muiTheme.palette.primary.main
+              ),
+              "&:hover": { backgroundColor: muiTheme.palette.secondary.main }, // ✅ عند الـ hover يتحول للون الثانوي
             }}
             onClick={handlePriceClose}
           >

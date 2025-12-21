@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   Box,
   Button,
@@ -10,7 +10,7 @@ import {
   InputLabel,
   FormControl,
 } from "@mui/material";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import TopOfTheControlPanel2 from "./components/TopOfTheControlPanel2";
 import ControlPanelImages from "./components/ControlPanelImages";
 import TripProgram from "./components/TripProgram";
@@ -21,6 +21,7 @@ import ImageCollection from "./components/ImageCollection";
 import { useTripsContext } from "@/context/TripsContext";
 import { useTourEdit } from "@/context/TourEditContext";
 import { useTourImages } from "@/context/TourImagesContext";
+import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم
 
 const UpdateTripForm = () => {
   const {
@@ -31,24 +32,16 @@ const UpdateTripForm = () => {
     handleChange,
     handleProgramChange,
     toursData,
-    fetchTourById,
-    populateFormFromTour,
-    setTour,
     handleUpdate,
   } = useTripsContext();
 
-  const { updateTour, isUpdating, updateError, handleSelect, toursID } =
-    useTourEdit();
+  const { handleSelect, toursID } = useTourEdit();
 
-  const {
-    mainImages,
-    setMainImages,
-    activityImages,
-    setActivityImages,
-    prepareImagesForSubmission,
-  } = useTourImages();
+  const { mainImages, setMainImages, activityImages, setActivityImages } =
+    useTourImages();
 
-  console.log(activityImages);
+  const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي
+
   return (
     <>
       <div
@@ -57,10 +50,15 @@ const UpdateTripForm = () => {
       >
         {/* 🔶 عنوان الصفحة */}
         <h1
-          style={{ fontWeight: "700", color: "#FFF", marginBottom: "20px" }}
+          style={{
+            fontWeight: "700",
+            color: muiTheme.palette.text.primary,
+            marginBottom: "20px",
+          }}
           className="text-4xl capitalize"
         >
-          Updates <span style={{ color: "#ff9800" }}>a Trip</span>
+          Updates{" "}
+          <span style={{ color: muiTheme.palette.secondary.main }}>a Trip</span>
         </h1>
 
         {/* 🏙️ اختيار الرحلة لتحديثها */}
@@ -68,22 +66,24 @@ const UpdateTripForm = () => {
           required
           sx={{
             width: "70%",
-            input: {
-              color: "#d4a85f",
+            "& .MuiInputBase-input": {
+              color: muiTheme.palette.text.primary,
               fontSize: "18px",
               fontWeight: "bold",
               fontFamily: "Cairo, sans-serif",
             },
             "& .MuiOutlinedInput-root": {
-              "& fieldset": { borderColor: "#d4a85f" },
-              "&:hover fieldset": { borderColor: "#ff9800" },
+              "& fieldset": { borderColor: muiTheme.palette.secondary.main },
+              "&:hover fieldset": { borderColor: muiTheme.palette.primary.main },
               "&.Mui-focused fieldset": {
-                borderColor: "#ff9800",
+                borderColor: muiTheme.palette.secondary.main,
                 borderWidth: "2px",
               },
             },
-            "& .MuiInputLabel-root": { color: "#d4a85f" },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#ff9800" },
+            "& .MuiInputLabel-root": { color: muiTheme.palette.secondary.main },
+            "& .MuiInputLabel-root.Mui-focused": {
+              color: muiTheme.palette.primary.main,
+            },
           }}
         >
           <InputLabel id="city-select-label">
@@ -94,7 +94,7 @@ const UpdateTripForm = () => {
             id="city-select"
             value={toursID}
             onChange={handleSelect}
-            sx={{ color: "#d4a85f" }}
+            sx={{ color: muiTheme.palette.text.primary }}
           >
             {toursData.map((i) => (
               <MenuItem key={i.id} value={i.id}>
@@ -111,13 +111,18 @@ const UpdateTripForm = () => {
             mx: "auto",
             mt: 5,
             p: 3,
-            boxShadow: 3,
+            boxShadow: muiTheme.shadows[4],
             borderRadius: 4,
-            border: "1px solid grey",
-            color: "#FFF",
+            border: `1px solid ${muiTheme.palette.divider}`,
+            color: muiTheme.palette.text.primary,
+            backgroundColor: muiTheme.palette.background.paper,
           }}
         >
-          <Typography variant="h5" gutterBottom>
+          <Typography
+            variant="h5"
+            gutterBottom
+            sx={{ color: muiTheme.palette.secondary.main }}
+          >
             تحديث بيانات رحله
           </Typography>
 
@@ -164,12 +169,16 @@ const UpdateTripForm = () => {
                 type="button"
                 variant="contained"
                 onClick={handleUpdate}
-                color="primary"
                 sx={{
-                  backgroundColor: "#ff9800",
-                  color: "#ffffff",
+                  backgroundColor: muiTheme.palette.secondary.main,
+                  color: muiTheme.palette.getContrastText(
+                    muiTheme.palette.secondary.main
+                  ),
                   fontSize: "18px",
                   fontWeight: "700",
+                  "&:hover": {
+                    backgroundColor: muiTheme.palette.primary.main,
+                  },
                 }}
               >
                 تعديل بيانات الرحله

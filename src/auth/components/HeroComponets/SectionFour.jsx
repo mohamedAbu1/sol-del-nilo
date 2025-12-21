@@ -9,11 +9,13 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم
+
 const SectionFour = () => {
   const t = useTranslations("HomeHeroPage");
   const router = useRouter();
+  const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي (light/dark)
 
-  // ✅ منع التفاعل قبل تحميل المتصفح
   const [hasMounted, setHasMounted] = useState(false);
   useEffect(() => {
     setHasMounted(true);
@@ -25,14 +27,14 @@ const SectionFour = () => {
     <section
       id="section-four"
       style={{ marginTop: "15px", paddingBottom: "40px" }}
-      className="relative w-full min-h-screen px-4 sm:py-10 md:py-12 lg:py-0 flex flex-col items-center justify-start text-white"
+      className="relative w-full min-h-screen px-4 sm:py-10 md:py-12 lg:py-0 flex flex-col items-center justify-start"
     >
       <div className="w-full max-w-screen-xl flex flex-col lg:flex-row items-center justify-between gap-10">
         {/* ✅ السلايدر مع أنيمشن من الشمال */}
         <motion.div
-          initial={{ opacity: 0, x: -100 }} // يبدأ خارج الشاشة من الشمال
-          whileInView={{ opacity: 1, x: 0 }} // يدخل لمكانه الطبيعي
-          viewport={{ once: true, amount: 0.2 }} // يحدث مرة واحدة فقط عند دخول 20% من العنصر
+          initial={{ opacity: 0, x: -100 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="w-full lg:w-1/2 rounded-3xl overflow-hidden shadow-xl"
         >
@@ -75,32 +77,64 @@ const SectionFour = () => {
 
         {/* ✅ النص مع أنيمشن من اليمين */}
         <motion.div
-          initial={{ opacity: 0, x: 100 }} // يبدأ خارج الشاشة من اليمين
-          whileInView={{ opacity: 1, x: 0 }} // يدخل لمكانه الطبيعي
+          initial={{ opacity: 0, x: 100 }}
+          whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="w-full lg:w-1/2 text-start gap-9"
-          style={{paddingLeft:"13px"}}
+          style={{ paddingLeft: "13px" }}
         >
-          <p className="text-sm uppercase text-gray-500 dark:text-gray-300 mb-2 tracking-wide">
+          <p
+            className="text-sm uppercase mb-2 tracking-wide"
+            style={{ color: muiTheme.palette.text.secondary }} // ✅ النص الثانوي من الثيم
+          >
             {t("sc4P")}
           </p>
-          <h2 className="text-3xl lg:text-4xl font-bold text-gray-700 dark:text-gray-200 mb-4 leading-snug">
+
+          <h2
+            className="text-3xl lg:text-4xl font-bold mb-4 leading-snug"
+            style={{ color: muiTheme.palette.text.primary }} // ✅ النص الأساسي من الثيم
+          >
             {t("sc4Title")}
           </h2>
-          <p className="text-gray-700 dark:text-gray-400 text-base mb-6 leading-relaxed">
+
+          <p
+            className="text-base mb-6 leading-relaxed"
+            style={{ color: muiTheme.palette.text.secondary }} // ✅ النصوص الثانوية
+          >
             {t("sc3PS")}
-            <span className="text-yellow-600 font-semibold">{t("sc3PS1")}</span>
+            <span
+              style={{ color: muiTheme.palette.primary.main, fontWeight: 600 }}
+            >
+              {t("sc3PS1")}
+            </span>
             ,{" "}
-            <span className="text-yellow-600 font-semibold">{t("sc3PS2")}</span>{" "}
+            <span
+              style={{ color: muiTheme.palette.primary.main, fontWeight: 600 }}
+            >
+              {t("sc3PS2")}
+            </span>{" "}
             {t("sc3PS3")}
-            <span className="text-yellow-600 font-semibold">{t("sc3PS4")}</span>
+            <span
+              style={{ color: muiTheme.palette.primary.main, fontWeight: 600 }}
+            >
+              {t("sc3PS4")}
+            </span>
             {t("sc3PS5")}
           </p>
 
           <button
-            className="btn-next-section6"
             onClick={() => router.push("/about")}
+            style={{
+              background: `linear-gradient(90deg, ${muiTheme.palette.primary.main}, ${muiTheme.palette.secondary.main})`, // ✅ زر متدرج من ألوان الثيم
+              color: muiTheme.palette.getContrastText(muiTheme.palette.primary.main),
+              padding: "10px 20px",
+              borderRadius: "8px",
+              fontWeight: 600,
+              boxShadow: `0 4px 12px ${muiTheme.palette.primary.main}50`,
+              transition: "transform 0.3s ease",
+            }}
+            className="hover:scale-105"
           >
             {t("sc3BTN")}
           </button>

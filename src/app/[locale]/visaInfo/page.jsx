@@ -5,7 +5,6 @@ import ImageSection from "@/auth/components/VISA/ImageSection";
 import ContentSection from "@/auth/components/VISA/ContentSection";
 import SideDecor from "@/auth/components/SideDecor ";
 import RightSideDecor from "@/auth/components/RightSideDecor";
-import Dividering from "@/auth/components/HeroToursComponets/id/Divider/Divider";
 import GeneralAdvice from "@/auth/components/VISA/GeneralAdvice";
 
 export default async function EgyptVisaPage() {
@@ -21,9 +20,6 @@ export default async function EgyptVisaPage() {
       <ImageSection />
       <ContentSection />
       <RightSideDecor />
-      <Dividering />
-      <Dividering />
-      <Dividering />
       <GeneralAdvice />
     </main>
   );

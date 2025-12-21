@@ -14,6 +14,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Lodaing from "../../../lodaing";
 import Image from "next/image";
 import { useTripContext } from "@/context/TripContext";
+import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم
 
 const MotionImageListItem = motion(ImageListItem);
 
@@ -24,19 +25,18 @@ const Page = () => {
   const tour = tours.find((t) => t.id === id);
   const { width } = useScreenSize();
   const router = useRouter();
+  const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي
 
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [fullScreenOpen, setFullScreenOpen] = useState(false);
   const [shuffledImages, setShuffledImages] = useState([]);
 
-  // ✅ تحميل الصور
   useEffect(() => {
     if (tour?.tourimage) {
       setShuffledImages(tour.tourimage);
     }
   }, [tour]);
 
-  // ✅ Shuffle الصور كل 30 ثانية
   useEffect(() => {
     if (!tour?.tourimage) return;
     const interval = setInterval(() => {
@@ -49,21 +49,17 @@ const Page = () => {
         return newArr;
       });
     }, 30000);
-
     return () => clearInterval(interval);
   }, [tour]);
 
-  // ✅ سلايدر تلقائي عند فتح الصورة بالحجم الكامل
   useEffect(() => {
     if (!fullScreenOpen || selectedIndex === null) return;
-
     const interval = setInterval(() => {
       setSelectedIndex((prevIndex) => {
         const nextIndex = (prevIndex + 1) % shuffledImages.length;
         return nextIndex;
       });
-    }, 2000); // كل 3 ثواني تتغير الصورة
-
+    }, 2000);
     return () => clearInterval(interval);
   }, [fullScreenOpen, selectedIndex, shuffledImages.length]);
 
@@ -88,14 +84,21 @@ const Page = () => {
       <div className="w-full flex flex-row items-center justify-between gap-1.5">
         <Typography
           variant="h4"
-          style={{ fontSize: width <= 1024 ? "14px" : "24px" }}
+          sx={{
+            fontSize: width <= 1024 ? "14px" : "24px",
+            color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
+          }}
         >
           {tour?.title || "Pictures of the last trip"}
         </Typography>
         <Button
           onClick={() => router.push(`/tours/${tour?.id}`)}
           className="btn-next-section3"
-          style={{ color: "#000", marginBottom: "20px", marginTop: "10px" }}
+          sx={{
+            color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
+            mb: 2,
+            mt: 1,
+          }}
         >
           Back
         </Button>
@@ -105,7 +108,7 @@ const Page = () => {
       <ImageList variant="masonry" cols={3} gap={12}>
         {shuffledImages.map((img, index) => (
           <MotionImageListItem
-            key={img.label}
+            key={`${img.url}-${index}`} // ✅ مفتاح فريد لتجنب مشكلة التكرار
             layout
             transition={{ duration: 0.8, ease: "easeInOut" }}
           >
@@ -118,7 +121,7 @@ const Page = () => {
                 onClick={() => handleImageClick(index)}
                 style={{
                   borderRadius: "30px",
-                  boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
+                  boxShadow: muiTheme.shadows[3], // ✅ ظل من الثيم
                   display: "block",
                   cursor: "pointer",
                   transition: "transform 0.3s ease",
@@ -134,8 +137,8 @@ const Page = () => {
                   position: "absolute",
                   bottom: 8,
                   left: 8,
-                  backgroundColor: "rgba(44,44,44,0.6)",
-                  color: "#ffa726",
+                  backgroundColor: muiTheme.palette.action.selected, // ✅ خلفية من الثيم
+                  color: muiTheme.palette.secondary.main, // ✅ النصوص من الثيم
                   padding: "4px 8px",
                   borderRadius: "4px",
                   fontSize: "0.85rem",
@@ -163,7 +166,7 @@ const Page = () => {
               left: 0,
               width: "100vw",
               height: "100vh",
-              backgroundColor: "rgba(100,100,100,0.9)",
+              backgroundColor: muiTheme.palette.background.default, // ✅ خلفية من الثيم
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
@@ -174,7 +177,7 @@ const Page = () => {
             onClick={() => setFullScreenOpen(false)}
           >
             <motion.img
-              key={shuffledImages[selectedIndex].name}
+              key={`${shuffledImages[selectedIndex].url}-${selectedIndex}`} // ✅ مفتاح فريد
               src={shuffledImages[selectedIndex].url}
               alt={shuffledImages[selectedIndex].name}
               initial={{ x: 100, opacity: 0 }}
@@ -185,7 +188,7 @@ const Page = () => {
                 maxWidth: "100%",
                 maxHeight: "100%",
                 borderRadius: "20px",
-                boxShadow: "0 4px 20px rgba(0,0,0,0.5)",
+                boxShadow: muiTheme.shadows[6], // ✅ ظل من الثيم
               }}
             />
           </motion.div>

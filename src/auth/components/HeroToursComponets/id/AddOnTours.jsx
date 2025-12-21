@@ -5,12 +5,15 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import { useState, useEffect } from "react";
+import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم
 
 export default function AddOnTours({
   addons,
   selectedExtras,
   setSelectedExtras,
 }) {
+  const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي
+
   const toggleAddOn = (addon) => {
     const exists = selectedExtras.find((a) => a.id === addon.id);
     if (exists) {
@@ -22,8 +25,13 @@ export default function AddOnTours({
 
   return (
     <div style={{ marginBottom: "25px" }} className="w-full mt-10 mb-10">
-      <h2 style={{marginBottom:"15px"}} className="text-2xl font-bold text-[#daa60b] dark:text-yellow-700 mb-6">
-        Additional trips you can add
+      <h2
+        style={{ marginBottom: "15px" }}
+        className="text-2xl font-bold mb-6"
+      >
+        <span style={{ color: muiTheme.palette.primary.main }}>
+          Additional trips you can add
+        </span>
       </h2>
 
       <Swiper
@@ -42,7 +50,6 @@ export default function AddOnTours({
         {addons.map((addon) => {
           const isSelected = selectedExtras.some((a) => a.id === addon.id);
 
-          // ✅ سلايدر داخلي للصور
           const [imgIndex, setImgIndex] = useState(0);
 
           useEffect(() => {
@@ -50,7 +57,7 @@ export default function AddOnTours({
 
             const interval = setInterval(() => {
               setImgIndex((prev) => (prev + 1) % addon.image.length);
-            }, 3000); // كل 3 ثواني
+            }, 3000);
 
             return () => clearInterval(interval);
           }, [addon.image]);
@@ -61,16 +68,18 @@ export default function AddOnTours({
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className={`relative rounded-xl overflow-hidden shadow-lg border 
-      ${
-        isSelected
-          ? "border-[#daa60b]"
-          : "border-neutral-700 dark:border-neutral-600"
-      }
-      cursor-pointer bg-neutral-900 h-[350px]`}
+                className="relative rounded-xl overflow-hidden shadow-lg cursor-pointer h-[350px]"
+                style={{
+                  border: `2px solid ${
+                    isSelected
+                      ? muiTheme.palette.secondary.main
+                      : muiTheme.palette.divider
+                  }`,
+                  backgroundColor: muiTheme.palette.background.paper,
+                }}
                 onClick={() => toggleAddOn(addon)}
               >
-                {/* ✅ الصورة كخلفية الكارد بالكامل */}
+                {/* ✅ الصورة */}
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={addon.image?.[imgIndex]?.url}
@@ -89,22 +98,37 @@ export default function AddOnTours({
                   </motion.div>
                 </AnimatePresence>
 
-                {/* ✅ طبقة تظليل فوق الصورة */}
+                {/* ✅ طبقة تظليل */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
 
-                {/* ✅ المحتوى فوق الصورة */}
+                {/* ✅ المحتوى */}
                 <div className="absolute bottom-0 left-0 right-0 p-4 z-20">
-                  <h3 className="text-lg font-semibold text-white mb-2 drop-shadow-lg">
+                  <h3
+                    className="text-lg font-semibold mb-2 drop-shadow-lg"
+                    style={{ color: muiTheme.palette.common.white }}
+                  >
                     {addon.title}
                   </h3>
 
-                  <p className="text-[#daa60b] dark:text-yellow-700 font-bold text-lg drop-shadow-lg">
+                  <p
+                    className="font-bold text-lg drop-shadow-lg"
+                    style={{ color: muiTheme.palette.primary.main }}
+                  >
                     ${addon.price}
                   </p>
 
                   <button
-                    className={`mt-3 w-full py-2 rounded-md font-semibold transition 
-          ${isSelected ? "  text-black" : " text-white backdrop-blur-sm"}`}
+                    className="mt-3 w-full py-2 rounded-md font-semibold transition backdrop-blur-sm"
+                    style={{
+                      backgroundColor: isSelected
+                        ? muiTheme.palette.secondary.main
+                        : muiTheme.palette.primary.main,
+                      color: muiTheme.palette.getContrastText(
+                        isSelected
+                          ? muiTheme.palette.secondary.main
+                          : muiTheme.palette.primary.main
+                      ),
+                    }}
                   >
                     {isSelected ? "✓ تمت الإضافة" : "إضافة الرحلة"}
                   </button>

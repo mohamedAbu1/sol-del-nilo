@@ -12,10 +12,9 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useAppQueryContext } from "@/context/AppQueryContext";
 import { useTripsContext } from "@/context/TripsContext";
-import { useAppContext } from "@/context/AppContext";
-// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم
+
 const Destination = () => {
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const {
     expanded,
     setExpanded,
@@ -24,15 +23,15 @@ const Destination = () => {
     cityCounts,
   } = useAppQueryContext();
   const { cities } = useTripsContext();
-  const { theme } = useAppContext();
-  // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي
+
   return (
     <Accordion
       expanded={expanded}
       onChange={() => setExpanded((prev) => !prev)}
       sx={{
-        backgroundColor: theme === "dark" ? "#030712" : "#fff",
-        color: theme === "dark" ? "#fff" : "#030712",
+        backgroundColor: muiTheme.palette.background.paper, // ✅ خلفية من الثيم
+        color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
         borderRadius: "12px",
         boxShadow: "none",
         mb: 2,
@@ -40,19 +39,21 @@ const Destination = () => {
       }}
     >
       <AccordionSummary
-        expandIcon={<ExpandMoreIcon sx={{ color: "#ffb300" }} />}
+        expandIcon={
+          <ExpandMoreIcon sx={{ color: muiTheme.palette.primary.main }} /> // ✅ أيقونة من الثيم
+        }
         sx={{
-          backgroundColor: theme === "dark" ? "#030712" : "#fff",
+          backgroundColor: muiTheme.palette.background.paper,
           borderBottom:
             !expanded && selectedDestinations.length === 0
-              ? "1px solid #ff9800"
+              ? `1px solid ${muiTheme.palette.primary.main}` // ✅ الحدود من الثيم
               : "none",
           "& .MuiAccordionSummary-content": { margin: 0 },
         }}
       >
         <Typography
           variant="subtitle2"
-          sx={{ color: "#ffb300", fontWeight: "bold" }}
+          sx={{ color: muiTheme.palette.primary.main, fontWeight: "bold" }} // ✅ العنوان من الثيم
         >
           Destination
         </Typography>
@@ -60,50 +61,53 @@ const Destination = () => {
 
       <AccordionDetails
         sx={{
-          backgroundColor: theme === "dark" ? "#030712" : "#fff",
-          borderBottom: "1px solid #ff9800",
+          backgroundColor: muiTheme.palette.background.paper,
+          borderBottom: `1px solid ${muiTheme.palette.divider}`, // ✅ حدود من الثيم
         }}
       >
-     <FormGroup>
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={selectedDestinations.length === cities.length}
-            onChange={() => handleToggle("ALL")}
-            disabled
-            sx={{
-              color: "#ff9800",
-              "&.Mui-checked": { color: "#ff9800" },
-            }}
-          />
-        }
-        label="All"
-      />
-
-      {cities.map((city) => (
-        <div
-          key={city.id}
-          className="flex flex-row items-center justify-between"
-        >
+        <FormGroup>
           <FormControlLabel
             control={
               <Checkbox
-                checked={selectedDestinations.includes(city.name)}
-                onChange={() => handleToggle(city.name)}
+                checked={selectedDestinations.length === cities.length}
+                onChange={() => handleToggle("ALL")}
+                disabled
                 sx={{
-                  color: "#ff9800",
-                  "&.Mui-checked": { color: "#ff9800" },
+                  color: muiTheme.palette.secondary.main, // ✅ اللون من الثيم
+                  "&.Mui-checked": { color: muiTheme.palette.secondary.main },
                 }}
               />
             }
-            label={city.name}
+            label="All"
           />
-          <h4 className="text-gray-700 text-[16px]">
-            {cityCounts[city.name] || 0}
-          </h4>
-        </div>
-      ))}
-    </FormGroup>
+
+          {cities.map((city) => (
+            <div
+              key={city.id}
+              className="flex flex-row items-center justify-between"
+            >
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={selectedDestinations.includes(city.name)}
+                    onChange={() => handleToggle(city.name)}
+                    sx={{
+                      color: muiTheme.palette.secondary.main, // ✅ اللون من الثيم
+                      "&.Mui-checked": { color: muiTheme.palette.secondary.main },
+                    }}
+                  />
+                }
+                label={city.name}
+              />
+              <Typography
+                variant="body2"
+                sx={{ color: muiTheme.palette.text.secondary }} // ✅ النصوص الثانوية من الثيم
+              >
+                {cityCounts[city.name] || 0}
+              </Typography>
+            </div>
+          ))}
+        </FormGroup>
       </AccordionDetails>
     </Accordion>
   );

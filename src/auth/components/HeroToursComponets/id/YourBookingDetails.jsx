@@ -21,11 +21,13 @@ import {
 } from "@mui/icons-material";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم
 
 const YourBookingDetails = ({ tour, user }) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleted, setDeleted] = useState(false);
   const router = useRouter();
+  const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي
 
   const userBooking = Array.isArray(tour?.payments)
     ? tour.payments.find((b) => b.userId === user?.id)
@@ -40,7 +42,7 @@ const YourBookingDetails = ({ tour, user }) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: user.email,
-          bookingId: userBooking.id, // تأكد أن هذا هو id من جدول Supabase
+          bookingId: userBooking.id,
         }),
       });
       console.log("🧾 Booking ID:", userBooking.id);
@@ -63,60 +65,58 @@ const YourBookingDetails = ({ tour, user }) => {
     <Box
       sx={{
         width: "100%",
-        // maxWidth: 600,
-        backgroundColor: "#0f172a",
-        color: "#f1f5f9",
         borderRadius: 4,
         height: "500px",
-        boxShadow: "0 0 20px rgba(0,0,0,0.3)",
+        boxShadow: muiTheme.shadows[6], // ✅ ظل من الثيم
         p: 4,
-        marginTop: "60px",
-        marginBottom:"10px",
-        display:"flex",
-        flexDirection:"column",
-        // alignItems:"center",
-        justifyContent:"center"
+        mt: 6,
+        mb: 2,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        backgroundColor: muiTheme.palette.background.paper, // ✅ الخلفية من الثيم
+        color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
       }}
     >
       <Typography variant="h5" fontWeight="bold" color="primary" gutterBottom>
         ✅ Your Booking Details
       </Typography>
 
-      <Divider sx={{ mb: 3, backgroundColor: "#334155" }} />
+      <Divider sx={{ mb: 3, backgroundColor: muiTheme.palette.divider }} />
 
       <Stack spacing={2}>
         <Typography>
-          <TourIcon sx={{ mr: 1 }} />
+          <TourIcon sx={{ mr: 1, color: muiTheme.palette.secondary.main }} />
           <strong>Tour:</strong> {tour.title}
         </Typography>
 
         <Typography>
-          <PersonIcon sx={{ mr: 1 }} />
+          <PersonIcon sx={{ mr: 1, color: muiTheme.palette.secondary.main }} />
           <strong>Name:</strong> {userBooking.name}
         </Typography>
 
         <Typography>
-          <EmailIcon sx={{ mr: 1 }} />
+          <EmailIcon sx={{ mr: 1, color: muiTheme.palette.secondary.main }} />
           <strong>Email:</strong> {userBooking.email}
         </Typography>
 
         <Typography>
-          <CalendarMonthIcon sx={{ mr: 1 }} />
+          <CalendarMonthIcon sx={{ mr: 1, color: muiTheme.palette.secondary.main }} />
           <strong>Date:</strong> {userBooking.tourDate}
         </Typography>
 
         <Typography>
-          <AccessTimeIcon sx={{ mr: 1 }} />
+          <AccessTimeIcon sx={{ mr: 1, color: muiTheme.palette.secondary.main }} />
           <strong>Time:</strong> {userBooking.bookingTime}
         </Typography>
 
         <Typography>
-          <AttachMoneyIcon sx={{ mr: 1 }} />
+          <AttachMoneyIcon sx={{ mr: 1, color: muiTheme.palette.secondary.main }} />
           <strong>Total Price:</strong> {userBooking.amount_cents} USD
         </Typography>
 
         <Stack direction="row" alignItems="center" flexWrap="wrap">
-          <TranslateIcon sx={{ mr: 1 }} />
+          <TranslateIcon sx={{ mr: 1, color: muiTheme.palette.secondary.main }} />
           <Typography sx={{ mr: 1 }}>
             <strong>Guide Languages:</strong>
           </Typography>
@@ -140,7 +140,7 @@ const YourBookingDetails = ({ tour, user }) => {
           )}
         </Stack>
 
-        <Divider sx={{ my: 3 }} />
+        <Divider sx={{ my: 3, backgroundColor: muiTheme.palette.divider }} />
 
         <Button
           variant="contained"

@@ -1,85 +1,13 @@
+"use client";
 import React from "react";
 import { TextField } from "@mui/material";
+import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم
 
 const Preparation = ({ formData, handleChange }) => {
+  const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي
+
   return (
     <div className="flex flex-row gap-8">
-      {/* ℹ️ معلومات إضافية */}
-      {/* <TextField
-        label="عدد السياح"
-        name="NumberOfParticipants"
-        value={formData.NumberOfParticipants || ""}
-        type="number"
-        onChange={handleChange}
-        required
-        rows={2}
-        sx={{
-          width: "25%",
-          input: {
-            color: "#d4a85f",
-            fontSize: "18px",
-            fontWeight: "bold",
-            fontFamily: "Cairo, sans-serif",
-          },
-          "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button":
-            {
-              WebkitAppearance: "none",
-              margin: 0,
-            },
-          "& input": {
-            MozAppearance: "textfield",
-          },
-          "& .MuiOutlinedInput-root": {
-            "& fieldset": { borderColor: "#d4a85f" },
-            "&:hover fieldset": { borderColor: "#ff9800" },
-            "&.Mui-focused fieldset": {
-              borderColor: "#ff9800",
-              borderWidth: "2px",
-            },
-          },
-          "& .MuiInputLabel-root": { color: "#d4a85f" },
-          "& .MuiInputLabel-root.Mui-focused": { color: "#ff9800" },
-        }}
-      /> */}
-      {/* 📆 عدد الأيام */}
-      {/* <TextField
-        label="عدد الأيام"
-        type="number"
-        name="days"
-        value={formData.days || ""}
-        onChange={handleChange}
-        sx={{
-          width: "35%",
-
-          input: {
-            color: "#d4a85f",
-            fontSize: "18px",
-            fontWeight: "bold",
-            fontFamily: "Cairo, sans-serif",
-          },
-          "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button":
-            {
-              WebkitAppearance: "none",
-              margin: 0,
-            },
-          "& input": {
-            MozAppearance: "textfield",
-          },
-          "& .MuiOutlinedInput-root": {
-            "& fieldset": { borderColor: "#d4a85f" },
-            "&:hover fieldset": { borderColor: "#ff9800" },
-            "&.Mui-focused fieldset": {
-              borderColor: "#ff9800",
-              borderWidth: "2px",
-            },
-          },
-          "& .MuiInputLabel-root": { color: "#d4a85f" },
-          "& .MuiInputLabel-root.Mui-focused": { color: "#ff9800" },
-        }}
-        fullWidth
-        required
-      /> */}
-
       {/* 👥 عدد الأشخاص */}
       <TextField
         label="عدد الأشخاص"
@@ -88,35 +16,36 @@ const Preparation = ({ formData, handleChange }) => {
         value={formData.people || "0"}
         disabled
         onChange={handleChange}
+        fullWidth
+        required
         sx={{
           width: "35%",
           input: {
-            color: "#d4a85f",
+            color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
             fontSize: "18px",
             fontWeight: "bold",
             fontFamily: "Cairo, sans-serif",
           },
-          "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button":
-            {
-              WebkitAppearance: "none",
-              margin: 0,
-            },
+          "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
+            WebkitAppearance: "none",
+            margin: 0,
+          },
           "& input": {
             MozAppearance: "textfield",
           },
           "& .MuiOutlinedInput-root": {
-            "& fieldset": { borderColor: "#d4a85f" },
-            "&:hover fieldset": { borderColor: "#ff9800" },
+            "& fieldset": { borderColor: muiTheme.palette.secondary.main },
+            "&:hover fieldset": { borderColor: muiTheme.palette.primary.main },
             "&.Mui-focused fieldset": {
-              borderColor: "#ff9800",
+              borderColor: muiTheme.palette.secondary.main,
               borderWidth: "2px",
             },
           },
-          "& .MuiInputLabel-root": { color: "#d4a85f" },
-          "& .MuiInputLabel-root.Mui-focused": { color: "#ff9800" },
+          "& .MuiInputLabel-root": { color: muiTheme.palette.secondary.main },
+          "& .MuiInputLabel-root.Mui-focused": {
+            color: muiTheme.palette.primary.main,
+          },
         }}
-        fullWidth
-        required
       />
     </div>
   );

@@ -1,13 +1,16 @@
 "use client";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
-import { TextField, Button } from "@mui/material";
+import { TextField, Button, Typography } from "@mui/material";
 import { toast } from "react-toastify";
+import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم
 
 // ✅ منع اللغة العربية
 const containsArabic = (text) => /[\u0600-\u06FF]/.test(text);
 
 const TripProgram = ({ tripDuration, programs, setPrograms }) => {
+  const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي
+
   // ✅ تحديث قيمة الحقول
   const handleChange = (dayIndex, programIndex, field, value) => {
     const updated = [...programs];
@@ -53,10 +56,22 @@ const TripProgram = ({ tripDuration, programs, setPrograms }) => {
                 sx={{
                   width: "18%",
                   input: {
-                    color: "#d4a85f",
+                    color: muiTheme.palette.text.primary,
                     fontSize: "18px",
                     fontWeight: "bold",
                     fontFamily: "Cairo, sans-serif",
+                  },
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": { borderColor: muiTheme.palette.secondary.main },
+                    "&:hover fieldset": { borderColor: muiTheme.palette.primary.main },
+                    "&.Mui-focused fieldset": {
+                      borderColor: muiTheme.palette.secondary.main,
+                      borderWidth: "2px",
+                    },
+                  },
+                  "& .MuiInputLabel-root": { color: muiTheme.palette.secondary.main },
+                  "& .MuiInputLabel-root.Mui-focused": {
+                    color: muiTheme.palette.primary.main,
                   },
                 }}
               />
@@ -76,10 +91,22 @@ const TripProgram = ({ tripDuration, programs, setPrograms }) => {
                 sx={{
                   width: "80%",
                   input: {
-                    color: "#d4a85f",
+                    color: muiTheme.palette.text.primary,
                     fontSize: "18px",
                     fontWeight: "bold",
                     fontFamily: "Cairo, sans-serif",
+                  },
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": { borderColor: muiTheme.palette.secondary.main },
+                    "&:hover fieldset": { borderColor: muiTheme.palette.primary.main },
+                    "&.Mui-focused fieldset": {
+                      borderColor: muiTheme.palette.secondary.main,
+                      borderWidth: "2px",
+                    },
+                  },
+                  "& .MuiInputLabel-root": { color: muiTheme.palette.secondary.main },
+                  "& .MuiInputLabel-root.Mui-focused": {
+                    color: muiTheme.palette.primary.main,
                   },
                 }}
               />
@@ -91,11 +118,12 @@ const TripProgram = ({ tripDuration, programs, setPrograms }) => {
             variant="contained"
             sx={{
               mt: "10px",
-              backgroundColor: "#ff9800",
+              backgroundColor: muiTheme.palette.secondary.main,
+              color: muiTheme.palette.getContrastText(muiTheme.palette.secondary.main),
               fontWeight: "bold",
               fontSize: "16px",
               fontFamily: "Cairo, sans-serif",
-              "&:hover": { backgroundColor: "#d4a85f" },
+              "&:hover": { backgroundColor: muiTheme.palette.primary.main },
             }}
           >
             ➕ إضافة نشاط جديد
@@ -107,7 +135,15 @@ const TripProgram = ({ tripDuration, programs, setPrograms }) => {
       {tripDuration > 1 &&
         programs.map((day, dayIndex) => (
           <div key={dayIndex} className="space-y-4">
-            <h2 className="text-2xl font-bold text-[#d4a85f]">Day {day.day}</h2>
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: "bold",
+                color: muiTheme.palette.secondary.main,
+              }}
+            >
+              Day {day.day}
+            </Typography>
 
             {day.programs.map((item, programIndex) => (
               <div key={programIndex} className="flex gap-4">
@@ -123,10 +159,22 @@ const TripProgram = ({ tripDuration, programs, setPrograms }) => {
                   sx={{
                     width: "18%",
                     input: {
-                      color: "#d4a85f",
+                      color: muiTheme.palette.text.primary,
                       fontSize: "18px",
                       fontWeight: "bold",
                       fontFamily: "Cairo, sans-serif",
+                    },
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": { borderColor: muiTheme.palette.secondary.main },
+                      "&:hover fieldset": { borderColor: muiTheme.palette.primary.main },
+                      "&.Mui-focused fieldset": {
+                        borderColor: muiTheme.palette.secondary.main,
+                        borderWidth: "2px",
+                      },
+                    },
+                    "& .MuiInputLabel-root": { color: muiTheme.palette.secondary.main },
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      color: muiTheme.palette.primary.main,
                     },
                   }}
                 />
@@ -146,10 +194,22 @@ const TripProgram = ({ tripDuration, programs, setPrograms }) => {
                   sx={{
                     width: "80%",
                     input: {
-                      color: "#d4a85f",
+                      color: muiTheme.palette.text.primary,
                       fontSize: "18px",
                       fontWeight: "bold",
                       fontFamily: "Cairo, sans-serif",
+                    },
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": { borderColor: muiTheme.palette.secondary.main },
+                      "&:hover fieldset": { borderColor: muiTheme.palette.primary.main },
+                      "&.Mui-focused fieldset": {
+                        borderColor: muiTheme.palette.secondary.main,
+                        borderWidth: "2px",
+                      },
+                    },
+                    "& .MuiInputLabel-root": { color: muiTheme.palette.secondary.main },
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      color: muiTheme.palette.primary.main,
                     },
                   }}
                 />
@@ -161,11 +221,12 @@ const TripProgram = ({ tripDuration, programs, setPrograms }) => {
               variant="contained"
               sx={{
                 mt: "10px",
-                backgroundColor: "#ff9800",
+                backgroundColor: muiTheme.palette.secondary.main,
+                color: muiTheme.palette.getContrastText(muiTheme.palette.secondary.main),
                 fontWeight: "bold",
                 fontSize: "16px",
                 fontFamily: "Cairo, sans-serif",
-                "&:hover": { backgroundColor: "#d4a85f" },
+                "&:hover": { backgroundColor: muiTheme.palette.primary.main },
               }}
             >
               ➕ إضافة نشاط جديد لليوم {day.day}

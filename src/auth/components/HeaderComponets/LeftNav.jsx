@@ -1,14 +1,14 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Link } from "@/i18n/navigation";
 import { FaDollarSign } from "react-icons/fa";
-import { BsDoorOpenFill, BsFillPersonVcardFill } from "react-icons/bs";
+import { BsDoorOpenFill } from "react-icons/bs";
 import { motion } from "framer-motion";
 import LogoutBtn from "./LogoutBtn";
 import { Button } from "@mui/material";
 import { useTranslations } from "next-intl";
 import { useAppContext } from "@/context/AppContext";
 import { useRouter } from "next/navigation";
+import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم
 
 const LeftNav = ({ path, user, width }) => {
   const boxVariants = {
@@ -17,60 +17,53 @@ const LeftNav = ({ path, user, width }) => {
   };
   const t = useTranslations("Header");
   const router = useRouter();
-  // ✅ منع التفاعل قبل تحميل المتصفح
   const [hasMounted, setHasMounted] = useState(false);
   useEffect(() => {
     setHasMounted(true);
   }, []);
 
   const { setOpen } = useAppContext();
+  const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي (light/dark)
+
   return (
     <motion.div
       variants={boxVariants}
       initial="hidden"
       animate="visible"
       transition={{ delay: 1, duration: 1 }}
-      className="text-gray-400 md:w-2/4 lg:w-6/12 flex flex-row items-center justify-around"
+      className="md:w-2/4 lg:w-6/12 flex flex-row items-center justify-around"
+      style={{ color: muiTheme.palette.text.secondary }} // ✅ النصوص من الثيم
     >
       {user ? (
         <div className="flex gap-8.5">
-          {/* <h3
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              textTransform: "capitalize",
-              fontSize: "14px",
-              gap: "10px",
-              color: "#d4a85f",
-            }}
-          >
-            <BsFillPersonVcardFill />
-            {user.name}
-          </h3> */}
           {hasMounted && width > 1024 && <LogoutBtn />}
         </div>
       ) : (
         <>
           <FaDollarSign
-            style={{ color: path === "/en/tours" ? "#ff9800" : "#d4a85f" }}
+            style={{
+              color:
+                path === "/en/tours"
+                  ? muiTheme.palette.secondary.main // ✅ اللون الثانوي عند اختيار الصفحة
+                  : muiTheme.palette.primary.main, // ✅ اللون الأساسي
+            }}
             className="hidden xl:flex text-2xl"
           />
-          {/* <Link
-            href={"/register"}
-            className="flex items-center justify-center gap-2 flex-row"
-          > */}
           <Button
             variant="outlined"
-            color="warning"
             endIcon={<BsDoorOpenFill />}
-            style={{ color: "#fff" }}
-            className="hover:text-gray-400"
+            sx={{
+              color: muiTheme.palette.text.primary, // ✅ النص من الثيم
+              borderColor: muiTheme.palette.primary.main, // ✅ الإطار من الثيم
+              "&:hover": {
+                color: muiTheme.palette.secondary.main,
+                borderColor: muiTheme.palette.secondary.main,
+              },
+            }}
             onClick={() => router.push("/register")}
           >
             {t("Btn1")}
           </Button>
-          {/* </Link> */}
         </>
       )}
     </motion.div>

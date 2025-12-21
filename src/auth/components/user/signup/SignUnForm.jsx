@@ -6,6 +6,7 @@ import {
   InputLabel,
   InputAdornment,
   FormControl,
+  Typography,
   Button,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
@@ -20,6 +21,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { signIn } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
+import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -37,13 +39,13 @@ const itemVariants = {
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const containsArabic = (text) => /[\u0600-\u06FF]/.test(text);
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-  // const { data: session } = useSession();
+// const { data: session } = useSession();
 
-  // useEffect(() => {
-  //   if (session) {
-  //     console.log("✅ بيانات المستخدم:", session.user);
-  //   }
-  // }, [session]);
+// useEffect(() => {
+//   if (session) {
+//     console.log("✅ بيانات المستخدم:", session.user);
+//   }
+// }, [session]);
 const SignUnForm = () => {
   const allowedDomains = [
     "@gmail.com",
@@ -65,7 +67,7 @@ const SignUnForm = () => {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const t = useTranslations("SignUnForm");
-
+  const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const handleEmailBlur = (e) => {
     const value = e.target.value;
@@ -161,9 +163,14 @@ const SignUnForm = () => {
           className="w-full h-full flex flex-col items-center justify-center gap-5"
           style={{ borderRadius: "25px" }}
         >
+          {/* Logo */}
           <motion.div variants={itemVariants} style={{ zIndex: "9999" }}>
             <Image
-              src={"/assets/Copilot_20250908_2314232.webp"}
+              src={
+                muiTheme.palette.mode === "dark"
+                  ? "/assets/Copilot_20251209_142706-removebg-preview.webp"
+                  : "/assets/Copilot_20251208_084907.webp"
+              } // ✅ صورة حسب الثيم
               alt="Logo"
               width={110}
               height={110}
@@ -176,21 +183,33 @@ const SignUnForm = () => {
             />
           </motion.div>
 
+          {/* Title */}
           <motion.h1
             variants={itemVariants}
-            style={{ color: "#ff9800", zIndex: "999", fontSize: "28px" }}
+            style={{
+              color: muiTheme.palette.secondary.main, // ✅ من الثيم
+              zIndex: "999",
+              fontSize: "28px",
+            }}
           >
             {t("title")}
           </motion.h1>
 
+          {/* Subtitle */}
           <motion.h3
             variants={itemVariants}
             style={{ zIndex: "999" }}
-            className="text-gray-400 text-center"
+            className="text-center"
           >
-            {t("p")}
+            <Typography
+              variant="body1"
+              sx={{ color: muiTheme.palette.text.secondary }} // ✅ من الثيم
+            >
+              {t("p")}
+            </Typography>
           </motion.h3>
 
+          {/* Form */}
           <motion.div variants={itemVariants} style={{ width: "100%" }}>
             <form
               onSubmit={handleSubmit}
@@ -200,42 +219,49 @@ const SignUnForm = () => {
                 alignItems: "center",
                 justifyContent: "center",
                 gap: "20px",
-                // width: "400px",
                 margin: "auto",
                 zIndex: "99999",
               }}
             >
+              {/* Name */}
               <TextField
                 label="Your Name"
                 name="name"
                 value={formData.name}
                 onChange={handleEnglishOnlyChange}
                 required
-                inputProps={{
-                  minLength: 3,
-                  maxLength: 14,
-                }}
+                inputProps={{ minLength: 3, maxLength: 14 }}
                 sx={{
-                  zIndex: "9999",
-                  width: "100%",
+                  zIndex: "99999",
+                  width: "80%",
                   input: {
-                    color: "#d4a85f",
+                    color: muiTheme.palette.text.primary,
                     fontSize: "18px",
                     fontWeight: "bold",
                     fontFamily: "Cairo, sans-serif",
                   },
                   "& .MuiOutlinedInput-root": {
-                    "& fieldset": { borderColor: "#d4a85f" },
-                    "&:hover fieldset": { borderColor: "#ff9800" },
+                    "& fieldset": {
+                      borderColor: muiTheme.palette.secondary.main,
+                    },
+                    "&:hover fieldset": {
+                      borderColor: muiTheme.palette.primary.main,
+                    },
                     "&.Mui-focused fieldset": {
-                      borderColor: "#ff9800",
+                      borderColor: muiTheme.palette.secondary.main,
                       borderWidth: "2px",
                     },
                   },
-                  "& .MuiInputLabel-root": { color: "#d4a85f" },
-                  "& .MuiInputLabel-root.Mui-focused": { color: "#ff9800" },
+                  "& .MuiInputLabel-root": {
+                    color: muiTheme.palette.secondary.main,
+                  },
+                  "& .MuiInputLabel-root.Mui-focused": {
+                    color: muiTheme.palette.primary.main,
+                  },
                 }}
               />
+
+              {/* Email */}
               <TextField
                 label="E-Mail"
                 name="email"
@@ -244,49 +270,67 @@ const SignUnForm = () => {
                 onBlur={handleEmailBlur}
                 required
                 sx={{
-                  width: "100%",
-                  zIndex: "9999",
+                  zIndex: "99999",
+                  width: "80%",
                   input: {
-                    color: "#d4a85f",
+                    color: muiTheme.palette.text.primary,
                     fontSize: "18px",
                     fontWeight: "bold",
                     fontFamily: "Cairo, sans-serif",
                   },
                   "& .MuiOutlinedInput-root": {
-                    "& fieldset": { borderColor: "#d4a85f" },
-                    "&:hover fieldset": { borderColor: "#ff9800" },
+                    "& fieldset": {
+                      borderColor: muiTheme.palette.secondary.main,
+                    },
+                    "&:hover fieldset": {
+                      borderColor: muiTheme.palette.primary.main,
+                    },
                     "&.Mui-focused fieldset": {
-                      borderColor: "#ff9800",
+                      borderColor: muiTheme.palette.secondary.main,
                       borderWidth: "2px",
                     },
                   },
-                  "& .MuiInputLabel-root": { color: "#d4a85f" },
-                  "& .MuiInputLabel-root.Mui-focused": { color: "#ff9800" },
+                  "& .MuiInputLabel-root": {
+                    color: muiTheme.palette.secondary.main,
+                  },
+                  "& .MuiInputLabel-root.Mui-focused": {
+                    color: muiTheme.palette.primary.main,
+                  },
                 }}
               />
+
+              {/* Password */}
               <FormControl
                 variant="outlined"
                 required
                 sx={{
-                  zIndex: "9999",
+                  width: "80%",
+                  zIndex: "99999",
                   "& .MuiOutlinedInput-root": {
-                    "& fieldset": { borderColor: "#d4a85f" },
-                    "&:hover fieldset": { borderColor: "#ff9800" },
+                    "& fieldset": {
+                      borderColor: muiTheme.palette.secondary.main,
+                    },
+                    "&:hover fieldset": {
+                      borderColor: muiTheme.palette.primary.main,
+                    },
                     "&.Mui-focused fieldset": {
-                      borderColor: "#ff9800",
+                      borderColor: muiTheme.palette.secondary.main,
                       borderWidth: "2px",
                     },
                   },
-                  "& .MuiInputLabel-root": { color: "#d4a85f" },
-                  "& .MuiInputLabel-root.Mui-focused": { color: "#ff9800" },
+                  "& .MuiInputLabel-root": {
+                    color: muiTheme.palette.secondary.main,
+                  },
+                  "& .MuiInputLabel-root.Mui-focused": {
+                    color: muiTheme.palette.primary.main,
+                  },
                   input: {
-                    color: "#d4a85f",
+                    color: muiTheme.palette.text.primary,
                     fontSize: "18px",
                     fontWeight: "bold",
                     fontFamily: "Cairo, sans-serif",
                   },
                 }}
-                fullWidth
               >
                 <InputLabel>Your password</InputLabel>
                 <OutlinedInput
@@ -307,53 +351,57 @@ const SignUnForm = () => {
                   label="كلمة المرور"
                 />
               </FormControl>
+
+              {/* Submit Button */}
               <Button
                 type="submit"
                 variant="contained"
-                color="primary"
                 sx={{
-                  width: "100%",
+                  width: "80%",
+                  zIndex: "99999",
                   mt: "22px",
-                  backgroundColor: "#d4a85f",
-                  zIndex: "9999",
+                  backgroundColor: muiTheme.palette.secondary.main,
+                  color: muiTheme.palette.getContrastText(
+                    muiTheme.palette.secondary.main
+                  ),
                 }}
               >
                 Create account
               </Button>
-              {/* <Button
-                onClick={() => {signIn("google", { callbackUrl: "/" });}}
-                style={{ zIndex: "9999" }}
-              >
-                Sign in with Google
-              </Button> */}
             </form>
           </motion.div>
 
+          {/* Footer Text */}
           <motion.h3
             variants={itemVariants}
             style={{ zIndex: "9999", fontSize: "22px" }}
-            className="text-gray-400"
           >
-            {t("title2")}
+            <Typography sx={{ color: muiTheme.palette.text.secondary }}>
+              {t("title2")}
+            </Typography>
           </motion.h3>
 
+          {/* Login Button */}
           <motion.div variants={itemVariants}>
             <Link href={"/login"}>
-              <Button sx={{ zIndex: "9999" }} size="large">
+              <Button sx={{ zIndex: "9999" }} variant="text">
                 {t("btn2")}
               </Button>
             </Link>
           </motion.div>
 
+          {/* Home Link */}
           <motion.div variants={itemVariants} style={{ zIndex: "9999" }}>
             <Link
               href={"/"}
               style={{
                 padding: "12px",
-                borderRadius: "18px",
-                backgroundColor: "#d4a85f",
+                borderRadius: "10px",
+                backgroundColor: muiTheme.palette.secondary.main,
+                color: muiTheme.palette.getContrastText(
+                  muiTheme.palette.secondary.main
+                ),
                 fontSize: "16px",
-                zIndex: "9999",
                 fontWeight: "600",
               }}
             >

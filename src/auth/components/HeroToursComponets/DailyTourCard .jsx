@@ -5,22 +5,20 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import AccessAlarmsIcon from "@mui/icons-material/AccessAlarms";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import LocationPinIcon from "@mui/icons-material/LocationPin";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CategoryIcon from "@mui/icons-material/Category";
-import { useAppQueryContext } from "@/context/AppQueryContext";
+
 const MotionBox = motion(Box);
 
-const DailyTourCard = ({ tour, themee, viewMode }) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  const isGrid = viewMode === "grid";
+const DailyTourCard = ({ tour, viewMode }) => {
+  const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي
+  const isMobile = useMediaQuery(muiTheme.breakpoints.down("md"));
   const router = useRouter();
 
-  // ✅ دالة التحويل لصفحة الرحلة حسب الـ id
   const handleViewTour = () => {
     router.push(`/tours/${tour.id}`);
   };
-  console.log(tour);
+
   return (
     <MotionBox
       key={tour.id}
@@ -29,143 +27,87 @@ const DailyTourCard = ({ tour, themee, viewMode }) => {
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
       sx={{
-        width: {
-          xs: "100%",
-          sm: "48%",
-          md: "31%",
-          lg: "31%",
-        },
-        display: "flex",
-        flexDirection: isGrid ? "column" : "row",
+        width: { xs: "100%", sm: "48%", md: "31%", lg: "31%" },
+        height: 400,
         borderRadius: "16px",
         overflow: "hidden",
-        boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
-        transition: "all 0.4s ease",
+        position: "relative",
+        boxShadow: muiTheme.shadows[4], // ✅ ظل من الثيم
+        cursor: "pointer",
         "&:hover": {
           transform: "scale(1.02)",
-          border: "1px solid #ffb300",
+          border: `1px solid ${muiTheme.palette.primary.main}`, // ✅ الحدود من الثيم
         },
-      }}
-      className="bg-white dark:bg-[#030712]"
-    >
-      {/* ✅ صورة الرحلة */}
-      <Box
-        component="img"
-        src={
+        backgroundImage: `url(${
           tour.image?.[0]?.name
             ? `/assets/${tour.image[0].name}`
-            : "/assets/default.jpg" // ✅ صورة افتراضية لو مفيش صورة
-        }
-        alt={tour.title}
+            : "/assets/default.jpg"
+        })`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+      onClick={handleViewTour}
+    >
+      {/* ✅ طبقة شفافة فوق الصورة */}
+      <Box
         sx={{
-          width: isGrid ? "100%" : "40%",
-          height: isGrid ? 220 : "100%",
-          objectFit: "cover",
-          transition: "all 0.4s ease",
+          position: "absolute",
+          inset: 0,
+          background:
+            "linear-gradient(to top, rgba(0,0,0,0.7) 40%, rgba(0,0,0,0.2) 100%)",
         }}
       />
 
-      {/* ✅ محتوى البطاقة */}
+      {/* ✅ المحتوى فوق الصورة */}
       <Box
         sx={{
-          p: 3,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          flex: 1,
+          position: "absolute",
+          bottom: 0,
+          p: 2,
+          color: muiTheme.palette.common.white, // ✅ النصوص من الثيم
+          zIndex: 2,
         }}
       >
         <Typography
           variant="h6"
           sx={{
-            color: "#ffb300",
             fontWeight: 700,
             fontSize: "1.2rem",
             mb: 1,
             lineHeight: 1.4,
+            color: muiTheme.palette.primary.main, // ✅ العنوان بلون أساسي من الثيم
           }}
         >
           {tour.title}
         </Typography>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-around",
-            alignItems: "center",
-          }}
-        >
-          <Typography
-            variant="body2"
-            sx={{
-              color: themee === "dark" ? "#ccc" : "gray",
-              fontSize: "0.95rem",
-              lineHeight: 1.6,
-              mb: 2,
-            }}
-          >
-            <AccessAlarmsIcon style={{ fontSize: "1.20rem" }} />{" "}
-            {`${tour.TripDuration} D`}
+
+        <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
+          <Typography variant="body2" sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+            <AccessAlarmsIcon fontSize="small" /> {`${tour.TripDuration} D`}
           </Typography>
-          <Typography
-            variant="body2"
-            sx={{
-              color: themee === "dark" ? "#ccc" : "gray",
-              fontSize: "0.95rem",
-              lineHeight: 1.6,
-              mb: 2,
-            }}
-          >
-            <LocationPinIcon />
-            {tour.city.name}
+          <Typography variant="body2" sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+            <LocationOnIcon fontSize="small" /> {tour.city.name}
           </Typography>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-around",
-            alignItems: "center",
-          }}
-        >
-          <Typography
-            variant="body2"
-            sx={{
-              color: themee === "dark" ? "#ccc" : "gray",
-              fontSize: "0.95rem",
-              lineHeight: 1.6,
-              mb: 2,
-            }}
-          >
-            <AttachMoneyIcon />
-            {tour.price}
+        </Box>
+
+        <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
+          <Typography variant="body2" sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+            <AttachMoneyIcon fontSize="small" /> {tour.price}
           </Typography>
-          <Typography
-            variant="body2"
-            sx={{
-              color: themee === "dark" ? "#ccc" : "gray",
-              fontSize: "0.95rem",
-              lineHeight: 1.6,
-              mb: 2,
-            }}
-          >
-            <CategoryIcon style={{ paddingRight: "5px" }} />
-            {tour.category.name}
+          <Typography variant="body2" sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+            <CategoryIcon fontSize="small" /> {tour.category.name}
           </Typography>
-        </div>
-        {/* ✅ زر التحويل */}
+        </Box>
+
         <Button
           variant="contained"
-          onClick={handleViewTour}
           sx={{
-            mt: 2,
-            backgroundColor: "#ffb300",
-            color: "#fff",
+            mt: 1,
+            backgroundColor: muiTheme.palette.primary.main, // ✅ زر من الثيم
+            color: muiTheme.palette.getContrastText(muiTheme.palette.primary.main), // ✅ نص متباين
             fontWeight: 600,
             borderRadius: "8px",
-            "&:hover": {
-              backgroundColor: "#ffc107",
-            },
+            "&:hover": { backgroundColor: muiTheme.palette.secondary.main }, // ✅ عند الـ hover يتحول للون الثانوي
           }}
         >
           See the trip

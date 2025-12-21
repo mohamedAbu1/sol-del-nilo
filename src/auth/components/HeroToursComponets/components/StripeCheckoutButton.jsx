@@ -5,7 +5,7 @@ import Image from "next/image";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-
+import { useTheme } from "@mui/material/styles";
 const BookTourButton = ({
   tour,
   user,
@@ -107,295 +107,250 @@ const BookTourButton = ({
   const selectedGuides = Object.entries(bookingData.guideLanguages || {})
     .filter(([lang, isSelected]) => isSelected)
     .map(([lang]) => lang);
+      const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي
   return (
     <>
       <Button
-        onClick={() => {
-          setBookingTime(
-            new Date().toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-            })
-          );
-          setOpen(true);
-        }}
-        variant="contained"
+      onClick={() => {
+        setBookingTime(
+          new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          })
+        );
+        setOpen(true);
+      }}
+      variant="contained"
+      fullWidth
+      sx={{
+        width: "100%",
+        backgroundColor: muiTheme.palette.secondary.main, // ✅ اللون الأساسي من الثيم
+        color: muiTheme.palette.getContrastText(muiTheme.palette.secondary.main), // ✅ نص متباين تلقائي
+        fontWeight: "800",
+        fontFamily: "Cairo, sans-serif",
+        fontSize: "clamp(14px, 2vw, 18px)",
+        px: 3,
+        py: 1.5,
+        borderRadius: "8px",
+        "&:hover": {
+          backgroundColor: muiTheme.palette.primary.main, // ✅ عند الـ hover يتحول للـ primary
+          color: muiTheme.palette.getContrastText(muiTheme.palette.primary.main),
+        },
+      }}
+    >
+      Book This Tour 🧭
+    </Button>
+
+     <Modal open={open} onClose={() => setOpen(false)}>
+      <Box
         sx={{
+          backgroundColor: muiTheme.palette.background.paper, // ✅ الخلفية من الثيم
+          borderRadius: "16px",
+          boxShadow: muiTheme.shadows[6], // ✅ ظل من الثيم
+          p: { xs: 2, sm: 3, md: 4 },
+          maxWidth: { xs: "95vw", sm: "90vw", md: 720 },
           width: "100%",
-          backgroundColor: "#d4a85f",
-          color: "#fff",
-          fontWeight: "800",
+          mx: "auto",
+          my: { xs: "5vh", sm: "5vh", md: "2vh" },
           fontFamily: "Cairo, sans-serif",
-          fontSize: "clamp(14px, 2vw, 18px)",
-          px: 3,
-          py: 1.5,
-          borderRadius: "8px",
-          "&:hover": { backgroundColor: "#1565c0" },
+          color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
+          maxHeight: "91vh",
+          overflowY: "scroll",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
         }}
       >
-        Book This Tour 🧭
-      </Button>
-
-      <Modal open={open} onClose={() => setOpen(false)}>
-        <Box
-          sx={{
-            backgroundColor: "#fff",
-            borderRadius: "16px",
-            boxShadow: 24,
-            p: { xs: 2, sm: 3, md: 4 },
-            maxWidth: { xs: "95vw", sm: "90vw", md: 720 },
-            width: "100%",
-            mx: "auto",
-            my: { xs: "5vh", sm: "5vh", md: "2vh" },
-            fontFamily: "Cairo, sans-serif",
-            color: "#333",
-            maxHeight: "91vh",
-            overflowY: "scroll",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
+        <Image
+          src="/assets/Copilot_20250908_2314232.png"
+          alt="SolDelNilo Logo"
+          width={120}
+          height={70}
+          style={{
+            borderRadius: "8px",
+            maxWidth: "100%",
+            height: "auto",
+            margin: "auto",
           }}
-        >
-          <Image
-            src="/assets/Copilot_20250908_2314232.png"
-            alt="SolDelNilo Logo"
-            width={120}
-            height={70}
-            style={{
-              borderRadius: "8px",
-              // marginBottom: "20px",
-              maxWidth: "100%",
-              height: "auto",
-              margin: "auto",
-            }}
-          />
+        />
 
-          {bookingConfirmed ? (
-            <>
-              <Typography
-                variant="h5"
-                fontWeight="bold"
-                sx={{ color: "#1565c0", mb: 2 }}
-              >
-                🎉 شكراً لحجز رحلتك معنا!
-              </Typography>
-              <Typography sx={{ fontSize: "18px", color: "#555" }}>
-                نحن سعداء بانضمامك إلى SolDelNilo. سيتم التواصل معك قريبًا
-                لتأكيد التفاصيل.
-              </Typography>
-            </>
-          ) : (
-            <>
-              <Divider sx={{ mb: 1 }} />
+        {bookingConfirmed ? (
+          <>
+            <Typography
+              variant="h5"
+              fontWeight="bold"
+              sx={{ color: muiTheme.palette.primary.main, mb: 2 }} // ✅ العنوان بلون أساسي
+            >
+              🎉 شكراً لحجز رحلتك معنا!
+            </Typography>
+            <Typography
+              sx={{ fontSize: "18px", color: muiTheme.palette.text.secondary }} // ✅ النصوص الثانوية
+            >
+              نحن سعداء بانضمامك إلى SolDelNilo. سيتم التواصل معك قريبًا لتأكيد التفاصيل.
+            </Typography>
+          </>
+        ) : (
+          <>
+            <Divider sx={{ mb: 1 }} />
 
-              {/* ✅ بيانات العميل */}
-              <Typography
-                variant="subtitle1"
-                fontWeight="bold"
-                mb={1}
-                className="text-gray-600"
-              >
-                👤 Customer Info
-              </Typography>
-              <Typography
-                className="text-gray-500"
-                style={{ display: "flex", gap: "15px", fontWeight: "800" }}
-              >
-                <strong className="text-gray-600">Name:</strong> {user.name}
-              </Typography>
-              <Typography
-                className="text-gray-500"
-                style={{ display: "flex", gap: "15px", fontWeight: "800" }}
-              >
-                <strong className="text-gray-600">Email:</strong> {user.email}
-              </Typography>
+            {/* ✅ بيانات العميل */}
+            <Typography variant="subtitle1" fontWeight="bold" mb={1} sx={{ color: muiTheme.palette.text.primary }}>
+              👤 Customer Info
+            </Typography>
+            <Typography sx={{ color: muiTheme.palette.text.secondary, display: "flex", gap: "15px", fontWeight: "800" }}>
+              <strong style={{ color: muiTheme.palette.text.primary }}>Name:</strong> {user.name}
+            </Typography>
+            <Typography sx={{ color: muiTheme.palette.text.secondary, display: "flex", gap: "15px", fontWeight: "800" }}>
+              <strong style={{ color: muiTheme.palette.text.primary }}>Email:</strong> {user.email}
+            </Typography>
 
-              <Divider sx={{ my: 2 }} />
+            <Divider sx={{ my: 2 }} />
 
-              {/* ✅ تفاصيل الرحلة */}
-              <Typography
-                variant="subtitle1"
-                fontWeight="bold"
-                mb={1}
-                className="text-gray-600"
-              >
-                🧭 Tour Details
+            {/* ✅ تفاصيل الرحلة */}
+            <Typography variant="subtitle1" fontWeight="bold" mb={1} sx={{ color: muiTheme.palette.text.primary }}>
+              🧭 Tour Details
+            </Typography>
+            <Typography sx={{ color: muiTheme.palette.text.secondary, display: "flex", gap: "15px", fontWeight: "800" }}>
+              <strong style={{ color: muiTheme.palette.text.primary }}>Tour:</strong> {tour.title}
+            </Typography>
+            {selectedGuides.length > 0 ? (
+              selectedGuides.map((lang, index) => (
+                <Typography
+                  key={index}
+                  sx={{ color: muiTheme.palette.text.secondary, display: "flex", gap: "15px", fontWeight: "800" }}
+                >
+                  <strong style={{ color: muiTheme.palette.text.primary }}>Tour Guide:</strong> {lang}
+                </Typography>
+              ))
+            ) : (
+              <Typography sx={{ color: muiTheme.palette.text.secondary, display: "flex", gap: "15px", fontWeight: "800" }}>
+                <strong style={{ color: muiTheme.palette.text.primary }}>Tour Guide:</strong> No Tour Guide
               </Typography>
+            )}
+
+            <Typography sx={{ color: muiTheme.palette.text.secondary, display: "flex", gap: "15px", fontWeight: "800" }}>
+              <strong style={{ color: muiTheme.palette.text.primary }}>Final Price:</strong>{" "}
+              {parseFloat(finalPriceAfterRival).toFixed(2)} USD
+            </Typography>
+            {(selectedExtras || "No Option").map((i) => (
               <Typography
-                className="text-gray-500"
-                style={{ display: "flex", gap: "15px", fontWeight: "800" }}
+                key={i.key}
+                sx={{ color: muiTheme.palette.text.secondary, display: "flex", gap: "15px", fontWeight: "800" }}
               >
-                <strong className="text-gray-600">Tour:</strong> {tour.title}
+                <strong style={{ color: muiTheme.palette.text.primary }}>Option:</strong> {i.label}
               </Typography>
-              {selectedGuides.length > 0 ? (
-                selectedGuides.map((lang, index) => (
-                  <Typography
-                    className="text-gray-500"
-                    key={index}
-                    style={{ display: "flex", gap: "15px", fontWeight: "800" }}
-                  >
-                    <strong className="text-gray-600">Tour Guide:</strong>{" "}
-                    {lang}
-                  </Typography>
-                ))
+            ))}
+
+            <Divider sx={{ my: 2 }} />
+
+            {/* ✅ اختيارات العميل */}
+            <Typography variant="subtitle1" fontWeight="bold" mb={1} sx={{ color: muiTheme.palette.text.primary }}>
+              📋 Preferences
+            </Typography>
+            <Typography
+              sx={{
+                color: muiTheme.palette.text.secondary,
+                textTransform: "capitalize",
+                display: "flex",
+                gap: "15px",
+                fontWeight: "800",
+              }}
+            >
+              <strong style={{ color: muiTheme.palette.text.primary }}>Pets:</strong>{" "}
+              {bookingData.hasPets === "no" ? (
+                bookingData.hasPets
               ) : (
-                <Typography
-                  className="text-gray-500"
-                  style={{ display: "flex", gap: "15px", fontWeight: "800" }}
-                >
-                  <strong className="text-gray-600">Tour Guide:</strong> No Tour
-                  Guide
-                </Typography>
+                <>
+                  {bookingData.hasPets} <strong style={{ color: muiTheme.palette.text.primary }}>petType:</strong>{" "}
+                  <span style={{ color: muiTheme.palette.text.secondary }}>{bookingData.petType}</span>
+                </>
               )}
+            </Typography>
+            <Typography
+              sx={{
+                color: muiTheme.palette.text.secondary,
+                textTransform: "capitalize",
+                display: "flex",
+                gap: "15px",
+                fontWeight: "800",
+              }}
+            >
+              <strong style={{ color: muiTheme.palette.text.primary }}>Adults:</strong>{" "}
+              {typeof nan === "number" && !isNaN(nan) ? nan : parseInt(tour.DayPeople)}
+            </Typography>
+            <Typography
+              sx={{
+                color: muiTheme.palette.text.secondary,
+                textTransform: "capitalize",
+                display: "flex",
+                gap: "15px",
+                fontWeight: "800",
+              }}
+            >
+              <strong style={{ color: muiTheme.palette.text.primary }}>Children:</strong>{" "}
+              {bookingData.hasChildren === "no" ? (
+                bookingData.hasChildren
+              ) : (
+                <>
+                  {bookingData.hasChildren} <strong style={{ color: muiTheme.palette.text.primary }}>childrenCount:</strong>{" "}
+                  <span style={{ color: muiTheme.palette.text.secondary, fontWeight: "800" }}>
+                    {bookingData.childrenCount}
+                  </span>
+                </>
+              )}
+            </Typography>
 
-              <Typography
-                className="text-gray-500"
-                style={{ display: "flex", gap: "15px", fontWeight: "800" }}
-              >
-                <strong className="text-gray-600">Final Price:</strong>{" "}
-                {parseFloat(finalPriceAfterRival).toFixed(2)} USA
-              </Typography>
-              {(selectedExtras || "No Option").map((i) => (
-                <Typography
-                  key={i.key}
-                  className="text-gray-500"
-                  style={{ display: "flex", gap: "15px", fontWeight: "800" }}
-                >
-                  <strong className="text-gray-600">Option:</strong>
-                  {i.label}{" "}
-                </Typography>
-              ))}
+            <Divider sx={{ my: 2 }} />
 
-              <Divider sx={{ my: 2 }} />
+            {/* ✅ توقيت الرحلة */}
+            <Typography variant="subtitle1" fontWeight="bold" mb={1} sx={{ color: muiTheme.palette.text.primary }}>
+              📅 Schedule
+            </Typography>
+            <Typography
+              sx={{
+                color: muiTheme.palette.text.secondary,
+                textTransform: "capitalize",
+                display: "flex",
+                gap: "15px",
+                fontWeight: "800",
+              }}
+            >
+              <strong style={{ color: muiTheme.palette.text.primary }}>Date:</strong> {tour.theDate || "—"}
+            </Typography>
+            <Typography
+              sx={{
+                color: muiTheme.palette.text.secondary,
+                textTransform: "capitalize",
+                display: "flex",
+                gap: "15px",
+                fontWeight: "800",
+              }}
+            >
+              <strong style={{ color: muiTheme.palette.text.primary }}>Time:</strong> {bookingTime || "—"}
+            </Typography>
 
-              {/* ✅ اختيارات العميل */}
-              <Typography
-                variant="subtitle1"
-                fontWeight="bold"
-                mb={1}
-                className="text-gray-600"
-              >
-                📋 Preferences
-              </Typography>
-              <Typography
-                className="text-gray-500"
-                style={{
-                  textTransform: "capitalize",
-                  display: "flex",
-                  gap: "15px",
-                  fontWeight: "800",
-                }}
-              >
-                <strong className="text-gray-600">Pets:</strong>{" "}
-                {bookingData.hasPets === "no" ? (
-                  bookingData.hasPets
-                ) : (
-                  <>
-                    {bookingData.hasPets}{" "}
-                    <strong className="text-gray-600">petType:</strong>{" "}
-                    <span className="text-gray-500">{bookingData.petType}</span>
-                  </>
-                )}
-              </Typography>
-              <Typography
-                className="text-gray-500"
-                style={{
-                  textTransform: "capitalize",
-                  display: "flex",
-                  gap: "15px",
-                  fontWeight: "800",
-                }}
-              >
-                <strong className="text-gray-600">Adults:</strong>{" "}
-                {typeof nan === "number" && !isNaN(nan)
-                  ? nan
-                  : parseInt(tour.DayPeople)}
-              </Typography>
-              <Typography
-                className="text-gray-500"
-                style={{
-                  textTransform: "capitalize",
-                  display: "flex",
-                  gap: "15px",
-                  fontWeight: "800",
-                }}
-              >
-                <strong className="text-gray-600">Children:</strong>{" "}
-                {bookingData.hasChildren === "no" ? (
-                  bookingData.hasChildren
-                ) : (
-                  <>
-                    {" "}
-                    {bookingData.hasChildren}{" "}
-                    <strong className="text-gray-600">childrenCount:</strong>
-                    <span
-                      className="text-gray-500"
-                      style={{ fontWeight: "800" }}
-                    >
-                      {bookingData.childrenCount}
-                    </span>
-                  </>
-                )}
-              </Typography>
-
-              <Divider sx={{ my: 2 }} />
-
-              {/* ✅ توقيت الرحلة */}
-              <Typography
-                variant="subtitle1"
-                fontWeight="bold"
-                mb={1}
-                className="text-gray-600"
-              >
-                📅 Schedule
-              </Typography>
-              <Typography
-                className="text-gray-500"
-                style={{
-                  textTransform: "capitalize",
-                  display: "flex",
-                  gap: "15px",
-                  fontWeight: "800",
-                }}
-              >
-                <strong className="text-gray-600">Date:</strong>{" "}
-                {tour.theDate || "—"}
-              </Typography>
-              <Typography
-                className="text-gray-500"
-                style={{
-                  textTransform: "capitalize",
-                  display: "flex",
-                  gap: "15px",
-                  fontWeight: "800",
-                }}
-              >
-                <strong className="text-gray-600">Time:</strong>{" "}
-                {bookingTime || "—"}
-              </Typography>
-
-              {/* ✅ زر التأكيد */}
-              <Button
-                onClick={handleBooking}
-                variant="contained"
-                fullWidth
-                sx={{
-                  mt: 4,
-                  backgroundColor: "#d4a85f",
-                  color: "#fff",
-                  fontWeight: "600",
-                  fontSize: "16px",
-                  py: 1.5,
-                  borderRadius: "10px",
-                  "&:hover": { backgroundColor: "#1565c0" },
-                }}
-              >
-                Confirm Booking ✅
-              </Button>
-            </>
-          )}
-        </Box>
-      </Modal>
+            {/* ✅ زر التأكيد */}
+            <Button
+              onClick={handleBooking}
+              variant="contained"
+              fullWidth
+              sx={{
+                mt: 4,
+                backgroundColor: muiTheme.palette.secondary.main, // ✅ زر بلون ثانوي
+                color: muiTheme.palette.getContrastText(muiTheme.palette.secondary.main),
+                fontWeight: "600",
+                fontSize: "16px",
+                py: 1.5,
+                borderRadius: "10px",
+                "&:hover": { backgroundColor: muiTheme.palette.primary.main }, // ✅ عند الـ hover
+              }}
+            >
+              Confirm Booking ✅
+            </Button>
+          </>
+        )}
+      </Box>
+    </Modal>
     </>
   );
 };

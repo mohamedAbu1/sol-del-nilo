@@ -1,31 +1,40 @@
 "use client";
-import { useTheme } from "next-themes";
+import { useTheme as useNextTheme } from "next-themes";
+import { useTheme as useMuiTheme } from "@mui/material/styles";
 import { useEffect, useState } from "react";
 import { MdDarkMode } from "react-icons/md";
 import { AiFillSun } from "react-icons/ai";
-import { Typography } from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
+
 export default function ThemeToggle() {
-  const { theme, setTheme } = useTheme("light");
+  const { resolvedTheme, setTheme } = useNextTheme(); // من next-themes
+  const muiTheme = useMuiTheme(); // من MUI
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
-
   if (!mounted) return null;
 
   return (
-    <>
-      <button
-        onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-        className="flex flex-row items-center justify-center gap-2.5 px-4 py-2 rounded text-black dark:text-white"
-        style={{ zIndex: "9999", cursor: "pointer", width: "5%" }}
+    <Tooltip
+      title={`Switch to ${resolvedTheme === "light" ? "Dark" : "Light"} Mode`}
+    >
+      <IconButton
+        onClick={() => setTheme(resolvedTheme === "light" ? "dark" : "light")}
+        sx={{
+          color: muiTheme.palette.primary.main, // ✅ اللون من الثيم
+          zIndex: 9999,
+          transition: "all 0.3s ease",
+          "&:hover": {
+            color: muiTheme.palette.secondary.main, // ✅ يتغير للون الثانوي عند الـ hover
+          },
+        }}
       >
-        {/* <Typography style={{fontSize:"18px"}}>{theme === "dark" ? "Light" : "Dark"}</Typography> */}
-        {theme === "dark" ? (
-          <AiFillSun style={{ fontSize: "20px" }} />
-        ) : (
-          <MdDarkMode style={{ fontSize: "25px", color: "#ff9800" }} />
-        )}
-      </button>
-    </>
+        <IconButton
+          onClick={() => setTheme(resolvedTheme === "light" ? "dark" : "light")}
+        >
+          {resolvedTheme === "dark" ? <AiFillSun /> : <MdDarkMode />}
+        </IconButton>
+      </IconButton>
+    </Tooltip>
   );
 }

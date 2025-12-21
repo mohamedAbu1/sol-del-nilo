@@ -9,24 +9,23 @@ import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { getNavPath } from "@/lib/constants/FixedTexts";
 import LogoutBtn from "./LogoutBtn";
-import { useTheme } from "next-themes";
+import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم من MUI
 
 const MobilNav = ({ slug, user }) => {
   const t = useTranslations("Header");
   const NavPath = getNavPath(t);
 
-  const [anchorEl, setAnchorEl] = useState("");
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const { theme } = useTheme("dark");
+  const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي (light/dark)
 
   // ✅ منع التفاعل قبل تحميل المتصفح
   const [hasMounted, setHasMounted] = useState(false);
@@ -36,7 +35,7 @@ const MobilNav = ({ slug, user }) => {
 
   const today = hasMounted
     ? new Date().toISOString().split("T")[0]
-    : "2025-01-01"; // قيمة ثابتة أثناء SSR
+    : "2025-01-01";
 
   return (
     <div className="w-14 flex items-center justify-center lg:hidden">
@@ -46,14 +45,18 @@ const MobilNav = ({ slug, user }) => {
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
-        style={{
-          zIndex: "9999",
+        sx={{
+          zIndex: 9999,
           fontSize: "25px",
-          color: hasMounted && theme === "dark" ? "#fff" : "#ff9800",
+          color: muiTheme.palette.primary.main, // ✅ اللون الأساسي من الثيم
+          "&:hover": {
+            color: muiTheme.palette.secondary.main, // ✅ اللون الثانوي عند الـ hover
+          },
         }}
       >
-        <AiOutlineMenu className="text-2xl hover:scale-110 transition-all" />
+        <AiOutlineMenu className="text-2xl transition-all" />
       </Button>
+
       <Menu
         id="fade-menu"
         slotProps={{
@@ -61,16 +64,20 @@ const MobilNav = ({ slug, user }) => {
             "aria-labelledby": "fade-button",
           },
         }}
-        
         slots={{ transition: Fade }}
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        style={{ zIndex: "9999" }}
+        sx={{
+          zIndex: 9999,
+          "& .MuiPaper-root": {
+            backgroundColor: muiTheme.palette.background.paper, // ✅ خلفية القائمة من الثيم
+            color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
+          },
+        }}
       >
         {NavPath.map((i, index) => {
           const isTours = i.path === "/tours";
-
           const linkProps = isTours
             ? {
                 pathname: "/tours",
@@ -90,9 +97,25 @@ const MobilNav = ({ slug, user }) => {
             <Link
               href={linkProps}
               key={index}
-              style={{ backgroundColor:"red", color: slug === i.path ? "#ff9800" : "#fff" }}
+              style={{
+                color:
+                  slug === i.path
+                    ? muiTheme.palette.primary.main // ✅ اللون الأساسي عند التفعيل
+                    : muiTheme.palette.text.primary, // ✅ النصوص العادية
+                textDecoration: "none",
+              }}
             >
-              <MenuItem onClick={handleClose}>{i.label}</MenuItem>
+              <MenuItem
+                onClick={handleClose}
+                sx={{
+                  "&:hover": {
+                    backgroundColor: muiTheme.palette.action.hover, // ✅ خلفية hover من الثيم
+                    color: muiTheme.palette.secondary.main, // ✅ النص يتغير للون الثانوي
+                  },
+                }}
+              >
+                {i.label}
+              </MenuItem>
             </Link>
           );
         })}

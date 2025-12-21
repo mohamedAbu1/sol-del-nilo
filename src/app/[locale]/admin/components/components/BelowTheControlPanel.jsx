@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+"use client";
+import React from "react";
 import {
   Button,
   Select,
@@ -7,6 +8,7 @@ import {
   FormControl,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
+import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم
 
 const BelowTheControlPanel = ({
   categories,
@@ -16,6 +18,8 @@ const BelowTheControlPanel = ({
   handleChange,
 }) => {
   const router = useRouter();
+  const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي
+
   return (
     <>
       {/* 🏷️ اختيار التصنيف */}
@@ -24,21 +28,23 @@ const BelowTheControlPanel = ({
         required
         sx={{
           "& .MuiInputBase-input": {
-            color: "#d4a85f", // ✅ لون النص داخل الحقل
+            color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
             fontSize: "18px",
             fontWeight: "bold",
             fontFamily: "Cairo, sans-serif",
           },
           "& .MuiOutlinedInput-root": {
-            "& fieldset": { borderColor: "#d4a85f" },
-            "&:hover fieldset": { borderColor: "#ff9800" },
+            "& fieldset": { borderColor: muiTheme.palette.secondary.main },
+            "&:hover fieldset": { borderColor: muiTheme.palette.primary.main },
             "&.Mui-focused fieldset": {
-              borderColor: "#ff9800",
+              borderColor: muiTheme.palette.secondary.main,
               borderWidth: "2px",
             },
           },
-          "& .MuiInputLabel-root": { color: "#d4a85f" },
-          "& .MuiInputLabel-root.Mui-focused": { color: "#ff9800" },
+          "& .MuiInputLabel-root": { color: muiTheme.palette.secondary.main },
+          "& .MuiInputLabel-root.Mui-focused": {
+            color: muiTheme.palette.primary.main,
+          },
         }}
       >
         <InputLabel id="category-select-label">اختر التصنيف</InputLabel>
@@ -63,21 +69,23 @@ const BelowTheControlPanel = ({
         required
         sx={{
           "& .MuiInputBase-input": {
-            color: "#d4a85f", // ✅ لون النص داخل الحقل
+            color: muiTheme.palette.text.primary,
             fontSize: "18px",
             fontWeight: "bold",
             fontFamily: "Cairo, sans-serif",
           },
           "& .MuiOutlinedInput-root": {
-            "& fieldset": { borderColor: "#d4a85f" },
-            "&:hover fieldset": { borderColor: "#ff9800" },
+            "& fieldset": { borderColor: muiTheme.palette.secondary.main },
+            "&:hover fieldset": { borderColor: muiTheme.palette.primary.main },
             "&.Mui-focused fieldset": {
-              borderColor: "#ff9800",
+              borderColor: muiTheme.palette.secondary.main,
               borderWidth: "2px",
             },
           },
-          "& .MuiInputLabel-root": { color: "#d4a85f" },
-          "& .MuiInputLabel-root.Mui-focused": { color: "#ff9800" },
+          "& .MuiInputLabel-root": { color: muiTheme.palette.secondary.main },
+          "& .MuiInputLabel-root.Mui-focused": {
+            color: muiTheme.palette.primary.main,
+          },
         }}
       >
         <InputLabel id="city-select-label">اختر المدينة</InputLabel>

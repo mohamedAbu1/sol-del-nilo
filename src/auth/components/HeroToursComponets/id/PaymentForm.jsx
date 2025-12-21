@@ -15,7 +15,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { FaTaxi, FaShuttleVan, FaBusAlt } from "react-icons/fa";
 import Dividering from "./Divider/Divider";
 import StripeCheckoutButton from "../components/StripeCheckoutButton";
-
+import { useTheme } from "@mui/material/styles";
 const PaymentForm = ({
   tour,
   user,
@@ -78,7 +78,7 @@ const PaymentForm = ({
     e.preventDefault();
     toast.success("Reservation sent: ✅");
   };
-
+  const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي
   useEffect(() => {
     const adults = parseInt(bookingData.people) || 0;
     const children = parseInt(bookingData.childrenCount) || 0;
@@ -153,11 +153,12 @@ const PaymentForm = ({
         className="w-full flex items-center justify-start flex-col border-2 border-gray-400"
       >
         <Typography
-          style={{
-            color: "#d4a85f",
+          sx={{
+            color: muiTheme.palette.secondary.main, // ✅ اللون من الثيم
             fontSize: "clamp(24px, 5vw, 42px)",
             fontWeight: "700",
             textAlign: "center",
+            fontFamily: "Cairo, sans-serif",
           }}
         >
           Booking Details
@@ -194,34 +195,39 @@ const PaymentForm = ({
                 required
                 inputMode="numeric"
                 InputProps={{
-                  color: "red",
-
                   style: {
                     fontWeight: "600",
                     fontFamily: "Cairo, sans-serif",
                     fontSize: "clamp(14px, 2vw, 18px)",
+                    color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
                   },
                 }}
                 sx={{
                   width: "100%",
                   maxWidth: "800px",
                   "& input": {
-                    color: "#d4a85f", // ✅ لون النص داخل الحقل
+                    color: muiTheme.palette.secondary.main, // ✅ النصوص داخل الحقل من الثيم
                     fontWeight: "600",
                     fontFamily: "Cairo, sans-serif",
                     fontSize: "clamp(14px, 2vw, 18px)",
                   },
                   "& label": {
-                    color: "#d4a85f",
+                    color: muiTheme.palette.secondary.main, // ✅ لون الليبل من الثيم
                     fontSize: "clamp(14px, 2vw, 18px)",
                   },
                   "& .MuiOutlinedInput-root": {
-                    "& fieldset": { borderColor: "#d4a85f" },
-                    "&:hover fieldset": { borderColor: "#ff9800" },
-                    "&.Mui-focused fieldset": { borderColor: "#ff9800" },
+                    "& fieldset": {
+                      borderColor: muiTheme.palette.secondary.main,
+                    }, // ✅ الحدود من الثيم
+                    "&:hover fieldset": {
+                      borderColor: muiTheme.palette.primary.main,
+                    }, // ✅ عند الـ hover
+                    "&.Mui-focused fieldset": {
+                      borderColor: muiTheme.palette.primary.main, // ✅ عند التركيز
+                      borderWidth: "2px",
+                    },
                   },
                 }}
-                className=" dark:text-gray-200"
               />
             </div>
             {/* هل لديك أطفال */}
@@ -229,15 +235,15 @@ const PaymentForm = ({
               <div className="flex flex-col">
                 <FormControlLabel
                   label={
-                    <span
-                      style={{
+                    <Typography
+                      sx={{
                         fontWeight: "600",
                         fontSize: "clamp(14px, 2vw, 18px)",
+                        color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
                       }}
-                      className="text-[#152947] dark:text-[#d4a85f] flex flex-col"
                     >
                       Children
-                    </span>
+                    </Typography>
                   }
                   control={
                     <Checkbox
@@ -251,9 +257,9 @@ const PaymentForm = ({
                         }))
                       }
                       sx={{
-                        color: "#d4a85f",
+                        color: muiTheme.palette.secondary.main, // ✅ اللون الافتراضي
                         "&.Mui-checked": {
-                          color: "#ff9800",
+                          color: muiTheme.palette.primary.main, // ✅ عند التحديد
                         },
                       }}
                     />
@@ -268,11 +274,11 @@ const PaymentForm = ({
                       exit={{ opacity: 0, y: 20 }}
                       transition={{ duration: 0.6, ease: "easeOut" }}
                       style={{
-                        background: "#fdf8f3",
+                        background: muiTheme.palette.background.paper, // ✅ الخلفية من الثيم
                         borderRadius: "12px",
                         padding: "20px",
-                        boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-                        border: "1px solid #d4a85f",
+                        boxShadow: muiTheme.shadows[3], // ✅ ظل من الثيم
+                        border: `1px solid ${muiTheme.palette.secondary.main}`, // ✅ الحدود من الثيم
                         marginTop: "12px",
                       }}
                     >
@@ -310,21 +316,25 @@ const PaymentForm = ({
                             width: "100%",
                             maxWidth: "400px",
                             "& label": {
-                              color: "#d4a85f",
+                              color: muiTheme.palette.secondary.main, // ✅ الليبل من الثيم
                               fontWeight: "600",
                               fontSize: "clamp(14px, 2vw, 18px)",
                             },
                             "& input": {
-                              color: "#d4a85f",
+                              color: muiTheme.palette.secondary.main, // ✅ النصوص داخل الحقل
                               fontSize: "clamp(14px, 2vw, 18px)",
                               fontWeight: "600",
                               fontFamily: "Cairo, sans-serif",
                             },
                             "& .MuiOutlinedInput-root": {
-                              "& fieldset": { borderColor: "#d4a85f" },
-                              "&:hover fieldset": { borderColor: "#ff9800" },
+                              "& fieldset": {
+                                borderColor: muiTheme.palette.secondary.main,
+                              },
+                              "&:hover fieldset": {
+                                borderColor: muiTheme.palette.primary.main,
+                              },
                               "&.Mui-focused fieldset": {
-                                borderColor: "#ff9800",
+                                borderColor: muiTheme.palette.primary.main,
                               },
                             },
                           }}
@@ -373,23 +383,28 @@ const PaymentForm = ({
                                 }}
                                 sx={{
                                   "& label": {
-                                    color: "#d4a85f",
+                                    color: muiTheme.palette.secondary.main,
                                     fontWeight: "600",
                                     fontSize: "clamp(14px, 2vw, 18px)",
                                   },
                                   "& input": {
-                                    color: "#d4a85f", // ✅ لون النص داخل الحقل
+                                    color: muiTheme.palette.secondary.main,
                                     fontWeight: "600",
                                     fontFamily: "Cairo, sans-serif",
                                     fontSize: "clamp(14px, 2vw, 18px)",
                                   },
                                   "& .MuiOutlinedInput-root": {
-                                    "& fieldset": { borderColor: "#d4a85f" },
+                                    "& fieldset": {
+                                      borderColor:
+                                        muiTheme.palette.secondary.main,
+                                    },
                                     "&:hover fieldset": {
-                                      borderColor: "#ff9800",
+                                      borderColor:
+                                        muiTheme.palette.primary.main,
                                     },
                                     "&.Mui-focused fieldset": {
-                                      borderColor: "#ff9800",
+                                      borderColor:
+                                        muiTheme.palette.primary.main,
                                     },
                                   },
                                 }}
@@ -416,23 +431,23 @@ const PaymentForm = ({
                         }))
                       }
                       sx={{
-                        color: "#d4a85f",
+                        color: muiTheme.palette.secondary.main, // ✅ اللون الافتراضي
                         "&.Mui-checked": {
-                          color: "#ff9800",
+                          color: muiTheme.palette.primary.main, // ✅ عند التحديد
                         },
                       }}
                     />
                   }
                   label={
-                    <span
-                      style={{
+                    <Typography
+                      sx={{
                         fontWeight: "600",
                         fontSize: "clamp(14px, 2vw, 18px)",
+                        color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
                       }}
-                      className="text-[#152947] dark:text-[#d4a85f]"
                     >
                       Pets
-                    </span>
+                    </Typography>
                   }
                 />
 
@@ -444,11 +459,11 @@ const PaymentForm = ({
                       exit={{ opacity: 0, y: 20 }}
                       transition={{ duration: 0.6, ease: "easeOut" }}
                       style={{
-                        background: "#fdf8f3",
+                        background: muiTheme.palette.background.paper, // ✅ الخلفية من الثيم
                         borderRadius: "12px",
                         padding: "20px",
-                        boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-                        border: "1px solid #d4a85f",
+                        boxShadow: muiTheme.shadows[3], // ✅ ظل من الثيم
+                        border: `1px solid ${muiTheme.palette.secondary.main}`, // ✅ الحدود من الثيم
                         marginTop: "12px",
                       }}
                     >
@@ -475,23 +490,23 @@ const PaymentForm = ({
                                     }))
                                   }
                                   sx={{
-                                    color: "#d4a85f",
+                                    color: muiTheme.palette.secondary.main,
                                     "&.Mui-checked": {
-                                      color: "#ff9800",
+                                      color: muiTheme.palette.primary.main,
                                     },
                                   }}
                                 />
                               }
                               label={
-                                <span
-                                  style={{
+                                <Typography
+                                  sx={{
                                     fontWeight: "600",
                                     fontSize: "clamp(14px, 2vw, 16px)",
+                                    color: muiTheme.palette.text.primary,
                                   }}
-                                  className="text-[#152947] dark:text-[#d4a85f]"
                                 >
                                   {type}
-                                </span>
+                                </Typography>
                               }
                             />
                           ))}
@@ -503,13 +518,11 @@ const PaymentForm = ({
                             value={bookingData.customPetType || ""}
                             onChange={(e) => {
                               const value = e.target.value;
-
-                              // ✅ تحقق من وجود حروف عربية أو رموز أو أرقام
                               const containsArabic = /[\u0600-\u06FF]/.test(
                                 value
                               );
                               const containsSymbolsOrNumbers =
-                                /[^a-zA-Z\s]/.test(value); // أي شيء غير حروف إنجليزية ومسافات
+                                /[^a-zA-Z\s]/.test(value);
 
                               if (containsArabic || containsSymbolsOrNumbers) {
                                 toast.error(
@@ -528,23 +541,29 @@ const PaymentForm = ({
                               style: {
                                 fontWeight: "600",
                                 fontFamily: "Cairo, sans-serif",
-                                backgroundColor: "#fff",
                                 fontSize: "clamp(14px, 2vw, 18px)",
+                                color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
+                                backgroundColor:
+                                  muiTheme.palette.background.default, // ✅ الخلفية من الثيم
                               },
                             }}
                             sx={{
                               width: "100%",
                               maxWidth: "400px",
                               "& label": {
-                                color: "#d4a85f",
+                                color: muiTheme.palette.secondary.main,
                                 fontWeight: "600",
                                 fontSize: "clamp(14px, 2vw, 18px)",
                               },
                               "& .MuiOutlinedInput-root": {
-                                "& fieldset": { borderColor: "#d4a85f" },
-                                "&:hover fieldset": { borderColor: "#ff9800" },
+                                "& fieldset": {
+                                  borderColor: muiTheme.palette.secondary.main,
+                                },
+                                "&:hover fieldset": {
+                                  borderColor: muiTheme.palette.primary.main,
+                                },
                                 "&.Mui-focused fieldset": {
-                                  borderColor: "#ff9800",
+                                  borderColor: muiTheme.palette.primary.main,
                                 },
                               },
                             }}
@@ -555,6 +574,7 @@ const PaymentForm = ({
                   )}
                 </AnimatePresence>
               </div>
+
               <div>
                 <FormControlLabel
                   control={
@@ -568,23 +588,23 @@ const PaymentForm = ({
                         }))
                       }
                       sx={{
-                        color: "#d4a85f",
+                        color: muiTheme.palette.secondary.main, // ✅ اللون الافتراضي
                         "&.Mui-checked": {
-                          color: "#ff9800",
+                          color: muiTheme.palette.primary.main, // ✅ عند التحديد
                         },
                       }}
                     />
                   }
                   label={
-                    <span
-                      style={{
+                    <Typography
+                      sx={{
                         fontWeight: "600",
                         fontSize: "clamp(14px, 2vw, 18px)",
+                        color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
                       }}
-                      className="text-[#152947] dark:text-[#d4a85f]"
                     >
                       Tour Guide
-                    </span>
+                    </Typography>
                   }
                 />
 
@@ -596,11 +616,11 @@ const PaymentForm = ({
                       exit={{ opacity: 0, y: 20 }}
                       transition={{ duration: 0.6, ease: "easeOut" }}
                       style={{
-                        background: "#fdf8f3",
+                        background: muiTheme.palette.background.paper, // ✅ الخلفية من الثيم
                         borderRadius: "12px",
                         padding: "20px",
-                        boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-                        border: "1px solid #d4a85f",
+                        boxShadow: muiTheme.shadows[3], // ✅ ظل من الثيم
+                        border: `1px solid ${muiTheme.palette.secondary.main}`, // ✅ الحدود من الثيم
                         marginTop: "12px",
                       }}
                     >
@@ -631,23 +651,23 @@ const PaymentForm = ({
                                     handleGuideLanguageChange(lang)
                                   }
                                   sx={{
-                                    color: "#d4a85f",
+                                    color: muiTheme.palette.secondary.main,
                                     "&.Mui-checked": {
-                                      color: "#ff9800",
+                                      color: muiTheme.palette.primary.main,
                                     },
                                   }}
                                 />
                               }
                               label={
-                                <span
-                                  style={{
+                                <Typography
+                                  sx={{
                                     fontWeight: "600",
                                     fontSize: "clamp(14px, 2vw, 16px)",
+                                    color: muiTheme.palette.text.primary,
                                   }}
-                                  className="text-[#152947] dark:text-[#d4a85f]"
                                 >
                                   {lang}
-                                </span>
+                                </Typography>
                               }
                             />
                           ))}
@@ -665,13 +685,13 @@ const PaymentForm = ({
                 exit={{ opacity: 0, y: 20 }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
                 style={{
-                  width:"70%",
-                  background: "#fdf8f3",
+                  width: "70%",
                   borderRadius: "12px",
                   padding: "20px",
-                  boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-                  border: "1px solid #d4a85f",
-                  marginBottom:"12px"
+                  marginBottom: "12px",
+                  boxShadow: muiTheme.shadows[4], // ✅ ظل من الثيم
+                  backgroundColor: muiTheme.palette.background.paper, // ✅ الخلفية من الثيم
+                  border: `1px solid ${muiTheme.palette.secondary.main}`, // ✅ الحدود من الثيم
                 }}
               >
                 <Stack
@@ -686,7 +706,7 @@ const PaymentForm = ({
                     sx={{
                       fontWeight: "600",
                       fontSize: "clamp(16px, 2vw, 18px)",
-                      color: "#152947",
+                      color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
                       fontFamily: "Cairo, sans-serif",
                     }}
                   >

@@ -3,13 +3,20 @@ import React from "react";
 import Image from "next/image";
 import { useScreenSize } from "@/auth/hooks/screenSize";
 import { useTranslations } from "next-intl";
+import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم
 
 const ImageSection = () => {
-  const { width, height } = useScreenSize();
+  const { width } = useScreenSize();
   const t = useTranslations("Visa");
+  const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي (light/dark)
 
   return (
-    <section className="relative w-full h-[600px] bg-gradient-to-b from-blue-100 to-white">
+    <section
+      className="relative w-full h-[600px]"
+      style={{
+        background: `linear-gradient(to bottom, ${muiTheme.palette.background.default}, ${muiTheme.palette.background.paper})`, // ✅ خلفية متدرجة من الثيم
+      }}
+    >
       <Image
         src={
           width <= 911
@@ -21,12 +28,25 @@ const ImageSection = () => {
         className="object-cover bg-bottom z-0"
         priority
       />
-      <div className="absolute top-0 left-0 w-full h-full bg-black/30 z-10" />
+
+      {/* طبقة شفافية */}
+      <div
+        className="absolute top-0 left-0 w-full h-full z-10"
+        style={{ backgroundColor: muiTheme.palette.action.hover }} // ✅ طبقة شفافية من الثيم
+      />
+
+      {/* النصوص */}
       <div className="relative z-20 flex flex-col items-center justify-center h-full text-center px-6 animate-slideUp delay-200">
-        <h1 className="text-white text-6xl font-bold tracking-wide animate-pulseSlow">
+        <h1
+          className="text-6xl font-bold tracking-wide animate-pulseSlow"
+          style={{ color: muiTheme.palette.primary.contrastText }} // ✅ النص من الثيم
+        >
           {t("VISA")}
         </h1>
-        <p className="mt-4 text-white text-2xl font-semibold animate-fadeIn delay-400">
+        <p
+          className="mt-4 text-2xl font-semibold animate-fadeIn delay-400"
+          style={{ color: muiTheme.palette.text.primary }} // ✅ النصوص الثانوية من الثيم
+        >
           {t("VISA_P")}
         </p>
       </div>

@@ -52,7 +52,7 @@ const LinksMidea = () => {
   return (
     <div
       style={{ marginTop: "40px" }}
-      className="w-72 flex items-center justify-around flex-row"
+      className="w-72 hidden md:flex items-center justify-around flex-row"
     >
       {MideaIcon.map((i, index) => (
         <motion.a

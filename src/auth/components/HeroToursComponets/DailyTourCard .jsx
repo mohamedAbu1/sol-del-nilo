@@ -29,8 +29,8 @@ const DailyTourCard = ({ tour, viewMode }) => {
         opacity: 1,
         y: 0,
         flexDirection: isGrid ? "column" : "row",
-        height: isGrid ? 400 : 220,
-        width: isGrid ? "31%" : "100%",
+        height: isGrid ? 400 : "fit-contact",
+        width: isGrid ? isMobile ? "80%" : "31%" : "90%",
       }}
       transition={{ duration: 0.6, ease: "easeInOut" }}
       sx={{

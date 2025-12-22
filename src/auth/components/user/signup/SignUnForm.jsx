@@ -155,6 +155,7 @@ const SignUnForm = () => {
           borderRadius: "25px",
           position: "relative",
           height: "fit-contact",
+          paddingBottom:"15px"
         }}
         className="w-3/4 lg:h-3/4 formDiv"
       >
@@ -169,7 +170,7 @@ const SignUnForm = () => {
               src={
                 muiTheme.palette.mode === "dark"
                   ? "/assets/Copilot_20251209_142706-removebg-preview.webp"
-                  : "/assets/Copilot_20251208_084907.webp"
+                  : "/assets/Copilot_20251209_142706-removebg-preview.webp"
               } // ✅ صورة حسب الثيم
               alt="Logo"
               width={110}
@@ -384,30 +385,14 @@ const SignUnForm = () => {
           {/* Login Button */}
           <motion.div variants={itemVariants}>
             <Link href={"/login"}>
-              <Button sx={{ zIndex: "9999" }} variant="text">
+              <Button sx={{ zIndex: "9999" }} variant="contained">
                 {t("btn2")}
               </Button>
             </Link>
           </motion.div>
 
           {/* Home Link */}
-          <motion.div variants={itemVariants} style={{ zIndex: "9999" }}>
-            <Link
-              href={"/"}
-              style={{
-                padding: "12px",
-                borderRadius: "10px",
-                backgroundColor: muiTheme.palette.secondary.main,
-                color: muiTheme.palette.getContrastText(
-                  muiTheme.palette.secondary.main
-                ),
-                fontSize: "16px",
-                fontWeight: "600",
-              }}
-            >
-              {t("btn3")}
-            </Link>
-          </motion.div>
+         
         </motion.div>
       </motion.div>
       <ToastContainer />

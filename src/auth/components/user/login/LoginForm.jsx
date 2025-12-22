@@ -140,7 +140,7 @@ const LoginForm = () => {
           src={
             muiTheme.palette.mode === "dark"
               ? "/assets/Copilot_20251209_142706-removebg-preview.webp"
-              : "/assets/Copilot_20251208_084907.webp"
+              : "/assets/Copilot_20251209_142706-removebg-preview.webp"
           } // ✅ صورة حسب الثيم
           alt="Logo"
           width={110}
@@ -329,30 +329,14 @@ const LoginForm = () => {
       {/* Register Button */}
       <motion.div variants={itemVariants}>
         <Link href={"/register"}>
-          <Button sx={{ zIndex: "999" }} size="large" variant="text">
+          <Button sx={{ zIndex: "999" }} size="large" variant="contained">
             {t("Btn2")}
           </Button>
         </Link>
       </motion.div>
 
       {/* Home Link */}
-      <motion.div variants={itemVariants} style={{ zIndex: "9999" }}>
-        <Link
-          href={"/"}
-          style={{
-            padding: "12px",
-            borderRadius: "18px",
-            backgroundColor: muiTheme.palette.secondary.main,
-            color: muiTheme.palette.getContrastText(
-              muiTheme.palette.secondary.main
-            ),
-            fontSize: "16px",
-            fontWeight: "600",
-          }}
-        >
-          {t("Btn3")}
-        </Link>
-      </motion.div>
+  
     </motion.div>
       </motion.div>
       <ToastContainer />

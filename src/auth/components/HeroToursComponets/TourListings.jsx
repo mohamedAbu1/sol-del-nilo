@@ -53,7 +53,6 @@ const TourListings = () => {
   } = useAppQueryContext();
 
   const { tours } = useTripContext();
-
   // ✅ لو مفيش نتائج
   let suggestedCities = [];
   let suggestedTypes = [];
@@ -81,6 +80,9 @@ const TourListings = () => {
     suggestedTypes = [...new Set(suggestedTypes)];
   }
   const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي
+
+  
+
   return (
     <>
       <Drawer

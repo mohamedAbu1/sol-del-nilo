@@ -20,14 +20,17 @@ export const AppQueryContextProvider = ({ children }) => {
   const [fadeKey, setFadeKey] = useState(0);
   const [sortBy, setSortBy] = useState("alphabetical");
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedDestinationId, setSelectedDestinationId] = useState("");
+  const [selectedDestinationId, setSelectedDestinationId] =
+    useState("Sharm El Sheikh");
   const [duration, setDuration] = useState(5);
   // const [date, setDate] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const itemsPerPageRaw = searchParams.get("itemsPerPage");
   const itemsPerPage = isNaN(parseInt(itemsPerPageRaw))
-    ? 9
+    ? viewMode === "grid"
+      ? 9
+      : 10
     : parseInt(itemsPerPageRaw); // ✅ استخراج القيم من الكويري
 
   const cityFromQuery = searchParams.get("destination") || "";
@@ -316,7 +319,11 @@ export const AppQueryContextProvider = ({ children }) => {
   const selectedCity = selectedDestinations[0] || cityFromQuery || "";
 
   const selectedType = selectedCategories[0] || categoryFromQuery || "";
-
+  useEffect(() => {
+    if (categories.length > 0 && !selectedCategories) {
+      setSelectedCategories(categories[5].name);
+    }
+  }, [categories, selectedCategories]);
   return (
     <AppQueryContext.Provider
       value={{

@@ -5,14 +5,15 @@ const darkTheme = createTheme({
     mode: "dark",
     primary: {
       main: "#FFD700", // الذهبي الأساسي
+      contrastText: "#ffffff",
     },
     secondary: {
       main: "#FFC107",
-      contrastText:"#ffffff", // درجة ذهبي أفتح
+      contrastText: "#ffffff", // درجة ذهبي أفتح
     },
     background: {
       default: "#000000", // خلفية سوداء
-      paper: "#121212",   // أسود أنعم للكروت
+      paper: "#121212", // أسود أنعم للكروت
     },
     text: {
       primary: "#ffffff", // نص أبيض

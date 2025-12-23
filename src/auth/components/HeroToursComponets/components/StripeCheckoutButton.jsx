@@ -162,7 +162,7 @@ const BookTourButton = ({
         }}
       >
         <Image
-          src="/assets/Copilot_20250908_2314232.png"
+          src="/assets/Copilot_20251209_142706-removebg-preview.webp"
           alt="SolDelNilo Logo"
           width={120}
           height={70}

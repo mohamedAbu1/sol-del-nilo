@@ -17,7 +17,7 @@ const lightTheme = createTheme({
     },
     text: {
       primary: "#2E2E2E",
-      secondary: "#666666",
+      secondary: "#cccccc",
     },
   },
   typography: {

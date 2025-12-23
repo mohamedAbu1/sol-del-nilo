@@ -14,6 +14,8 @@ export async function POST(req) {
 
   const mailOptions = {
     from: process.env.EMAIL_USER,
+    replyTo: email, // ← هنا تحط إيميل العميل لو عايز تستقبل رد
+
     to: email,
     subject: "Your Booking Confirmation – SolDelNilo",
     html: `

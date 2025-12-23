@@ -123,17 +123,17 @@ function TourCard({ tour, index, router, pathname, muiTheme }) {
         <div style={{ padding: "10px", marginTop: "215px" }} className="flex items-center gap-3 text-sm">
           <span
             className="font-bold px-2 py-1 rounded"
-            style={{ color: muiTheme.palette.getContrastText(muiTheme.palette.primary.main) }}
+            style={{ color: muiTheme.palette.primary.contrastText}}
           >
             ${tour.price}
           </span>
 
-          <span className="flex items-center gap-1 px-2 py-1 rounded" style={{ color: muiTheme.palette.text.secondary }}>
+          <span className="flex items-center gap-1 px-2 py-1 rounded" style={{ color: muiTheme.palette.primary.contrastText}}>
             <FaMapMarkerAlt style={{ color: muiTheme.palette.secondary.main }} />
             {tour.city.name}
           </span>
 
-          <span className="flex items-center gap-1 px-2 py-1 rounded" style={{ color: muiTheme.palette.text.secondary }}>
+          <span className="flex items-center gap-1 px-2 py-1 rounded" style={{ color: muiTheme.palette.primary.contrastText }}>
             ⭐ {tour.reviews.length} Review
           </span>
         </div>
@@ -144,7 +144,7 @@ function TourCard({ tour, index, router, pathname, muiTheme }) {
             {tour.title}
           </h4>
 
-          <p className="text-sm flex items-center gap-2" style={{ color: muiTheme.palette.text.secondary }}>
+          <p className="text-sm flex items-center gap-2" style={{ color: muiTheme.palette.primary.contrastText}}>
             <FaCalendarAlt style={{ color: muiTheme.palette.secondary.main }} />
             {tour.theDate}
           </p>

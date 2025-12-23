@@ -98,8 +98,9 @@ export default function TravelPlannerForm() {
         p: { xs: 2, sm: 3, md: 4 },
         borderRadius: 4,
         boxShadow: 3,
-        border: `1px solid ${muiTheme.palette.divider}`, // ✅ الحدود من الثيم
-        backgroundColor: muiTheme.palette.background.paper, // ✅ الخلفية من الثيم
+        border: `1px solid ${muiTheme.palette.divider}`,
+        backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5))`,
+        // backgroundColor: muiTheme.palette.background.paper,
         mx: "auto",
       }}
     >
@@ -109,7 +110,7 @@ export default function TravelPlannerForm() {
           <TextField
             select
             label="Destination"
-            fullWidth
+            fullWidth="true"
             value={selectedDestinationId}
             onChange={(e) => setSelectedDestinationId(e.target.value)}
             InputLabelProps={{
@@ -130,7 +131,14 @@ export default function TravelPlannerForm() {
               },
             }}
             sx={{
+              width: "200px",
               "& .MuiOutlinedInput-root": {
+                height: {
+                  xs: 48,
+                  sm: 52,
+                  md: 56,
+                  lg: 60,
+                }, // ✅ نفس الارتفاع لجميع الحقول
                 "& fieldset": { borderColor: muiTheme.palette.primary.main },
                 "&:hover fieldset": {
                   borderColor: muiTheme.palette.secondary.main,
@@ -139,10 +147,14 @@ export default function TravelPlannerForm() {
                   borderColor: muiTheme.palette.secondary.main,
                 },
               },
+              "& .MuiInputBase-input": {
+                height: "100%",
+                boxSizing: "border-box",
+              },
             }}
           >
             {cities.map((dest) => (
-              <MenuItem key={dest.id} value={dest}>
+              <MenuItem key={dest.id} value={dest.name}>
                 {dest.name}
               </MenuItem>
             ))}
@@ -162,7 +174,15 @@ export default function TravelPlannerForm() {
             }}
             InputProps={{ style: { color: muiTheme.palette.text.secondary } }}
             sx={{
+              width: "200px",
+
               "& .MuiOutlinedInput-root": {
+                height: {
+                  xs: 48,
+                  sm: 52,
+                  md: 56,
+                  lg: 60,
+                }, // ✅ نفس الارتفاع مثل Destination
                 "& fieldset": { borderColor: muiTheme.palette.primary.main },
                 "&:hover fieldset": {
                   borderColor: muiTheme.palette.secondary.main,
@@ -171,10 +191,13 @@ export default function TravelPlannerForm() {
                   borderColor: muiTheme.palette.secondary.main,
                 },
               },
+              "& .MuiInputBase-input": {
+                height: "100%",
+                boxSizing: "border-box",
+              },
             }}
           />
           {/* Popover يبقى زي ما هو */}
-
           <Popover
             open={openDuration}
             anchorEl={anchorElDuration}
@@ -240,6 +263,8 @@ export default function TravelPlannerForm() {
             }}
             InputProps={{ style: { color: muiTheme.palette.text.secondary } }}
             sx={{
+              width: "200px",
+
               "& .MuiOutlinedInput-root": {
                 "& fieldset": { borderColor: muiTheme.palette.primary.main },
                 "&:hover fieldset": {
@@ -334,6 +359,7 @@ export default function TravelPlannerForm() {
               },
             }}
             sx={{
+              width: "200px",
               "& .MuiOutlinedInput-root": {
                 "& fieldset": { borderColor: muiTheme.palette.primary.main },
                 "&:hover fieldset": {
@@ -357,12 +383,6 @@ export default function TravelPlannerForm() {
         <Grid item xs={12} sm={6} md={4} lg={3}>
           <Box sx={{ width: "100%" }}>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <Event
-                sx={{
-                  color: muiTheme.palette.primary.main,
-                  display: { xs: "inline-flex", sm: "none" },
-                }}
-              />
               <input
                 type="date"
                 id="start-date"
@@ -371,7 +391,7 @@ export default function TravelPlannerForm() {
                 onChange={(e) => setDate(e.target.value)}
                 min={today}
                 style={{
-                  backgroundColor: muiTheme.palette.background.default,
+                  width: "200px",
                   color: muiTheme.palette.text.secondary,
                   border: `2px solid ${muiTheme.palette.primary.main}`,
                   borderRadius: "8px",

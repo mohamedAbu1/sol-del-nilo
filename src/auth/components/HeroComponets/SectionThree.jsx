@@ -9,14 +9,14 @@ import { motion } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
-import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم
+import { useTheme } from "@mui/material/styles";
 
 export default function SectionThree() {
   const { tours } = useTripContext();
   const t = useTranslations("HomeHeroPage");
   const router = useRouter();
   const pathname = usePathname();
-  const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي
+  const muiTheme = useTheme();
 
   const [hasMounted, setHasMounted] = useState(false);
   const [topTours, setTopTours] = useState([]);
@@ -45,23 +45,23 @@ export default function SectionThree() {
     <section
       id="section-three"
       className="w-full min-h-auto py-10 flex flex-col items-center justify-start px-4 sm:py-10 md:py-12 lg:py-0"
-      style={{ color: muiTheme.palette.text.primary }} // ✅ النصوص من الثيم
+      style={{ color: muiTheme.palette.text.primary }} // ✅ النصوص الأساسية أبيض خفيف من الثيم الجديد
     >
       {/* ✅ العنوان */}
-      <div style={{ paddingBottom: "15px", paddingTop: "15px" }} className="text-center mb-12 w-full max-w-4xl">
+      <div className="text-center mb-12 w-full max-w-4xl" style={{ padding: "15px 0" }}>
         <h2
-          className="text-2xl font-bold uppercase tracking-widest mb-2 mt-4"
-          style={{ color: muiTheme.palette.text.primary }} // ✅ النص الأساسي
+          className="text-lg sm:text-xl font-semibold tracking-widest mb-2"
+          style={{ color: muiTheme.palette.text.secondary }} // ✅ النصوص الثانوية (برتقالي/رمادي فاتح)
         >
           {t("sc2P")}
         </h2>
         <div
-          className="h-1 rounded-full mb-4 w-full"
-          style={{ backgroundColor: muiTheme.palette.primary.main }} // ✅ خط من اللون الأساسي
+          className="h-1 w-full mx-auto mb-4 rounded-full"
+          style={{ backgroundColor: muiTheme.palette.primary.main }} // ✅ خط برتقالي أساسي
         />
         <h3
-          className="text-3xl sm:text-4xl font-bold uppercase mb-4"
-          style={{ color: muiTheme.palette.secondary.main }} // ✅ النص من اللون الثانوي
+          className="text-3xl sm:text-4xl font-bold uppercase mb-6"
+          style={{ color: muiTheme.palette.primary.main }} // ✅ العنوان بالبرتقالي الأساسي
         >
           {t("sc2Title")}
         </h3>
@@ -70,7 +70,14 @@ export default function SectionThree() {
       {/* ✅ شبكة الكروت للشاشات الكبيرة */}
       <div className="hidden lg:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-full max-w-screen-xl">
         {topTours.map((tour, index) => (
-          <TourCard key={index} tour={tour} index={index} router={router} pathname={pathname} muiTheme={muiTheme} />
+          <TourCard
+            key={index}
+            tour={tour}
+            index={index}
+            router={router}
+            pathname={pathname}
+            muiTheme={muiTheme}
+          />
         ))}
       </div>
 
@@ -78,15 +85,31 @@ export default function SectionThree() {
       <div className="lg:hidden w-full max-w-screen-sm">
         <Swiper
           spaceBetween={20}
-          slidesPerView={1}
+          centeredSlides={true}
+          slidesPerView={"auto"}
           modules={[Autoplay]}
-          autoplay={{ delay: 2000, disableOnInteraction: false }}
-          speed={1200}
+          autoplay={{ delay: 2500, disableOnInteraction: false }}
+          speed={1000}
           loop={true}
+          className="w-[90%] flex justify-center items-center"
         >
           {topTours.map((tour, index) => (
-            <SwiperSlide key={index}>
-              <TourCard tour={tour} index={index} router={router} pathname={pathname} muiTheme={muiTheme} />
+            <SwiperSlide
+              key={index}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "280px",
+              }}
+            >
+              <TourCard
+                tour={tour}
+                index={index}
+                router={router}
+                pathname={pathname}
+                muiTheme={muiTheme}
+              />
             </SwiperSlide>
           ))}
         </Swiper>
@@ -95,7 +118,7 @@ export default function SectionThree() {
   );
 }
 
-// ✅ مكون الكارد المعاد استخدامه
+// ✅ مكون الكارد
 function TourCard({ tour, index, router, pathname, muiTheme }) {
   return (
     <motion.div
@@ -103,10 +126,10 @@ function TourCard({ tour, index, router, pathname, muiTheme }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.8, delay: index * 0.2, ease: "easeOut" }}
-      className="relative w-full h-[400px] rounded-xl overflow-hidden shadow-lg border group"
-      style={{ borderColor: muiTheme.palette.divider }} // ✅ الحدود من الثيم
+      className="relative w-full h-[420px] rounded-xl overflow-hidden shadow-lg border group hover:shadow-2xl hover:-translate-y-2 transition-all duration-500"
+      style={{ borderColor: muiTheme.palette.divider }} // ✅ الحدود من الثيم الجديد
     >
-      {/* ✅ الصورة كخلفية للكارد بالكامل */}
+      {/* ✅ الصورة */}
       <Image
         src={tour.image?.[0]?.name ? `/assets/${tour.image[0].name}` : "/assets/default.jpg"}
         alt={tour.title}
@@ -115,21 +138,18 @@ function TourCard({ tour, index, router, pathname, muiTheme }) {
       />
 
       {/* ✅ طبقة تعتيم */}
-      <div className="absolute inset-0 bg-black/10 z-10" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent z-10" />
 
       {/* ✅ المحتوى */}
-      <div className="absolute inset-0 z-20 flex flex-col justify-between p-4">
+      <div style={{paddingLeft:"8px"}} className="absolute inset-0 z-20 flex flex-col justify-between p-4">
         {/* ✅ السعر | المدينة | المراجعات */}
-        <div style={{ padding: "10px", marginTop: "215px" }} className="flex items-center gap-3 text-sm">
-          <span
-            className="font-bold px-2 py-1 rounded"
-            style={{ color: muiTheme.palette.primary.contrastText}}
-          >
+        <div style={{marginTop:"auto", marginBottom:"20px"}} className="flex items-center gap-3 text-sm mt-[215px] px-2">
+          <span className="font-bold px-2 py-1 rounded" style={{ color: muiTheme.palette.primary.contrastText }}>
             ${tour.price}
           </span>
 
-          <span className="flex items-center gap-1 px-2 py-1 rounded" style={{ color: muiTheme.palette.primary.contrastText}}>
-            <FaMapMarkerAlt style={{ color: muiTheme.palette.secondary.main }} />
+          <span className="flex items-center gap-1 px-2 py-1 rounded" style={{ color: muiTheme.palette.primary.contrastText }}>
+            <FaMapMarkerAlt style={{ color: muiTheme.palette.primary.main }} /> {/* ✅ أيقونة بالبرتقالي الأساسي */}
             {tour.city.name}
           </span>
 
@@ -139,13 +159,13 @@ function TourCard({ tour, index, router, pathname, muiTheme }) {
         </div>
 
         {/* ✅ العنوان + التاريخ + الزر */}
-        <div style={{ padding: "10px" }} className="flex flex-col gap-3 bg-gradient-to-t from-black/70 via-black/40 to-transparent p-3 rounded-xl">
-          <h4 className="text-lg font-semibold leading-snug line-clamp-2" style={{ color: muiTheme.palette.secondary.main }}>
+        <div style={{marginBottom:"8px"}} className="flex flex-col gap-3 p-3 rounded-xl">
+          <h4 className="text-lg font-semibold leading-snug line-clamp-2" style={{ color: muiTheme.palette.primary.main }}>
             {tour.title}
           </h4>
 
-          <p className="text-sm flex items-center gap-2" style={{ color: muiTheme.palette.primary.contrastText}}>
-            <FaCalendarAlt style={{ color: muiTheme.palette.secondary.main }} />
+          <p className="text-sm flex items-center gap-2" style={{ color: muiTheme.palette.primary.contrastText }}>
+            <FaCalendarAlt style={{ color: muiTheme.palette.primary.main }} /> {/* ✅ أيقونة بالبرتقالي الأساسي */}
             {tour.theDate}
           </p>
 
@@ -154,11 +174,13 @@ function TourCard({ tour, index, router, pathname, muiTheme }) {
               sessionStorage.setItem(`scroll-${pathname}`, window.scrollY.toString());
               router.push(`/tours/${tour.id}`);
             }}
-            className="font-semibold rounded-md text-sm transition"
+            className="font-semibold rounded-md text-sm px-4 py-2 transition-all duration-300 hover:shadow-lg"
             style={{
-              cursor:"pointer",
+              margin:"auto",
+              width:"80%",
               padding:"8px",
-              background: `linear-gradient(350deg, ${muiTheme.palette.secondary.main}, ${muiTheme.palette.primary.main})`, // ✅ زر متدرج من ألوان الثيم
+              cursor: "pointer",
+              background: `linear-gradient(135deg, ${muiTheme.palette.primary.main}, ${muiTheme.palette.secondary.main})`, // ✅ زر متدرج برتقالي → أبيض خفيف
               color: muiTheme.palette.getContrastText(muiTheme.palette.primary.main),
             }}
           >

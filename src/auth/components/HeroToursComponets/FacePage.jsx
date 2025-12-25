@@ -68,9 +68,9 @@ const FacePage = ({ user }) => {
           <h1
             className="text-4xl lg:text-7xl font-serif tracking-widest capitalize text-center"
             style={{
-              color: muiTheme.palette.text.primary, // ✅ النص الأساسي من الثيم
-              textShadow: `2px 2px 6px ${muiTheme.palette.grey[900]}90`, // ✅ ظل ناعم من الثيم
-              WebkitTextStroke: `1px ${muiTheme.palette.background.default}`, // ✅ حدود للحروف من الثيم
+              color: muiTheme.palette.text.primary, // ✅ النص الأساسي أبيض خفيف
+              textShadow: `2px 2px 6px ${muiTheme.palette.grey[900]}90`, // ✅ ظل ناعم رمادي داكن
+              WebkitTextStroke: `1px ${muiTheme.palette.background.default}`, // ✅ حدود للحروف من الخلفية الداكنة
               fontWeight: "600",
             }}
           >
@@ -86,7 +86,7 @@ const FacePage = ({ user }) => {
           <h1
             style={{
               width: categoryFromQuery !== "All" ? "30%" : "45%",
-              color: muiTheme.palette.secondary.main, // ✅ النص الثانوي من الثيم
+              color: muiTheme.palette.secondary.main, // ✅ نص ثانوي رمادي/برتقالي فاتح
             }}
             className="text-2xl lg:text-6xl font-serif tracking-widest uppercase"
           ></h1>

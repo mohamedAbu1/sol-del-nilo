@@ -62,12 +62,11 @@ const Nav = ({ path, user, slug }) => {
             animate="visible"
             transition={{ delay: 0.5, duration: 0.5 }}
             style={{
-              // textShadow: "2px 2px 6px rgba(0, 0, 0, 0.6)",
               fontWeight: "600",
               fontSize,
               color: item.active
-                ? muiTheme.palette.secondary.main // ✅ اللون الأساسي عند التفعيل
-                : muiTheme.palette.secondary.contrastText, // ✅ النص الأساسي من الثيم
+                ? muiTheme.palette.primary.main // ✅ العنصر النشط بالبرتقالي الأساسي
+                : muiTheme.palette.text.primary, // ✅ النصوص العادية بالأبيض الخفيف من الثيم الجديد
             }}
           >
             <Link
@@ -87,13 +86,12 @@ const Nav = ({ path, user, slug }) => {
             animate="visible"
             transition={{ delay: 0.5, duration: 0.5 }}
             style={{
-              // textShadow: "2px 2px 6px rgba(0, 0, 0, 0.6)",
               fontWeight: "600",
               fontSize,
               color:
                 slug === "admin"
-                  ? muiTheme.palette.primary.main
-                  : muiTheme.palette.secondary.contrastText,
+                  ? muiTheme.palette.primary.main // ✅ برتقالي عند التفعيل
+                  : muiTheme.palette.text.primary, // ✅ أبيض خفيف عند عدم التفعيل
             }}
           >
             <Link

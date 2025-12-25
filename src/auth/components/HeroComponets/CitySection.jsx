@@ -9,28 +9,34 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import Image from "next/image";
-import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم
+import { useTheme } from "@mui/material/styles";
 
 const CityCard = ({ city, index, today, router, toursCount }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [hovered, setHovered] = useState(false);
   const pathname = usePathname();
-  const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي
+  const muiTheme = useTheme();
 
   useEffect(() => {
+    if (!city.imges || city.imges.length === 0) return;
     const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % (city.imges?.length || 1));
+      setCurrentImageIndex((prev) => (prev + 1) % city.imges.length);
     }, 8000);
     return () => clearInterval(interval);
   }, [city.imges]);
 
+  const imageSrc = city.imges?.[currentImageIndex]
+    ? `/assets/${city.imges[currentImageIndex]}`
+    : "/assets/default.png";
+
   return (
     <div
       key={city.id || index}
-      className="group relative rounded-3xl overflow-hidden shadow-xl transition duration-300 cursor-pointer"
+      className="relative w-full h-fit max-w-[350px] md:max-w-[280px] rounded-[15px] overflow-hidden cursor-pointer transform transition-all duration-500"
       style={{
-        backgroundColor: muiTheme.palette.background.paper, // ✅ خلفية الكارد من الثيم
-        boxShadow: `0 4px 12px ${muiTheme.palette.primary.main}40`, // ✅ ظل بلون أساسي شفاف
+        backgroundColor: muiTheme.palette.background.paper, // خلفية من الثيم الجديد
+        boxShadow: `0 8px 15px ${muiTheme.palette.primary.main}40`, // ظل برتقالي من الثيم الجديد
+        perspective: "1200px",
       }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -51,7 +57,7 @@ const CityCard = ({ city, index, today, router, toursCount }) => {
       <div className="relative w-full h-[350px]">
         <AnimatePresence mode="sync">
           <motion.div
-            key={city.imges?.[currentImageIndex] || `city-${index}`}
+            key={imageSrc}
             initial={{ opacity: 0, scale: 1.1 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
@@ -60,17 +66,14 @@ const CityCard = ({ city, index, today, router, toursCount }) => {
           >
             <Image
               fill
-              src={
-                city.imges?.[currentImageIndex]
-                  ? `/assets/${city.imges[currentImageIndex]}`
-                  : "/assets/default.png"
-              }
-              alt={city.name}
+              src={imageSrc}
+              alt={city.name || "City"}
+              className="object-cover"
             />
           </motion.div>
         </AnimatePresence>
 
-        {/* ✅ اسم المدينة */}
+        {/* اسم المدينة */}
         <div className="absolute inset-0 flex flex-col items-center justify-end z-20">
           <motion.h3
             initial={{ y: -20, opacity: 1 }}
@@ -83,23 +86,23 @@ const CityCard = ({ city, index, today, router, toursCount }) => {
               letterSpacing: "0.05em",
               textAlign: "center",
               padding: "4px",
-              color: muiTheme.palette.secondary.main, // ✅ النص من الثيم
-              textShadow: "2px 2px 6px rgba(0,0,0,0.6)",
+              color: muiTheme.palette.primary.main, // برتقالي من الثيم الجديد
+              textShadow: `2px 2px 6px ${muiTheme.palette.text.secondary}`, // ظل رمادي/أبيض خفيف من الثيم الجديد
             }}
           >
             {city.name}
           </motion.h3>
 
-          {/* ✅ عدد الرحلات */}
+          {/* عدد الرحلات */}
           <AnimatePresence>
             {hovered && (
               <motion.div
                 initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                animate={{ opacity: 0.7, y: -90, scale: 1 }}
+                animate={{ opacity: 0.9, y: -90, scale: 1 }}
                 exit={{ opacity: 0, y: 30, scale: 0.95 }}
                 transition={{ duration: 0.6, ease: "easeInOut", delay: 0.2 }}
                 style={{
-                  color: muiTheme.palette.secondary.contrastText, // ✅ اللون الثانوي من الثيم
+                  color: muiTheme.palette.text.primary, // أبيض خفيف من الثيم الجديد
                   fontSize: "18px",
                   fontWeight: 600,
                 }}
@@ -124,7 +127,7 @@ const CitySection = () => {
   const { tours } = useTripContext();
   const t = useTranslations("HomeHeroPage");
   const router = useRouter();
-  const muiTheme = useTheme(); // ✅ استدعاء الثيم
+  const muiTheme = useTheme();
 
   return (
     <section
@@ -134,49 +137,40 @@ const CitySection = () => {
     >
       <div className="text-center mb-12 w-full max-w-4xl">
         <h2
-          style={{
-            padding: "15px",
-            color: muiTheme.palette.text.primary, // ✅ النص من الثيم
-          }}
+          style={{ padding: "15px", color: muiTheme.palette.text.primary }} // أبيض خفيف من الثيم الجديد
           className="text-2xl font-bold uppercase tracking-widest mb-2"
         >
           {t("SCTitle")}
         </h2>
         <div
           className="h-1 rounded-full mb-4 w-full"
-          style={{ backgroundColor: muiTheme.palette.primary.main }} // ✅ خط من اللون الأساسي
+          style={{ backgroundColor: muiTheme.palette.primary.main }} // برتقالي من الثيم الجديد
         />
         <h3
-          style={{
-            padding: "15px",
-            color: muiTheme.palette.secondary.main, // ✅ النص من اللون الثانوي
-          }}
+          style={{ padding: "15px", color: muiTheme.palette.secondary.main }} // رمادي/أبيض خفيف من الثيم الجديد
           className="text-3xl sm:text-4xl font-bold uppercase"
         >
           {t("SCTitle2")}
         </h3>
       </div>
 
-      {/* ✅ سلايدر المدن */}
+      {/* سلايدر المدن */}
       <Swiper
         spaceBetween={20}
+        centeredSlides={true}
+        slidesPerView={"auto"}
         breakpoints={{
-          0: { slidesPerView: 1.25 },
-          480: { slidesPerView: 1.4 },
-          640: { slidesPerView: 2 },
-          1024: { slidesPerView: 3 },
-          1400: { slidesPerView: 4 },
+          0: { spaceBetween: 10 },
+          640: { spaceBetween: 15 },
+          1024: { spaceBetween: 20 },
         }}
         modules={[Autoplay]}
-        autoplay={{
-          delay: 2000,
-          disableOnInteraction: false,
-        }}
+        autoplay={{ delay: 2000, disableOnInteraction: false }}
         speed={1200}
         loop={true}
-        className="w-[90%] flex justify-center items-center"
+        className="w-[90%] h-1/2 flex justify-center items-center"
       >
-        {cities.map((city, index) => {
+        {cities?.map((city, index) => {
           const toursCount = tours.filter((t) => {
             const destinationName = (
               t.city?.name ||
@@ -187,7 +181,15 @@ const CitySection = () => {
           }).length;
 
           return (
-            <SwiperSlide key={city.id || index}>
+            <SwiperSlide
+              key={city.id || index}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "280px",
+              }}
+            >
               <CityCard
                 city={city}
                 index={index}
@@ -199,10 +201,11 @@ const CitySection = () => {
           );
         })}
       </Swiper>
+
       <div
         style={{
           marginTop: "20px",
-          backgroundColor: muiTheme.palette.primary.main, // ✅ خط سفلي من الثيم
+          backgroundColor: muiTheme.palette.primary.main, // برتقالي من الثيم الجديد
         }}
         className="w-[80%] h-1 rounded-full mb-4"
       />

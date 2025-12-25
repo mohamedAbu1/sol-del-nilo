@@ -26,7 +26,8 @@ const TextHero = () => {
       <h1
         className="text-[clamp(1.5rem,6vw,3.8rem)] font-bold text-center"
         style={{
-          color: muiTheme.palette.secondary.main, // ✅ اللون الأساسي من الثيم
+          color: muiTheme.palette.primary.main, // ✅ العنوان بالبرتقالي الأساسي من الثيم الجديد
+          // textShadow: `2px 2px 6px ${muiTheme.palette.background.default}`, // ✅ ظل من الخلفية السوداء
         }}
       >
         {sentence}
@@ -34,7 +35,8 @@ const TextHero = () => {
       <p
         className="text-[clamp(1rem,4vw,2rem)] text-center font-semibold"
         style={{
-          color: muiTheme.palette.text.primary, // ✅ النص الأساسي من الثيم
+          color: muiTheme.palette.text.primary,    // ✅ النص الأساسي أبيض خفيف من الثيم الجديد
+          opacity: 0.85,
         }}
       >
         {sentence2}

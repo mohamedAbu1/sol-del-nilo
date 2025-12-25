@@ -2,27 +2,25 @@
 import { useTheme } from "@mui/material/styles";
 
 const DecorativeBorder = () => {
-  const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي
+  const muiTheme = useTheme();
 
   return (
-    <div
-      style={{ marginBottom: "12px" }}
-      className="w-full pt-6"
-    >
-      {/* ✅ خط علوي بلون من الثيم */}
+    <div style={{ marginBottom: "12px" }} className="w-full pt-6">
+      {/* ✅ خط علوي بالبرتقالي الأساسي */}
       <div
         style={{
-          borderTop: `2px solid ${muiTheme.palette.secondary.main}`, // ✅ الحدود من الثيم
+          borderTop: `3px solid ${muiTheme.palette.primary.main}`,
         }}
         className="w-full"
       />
 
+      {/* ✅ زخارف */}
       <div className="flex justify-center gap-4 mt-4">
         {[...Array(15)].map((_, i) => (
           <svg
             key={i}
-            style={{ color: muiTheme.palette.secondary.main }} // ✅ اللون من الثيم
-            className="w-8 h-8"
+            style={{ color: muiTheme.palette.primary.main }}
+            className="w-6 h-6 transition-colors duration-300 hover:text-orange-400"
             fill="currentColor"
             viewBox="0 0 24 24"
           >
@@ -30,6 +28,15 @@ const DecorativeBorder = () => {
           </svg>
         ))}
       </div>
+
+      {/* ✅ خط سفلي بالرمادي الكاتم */}
+      <div
+        style={{
+          borderBottom: `2px solid ${muiTheme.palette.secondary.main}`,
+          marginTop: "12px",
+        }}
+        className="w-full"
+      />
     </div>
   );
 };

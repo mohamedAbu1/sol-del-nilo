@@ -30,8 +30,8 @@ const Categories = () => {
       expanded={expandedCategories}
       onChange={() => setExpandedCategories((prev) => !prev)}
       sx={{
-        backgroundColor: muiTheme.palette.background.paper, // ✅ الخلفية من الثيم
-        color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
+        backgroundColor: muiTheme.palette.background.paper, // ✅ خلفية من الثيم
+        color: muiTheme.palette.text.primary, // ✅ نص أساسي أبيض خفيف
         borderRadius: "12px",
         boxShadow: "none",
         mb: 2,
@@ -40,19 +40,19 @@ const Categories = () => {
     >
       <AccordionSummary
         expandIcon={
-          <ExpandMoreIcon sx={{ color: muiTheme.palette.primary.main }} /> // ✅ أيقونة من الثيم
+          <ExpandMoreIcon sx={{ color: muiTheme.palette.primary.main }} /> // ✅ أيقونة برتقالية
         }
         sx={{
           borderBottom:
             !expandedCategories && selectedCategories.length === 0
-              ? `1px solid ${muiTheme.palette.primary.main}` // ✅ الحدود من الثيم
+              ? `1px solid ${muiTheme.palette.primary.main}` // ✅ حدود برتقالية
               : "none",
           "& .MuiAccordionSummary-content": { margin: 0 },
         }}
       >
         <Typography
           variant="subtitle2"
-          sx={{ color: muiTheme.palette.primary.main, fontWeight: "bold" }} // ✅ العنوان من الثيم
+          sx={{ color: muiTheme.palette.primary.main, fontWeight: "bold" }} // ✅ العنوان برتقالي
         >
           Categories
         </Typography>
@@ -60,7 +60,7 @@ const Categories = () => {
 
       <AccordionDetails
         sx={{
-          borderBottom: `1px solid ${muiTheme.palette.divider}`, // ✅ الحدود من الثيم
+          borderBottom: `1px solid ${muiTheme.palette.divider}`, // ✅ حدود من الثيم
           "& .MuiAccordionSummary-content": { margin: 0 },
         }}
       >
@@ -73,8 +73,8 @@ const Categories = () => {
                 disabled
                 onChange={() => handleToggleCategories("ALL")}
                 sx={{
-                  color: muiTheme.palette.secondary.main, // ✅ اللون من الثيم
-                  "&.Mui-checked": { color: muiTheme.palette.secondary.main },
+                  color: muiTheme.palette.primary.main, // ✅ برتقالي أساسي
+                  "&.Mui-checked": { color: muiTheme.palette.primary.main },
                 }}
               />
             }
@@ -93,8 +93,8 @@ const Categories = () => {
                     checked={selectedCategories.includes(card.name)}
                     onChange={() => handleToggleCategories(card.name)}
                     sx={{
-                      color: muiTheme.palette.secondary.main, // ✅ اللون من الثيم
-                      "&.Mui-checked": { color: muiTheme.palette.secondary.main },
+                      color: muiTheme.palette.primary.main, // ✅ برتقالي أساسي
+                      "&.Mui-checked": { color: muiTheme.palette.primary.main },
                     }}
                   />
                 }
@@ -102,7 +102,7 @@ const Categories = () => {
               />
               <Typography
                 variant="body2"
-                sx={{ color: muiTheme.palette.text.secondary }} // ✅ النصوص الثانوية من الثيم
+                sx={{ color: muiTheme.palette.text.secondary }} // ✅ نص ثانوي رمادي كاتم
               >
                 {categoryCounts[card.name] || 0}
               </Typography>

@@ -39,8 +39,8 @@ const CategoryCard = ({ card, today, router, toursCount, muiTheme }) => {
       onMouseLeave={() => setHovered(false)}
       className="relative w-full h-[400px] max-w-[350px] md:max-w-[280px] rounded-[15px] overflow-hidden cursor-pointer transform transition-all duration-500"
       style={{
-         // ✅ خلفية الكارد من الثيم
-        boxShadow: `0 8px 15px rgba(0,0,0,0.3), 0 15px 30px rgba(0,0,0,0.4)`,
+        backgroundColor: muiTheme.palette.background.paper, // ✅ خلفية من الثيم الجديد
+        boxShadow: `0 8px 15px ${muiTheme.palette.primary.main}40`, // ✅ ظل برتقالي من الثيم الجديد
         perspective: "1200px",
       }}
       onClick={() => {
@@ -68,20 +68,16 @@ const CategoryCard = ({ card, today, router, toursCount, muiTheme }) => {
         >
           <NextImage
             fill
-            src={card.imges?.[currentImageIndex] ? `/assets/${card.imges[currentImageIndex]}` : "/assets/default.png"}
+            src={
+              card.imges?.[currentImageIndex]
+                ? `/assets/${card.imges[currentImageIndex]}`
+                : "/assets/default.png"
+            }
             alt={card.name}
             className="object-cover w-full h-full"
           />
         </motion.div>
       </AnimatePresence>
-
-      {/* ✅ طبقة التدرج
-      <div
-        className="absolute inset-0 z-10"
-        style={{
-          background: `linear-gradient(to top, ${muiTheme.palette.background.default}B3, transparent)`, // ✅ تدرج من خلفية الثيم
-        }}
-      /> */}
 
       {/* ✅ النص */}
       <div className="absolute inset-0 flex flex-col items-center justify-end z-20">
@@ -96,8 +92,8 @@ const CategoryCard = ({ card, today, router, toursCount, muiTheme }) => {
             letterSpacing: "0.05em",
             textAlign: "center",
             padding: "4px",
-            color: muiTheme.palette.secondary.main, // ✅ النص من الثيم
-            textShadow: "2px 2px 6px rgba(0,0,0,0.6)",
+            color: muiTheme.palette.primary.main, // ✅ العنوان بالبرتقالي من الثيم الجديد
+            textShadow: `2px 2px 6px ${muiTheme.palette.text.secondary}`, // ✅ ظل رمادي/أبيض خفيف من الثيم الجديد
           }}
         >
           {card.name}
@@ -107,10 +103,14 @@ const CategoryCard = ({ card, today, router, toursCount, muiTheme }) => {
           {hovered && (
             <motion.div
               initial={{ opacity: 0, y: 30, scale: 0.95 }}
-              animate={{ opacity: 0.7, y: -90, scale: 1 }}
+              animate={{ opacity: 0.9, y: -90, scale: 1 }}
               exit={{ opacity: 0, y: 30, scale: 0.95 }}
               transition={{ duration: 0.6, ease: "easeInOut", delay: 0.2 }}
-              style={{ color: muiTheme.palette.secondary.contrastText, fontSize: "18px", fontWeight: 600 }}
+              style={{
+                color: muiTheme.palette.text.primary, // ✅ النص أبيض خفيف من الثيم الجديد
+                fontSize: "18px",
+                fontWeight: 600,
+              }}
             >
               {`${toursCount} TOURS`}
             </motion.div>
@@ -134,14 +134,20 @@ const SectionTow = () => {
   }, []);
 
   return (
-    <section id="section-two" className="w-full min-h-auto px-4 py-10 flex flex-col items-center justify-start relative">
+    <section
+      id="section-two"
+      className="w-full min-h-auto px-4 py-10 flex flex-col items-center justify-start relative"
+    >
       {/* ✅ العنوان */}
       <div className="text-center mb-12 w-full max-w-4xl">
-        <div className="h-1 rounded-full mb-4 w-full" style={{ backgroundColor: muiTheme.palette.primary.main }} />
+        <div
+          className="h-1 rounded-full mb-4 w-full"
+          style={{ backgroundColor: muiTheme.palette.primary.main }} // ✅ برتقالي من الثيم الجديد
+        />
         <h2
           style={{
             padding: "15px",
-            color: muiTheme.palette.secondary.main, // ✅ النص من اللون الثانوي
+            color: muiTheme.palette.text.primary, // ✅ أبيض خفيف من الثيم الجديد
           }}
           className="text-3xl sm:text-4xl font-bold tracking-wide uppercase mb-4"
         >
@@ -152,12 +158,12 @@ const SectionTow = () => {
       {/* ✅ سلايدر الوجهات */}
       <Swiper
         spaceBetween={20}
+        centeredSlides={true}
+        slidesPerView={"auto"}
         breakpoints={{
-          0: { slidesPerView: 1.25 },
-          480: { slidesPerView: 1.4 },
-          640: { slidesPerView: 2 },
-          1024: { slidesPerView: 3 },
-          1400: { slidesPerView: 4 },
+          0: { spaceBetween: 10 },
+          640: { spaceBetween: 15 },
+          1024: { spaceBetween: 20 },
         }}
         modules={[Autoplay]}
         autoplay={{ delay: 2000, disableOnInteraction: false }}
@@ -170,10 +176,23 @@ const SectionTow = () => {
             const categoryName = t.category?.name || t.category || "";
             return categoryName.toLowerCase() === card.name.toLowerCase();
           }).length;
-
           return (
-            <SwiperSlide key={card.id || index} style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <CategoryCard card={card} today={today} router={router} toursCount={toursCount} muiTheme={muiTheme} />
+            <SwiperSlide
+              key={card.id || index}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "280px",
+              }}
+            >
+              <CategoryCard
+                card={card}
+                today={today}
+                router={router}
+                toursCount={toursCount}
+                muiTheme={muiTheme}
+              />
             </SwiperSlide>
           );
         })}

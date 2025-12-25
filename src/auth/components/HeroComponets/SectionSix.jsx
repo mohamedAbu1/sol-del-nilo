@@ -31,7 +31,7 @@ const SectionSix = () => {
     <section
       id="section-six"
       className="relative w-full h-screen flex flex-col items-center justify-center px-6 lg:px-20 overflow-hidden"
-      style={{ color: muiTheme.palette.text.primary }} // ✅ النصوص من الثيم
+      style={{ color: muiTheme.palette.text.primary }} // ✅ النصوص الأساسية أبيض خفيف من الثيم الجديد
     >
       {/* المحتوى */}
       <motion.div
@@ -45,7 +45,7 @@ const SectionSix = () => {
         <h2
           style={{
             padding: "15px",
-            color: muiTheme.palette.primary.main, // ✅ العنوان من اللون الأساسي
+            color: muiTheme.palette.primary.main, // ✅ العنوان بالبرتقالي الأساسي
           }}
           className="text-3xl lg:text-4xl font-bold mb-4"
         >
@@ -54,7 +54,7 @@ const SectionSix = () => {
         <p
           style={{
             padding: "5px",
-            color: muiTheme.palette.text.secondary, // ✅ النص الثانوي
+            color: muiTheme.palette.text.secondary, // ✅ النصوص الثانوية بالبرتقالي/رمادي فاتح
           }}
           className="text-base lg:text-lg mb-8 leading-relaxed"
         >
@@ -62,7 +62,7 @@ const SectionSix = () => {
         </p>
         <div
           className="h-1 rounded-full mb-4 w-full"
-          style={{ backgroundColor: muiTheme.palette.secondary.main }} // ✅ خط من اللون الثانوي
+          style={{ backgroundColor: muiTheme.palette.secondary.main }} // ✅ خط من اللون الثانوي (أبيض خفيف/رمادي)
         />
 
         <button
@@ -70,7 +70,7 @@ const SectionSix = () => {
           style={{
             cursor: "pointer",
             marginTop: "14px",
-            background: `linear-gradient(90deg, ${muiTheme.palette.primary.main}, ${muiTheme.palette.secondary.main})`, // ✅ زر متدرج من ألوان الثيم
+            background: `linear-gradient(90deg, ${muiTheme.palette.primary.main}, ${muiTheme.palette.secondary.main})`, // ✅ زر متدرج برتقالي → أبيض خفيف
             color: muiTheme.palette.getContrastText(muiTheme.palette.primary.main),
             padding: "10px 20px",
             borderRadius: "9999px",
@@ -95,7 +95,7 @@ const SectionSix = () => {
         {/* محتوى الفوتر */}
         <motion.footer
           className="relative z-10 w-full h-full flex flex-col items-center justify-center text-center px-6"
-          style={{ color: muiTheme.palette.text.primary }}
+          style={{ color: muiTheme.palette.text.primary }} // ✅ النصوص الأساسية أبيض خفيف
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
@@ -138,7 +138,7 @@ const SectionSix = () => {
                   href={linkProps}
                   key={index}
                   style={{
-                    color: muiTheme.palette.primary.main, // ✅ الروابط من اللون الأساسي
+                    color: muiTheme.palette.primary.main, // ✅ الروابط بالبرتقالي الأساسي
                     cursor: "pointer",
                   }}
                 >

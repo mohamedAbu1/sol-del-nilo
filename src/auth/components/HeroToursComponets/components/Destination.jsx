@@ -31,7 +31,7 @@ const Destination = () => {
       onChange={() => setExpanded((prev) => !prev)}
       sx={{
         backgroundColor: muiTheme.palette.background.paper, // ✅ خلفية من الثيم
-        color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
+        color: muiTheme.palette.text.primary, // ✅ النصوص الأساسية
         borderRadius: "12px",
         boxShadow: "none",
         mb: 2,
@@ -40,20 +40,20 @@ const Destination = () => {
     >
       <AccordionSummary
         expandIcon={
-          <ExpandMoreIcon sx={{ color: muiTheme.palette.primary.main }} /> // ✅ أيقونة من الثيم
+          <ExpandMoreIcon sx={{ color: muiTheme.palette.primary.main }} /> // ✅ أيقونة برتقالية
         }
         sx={{
           backgroundColor: muiTheme.palette.background.paper,
           borderBottom:
             !expanded && selectedDestinations.length === 0
-              ? `1px solid ${muiTheme.palette.primary.main}` // ✅ الحدود من الثيم
+              ? `1px solid ${muiTheme.palette.primary.main}` // ✅ حدود برتقالية
               : "none",
           "& .MuiAccordionSummary-content": { margin: 0 },
         }}
       >
         <Typography
           variant="subtitle2"
-          sx={{ color: muiTheme.palette.primary.main, fontWeight: "bold" }} // ✅ العنوان من الثيم
+          sx={{ color: muiTheme.palette.primary.main, fontWeight: "bold" }} // ✅ العنوان برتقالي
         >
           Destination
         </Typography>
@@ -73,8 +73,8 @@ const Destination = () => {
                 onChange={() => handleToggle("ALL")}
                 disabled
                 sx={{
-                  color: muiTheme.palette.secondary.main, // ✅ اللون من الثيم
-                  "&.Mui-checked": { color: muiTheme.palette.secondary.main },
+                  color: muiTheme.palette.primary.main, // ✅ برتقالي أساسي
+                  "&.Mui-checked": { color: muiTheme.palette.primary.main },
                 }}
               />
             }
@@ -92,8 +92,8 @@ const Destination = () => {
                     checked={selectedDestinations.includes(city.name)}
                     onChange={() => handleToggle(city.name)}
                     sx={{
-                      color: muiTheme.palette.secondary.main, // ✅ اللون من الثيم
-                      "&.Mui-checked": { color: muiTheme.palette.secondary.main },
+                      color: muiTheme.palette.primary.main, // ✅ برتقالي أساسي
+                      "&.Mui-checked": { color: muiTheme.palette.primary.main },
                     }}
                   />
                 }
@@ -101,7 +101,7 @@ const Destination = () => {
               />
               <Typography
                 variant="body2"
-                sx={{ color: muiTheme.palette.text.secondary }} // ✅ النصوص الثانوية من الثيم
+                sx={{ color: muiTheme.palette.text.secondary }} // ✅ نص ثانوي رمادي/برتقالي فاتح
               >
                 {cityCounts[city.name] || 0}
               </Typography>

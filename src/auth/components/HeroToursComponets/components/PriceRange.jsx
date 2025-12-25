@@ -26,7 +26,7 @@ const PriceRange = () => {
   return (
     <Box
       sx={{
-        borderBottom: `1px solid ${muiTheme.palette.primary.main}`, // ✅ الحدود من الثيم
+        borderBottom: `1px solid ${muiTheme.palette.primary.main}`, // ✅ حدود برتقالية
         "& .MuiAccordionSummary-content": {
           margin: 4,
         },
@@ -41,7 +41,7 @@ const PriceRange = () => {
         variant="standard"
         InputLabelProps={{
           style: {
-            color: muiTheme.palette.secondary.main, // ✅ لون الليبل من الثيم
+            color: muiTheme.palette.text.secondary, // ✅ نص ثانوي رمادي/برتقالي فاتح
             fontWeight: "600",
             fontSize: "0.95rem",
             letterSpacing: "0.5px",
@@ -49,8 +49,8 @@ const PriceRange = () => {
         }}
         InputProps={{
           style: {
-            color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
-            backgroundColor: muiTheme.palette.background.paper, // ✅ الخلفية من الثيم
+            color: muiTheme.palette.text.primary, // ✅ نص أساسي أبيض خفيف
+            backgroundColor: muiTheme.palette.background.paper, // ✅ خلفية من الثيم
             fontSize: "1rem",
             fontWeight: "500",
             letterSpacing: "0.3px",
@@ -78,7 +78,7 @@ const PriceRange = () => {
         PaperProps={{
           sx: {
             backgroundColor: muiTheme.palette.background.paper, // ✅ خلفية من الثيم
-            color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
+            color: muiTheme.palette.text.primary, // ✅ نص أساسي
             borderRadius: "20px",
             p: 2,
           },
@@ -88,7 +88,7 @@ const PriceRange = () => {
           <Typography
             gutterBottom
             sx={{
-              color: muiTheme.palette.text.primary,
+              color: muiTheme.palette.text.primary, // ✅ نص أساسي أبيض خفيف
               fontSize: "1rem",
               fontWeight: "500",
               letterSpacing: "0.3px",
@@ -103,7 +103,7 @@ const PriceRange = () => {
             min={0}
             max={14000}
             sx={{
-              color: muiTheme.palette.primary.main, // ✅ اللون الأساسي من الثيم
+              color: muiTheme.palette.primary.main, // ✅ برتقالي أساسي
               "& .MuiSlider-valueLabel": {
                 color: muiTheme.palette.getContrastText(
                   muiTheme.palette.primary.main
@@ -112,6 +112,9 @@ const PriceRange = () => {
                 borderRadius: "4px",
                 fontWeight: "bold",
               },
+              "& .MuiSlider-markLabel": {
+                color: muiTheme.palette.text.secondary, // ✅ نص ثانوي
+              },
             }}
           />
           <Button
@@ -119,11 +122,9 @@ const PriceRange = () => {
             size="small"
             sx={{
               mt: 2,
-              backgroundColor: muiTheme.palette.primary.main, // ✅ زر من الثيم
-              color: muiTheme.palette.getContrastText(
-                muiTheme.palette.primary.main
-              ),
-              "&:hover": { backgroundColor: muiTheme.palette.secondary.main }, // ✅ عند الـ hover يتحول للون الثانوي
+              backgroundColor: muiTheme.palette.primary.main, // ✅ زر برتقالي أساسي
+              color: muiTheme.palette.getContrastText(muiTheme.palette.primary.main),
+              "&:hover": { backgroundColor: muiTheme.palette.primary.light }, // ✅ درجة أخف عند الـ hover
             }}
             onClick={handlePriceClose}
           >

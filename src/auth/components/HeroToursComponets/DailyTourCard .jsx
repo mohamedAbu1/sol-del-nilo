@@ -30,7 +30,7 @@ const DailyTourCard = ({ tour, viewMode }) => {
         y: 0,
         flexDirection: isGrid ? "column" : "row",
         height: isGrid ? 400 : 250,
-        width: isGrid ? (isMobile ? "100%" : "31%") : (isMobile ? "100%" : "48%"),
+        width: isGrid ? (isMobile ? "100%" : "31%") : isMobile ? "100%" : "48%",
       }}
       transition={{ duration: 0.6, ease: "easeInOut" }}
       sx={{
@@ -110,7 +110,7 @@ const DailyTourCard = ({ tour, viewMode }) => {
                   fontSize: "1.2rem",
                   mb: 1,
                   lineHeight: 1.4,
-                  color: muiTheme.palette.secondary.main,
+                  color: muiTheme.palette.primary.main,
                 }}
               >
                 {tour.title}
@@ -121,14 +121,19 @@ const DailyTourCard = ({ tour, viewMode }) => {
               >
                 <Typography
                   variant="body2"
-                  sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 0.5,
+                    color: muiTheme.palette.primary.contrastText,
+                  }}
                 >
                   <AccessAlarmsIcon fontSize="small" />{" "}
                   {`${tour.TripDuration} D`}
                 </Typography>
                 <Typography
                   variant="body2"
-                  sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
+                  sx={{ display: "flex", alignItems: "center", gap: 0.5,color: muiTheme.palette.primary.contrastText, }}
                 >
                   <LocationOnIcon fontSize="small" /> {tour.city.name}
                 </Typography>
@@ -139,13 +144,13 @@ const DailyTourCard = ({ tour, viewMode }) => {
               >
                 <Typography
                   variant="body2"
-                  sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
+                  sx={{ display: "flex", alignItems: "center", gap: 0.5,color: muiTheme.palette.primary.contrastText, }}
                 >
                   <AttachMoneyIcon fontSize="small" /> {tour.price}
                 </Typography>
                 <Typography
                   variant="body2"
-                  sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
+                  sx={{ display: "flex", alignItems: "center", gap: 0.5,color: muiTheme.palette.primary.contrastText, }}
                 >
                   <CategoryIcon fontSize="small" /> {tour.category.name}
                 </Typography>
@@ -224,7 +229,7 @@ const DailyTourCard = ({ tour, viewMode }) => {
                   fontSize: "1.4rem",
                   mb: 1,
                   lineHeight: 1.4,
-                  color: muiTheme.palette.secondary.main,
+                  color:  muiTheme.palette.primary.main,
                 }}
               >
                 {tour.title}
@@ -233,14 +238,14 @@ const DailyTourCard = ({ tour, viewMode }) => {
               <Box sx={{ display: "flex", gap: 3, mb: 1 }}>
                 <Typography
                   variant="body2"
-                  sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
+                  sx={{ display: "flex", alignItems: "center", gap: 0.5 ,color: muiTheme.palette.primary.contrastText,}}
                 >
                   <AccessAlarmsIcon fontSize="small" />{" "}
                   {`${tour.TripDuration} D`}
                 </Typography>
                 <Typography
                   variant="body2"
-                  sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
+                  sx={{ display: "flex", alignItems: "center", gap: 0.5,color: muiTheme.palette.primary.contrastText, }}
                 >
                   <LocationOnIcon fontSize="small" /> {tour.city.name}
                 </Typography>
@@ -249,13 +254,13 @@ const DailyTourCard = ({ tour, viewMode }) => {
               <Box sx={{ display: "flex", gap: 3, mb: 1 }}>
                 <Typography
                   variant="body2"
-                  sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
+                  sx={{ display: "flex", alignItems: "center", gap: 0.5 ,color: muiTheme.palette.primary.contrastText,}}
                 >
                   <AttachMoneyIcon fontSize="small" /> {tour.price}
                 </Typography>
                 <Typography
                   variant="body2"
-                  sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
+                  sx={{ display: "flex", alignItems: "center", gap: 0.5 ,color: muiTheme.palette.primary.contrastText,}}
                 >
                   <CategoryIcon fontSize="small" /> {tour.category.name}
                 </Typography>

@@ -37,6 +37,9 @@ const SectionFour = () => {
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="w-full lg:w-1/2 rounded-3xl overflow-hidden shadow-xl"
+          style={{
+            boxShadow: `0 6px 20px ${muiTheme.palette.primary.main}40`, // ✅ ظل برتقالي من الثيم الجديد
+          }}
         >
           <Swiper
             modules={[Navigation, Pagination, Autoplay]}
@@ -86,14 +89,14 @@ const SectionFour = () => {
         >
           <p
             className="text-sm uppercase mb-2 tracking-wide"
-            style={{ color: muiTheme.palette.text.secondary }} // ✅ النص الثانوي من الثيم
+            style={{ color: muiTheme.palette.text.secondary }} // ✅ النص الثانوي (برتقالي/رمادي فاتح)
           >
             {t("sc4P")}
           </p>
 
           <h2
             className="text-3xl lg:text-4xl font-bold mb-4 leading-snug"
-            style={{ color: muiTheme.palette.text.primary }} // ✅ النص الأساسي من الثيم
+            style={{ color: muiTheme.palette.text.primary }} // ✅ النص الأساسي أبيض خفيف
           >
             {t("sc4Title")}
           </h2>
@@ -126,7 +129,7 @@ const SectionFour = () => {
           <button
             onClick={() => router.push("/about")}
             style={{
-              background: `linear-gradient(90deg, ${muiTheme.palette.primary.main}, ${muiTheme.palette.secondary.main})`, // ✅ زر متدرج من ألوان الثيم
+              background: `linear-gradient(90deg, ${muiTheme.palette.primary.main}, ${muiTheme.palette.secondary.main})`, // ✅ زر متدرج برتقالي → أبيض خفيف
               color: muiTheme.palette.getContrastText(muiTheme.palette.primary.main),
               padding: "10px 20px",
               borderRadius: "8px",

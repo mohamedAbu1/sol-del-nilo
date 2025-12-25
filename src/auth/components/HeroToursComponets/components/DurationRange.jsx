@@ -26,7 +26,7 @@ const DurationRange = () => {
   return (
     <Box
       sx={{
-        borderBottom: `1px solid ${muiTheme.palette.primary.main}`, // ✅ الحدود من الثيم
+        borderBottom: `1px solid ${muiTheme.palette.primary.main}`, // ✅ حدود برتقالية
         marginTop: "15px",
         "& .MuiAccordionSummary-content": {
           margin: 4,
@@ -42,7 +42,7 @@ const DurationRange = () => {
         variant="standard"
         InputLabelProps={{
           style: {
-            color: muiTheme.palette.secondary.main, // ✅ الليبل من الثيم
+            color: muiTheme.palette.text.secondary, // ✅ نص ثانوي رمادي/برتقالي فاتح
             fontWeight: "600",
             fontSize: "0.95rem",
             letterSpacing: "0.5px",
@@ -50,8 +50,8 @@ const DurationRange = () => {
         }}
         InputProps={{
           style: {
-            backgroundColor: muiTheme.palette.background.paper, // ✅ الخلفية من الثيم
-            color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
+            backgroundColor: muiTheme.palette.background.paper, // ✅ خلفية من الثيم
+            color: muiTheme.palette.text.primary, // ✅ نص أساسي أبيض خفيف
             fontSize: "1rem",
             fontWeight: "500",
             letterSpacing: "0.3px",
@@ -79,7 +79,7 @@ const DurationRange = () => {
         PaperProps={{
           sx: {
             backgroundColor: muiTheme.palette.background.paper, // ✅ خلفية من الثيم
-            color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
+            color: muiTheme.palette.text.primary, // ✅ نص أساسي
             borderRadius: "20px",
             p: 2,
           },
@@ -89,7 +89,7 @@ const DurationRange = () => {
           <Typography
             gutterBottom
             sx={{
-              color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
+              color: muiTheme.palette.text.primary, // ✅ نص أساسي أبيض خفيف
               fontSize: "1rem",
               fontWeight: "500",
               letterSpacing: "0.3px",
@@ -104,7 +104,7 @@ const DurationRange = () => {
             min={0}
             max={30}
             sx={{
-              color: muiTheme.palette.primary.main, // ✅ اللون الأساسي من الثيم
+              color: muiTheme.palette.primary.main, // ✅ برتقالي أساسي
               "& .MuiSlider-valueLabel": {
                 color: muiTheme.palette.getContrastText(
                   muiTheme.palette.primary.main
@@ -113,6 +113,9 @@ const DurationRange = () => {
                 borderRadius: "4px",
                 fontWeight: "bold",
               },
+              "& .MuiSlider-markLabel": {
+                color: muiTheme.palette.text.secondary, // ✅ نص ثانوي
+              },
             }}
           />
           <Button
@@ -120,11 +123,9 @@ const DurationRange = () => {
             size="small"
             sx={{
               mt: 2,
-              backgroundColor: muiTheme.palette.primary.main, // ✅ زر من الثيم
-              color: muiTheme.palette.getContrastText(
-                muiTheme.palette.primary.main
-              ),
-              "&:hover": { backgroundColor: muiTheme.palette.secondary.main }, // ✅ عند الـ hover يتحول للون الثانوي
+              backgroundColor: muiTheme.palette.primary.main, // ✅ زر برتقالي أساسي
+              color: muiTheme.palette.getContrastText(muiTheme.palette.primary.main),
+              "&:hover": { backgroundColor: muiTheme.palette.primary.light }, // ✅ درجة أخف عند الـ hover
             }}
             onClick={handleDurationClose}
           >

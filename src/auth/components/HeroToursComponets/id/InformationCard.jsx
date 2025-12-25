@@ -177,12 +177,13 @@ const InformationCard = ({
             fontSize: "clamp(14px, 2vw, 16px)",
             textTransform: "capitalize",
             pb: 2,
-            color: muiTheme.palette.text.secondary, // ✅ النصوص من الثيم
+            color: muiTheme.palette.text.disabled, // ✅ النصوص من الثيم
           }}
         >
           {parseDescription(tour.description)}
         </Typography>
       </AnimatedSection>
+
       <Dividering />
       <Dividering />
       <Dividering />
@@ -252,7 +253,7 @@ const InformationCard = ({
                     variant="subtitle1"
                     sx={{
                       fontWeight: "700",
-                      color: muiTheme.palette.secondary.main, // ✅ النصوص الثانوية من الثيم
+                      color: muiTheme.palette.primary.main, // ✅ النصوص الثانوية من الثيم
                       fontSize: "clamp(16px, 2vw, 24px)",
                       textTransform: "capitalize",
                     }}
@@ -261,7 +262,7 @@ const InformationCard = ({
                   </Typography>
                   <div
                     className="flex items-center justify-center uppercase gap-2"
-                    style={{ color: muiTheme.palette.text.secondary }}
+                    style={{ color: muiTheme.palette.secondary.main }}
                   >
                     {item.icon}
                     <p style={item.style}>{item.value}</p>
@@ -280,7 +281,7 @@ const InformationCard = ({
               <table
                 className="w-full text-left"
                 style={{
-                  border: `1px solid ${muiTheme.palette.secondary.main}`,
+                  border: `1px solid ${muiTheme.palette.primary.main}`,
                   backgroundColor: muiTheme.palette.background.paper,
                 }}
               >
@@ -295,7 +296,7 @@ const InformationCard = ({
                       <th
                         style={{
                           backgroundColor: muiTheme.palette.secondary.main,
-                          color: muiTheme.palette.common.white,
+                          color: muiTheme.palette.primary.light,
                           padding: "10px",
                         }}
                         className="px-6 py-4 w-1/5"
@@ -330,8 +331,8 @@ const InformationCard = ({
                 <div
                   style={{
                     backgroundColor: muiTheme.palette.secondary.main,
-                    color: muiTheme.palette.common.white,
-                    paddingLeft: "12px",
+                    color: muiTheme.palette.text.disabled,
+                    padding: "12px",
                   }}
                   className="px-6 py-4 text-xl font-bold"
                 >
@@ -357,7 +358,7 @@ const InformationCard = ({
                         </th>
                         <th
                           style={{
-                            paddingLeft: "6px",
+                            padding: "6px",
                             color: muiTheme.palette.secondary.main,
                           }}
                           className="px-6 py-3 font-semibold"
@@ -378,7 +379,7 @@ const InformationCard = ({
                           <td
                             style={{
                               padding: "10px",
-                              color: muiTheme.palette.text.primary,
+                              color: muiTheme.palette.text.secondary,
                             }}
                             className="px-6 py-4 font-medium"
                           >
@@ -425,7 +426,7 @@ const InformationCard = ({
                           : muiTheme.palette.action.hover,
                       color:
                         currentDayIndex === idx
-                          ? muiTheme.palette.common.white
+                          ? muiTheme.palette.text.disabled
                           : muiTheme.palette.text.primary,
                     }}
                   >
@@ -437,6 +438,7 @@ const InformationCard = ({
           )}
         </div>
       </AnimatedSection>
+
       <Dividering2 />
       <Dividering2 />
       <Dividering2 />

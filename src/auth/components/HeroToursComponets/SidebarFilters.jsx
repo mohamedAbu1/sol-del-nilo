@@ -19,7 +19,8 @@ const SidebarFilters = () => {
         minWidth: "25%",
         borderRadius: "20px",
         backgroundColor: muiTheme.palette.background.paper, // ✅ خلفية من الثيم
-        color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
+        color: muiTheme.palette.text.primary, // ✅ النصوص الأساسية
+        boxShadow: `0 6px 20px ${muiTheme.palette.primary.main}30`, // ✅ ظل برتقالي شفاف
       }}
       initial={{ opacity: 0, x: -200 }}              // يبدأ خارج الشاشة من الشمال
       animate={{ opacity: 1, x: 0 }}                 // يدخل لمكانه الطبيعي
@@ -31,16 +32,17 @@ const SidebarFilters = () => {
           borderRadius: "20px",
           p: 3,
           backgroundColor: muiTheme.palette.background.paper, // ✅ خلفية من الثيم
-          color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
-          border: `1px solid ${muiTheme.palette.primary.main}`, // ✅ الحدود من اللون الأساسي
+          color: muiTheme.palette.text.primary, // ✅ النصوص الأساسية
+          border: `1px solid ${muiTheme.palette.primary.main}`, // ✅ حدود برتقالية أساسية
         }}
       >
         <Typography
           variant="h6"
           sx={{
-            color: muiTheme.palette.primary.main, // ✅ العنوان بلون أساسي من الثيم
+            color: muiTheme.palette.primary.main, // ✅ العنوان برتقالي أساسي
             mb: 3,
             fontWeight: "bold",
+            letterSpacing: "0.5px",
           }}
         >
           Filter Tours

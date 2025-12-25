@@ -81,8 +81,6 @@ const TourListings = () => {
   }
   const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي
 
-  
-
   return (
     <>
       <Drawer
@@ -258,7 +256,14 @@ const TourListings = () => {
         <Pagination
           count={Math.ceil(sortedTours.length / itemsPerPage)}
           page={currentPage}
-          onChange={(e, value) => setCurrentPage(value)}
+          onChange={(e, value) => {
+            setCurrentPage(value);
+            // ✅ عند الضغط على أي رقم، يرفعك لأعلى الصفحة
+            window.scrollTo({
+              top: 500,
+              behavior: "smooth", // حركة ناعمة
+            });
+          }}
           variant="outlined"
           shape="rounded"
           size="medium"

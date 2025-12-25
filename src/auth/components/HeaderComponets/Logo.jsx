@@ -15,7 +15,7 @@ const Logo = ({ path }) => {
   }, []);
 
   // ✅ قيم افتراضية لمنع اختلاف SSR
-  const imageSize = hasMounted && width <= 540 ? 80 : 150;
+  const imageSize = hasMounted && width <= 540 ? 140 : 150;
   const paddingLeft = hasMounted && width >= 670 ? "110px" : "0px";
 
   // ✅ اختيار اللوجو حسب الثيم

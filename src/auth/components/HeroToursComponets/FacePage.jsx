@@ -74,13 +74,15 @@ const FacePage = ({ user }) => {
               fontWeight: "600",
             }}
           >
-            {cityFromQuery === "All" && categoryFromQuery === "All"
+            {!cityFromQuery && !categoryFromQuery
+              ? "" // لو الاتنين فاضيين ما نعرضش حاجة
+              : cityFromQuery === "All" && categoryFromQuery === "All"
               ? "All Trips"
               : cityFromQuery === "All"
               ? categoryFromQuery
               : categoryFromQuery === "All"
               ? cityFromQuery
-              : `${cityFromQuery} - ${categoryFromQuery}`}
+              : ""}
           </h1>
 
           <h1

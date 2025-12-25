@@ -66,7 +66,7 @@ const Destination = () => {
         }}
       >
         <FormGroup>
-          <FormControlLabel
+          {/* <FormControlLabel
             control={
               <Checkbox
                 checked={selectedDestinations.length === cities.length}
@@ -79,7 +79,7 @@ const Destination = () => {
               />
             }
             label="All"
-          />
+          /> */}
 
           {cities.map((city) => (
             <div

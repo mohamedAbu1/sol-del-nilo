@@ -21,19 +21,15 @@ export default function ThemeToggle() {
       <IconButton
         onClick={() => setTheme(resolvedTheme === "light" ? "dark" : "light")}
         sx={{
-          color: muiTheme.palette.primary.main, // ✅ اللون من الثيم
+          color: muiTheme.palette.primary.main,
           zIndex: 9999,
           transition: "all 0.3s ease",
           "&:hover": {
-            color: muiTheme.palette.secondary.main, // ✅ يتغير للون الثانوي عند الـ hover
+            color: muiTheme.palette.secondary.main,
           },
         }}
       >
-        <IconButton
-          onClick={() => setTheme(resolvedTheme === "light" ? "dark" : "light")}
-        >
-          {resolvedTheme === "dark" ? <AiFillSun /> : <MdDarkMode />}
-        </IconButton>
+        {resolvedTheme === "dark" ? <AiFillSun /> : <MdDarkMode />}
       </IconButton>
     </Tooltip>
   );

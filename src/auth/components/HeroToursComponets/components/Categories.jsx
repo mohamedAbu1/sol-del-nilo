@@ -66,7 +66,7 @@ const Categories = () => {
       >
         <FormGroup>
           {/* ✅ خيار All */}
-          <FormControlLabel
+          {/* <FormControlLabel
             control={
               <Checkbox
                 checked={selectedCategories.length === categories.length}
@@ -79,7 +79,7 @@ const Categories = () => {
               />
             }
             label="All"
-          />
+          /> */}
 
           {/* ✅ الفئات الفردية */}
           {categories.map((card) => (

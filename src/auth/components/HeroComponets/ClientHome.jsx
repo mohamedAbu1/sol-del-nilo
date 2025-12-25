@@ -16,6 +16,7 @@ import ScrollRestoration from "../ScrollRestoration";
 import SingUp from "../SingUp";
 import { useTheme } from "@mui/material/styles";
 import { useAppContext } from "@/context/AppContext";
+import SocialFloatingButton from "./SocialFloatingButton";
 export default function ClientHome({ user }) {
   const { open } = useAppContext(); // ✅ هنا في الأعلى
   const [hasMounted, setHasMounted] = useState(false);
@@ -389,6 +390,7 @@ export default function ClientHome({ user }) {
           </button>
         </motion.div>
       )}
+      <SocialFloatingButton />
     </>
   );
 }

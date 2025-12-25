@@ -20,7 +20,6 @@ const Hero = ({ showBubble }) => {
       <TextHero />
       <TravelPlannerForm />
       <BtnHero />
-      {showBubble && <LinksMidea />}
     </section>
   );
 };

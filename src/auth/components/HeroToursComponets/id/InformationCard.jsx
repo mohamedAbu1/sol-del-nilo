@@ -172,6 +172,7 @@ const InformationCard = ({
       <AnimatedSection>
         <Typography
           variant="body1"
+          component="div"
           sx={{
             mt: 2,
             fontSize: "clamp(14px, 2vw, 16px)",

@@ -144,7 +144,7 @@ export const desktopImages = [
   "/assets/_1402__8989_slider3.webp",
 ];
 export const desktopImagesMB = [
-  "/assets/temps-SunriseBalloonFlight_-Colorful-hot-air--balloons….webp",
+  "/assets/WhatsApp2.webp",
   "/assets/_8989_slider1.webp",
   "/assets/548898267_18083849644930067_2023880468351303706_n.webp",
   "/assets/553312854_18084731197930067_1648342695818561037_n.webp",

@@ -99,7 +99,6 @@ export const TripsContextProvider = ({ children }) => {
 
       .eq("id", id)
       .single();
-    console.log(data);
     if (error) {
       toast.error("❌ فشل في تحميل بيانات الرحلة");
       return null;
@@ -220,7 +219,6 @@ export const TripsContextProvider = ({ children }) => {
   };
 
   const isValid = () => {
-    console.log("🟠 [isValid] includes before validation:", formData.includes);
     const requiredFields = [
       "title",
       "description",
@@ -245,13 +243,7 @@ export const TripsContextProvider = ({ children }) => {
       !formData.includes ||
       formData.includes.some((item, idx) => {
         const invalid = !item.text?.trim();
-        console.log(
-          "🔍 [isValid] include check:",
-          idx,
-          item,
-          "→ invalid?",
-          invalid
-        );
+       
         return invalid;
       })
     ) {
@@ -284,7 +276,6 @@ export const TripsContextProvider = ({ children }) => {
         return false;
       }
     }
-    console.log("✅ [isValid] includes passed validation");
     return true;
   };
 
@@ -401,33 +392,27 @@ export const TripsContextProvider = ({ children }) => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     if (isSubmitting) {
-      console.log("⏳ عملية جارية — إلغاء تنفيذ مكرر");
       return;
     }
     setIsSubmitting(true);
-    console.log("🚀 بدء عملية تعديل الرحلة");
 
     if (!isValid()) {
-      console.log("❌ التحقق من صحة البيانات فشل");
       return;
     }
 
     if (!tour || !tour.id) {
       toast.error("❌ لا توجد رحلة محددة للتعديل");
-      console.log("❌ لا توجد قيمة لـ tour أو tour.id:", tour);
       return;
     }
 
     const imagesData = prepareImagesForSubmission();
     if (!imagesData) {
-      console.log("❌ لم يتم تجهيز الصور بشكل صحيح");
       return;
     }
 
     setIsSubmitting(true);
 
     try {
-      console.log("📦 البيانات قبل التحديث:", formData);
 
       // ✅ تعديل بيانات الرحلة
       const { error } = await supabase
@@ -452,7 +437,6 @@ export const TripsContextProvider = ({ children }) => {
 
       if (error) throw error;
 
-      console.log("✅ تم تحديث بيانات الرحلة الأساسية");
 
       // ✅ صور النشاطات (حذف ثم إدخال الجديد فقط مع فلترة التكرار)
       const { error: deleteError } = await supabase
@@ -475,7 +459,6 @@ export const TripsContextProvider = ({ children }) => {
 
       if (tourimageData.length > 0) {
         await supabase.from("tourimage").insert(tourimageData);
-        console.log("✅ تم إدخال صور النشاطات الجديدة:", tourimageData);
       }
 
       // ✅ includes مع فلترة التكرار
@@ -490,7 +473,6 @@ export const TripsContextProvider = ({ children }) => {
         }));
       if (includesData.length > 0) {
         await supabase.from("includes").insert(includesData);
-        console.log("✅ تم إدخال includes الجديدة:", includesData);
       }
 
       // ✅ tripprogram مع فلترة التكرار
@@ -522,7 +504,6 @@ export const TripsContextProvider = ({ children }) => {
       );
       if (tripprogramData.length > 0) {
         await supabase.from("tripprogram").insert(tripprogramData);
-        console.log("✅ تم إدخال tripprogram الجديد:", tripprogramData);
       }
 
       // ✅ تحديث الفورم بالبيانات الجديدة
@@ -542,7 +523,6 @@ export const TripsContextProvider = ({ children }) => {
     }
 
     setIsSubmitting(false);
-    console.log("🏁 انتهاء عملية تعديل الرحلة");
   };
 
   // ✅ دالة لإعادة تهيئة الحقول
@@ -565,13 +545,11 @@ export const TripsContextProvider = ({ children }) => {
     });
   };
 
-  console.log(toursData);
   useEffect(() => {
     if (newTour) {
       toast.success("✅ تم إنشاء الرحلة بنجاح");
     }
   }, [newTour]);
-  console.log(toursData);
   return (
     <TripsContext.Provider
       value={{

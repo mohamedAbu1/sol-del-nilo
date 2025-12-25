@@ -32,7 +32,6 @@ export const TourEditProvider = ({ children }) => {
     const loadData = async () => {
       const data = await fetchTourById(toursID);
       if (!data) return;
-      console.log("📦 بيانات الرحلة من Supabase:", data);
       setTour(data);
 
       const { mainImages: loadedMain, activityImages: loadedActivity } =
@@ -129,7 +128,6 @@ export const TourEditProvider = ({ children }) => {
         if (deleteError) {
           console.warn("⚠️ فشل حذف الصور القديمة:", deleteError);
         } else {
-          console.log("✅ تم حذف الصور القديمة");
         }
       }
 

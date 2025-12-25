@@ -16,7 +16,6 @@ import { FiFilter } from "react-icons/fi";
 import { useAppQueryContext } from "@/context/AppQueryContext";
 import { motion } from "framer-motion";
 import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم
-
 const SearchAndControls = () => {
   const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي
 
@@ -90,7 +89,7 @@ const SearchAndControls = () => {
           startIcon={<FiFilter />}
           sx={{
             display: { xs: "flex", xl: "none" },
-            color: muiTheme.palette.primary.main,
+            color: muiTheme.palette.secondary.main,
             borderColor: muiTheme.palette.primary.main,
             fontWeight: "500",
             textTransform: "none",

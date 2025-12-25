@@ -174,7 +174,6 @@ const TTfinalPriceAfterRival = TTfinalPrice * (1 - (tour?.rival || 0) / 100);
   const addOnTours = tours.filter(
     (t) => t.category.name === "Options Tours" && t.city?.name === city
   );
-  console.log(addOnTours);
   return (
     <div
       style={{

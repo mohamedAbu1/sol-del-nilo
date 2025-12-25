@@ -10,9 +10,6 @@ export const TourImagesProvider = ({ children }) => {
 
   // ✅ تجهيز الصور للإرسال (تخزين الاسم فقط واستخدامه لاحقًا عبر /assets/اسم-الصورة)
   const prepareImagesForSubmission = () => {
-    console.log("🚀 بدء تجهيز الصور للإرسال...");
-    console.log("🖼️ الصور الرئيسية:", mainImages);
-    console.log("🎯 صور الأنشطة:", activityImages);
 
     if (mainImages.length < 4 || mainImages.length > 20) {
       toast.error("❌ يجب اختيار ما بين 4 إلى 12 صورة للرحلة.");
@@ -34,7 +31,6 @@ export const TourImagesProvider = ({ children }) => {
     }));
 
     const result = { image, tourimage };
-    console.log("📤 الصور الجاهزة للإرسال:", result);
 
     return result;
   };

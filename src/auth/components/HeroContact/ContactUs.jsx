@@ -45,9 +45,7 @@ const emailVariants = {
     setEmail(value);
   };
   useEffect(() => {
-    if (process.env.NODE_ENV === "development") {
-      console.log("Current theme is:", theme);
-    }
+    if (process.env.NODE_ENV === "development") {    }
   }, [theme]);
 
   const handleSubmit = async () => {

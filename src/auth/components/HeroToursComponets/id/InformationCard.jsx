@@ -55,7 +55,6 @@ const InformationCard = ({
   setBookingData,
 }) => {
   const { width2 } = useScreenSize();
-  console.log(tour?.TripDuration);
   const isOneDay = tour?.TripDuration <= 1;
 
   // ✅ لو الرحلة عدة أيام → نجمع الأنشطة حسب اليوم
@@ -72,7 +71,6 @@ const InformationCard = ({
       });
     });
   }
-  console.log(tour?.tripprogram);
 
   const days = Object.keys(groupedProgram);
   const [currentDayIndex, setCurrentDayIndex] = useState(0);

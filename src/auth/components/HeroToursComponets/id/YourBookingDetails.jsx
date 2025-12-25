@@ -45,7 +45,6 @@ const YourBookingDetails = ({ tour, user }) => {
           bookingId: userBooking.id,
         }),
       });
-      console.log("🧾 Booking ID:", userBooking.id);
       const result = await response.json();
 
       if (response.ok) {

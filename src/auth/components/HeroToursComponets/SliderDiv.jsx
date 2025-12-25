@@ -49,7 +49,6 @@ export default function HeroStaticSearch({
 
     if (match) {
       setSelectedCategories([match.name]);
-      console.log("🔍 البحث عن الكاتجري:", match.name);
     } else {
       toast.error("❌ الكاتجري غير موجود");
     }

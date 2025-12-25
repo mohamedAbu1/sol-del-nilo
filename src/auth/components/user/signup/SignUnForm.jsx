@@ -39,13 +39,6 @@ const itemVariants = {
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const containsArabic = (text) => /[\u0600-\u06FF]/.test(text);
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-// const { data: session } = useSession();
-
-// useEffect(() => {
-//   if (session) {
-//     console.log("✅ بيانات المستخدم:", session.user);
-//   }
-// }, [session]);
 const SignUnForm = () => {
   const allowedDomains = [
     "@gmail.com",

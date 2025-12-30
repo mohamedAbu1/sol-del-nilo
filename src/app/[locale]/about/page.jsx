@@ -12,6 +12,7 @@ import RightSideDecor from "@/auth/components/RightSideDecor";
 import SectionSix from "@/auth/components/HeroComponets/SectionSix";
 import TopAboutPage from "@/auth/components/About/TopAboutPage";
 import FaceAboutPage from "@/auth/components/About/FaceAboutPage";
+import SocialFloatingButton from "@/auth/components/HeroComponets/SocialFloatingButton";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 export default async function AboutUsPage() {
   const cookieStore = await cookies(); // ✅ استخدم await
@@ -39,6 +40,7 @@ export default async function AboutUsPage() {
           <DecorativeBorder />
         </div>
       </div>
+      <SocialFloatingButton />
       <RightSideDecor />
       <SectionSix />
     </main>

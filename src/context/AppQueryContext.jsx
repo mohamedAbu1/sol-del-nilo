@@ -44,7 +44,7 @@ export const AppQueryContextProvider = ({ children }) => {
   const [expanded, setExpanded] = useState(true);
   const [expandedCategories, setExpandedCategories] = useState(true);
   const [selectedDestinations, setSelectedDestinations] = useState([]);
-  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState("asdasdas");
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
   const cities = useMemo(() => {
@@ -108,7 +108,7 @@ export const AppQueryContextProvider = ({ children }) => {
   const openPrice = Boolean(anchorElPrice);
   const openDuration = Boolean(anchorElDuration);
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-  const [searchText, setSearchText] = useState("All");
+  const [searchText, setSearchText] = useState("");
 
   // ✅ تحديث الكويري
   const updateQueryParams = () => {

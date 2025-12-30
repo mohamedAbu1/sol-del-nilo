@@ -22,7 +22,7 @@ const TextHero = () => {
   if (!hasMounted) return null;
 
   return (
-    <div className="w-full flex flex-col items-center justify-center gap-6 px-4 py-8">
+    <div className="w-full flex flex-col items-center justify-center gap-6 px-4 py-8 opacity-0">
       <h1
         className="text-[clamp(1.5rem,6vw,3.8rem)] font-bold text-center"
         style={{

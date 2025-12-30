@@ -48,6 +48,7 @@ const Nav = ({ path, user, slug }) => {
       active: slug === "tours",
     },
     { label: "About", href: "/about", active: slug === "about" },
+    { label: "Visa", href: "/visaInfo", active: slug === "visaInfo" },
     { label: "Contact", href: "/contact", active: slug === "contact" },
   ];
 

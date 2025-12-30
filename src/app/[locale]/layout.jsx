@@ -4,7 +4,9 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import ClientLayout from "./ClientLayout";
 import { ThemeProvider as NextThemeProvider } from "next-themes"; // ✅ من next-themes
-import { ThemeContextProvider } from "@/context/ThemeContext";   // ✅ الكونتكست الخاص بالثيم
+import { ThemeContextProvider } from "@/context/ThemeContext"; // ✅ الكونتكست الخاص بالثيم
+import { SearchProvider } from "@/context/SearchContext"; // ✅ الكونتكست الخاص بالثيم
+import { CartProvider } from "@/context/CartContext"; // ✅ الكونتكست الخاص بالثيم
 
 export function generateStaticParams() {
   return ["en", "es", "fs", "de", "it", "ar"].map((locale) => ({ locale }));
@@ -32,7 +34,11 @@ export default function LocaleLayout({ children, params }) {
           {/* ✅ ThemeContextProvider يبدّل بين lightTheme و darkTheme */}
           <ThemeContextProvider>
             <NextIntlClientProvider locale={locale} messages={messages}>
-              <ClientLayout>{children}</ClientLayout>
+              <ClientLayout>
+                <CartProvider>
+                  <SearchProvider>{children}</SearchProvider>
+                </CartProvider>
+              </ClientLayout>
             </NextIntlClientProvider>
           </ThemeContextProvider>
         </NextThemeProvider>

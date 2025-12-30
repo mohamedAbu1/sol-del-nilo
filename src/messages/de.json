@@ -6,7 +6,8 @@
     "Admin": "Admin",
     "Contact": "Kontakt",
     "Btn1": "Registrieren",
-    "Btn2": "Abmelden"
+    "Btn2": "Abmelden",
+    "Visa": "Visa"
   },
   "HomeHeroPage": {
     "title1": "Deine Reise beginnt hier",
@@ -36,11 +37,11 @@
     "sc5P": "Hast du Fragen oder möchtest einen Termin buchen? Wir helfen dir gerne weiter. Kontaktiere uns noch heute und starte deine Reise mit uns!",
     "sc5P2": "Unvergessliche Reisen durch Ägypten – von antiken Wundern bis zu ruhigen Rückzugsorten, wir gestalten jede Reise einzigartig und reibungslos.",
     "sc5BTN": "Kontaktiere uns →",
-    "SCTitle":"Städte",
-    "SCTitle2":"Ägyptische Städte",
-     "SCSD":"Die Limousine des Modelljahrs 2025 bietet mit ihrem eleganten Design und dem hochwertigen Interieur außergewöhnlichen Fahrkomfort. Sie verfügt über fortschrittliche Technologien wie einen intelligenten Infotainment-Bildschirm und ein Premium-Soundsystem. Dank des geräumigen Kofferraums und der ergonomischen Sitze eignet sie sich perfekt für Familien und den täglichen Arbeitsweg. Darüber hinaus sorgt ihr sparsamer Motor für wirtschaftliches Fahren sowohl in der Stadt als auch auf langen Autobahnfahrten.",
-    "SCSD2":"Der Van 2025 bietet herausragende Praktikabilität und Komfort für Gruppenreisen. Dank seines geräumigen Innenraums bietet er problemlos Platz für mehrere Fahrgäste und garantiert eine angenehme und komfortable Fahrt. Ausgestattet mit einem zuverlässigen Motor, einer effizienten Klimaanlage und einem vielseitigen Design ist dieser Van ideal für lange Reisen, den Touristentransport und den gewerblichen Einsatz.",
-    "SCSD3":"Der Coaster bietet dank geräumiger Sitze und leistungsstarker Klimaanlage ein komfortables und sicheres Reiseerlebnis. Seine praktische Innenausstattung und das großzügige Fassungsvermögen machen ihn ideal für lange Gruppenreisen, Schulausflüge und den Tourismus."
+    "SCTitle": "Städte",
+    "SCTitle2": "Ägyptische Städte",
+    "SCSD": "Die Limousine des Modelljahrs 2025 bietet mit ihrem eleganten Design und dem hochwertigen Interieur außergewöhnlichen Fahrkomfort. Sie verfügt über fortschrittliche Technologien wie einen intelligenten Infotainment-Bildschirm und ein Premium-Soundsystem. Dank des geräumigen Kofferraums und der ergonomischen Sitze eignet sie sich perfekt für Familien und den täglichen Arbeitsweg. Darüber hinaus sorgt ihr sparsamer Motor für wirtschaftliches Fahren sowohl in der Stadt als auch auf langen Autobahnfahrten.",
+    "SCSD2": "Der Van 2025 bietet herausragende Praktikabilität und Komfort für Gruppenreisen. Dank seines geräumigen Innenraums bietet er problemlos Platz für mehrere Fahrgäste und garantiert eine angenehme und komfortable Fahrt. Ausgestattet mit einem zuverlässigen Motor, einer effizienten Klimaanlage und einem vielseitigen Design ist dieser Van ideal für lange Reisen, den Touristentransport und den gewerblichen Einsatz.",
+    "SCSD3": "Der Coaster bietet dank geräumiger Sitze und leistungsstarker Klimaanlage ein komfortables und sicheres Reiseerlebnis. Seine praktische Innenausstattung und das großzügige Fassungsvermögen machen ihn ideal für lange Gruppenreisen, Schulausflüge und den Tourismus."
   },
   "ToursHeroPage": {
     "titlePage": "Touren",

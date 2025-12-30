@@ -130,31 +130,32 @@ const MainCardSC = ({ user }) => {
 
   // const finalPrice = basePrice + guidePriceTotal + extrasFromSelectedOptions;
   // const finalPriceAfterRival = finalPrice * (1 - (tour?.rival || 0) / 100);
-const nanValue = parseInt(bookingData.people) || 1;
-const tourPrice = parseFloat(tour?.price || "0");
+  const nanValue = parseInt(bookingData.people) || 1;
+  const tourPrice = parseFloat(tour?.price || "0");
 
-// 🟡 المعادلة: كل شخص إضافي ينقص 15 دولار من سعر الفرد
-const discountPerPerson = 15;
-const adjustedPricePerPerson = Math.max(
-  tourPrice - (nanValue - 1) * discountPerPerson,
-  tourPrice * 0.6 // ✅ حد أدنى (مثلاً 60% من السعر الأصلي) علشان ما تخسرش
-);
+  // 🟡 المعادلة: كل شخص إضافي ينقص 15 دولار من سعر الفرد
+  const discountPerPerson = 15;
+  const adjustedPricePerPerson = Math.max(
+    tourPrice - (nanValue - 1) * discountPerPerson,
+    tourPrice * 0.6 // ✅ حد أدنى (مثلاً 60% من السعر الأصلي) علشان ما تخسرش
+  );
 
-// 🟡 السعر الأساسي بعد التعديل
-const TTbasePrice = adjustedPricePerPerson * nanValue;
+  // 🟡 السعر الأساسي بعد التعديل
+  const TTbasePrice = adjustedPricePerPerson * nanValue;
   const basePrice = tourPrice;
 
-const selectedOptions = cityOptions[city] || [];
-const extrasFromSelectedOptions = [...selectedOptions, ...selectedOptions2]
-  .filter((option) => bookingData[option.key])
-  .reduce((total, option) => total + option.price, 0);
+  const selectedOptions = cityOptions[city] || [];
+  const extrasFromSelectedOptions = [...selectedOptions, ...selectedOptions2]
+    .filter((option) => bookingData[option.key])
+    .reduce((total, option) => total + option.price, 0);
 
-const finalPrice = basePrice + guidePriceTotal + extrasFromSelectedOptions;
-const TTfinalPrice = TTbasePrice + guidePriceTotal + extrasFromSelectedOptions;
+  const finalPrice = basePrice + guidePriceTotal + extrasFromSelectedOptions;
+  const TTfinalPrice =
+    TTbasePrice + guidePriceTotal + extrasFromSelectedOptions;
 
-// 🟡 تطبيق الخصم المنافس (rival)
-const finalPriceAfterRival = finalPrice * (1 - (tour?.rival || 0) / 100);
-const TTfinalPriceAfterRival = TTfinalPrice * (1 - (tour?.rival || 0) / 100);
+  // 🟡 تطبيق الخصم المنافس (rival)
+  const finalPriceAfterRival = finalPrice * (1 - (tour?.rival || 0) / 100);
+  const TTfinalPriceAfterRival = TTfinalPrice * (1 - (tour?.rival || 0) / 100);
 
   const selectedExtras = [...selectedOptions, ...selectedOptions2].filter(
     (option) => bookingData[option.key] === true
@@ -173,6 +174,9 @@ const TTfinalPriceAfterRival = TTfinalPrice * (1 - (tour?.rival || 0) / 100);
 
   const addOnTours = tours.filter(
     (t) => t.category.name === "Options Tours" && t.city?.name === city
+  );
+  const addOnToursMore = tours.filter(
+    (t) => t.category.name === tour.category.name || t.city?.name === city
   );
   return (
     <div
@@ -197,11 +201,23 @@ const TTfinalPriceAfterRival = TTfinalPrice * (1 - (tour?.rival || 0) / 100);
         {tour.category.name !== "Options Tours" && (
           <AddOnTours
             addons={addOnTours}
+            name={tour.category.name}
             selectedExtras={selectedExtras2}
             setSelectedExtras={setSelectedExtras2}
           />
         )}
-
+        {addOnToursMore.length > 0 && (
+          <div className="mt-10">
+            {" "}
+            <AddOnTours
+              name={tour.category.name}
+              city={city}
+              addons={addOnToursMore}
+              selectedExtras={selectedExtras2}
+              setSelectedExtras={setSelectedExtras2}
+            />{" "}
+          </div>
+        )}
         {user && (
           <CommentsReviews
             comments={tour.reviews}

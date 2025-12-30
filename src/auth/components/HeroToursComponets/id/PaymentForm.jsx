@@ -9,10 +9,9 @@ import {
   FormControlLabel,
   Checkbox,
 } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast, ToastContainer } from "react-toastify";
-import { FaTaxi, FaShuttleVan, FaBusAlt } from "react-icons/fa";
 import Dividering from "./Divider/Divider";
 import StripeCheckoutButton from "../components/StripeCheckoutButton";
 import { useTheme } from "@mui/material/styles";
@@ -23,12 +22,9 @@ const PaymentForm = ({
   tourGuidePrice,
   setGuideLanguages,
   setGuidePriceTotal,
-  selectedOptions,
-  selectedOptions2,
   setHasBooked,
   bookingData,
   setBookingData,
-  finalPrice,
   TTfinalPriceAfterRival,
   selectedExtras,
   nan,
@@ -710,7 +706,7 @@ const PaymentForm = ({
                       fontFamily: "Cairo, sans-serif",
                     }}
                   >
-                    Payment Options
+                    Payment Optionsw
                   </Typography>
 
                   <StripeCheckoutButton

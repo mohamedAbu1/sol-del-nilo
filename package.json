@@ -45,6 +45,7 @@
     "csrf": "^3.1.0",
     "date-fns": "^4.1.0",
     "framer-motion": "^12.23.12",
+    "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",
     "lottie-react": "^2.4.1",
     "lucide-react": "^0.544.0",

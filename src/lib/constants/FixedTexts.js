@@ -138,16 +138,16 @@ export const AdviceCard = [
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 export const desktopImages = [
-  "/assets/travco-travel-c4259777-fab7-4d77-bd9f-d99e1d3fc377.webp",
-  "/assets/_8989_slider1.webp",
-  "/assets/_12294_slider2.webp",
-  "/assets/_1402__8989_slider3.webp",
+  "/assets/pexels-axp-photography-500641970-18991537.webp",
+  "/assets/pexels-axp-photography-500641970-18934598.webp",
+  "/assets/pexels-axp-photography-500641970-18934596.webp",
+  "/assets/pexels-francesco-albanese-2150950215-31730178.webp",
 ];
 export const desktopImagesMB = [
-  "/assets/WhatsApp2.webp",
-  "/assets/_8989_slider1.webp",
-  "/assets/548898267_18083849644930067_2023880468351303706_n.webp",
-  "/assets/553312854_18084731197930067_1648342695818561037_n.webp",
+  "/assets/pexels-furknsaglam-1596977-21348185.webp",
+  "/assets/pexels-oualid-soussi-2150533856-35050672.webp",
+  "/assets/pexels-ozgomz-7566890.webp",
+  "/assets/pexels-radwa-magdy-1718930-21668633.webp",
 ];
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 

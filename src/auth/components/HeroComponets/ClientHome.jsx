@@ -17,8 +17,9 @@ import SingUp from "../SingUp";
 import { useTheme } from "@mui/material/styles";
 import { useAppContext } from "@/context/AppContext";
 import SocialFloatingButton from "./SocialFloatingButton";
+import CartDrawer from "../CartDrawer";
+import BookingModal from "../BookingModal";
 export default function ClientHome({ user }) {
-  const { open } = useAppContext(); // ✅ هنا في الأعلى
   const [hasMounted, setHasMounted] = useState(false);
   const [showWelcomeText, setShowWelcomeText] = useState(true);
   const [showHero, setShowHero] = useState(false);
@@ -28,6 +29,7 @@ export default function ClientHome({ user }) {
   const [currentIndexMB, setCurrentIndexMB] = useState(0);
   const [isBottom, setIsBottom] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
+    const { openCart, setOpenCart,openBookingModal, setOpenBookingModal } = useAppContext(); // ✅ هنا في الأعلى
 
   useEffect(() => {
     setHasMounted(true);
@@ -96,7 +98,6 @@ export default function ClientHome({ user }) {
   return (
     <>
       <ScrollRestoration />
-
       <main
         id="section-one"
         className="relative w-full h-screen overflow-hidden"
@@ -197,18 +198,6 @@ export default function ClientHome({ user }) {
                 </motion.div>
               )}
             </div>
-
-            {/* <div className="flex-[0.3] h-full flex items-center justify-start px-4">
-              {showBubble && (
-                <motion.div
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.8 }}
-                >
-                  <WelcomeMessageBubble />
-                </motion.div>
-              )}
-            </div> */}
           </div>
         </div>
 
@@ -325,7 +314,6 @@ export default function ClientHome({ user }) {
           </button>
         </motion.div>
       </main>
-
       {/* الأقسام التالية */}
       <section id="section-two">
         <SectionTow />
@@ -335,6 +323,17 @@ export default function ClientHome({ user }) {
       <SectionFour />
       <SectionFive />
       <SectionSix />
+      {/* ✅ كومبوننت السلة */}{" "}
+      <CartDrawer
+        open={openCart}
+        onClose={() => setOpenCart(false)}
+        cartItems={user?.cart || []}
+          onCheckout={() => {
+          setOpenCart(false); // يغلق السلة
+          setOpenBookingModal(true); // يفتح المودال
+        }}
+      />
+            <BookingModal open={openBookingModal} setOpen={setOpenBookingModal}/>
       {/* {open && <SingUp />} */}
       {showScrollTop && (
         <motion.div

@@ -1,5 +1,4 @@
 {
-  
   "Header": {
     "Home": "Inicio",
     "Tours": "Excursiones",
@@ -7,7 +6,8 @@
     "Admin": "Administración",
     "Contact": "Contacto",
     "Btn1": "Registrarse",
-    "Btn2": "Cerrar sesión"
+    "Btn2": "Cerrar sesión",
+    "Visa": "Visa"
   },
   "HomeHeroPage": {
     "title1": "Tu viaje comienza aquí",
@@ -37,11 +37,11 @@
     "sc5P": "¿Tienes preguntas o quieres agendar una cita? Estamos aquí para ayudarte. Contáctanos hoy y comencemos tu viaje juntos.",
     "sc5P2": "Creamos viajes inolvidables por todo Egipto – desde maravillas antiguas hasta escapadas serenas, hacemos que cada viaje sea único y sin complicaciones.",
     "sc5BTN": "Contáctanos →",
-    "SCTitle":"Ciudades",
-    "SCTitle2":"ciudades egipcias",
-     "SCSD":"El Sedán 2025 ofrece una comodidad de conducción excepcional gracias a su elegante diseño y refinado interior. Incorpora tecnología avanzada, como una pantalla inteligente de infoentretenimiento y un sistema de sonido premium. Su espacioso maletero y sus asientos ergonómicos lo hacen perfecto para uso familiar y desplazamientos diarios. Además, su motor de bajo consumo garantiza un rendimiento económico tanto en ciudad como en viajes largos por carretera.",
-    "SCSD2":"La furgoneta 2025 está diseñada para ofrecer practicidad y comodidad excepcionales para viajes en grupo. Gracias a su espacioso interior, puede acomodar fácilmente a varios pasajeros, garantizando un viaje cómodo y sin contratiempos. Equipada con un motor fiable, un eficiente sistema de aire acondicionado y un diseño versátil, esta furgoneta es ideal para viajes largos, transporte turístico y uso comercial.",
-    "SCSD3":"El Coaster ofrece una experiencia de viaje cómoda y segura gracias a sus amplios asientos y su potente sistema de aire acondicionado. Su práctico diseño interior y su generosa capacidad lo hacen ideal para viajes largos en grupo, excursiones escolares y turismo."
+    "SCTitle": "Ciudades",
+    "SCTitle2": "ciudades egipcias",
+    "SCSD": "El Sedán 2025 ofrece una comodidad de conducción excepcional gracias a su elegante diseño y refinado interior. Incorpora tecnología avanzada, como una pantalla inteligente de infoentretenimiento y un sistema de sonido premium. Su espacioso maletero y sus asientos ergonómicos lo hacen perfecto para uso familiar y desplazamientos diarios. Además, su motor de bajo consumo garantiza un rendimiento económico tanto en ciudad como en viajes largos por carretera.",
+    "SCSD2": "La furgoneta 2025 está diseñada para ofrecer practicidad y comodidad excepcionales para viajes en grupo. Gracias a su espacioso interior, puede acomodar fácilmente a varios pasajeros, garantizando un viaje cómodo y sin contratiempos. Equipada con un motor fiable, un eficiente sistema de aire acondicionado y un diseño versátil, esta furgoneta es ideal para viajes largos, transporte turístico y uso comercial.",
+    "SCSD3": "El Coaster ofrece una experiencia de viaje cómoda y segura gracias a sus amplios asientos y su potente sistema de aire acondicionado. Su práctico diseño interior y su generosa capacidad lo hacen ideal para viajes largos en grupo, excursiones escolares y turismo."
   },
   "ToursHeroPage": {
     "titlePage": "Excursiones",

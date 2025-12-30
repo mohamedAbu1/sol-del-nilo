@@ -20,6 +20,8 @@ export const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [selectedType, setSelectedType] = useState(null);
+  const [openCart, setOpenCart] = useState(false);
+const [openBookingModal, setOpenBookingModal] = useState(false);
     const [open, setOpen] = useState(false);
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   useEffect(() => {
@@ -104,6 +106,10 @@ export const AppProvider = ({ children }) => {
         router,
         setOpen,
         open,
+        openCart,
+        setOpenCart,
+        openBookingModal,
+        setOpenBookingModal
       }}
     >
       {children}

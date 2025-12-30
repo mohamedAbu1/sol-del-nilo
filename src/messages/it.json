@@ -6,7 +6,8 @@
     "Admin": "Amministrazione",
     "Contact": "Contatto",
     "Btn1": "Registrati",
-    "Btn2": "Esci"
+    "Btn2": "Esci",
+    "Visa": "Visa"
   },
   "HomeHeroPage": {
     "title1": "Il tuo viaggio inizia qui",
@@ -38,9 +39,9 @@
     "sc5BTN": "Contattaci →",
     "SCTitle": "Città",
     "SCTitle2": "città egiziane",
-     "SCSD":"La Berlina 2025 offre un comfort di guida eccezionale grazie al suo design elegante e agli interni raffinati. È dotata di tecnologie avanzate, come uno schermo di infotainment intelligente e un impianto audio premium, mentre il bagagliaio spazioso e i sedili ergonomici la rendono perfetta per l'uso familiare e gli spostamenti quotidiani. Inoltre, il suo motore a basso consumo di carburante garantisce prestazioni economiche sia per la guida in città che per i lunghi viaggi in autostrada.",
-    "SCSD2":"Il Van 2025 è progettato per offrire praticità e comfort eccezionali per i viaggi di gruppo. Grazie ai suoi interni spaziosi, può ospitare comodamente più passeggeri, garantendo al contempo un viaggio fluido e confortevole. Dotato di un motore affidabile, di un efficiente sistema di climatizzazione e di un design versatile, questo Van è ideale per lunghi viaggi, trasporti turistici e uso commerciale.",
-    "SCSD3":"Il Coaster offre un'esperienza di viaggio confortevole e sicura grazie ai sedili spaziosi e al potente impianto di climatizzazione. Il suo pratico design degli interni e la generosa capienza lo rendono ideale per lunghi viaggi di gruppo, gite scolastiche e turismo."
+    "SCSD": "La Berlina 2025 offre un comfort di guida eccezionale grazie al suo design elegante e agli interni raffinati. È dotata di tecnologie avanzate, come uno schermo di infotainment intelligente e un impianto audio premium, mentre il bagagliaio spazioso e i sedili ergonomici la rendono perfetta per l'uso familiare e gli spostamenti quotidiani. Inoltre, il suo motore a basso consumo di carburante garantisce prestazioni economiche sia per la guida in città che per i lunghi viaggi in autostrada.",
+    "SCSD2": "Il Van 2025 è progettato per offrire praticità e comfort eccezionali per i viaggi di gruppo. Grazie ai suoi interni spaziosi, può ospitare comodamente più passeggeri, garantendo al contempo un viaggio fluido e confortevole. Dotato di un motore affidabile, di un efficiente sistema di climatizzazione e di un design versatile, questo Van è ideale per lunghi viaggi, trasporti turistici e uso commerciale.",
+    "SCSD3": "Il Coaster offre un'esperienza di viaggio confortevole e sicura grazie ai sedili spaziosi e al potente impianto di climatizzazione. Il suo pratico design degli interni e la generosa capienza lo rendono ideale per lunghi viaggi di gruppo, gite scolastiche e turismo."
   },
   "ToursHeroPage": {
     "titlePage": "Tour",

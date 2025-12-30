@@ -2,9 +2,10 @@ import { cookies } from "next/headers";
 import { vrefyTokenForPage } from "@/lib/utils/veryfyToken";
 import Header from "@/auth/components/HeaderComponets/Header";
 import BadySC from "@/auth/components/HeroToursComponets/id/BadySC";
+import SocialFloatingButton from "../../../../auth/components/HeroComponets/SocialFloatingButton";
+import CartDrawer from "@/auth/components/CartDrawer";
 //  ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 export default async function TourPage({ params }) {
-  
   //  ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const { id } = params;
   const isUUID =
@@ -23,7 +24,9 @@ export default async function TourPage({ params }) {
 
     return (
       <main className="w-full flex flex-col items-center justify-center">
-        <BadySC user={user}/>
+        <BadySC user={user} />
+        <SocialFloatingButton />
+       
       </main>
     );
   } catch (error) {

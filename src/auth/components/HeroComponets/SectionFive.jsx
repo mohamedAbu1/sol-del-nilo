@@ -5,11 +5,13 @@ import { GetTours } from "@/lib/constants/FixedTexts";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم
-
+import { Box, Button, Typography } from "@mui/material";
+import { DirectionsCar } from "@mui/icons-material";
+import { useRouter } from "next/navigation";
 const SectionFive = () => {
   const t = useTranslations("HomeHeroPage");
   const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي (light/dark)
-
+const router = useRouter();
   const [hasMounted, setHasMounted] = useState(false);
   const [Car, setCar] = useState([]);
   const [index, setIndex] = useState(0);
@@ -39,108 +41,130 @@ const SectionFive = () => {
       style={{ padding: "20px" }}
       className="relative w-full h-auto px-4 py-16 overflow-hidden flex flex-col items-center"
     >
-      {/* العنوان */}
-      <div style={{ marginBottom: "20px" }} className="text-center mb-12 w-full max-w-2xl">
-        <span
-          className="inline-block text-3xl font-semibold mb-3"
-          style={{ color: muiTheme.palette.text.secondary }} // ✅ النص الثانوي من الثيم الجديد (برتقالي)
+      <Typography
+        variant="h3"
+        sx={{
+          fontWeight: 800,
+          mb: 2,
+          color: muiTheme.palette.primary.main,
+          textShadow: `2px 2px 6px ${muiTheme.palette.grey[900]}90`,
+          display: "flex",
+          alignItems: "center",
+          gap: 1.5,
+        }}
+      >
+        {" "}
+       
+        Luxury Airport Transfers Across Egypt{" "}
+      </Typography>{" "}
+      {/* ✅ خط ديكوري تحت العنوان */}{" "}
+      <Box
+        sx={{
+          width: "80px",
+          height: "4px",
+          background: `linear-gradient(90deg, ${muiTheme.palette.primary.main}, ${muiTheme.palette.secondary.main})`,
+          borderRadius: "2px",
+          mb: 3,
+        }}
+      />{" "}
+      <Box
+        sx={{
+          position: "relative",
+          width: "100%",
+          minHeight: "90vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          overflow: "hidden",
+          borderRadius: "16px",
+          mb: 6,
+        }}
+      >
+        {" "}
+        {/* ✅ خلفية بصورة سيارة شفافة */}{" "}
+        <Box
+          sx={{
+            position: "absolute",
+            inset: 0,
+            backgroundImage: "url('/assets/caption-2.webp')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            opacity: 0.15,
+            zIndex: 1,
+          }}
+        />{" "}
+        {/* ✅ المحتوى الأمامي */}{" "}
+        <Box
+          sx={{
+            position: "relative",
+            zIndex: 2,
+            display: "flex",
+            flexDirection: { xs: "column", md: "row" },
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 4,
+            p: 4,
+          }}
         >
-          {t("sc3P")}
-        </span>
-
-        <div
-          className="h-1 rounded-full mb-4 w-full"
-          style={{ backgroundColor: muiTheme.palette.primary.main }} // ✅ خط برتقالي أساسي من الثيم الجديد
-        />
-
-        <h2
-          className="text-3xl lg:text-4xl font-bold uppercase"
-          style={{ color: muiTheme.palette.text.primary }} // ✅ النص الأساسي أبيض خفيف من الثيم الجديد
-        >
-          {t("sc3P")}
-        </h2>
-      </div>
-
-      {/* ✅ الكارد المتغير */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={index}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
-          className="flex flex-col md:flex-row items-center justify-between gap-10 mt-10 w-full max-w-5xl"
-        >
-          {/* ✅ الصورة اليسار */}
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -40 }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
-            className="w-[260px] md:w-[380px]"
-          >
+          {" "}
+          {/* ✅ صورة السيارة الأمامية */}{" "}
+          <Box sx={{ flex: 1, display: "flex", justifyContent: "center" }}>
+            {" "}
             <Image
-              src={current.image}
-              alt={current.title}
+              src="/assets/car-png-39057.png"
+              alt="Car Transfer"
               width={500}
-              height={500}
-              className="object-contain"
-            />
-          </motion.div>
-
-          {/* ✅ النص */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 40 }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
-            className="text-center max-w-md"
-          >
-            <h3
-              className="text-2xl font-bold mb-3"
-              style={{ color: muiTheme.palette.primary.main }} // ✅ العنوان برتقالي أساسي من الثيم الجديد
-            >
-              {current.title}
-            </h3>
-
-            <p
-              className="leading-relaxed"
-              style={{ color: muiTheme.palette.text.primary }} // ✅ النص أبيض خفيف من الثيم الجديد
-            >
-              {current.description}
-            </p>
-
-            <button
-              style={{
-                padding: "5px",
-                marginTop: "10px",
-                background: `linear-gradient(90deg, ${muiTheme.palette.primary.main}, ${muiTheme.palette.secondary.main})`, // ✅ زر متدرج برتقالي → أبيض خفيف
-                color: muiTheme.palette.getContrastText(muiTheme.palette.primary.main),
+              height={300}
+              style={{ borderRadius: "12px" }}
+            />{" "}
+          </Box>{" "}
+          {/* ✅ النص الاحترافي */}{" "}
+          <Box sx={{ flex: 1, textAlign: { xs: "center", md: "left" } }}>
+            {" "}
+            <Typography
+              variant="h4"
+              sx={{
+                fontWeight: 700,
+                mb: 2,
+                color: muiTheme.palette.primary.main,
+                textShadow: `2px 2px 6px ${muiTheme.palette.grey[900]}90`,
               }}
-              className="mt-6 px-8 py-3 font-semibold rounded-full shadow-lg hover:scale-105 transition"
             >
-              {t("sc3BTN") || "Book Now"}
-            </button>
-          </motion.div>
-
-          {/* ✅ الصورة اليمين (انعكاس) */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 40 }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
-            className="w-[260px] md:w-[380px]"
-          >
-            <Image
-              src={current.image}
-              alt={current.title}
-              width={500}
-              height={500}
-              className="object-contain scale-x-[-1]"
-            />
-          </motion.div>
-        </motion.div>
-      </AnimatePresence>
+              {" "}
+              Premium Airport Car Transfers{" "}
+            </Typography>{" "}
+            <Typography
+              variant="body1"
+              sx={{
+                fontSize: "1.1rem",
+                lineHeight: 1.8,
+                mb: 3,
+                color: muiTheme.palette.text.primary,
+              }}
+            >
+              {" "}
+            </Typography>{" "}
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: muiTheme.palette.primary.main,
+                color: muiTheme.palette.getContrastText(
+                  muiTheme.palette.primary.main
+                ),
+                fontWeight: 600,
+                px: 4,
+                py: 1.5,
+                borderRadius: "12px",
+                "&:hover": { backgroundColor: muiTheme.palette.secondary.main },
+              }}
+              onClick={() => router.push("/car-booking")} // ✅ تحويل لصفحة الحجز
+            >
+              {" "}
+              Book Your Transfer{" "}
+            </Button>{" "}
+          </Box>{" "}
+        </Box>{" "}
+      </Box>
     </section>
   );
 };

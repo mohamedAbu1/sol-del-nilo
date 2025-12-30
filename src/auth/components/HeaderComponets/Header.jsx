@@ -27,12 +27,17 @@ import {
 } from "@/lib/constants/FixedTexts";
 import ThemeToggle from "../ThemeToggle";
 import { useScreenSize } from "../../hooks/screenSize";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { Badge, IconButton } from "@mui/material";
+import { useAppContext } from "@/context/AppContext";
+import { useCart } from "@/context/CartContext";
 
 const Header = ({ user }) => {
   const path = usePathname();
   const segments = path.split("/").filter(Boolean);
   const slug = segments.length > 1 ? segments.slice(1).join("/") : "";
-
+  const { openCart, setOpenCart } = useAppContext(); // ✅ هنا في الأعلى
+const { cartItems } = useCart();
   const { width, height } = useScreenSize();
 
   // ✅ منع التفاعل قبل تحميل المتصفح
@@ -83,6 +88,13 @@ const Header = ({ user }) => {
       <MobilNav slug={slug} user={user} />
       <LeftNav path={path} user={user} width={width} />
       <ThemeToggle />
+      <IconButton onClick={() => setOpenCart(true)}>
+        {" "}
+        <Badge badgeContent={cartItems.length} color="secondary">
+          {" "}
+          <ShoppingCartIcon />{" "}
+        </Badge>{" "}
+      </IconButton>
     </header>
   );
 };

@@ -99,7 +99,7 @@ export default function TravelPlannerForm() {
         borderRadius: 4,
         boxShadow: 3,
         border: `1px solid ${muiTheme.palette.divider}`,
-        backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5))`,
+        // backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5))`,
         mx: "auto",
       }}
     >

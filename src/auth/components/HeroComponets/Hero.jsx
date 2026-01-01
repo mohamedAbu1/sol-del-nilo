@@ -25,8 +25,7 @@ const Hero = ({ showBubble }) => {
       <motion.div
         initial="hidden"
         animate="visible"
-                  style={{ background:"rgba(0,0,0,0.4)", borderRadius:"6px" }}
-
+        style={{ borderRadius: "6px" }}
         variants={{
           hidden: { opacity: 0 },
           visible: {

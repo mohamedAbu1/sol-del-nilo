@@ -144,10 +144,10 @@ export const desktopImages = [
   "/assets/pexels-francesco-albanese-2150950215-31730178.webp",
 ];
 export const desktopImagesMB = [
-  "/assets/pexels-furknsaglam-1596977-21348185.webp",
-  "/assets/pexels-oualid-soussi-2150533856-35050672.webp",
-  "/assets/pexels-ozgomz-7566890.webp",
-  "/assets/pexels-radwa-magdy-1718930-21668633.webp",
+  "/assets/bjns.webp",
+  "/assets/jasiioj.webp",
+  "/assets/ibjaskln.webp",
+  "/assets/usaoihjp.webp",
 ];
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 

@@ -209,7 +209,7 @@ const LoginForm = () => {
             sx={{
               zIndex:9999,
               input: {
-                color: muiTheme.palette.text.primary,
+                color: muiTheme.palette.secondary.contrastText,
                 fontSize: "18px",
                 fontWeight: "bold",
                 fontFamily: "Cairo, sans-serif",

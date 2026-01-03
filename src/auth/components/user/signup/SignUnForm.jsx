@@ -229,25 +229,25 @@ const SignUnForm = () => {
                   zIndex: "99999",
                   width: "80%",
                   input: {
-                    color: muiTheme.palette.text.primary,
+                    color: muiTheme.palette.secondary.contrastText,
                     fontSize: "18px",
                     fontWeight: "bold",
                     fontFamily: "Cairo, sans-serif",
                   },
                   "& .MuiOutlinedInput-root": {
                     "& fieldset": {
-                      borderColor: muiTheme.palette.secondary.main,
+                      borderColor: muiTheme.palette.primary.light,
                     },
                     "&:hover fieldset": {
                       borderColor: muiTheme.palette.primary.main,
                     },
                     "&.Mui-focused fieldset": {
-                      borderColor: muiTheme.palette.secondary.main,
+                      borderColor: muiTheme.palette.primary.light,
                       borderWidth: "2px",
                     },
                   },
                   "& .MuiInputLabel-root": {
-                    color: muiTheme.palette.secondary.main,
+                    color: muiTheme.palette.primary.light,
                   },
                   "& .MuiInputLabel-root.Mui-focused": {
                     color: muiTheme.palette.primary.main,
@@ -267,25 +267,25 @@ const SignUnForm = () => {
                   zIndex: "99999",
                   width: "80%",
                   input: {
-                    color: muiTheme.palette.text.primary,
+                    color: muiTheme.palette.secondary.contrastText,
                     fontSize: "18px",
                     fontWeight: "bold",
                     fontFamily: "Cairo, sans-serif",
                   },
                   "& .MuiOutlinedInput-root": {
                     "& fieldset": {
-                      borderColor: muiTheme.palette.secondary.main,
+                      borderColor: muiTheme.palette.primary.light,
                     },
                     "&:hover fieldset": {
                       borderColor: muiTheme.palette.primary.main,
                     },
                     "&.Mui-focused fieldset": {
-                      borderColor: muiTheme.palette.secondary.main,
+                      borderColor: muiTheme.palette.primary.light,
                       borderWidth: "2px",
                     },
                   },
                   "& .MuiInputLabel-root": {
-                    color: muiTheme.palette.secondary.main,
+                    color: muiTheme.palette.primary.light,
                   },
                   "& .MuiInputLabel-root.Mui-focused": {
                     color: muiTheme.palette.primary.main,
@@ -313,13 +313,13 @@ const SignUnForm = () => {
                     },
                   },
                   "& .MuiInputLabel-root": {
-                    color: muiTheme.palette.secondary.main,
+                    color: muiTheme.palette.primary.light,
                   },
                   "& .MuiInputLabel-root.Mui-focused": {
                     color: muiTheme.palette.primary.main,
                   },
                   input: {
-                    color: muiTheme.palette.text.primary,
+                    color: muiTheme.palette.secondary.contrastText,
                     fontSize: "18px",
                     fontWeight: "bold",
                     fontFamily: "Cairo, sans-serif",

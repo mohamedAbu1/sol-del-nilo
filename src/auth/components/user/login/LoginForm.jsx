@@ -218,11 +218,11 @@ const LoginForm = () => {
                 "& fieldset": { borderColor: muiTheme.palette.secondary.main },
                 "&:hover fieldset": { borderColor: muiTheme.palette.primary.main },
                 "&.Mui-focused fieldset": {
-                  borderColor: muiTheme.palette.secondary.main,
+                  borderColor: muiTheme.palette.primary.light,
                   borderWidth: "2px",
                 },
               },
-              "& .MuiInputLabel-root": { color: muiTheme.palette.secondary.main },
+              "& .MuiInputLabel-root": { color: muiTheme.palette.primary.light},
               "& .MuiInputLabel-root.Mui-focused": {
                 color: muiTheme.palette.primary.main,
               },
@@ -240,16 +240,16 @@ const LoginForm = () => {
                 "& fieldset": { borderColor: muiTheme.palette.secondary.main },
                 "&:hover fieldset": { borderColor: muiTheme.palette.primary.main },
                 "&.Mui-focused fieldset": {
-                  borderColor: muiTheme.palette.secondary.main,
+                  borderColor: muiTheme.palette.primary.light,
                   borderWidth: "2px",
                 },
               },
-              "& .MuiInputLabel-root": { color: muiTheme.palette.secondary.main },
+              "& .MuiInputLabel-root": { color: muiTheme.palette.primary.light },
               "& .MuiInputLabel-root.Mui-focused": {
                 color: muiTheme.palette.primary.main,
               },
               input: {
-                color: muiTheme.palette.text.primary,
+                color: muiTheme.palette.secondary.contrastText,
                 fontSize: "18px",
                 fontWeight: "bold",
                 fontFamily: "Cairo, sans-serif",

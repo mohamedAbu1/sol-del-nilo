@@ -1,6 +1,6 @@
 "use client";
 import { useTranslations } from "next-intl";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import NextImage from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import { useTripsContext } from "@/context/TripsContext";
@@ -9,7 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
-import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم
+import { useTheme } from "@mui/material/styles";
 
 const animations = [
   { initial: { opacity: 0, x: 50 }, animate: { opacity: 1, x: 0 }, exit: { opacity: 0, x: -50 } },
@@ -39,12 +39,17 @@ const CategoryCard = ({ card, today, router, toursCount, muiTheme }) => {
       onMouseLeave={() => setHovered(false)}
       className="relative w-full h-[400px] max-w-[350px] md:max-w-[280px] rounded-[15px] overflow-hidden cursor-pointer transform transition-all duration-500"
       style={{
-        backgroundColor: muiTheme.palette.background.paper, // ✅ خلفية من الثيم الجديد
-        boxShadow: `0 8px 15px ${muiTheme.palette.primary.main}40`, // ✅ ظل برتقالي من الثيم الجديد
+        backgroundColor: muiTheme.palette.background.paper,
+        boxShadow: `0 8px 15px ${muiTheme.palette.primary.main}40`,
         perspective: "1200px",
       }}
       onClick={() => {
-        sessionStorage.setItem(`scroll-${pathname}`, window.scrollY.toString());
+        // حفظ الـ index قبل الانتقال
+        if (typeof window !== "undefined") {
+          sessionStorage.setItem("selectedCategoryIndex", String(card.index ?? 0));
+          sessionStorage.setItem(`scroll-${pathname}`, String(window.scrollY ?? 0));
+        }
+
         const query = new URLSearchParams({
           destination: "ALL",
           category: card.name,
@@ -57,7 +62,6 @@ const CategoryCard = ({ card, today, router, toursCount, muiTheme }) => {
         router.push(`/tours?${query}`);
       }}
     >
-      {/* ✅ صورة الكارد */}
       <AnimatePresence mode="sync">
         <motion.div
           key={card.imges?.[currentImageIndex]}
@@ -79,7 +83,6 @@ const CategoryCard = ({ card, today, router, toursCount, muiTheme }) => {
         </motion.div>
       </AnimatePresence>
 
-      {/* ✅ النص */}
       <div className="absolute inset-0 flex flex-col items-center justify-end z-20">
         <motion.h3
           initial={{ y: -20, opacity: 1 }}
@@ -92,8 +95,8 @@ const CategoryCard = ({ card, today, router, toursCount, muiTheme }) => {
             letterSpacing: "0.05em",
             textAlign: "center",
             padding: "4px",
-            color: muiTheme.palette.primary.main, // ✅ العنوان بالبرتقالي من الثيم الجديد
-            textShadow: `2px 2px 6px ${muiTheme.palette.text.secondary}`, // ✅ ظل رمادي/أبيض خفيف من الثيم الجديد
+            color: muiTheme.palette.primary.main,
+            textShadow: `2px 2px 6px ${muiTheme.palette.text.secondary}`,
           }}
         >
           {card.name}
@@ -107,7 +110,7 @@ const CategoryCard = ({ card, today, router, toursCount, muiTheme }) => {
               exit={{ opacity: 0, y: 30, scale: 0.95 }}
               transition={{ duration: 0.6, ease: "easeInOut", delay: 0.2 }}
               style={{
-                color: muiTheme.palette.text.primary, // ✅ النص أبيض خفيف من الثيم الجديد
+                color: muiTheme.palette.text.primary,
                 fontSize: "18px",
                 fontWeight: 600,
               }}
@@ -126,28 +129,74 @@ const SectionTow = () => {
   const { tours } = useTripContext();
   const t = useTranslations("HomeHeroPage");
   const router = useRouter();
-  const muiTheme = useTheme(); // ✅ استدعاء الثيم
+  const muiTheme = useTheme();
 
   const [today, setToday] = useState("2025-01-01");
+  const swiperRef = useRef(null); // إمساك إنستانس الـ Swiper
+  const [ready, setReady] = useState(false); // رندر مشروط بعد تجهيز البيانات
+
   useEffect(() => {
     setToday(new Date().toISOString().split("T")[0]);
   }, []);
+
+  // بعد تحميل الكاتجريز ووجود إنستانس للسوايبر، حرّك للعنصر التالي للـ index المخزن
+  useEffect(() => {
+    if (!categories || categories.length === 0) return;
+    if (!swiperRef.current) return;
+
+    if (typeof window !== "undefined") {
+      const savedIndexStr = sessionStorage.getItem("selectedCategoryIndex");
+      if (savedIndexStr !== null) {
+        const savedIndex = parseInt(savedIndexStr, 10);
+        const nextIndex = (savedIndex + 1) % categories.length;
+
+        // لو مفعل loop استخدم slideToLoop، غير كده استخدم slideTo
+        const swiper = swiperRef.current;
+        if (swiper.params?.loop) {
+          swiper.slideToLoop(nextIndex, 0); // بدون أنيميشن
+        } else {
+          swiper.slideTo(nextIndex, 0, false);
+        }
+      }
+    }
+  }, [categories, swiperRef.current]);
+
+  // نستخدم ready لتجنب اختلافات الـ SSR/CSR
+  useEffect(() => {
+    if (categories && categories.length > 0) setReady(true);
+  }, [categories]);
+
+  if (!ready) {
+    return (
+      <section id="section-two" className="w-full px-4 py-10 flex flex-col items-center">
+        <div className="text-center mb-12 w-full max-w-4xl">
+          <div className="h-1 rounded-full mb-4 w-full" style={{ backgroundColor: muiTheme.palette.primary.main }} />
+          <h2
+            style={{ padding: "15px", color: muiTheme.palette.text.primary }}
+            className="text-3xl sm:text-4xl font-bold tracking-wide uppercase mb-4"
+          >
+            {t("sc1Title")}
+          </h2>
+        </div>
+        {/* Placeholder or skeleton if needed */}
+      </section>
+    );
+  }
 
   return (
     <section
       id="section-two"
       className="w-full min-h-auto px-4 py-10 flex flex-col items-center justify-start relative"
     >
-      {/* ✅ العنوان */}
       <div className="text-center mb-12 w-full max-w-4xl">
         <div
           className="h-1 rounded-full mb-4 w-full"
-          style={{ backgroundColor: muiTheme.palette.primary.main }} // ✅ برتقالي من الثيم الجديد
+          style={{ backgroundColor: muiTheme.palette.primary.main }}
         />
         <h2
           style={{
             padding: "15px",
-            color: muiTheme.palette.text.primary, // ✅ أبيض خفيف من الثيم الجديد
+            color: muiTheme.palette.text.primary,
           }}
           className="text-3xl sm:text-4xl font-bold tracking-wide uppercase mb-4"
         >
@@ -155,7 +204,6 @@ const SectionTow = () => {
         </h2>
       </div>
 
-      {/* ✅ سلايدر الوجهات */}
       <Swiper
         spaceBetween={20}
         centeredSlides={true}
@@ -169,6 +217,10 @@ const SectionTow = () => {
         autoplay={{ delay: 2000, disableOnInteraction: false }}
         speed={1200}
         loop={true}
+        onSwiper={(swiperInstance) => {
+          // خزّن الإنستانس
+          swiperRef.current = swiperInstance;
+        }}
         className="w-[90%] h-1/2 flex justify-center items-center"
       >
         {categories.map((card, index) => {
@@ -187,7 +239,7 @@ const SectionTow = () => {
               }}
             >
               <CategoryCard
-                card={card}
+                card={{ ...card, index }} // تمرير الـ index إلى الكارد
                 today={today}
                 router={router}
                 toursCount={toursCount}

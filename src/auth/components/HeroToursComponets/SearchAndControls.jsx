@@ -22,11 +22,14 @@ import { useSearchContext } from "@/context/SearchContext";
 import { motion } from "framer-motion";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 const SearchAndControls = () => {
   const muiTheme = useTheme();
   const isSmallScreen = useMediaQuery("(max-width:600px)"); // ✅ كشف الشاشات الصغيرة
   const { filterSuggestions } = useSearchContext();
+  const [selectedCity, setSelectedCity] = useState("All");
 
   const {
     setOpenDrawer,
@@ -36,11 +39,16 @@ const SearchAndControls = () => {
     setSortBy,
     searchText,
     setSearchText,
+    cityFromQuery,
   } = useAppQueryContext();
 
   const options = filterSuggestions(searchText).map((opt) => opt.name);
 
   const cities = ["Luxor", "Aswan", "Cairo", "Giza", "Hurghada"];
+
+const searchParams = useSearchParams();
+const destination = searchParams.get("destination");
+const category = searchParams.get("category");
 
   return (
     <motion.div
@@ -65,7 +73,7 @@ const SearchAndControls = () => {
         }}
       >
         {/* ✅ في الشاشات الكبيرة يظهر البحث */}
-        {!isSmallScreen && (
+        {!isSmallScreen && destination === "All" && category === "All" &&  (
           <Box sx={{ flex: 1, minWidth: 250 }}>
             <Autocomplete
               freeSolo
@@ -95,7 +103,7 @@ const SearchAndControls = () => {
         )}
 
         {/* ✅ في الشاشات الصغيرة يظهر مربعات فلتر */}
-        {isSmallScreen && (
+        {isSmallScreen && destination === "All" && category === "All" && (
           <Box sx={{ display: "flex", gap: 2, overflowX: "auto", py: 1 }}>
             {/* زر All */}
             <Card
@@ -105,10 +113,16 @@ const SearchAndControls = () => {
                 flexShrink: 0,
                 textAlign: "center",
                 borderRadius: "25px",
-                background: `linear-gradient(135deg, ${muiTheme.palette.secondary.dark}, ${muiTheme.palette.secondary.main})`,
-                color: muiTheme.palette.getContrastText(
-                  muiTheme.palette.secondary.main
-                ),
+                background:
+                  selectedCity === "All"
+                    ? `linear-gradient(135deg, ${muiTheme.palette.secondary.main}, ${muiTheme.palette.secondary.dark})`
+                    : muiTheme.palette.grey[300],
+                color:
+                  selectedCity === "All"
+                    ? muiTheme.palette.getContrastText(
+                        muiTheme.palette.secondary.main
+                      )
+                    : muiTheme.palette.text.primary,
                 cursor: "pointer",
                 boxShadow: muiTheme.shadows[4],
                 transition: "transform 0.3s ease, box-shadow 0.3s ease",
@@ -117,7 +131,10 @@ const SearchAndControls = () => {
                   boxShadow: muiTheme.shadows[8],
                 },
               }}
-              onClick={() => setSearchText("")}
+              onClick={() => {
+                setSearchText("");
+                setSelectedCity("All");
+              }}
             >
               <CardContent>
                 <Typography variant="h6" fontWeight="700">
@@ -135,8 +152,11 @@ const SearchAndControls = () => {
                   flexShrink: 0,
                   textAlign: "center",
                   borderRadius: "25px",
-                  background: `linear-gradient(135deg, ${muiTheme.palette.primary.light}, ${muiTheme.palette.primary.dark})`,
-                  color: "#fff",
+                  background:
+                    selectedCity === city
+                      ? `linear-gradient(135deg, ${muiTheme.palette.primary.dark}, ${muiTheme.palette.primary.main})`
+                      : muiTheme.palette.grey[400],
+                  color: selectedCity === city ? "#fff" : "#000",
                   cursor: "pointer",
                   boxShadow: muiTheme.shadows[3],
                   transition: "transform 0.3s ease, box-shadow 0.3s ease",
@@ -145,10 +165,13 @@ const SearchAndControls = () => {
                     boxShadow: muiTheme.shadows[6],
                   },
                 }}
-                onClick={() => setSearchText(city)}
+                onClick={() => {
+                  setSearchText(city);
+                  setSelectedCity(city);
+                }}
               >
                 <CardContent>
-                  <Typography variant="h6" fontWeight="700" style={{color:"#fff"}}> 
+                  <Typography variant="h6" fontWeight="700">
                     {city}
                   </Typography>
                 </CardContent>

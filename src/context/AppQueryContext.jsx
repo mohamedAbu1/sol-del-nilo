@@ -20,10 +20,9 @@ export const AppQueryContextProvider = ({ children }) => {
   const [fadeKey, setFadeKey] = useState(0);
   const [sortBy, setSortBy] = useState("alphabetical");
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedDestinationId, setSelectedDestinationId] =
-    useState("Sharm El Sheikh");
+  const [selectedDestinationId, setSelectedDestinationId] =useState("Sharm El Sheikh");
   const [duration, setDuration] = useState(5);
-  // const [date, setDate] = useState("");
+  const [date, setDate] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const itemsPerPageRaw = searchParams.get("itemsPerPage");
@@ -36,7 +35,7 @@ export const AppQueryContextProvider = ({ children }) => {
   const cityFromQuery = searchParams.get("destination") || "";
   const categoryFromQuery = searchParams.get("category") || "";
 
-  const date = searchParams.get("date") || "";
+  const data = searchParams.get("date") || "";
   const minPrice = parseInt(searchParams.get("minPrice") || "0");
   const maxPrice = parseInt(searchParams.get("maxPrice") || "14000");
   const Nights = parseInt(searchParams.get("duration") || "0");
@@ -115,7 +114,7 @@ export const AppQueryContextProvider = ({ children }) => {
     const query = new URLSearchParams({
       destination: selectedDestinations.join(","),
       category: selectedCategories.join(","),
-      date,
+      data,
       duration: durationRange[1].toString(),
       minPrice: priceRange[0].toString(),
       maxPrice: priceRange[1].toString(),
@@ -177,12 +176,6 @@ export const AppQueryContextProvider = ({ children }) => {
     tours,
   ]);
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-  // useEffect(() => {
-  //   const params = new URLSearchParams(window.location.search);
-  //   params.set("search", searchText);
-  //   const newUrl = `${pathname}?${params.toString()}`;
-  //   window.history.replaceState({}, "", newUrl);
-  // }, [searchText]);
   const handlePageChange = (e, value) => {
     setCurrentPage(value);
     setFadeKey((prev) => prev + 1);
@@ -374,6 +367,7 @@ export const AppQueryContextProvider = ({ children }) => {
         selectedType,
         duration,
         date,
+        setDate,
         selectedDestinationId,
         selectedCategory,
         setSelectedCategory,

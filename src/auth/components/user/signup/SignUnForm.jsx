@@ -302,13 +302,13 @@ const SignUnForm = () => {
                   zIndex: "99999",
                   "& .MuiOutlinedInput-root": {
                     "& fieldset": {
-                      borderColor: muiTheme.palette.secondary.main,
+                      borderColor: muiTheme.palette.primary.light,
                     },
                     "&:hover fieldset": {
                       borderColor: muiTheme.palette.primary.main,
                     },
                     "&.Mui-focused fieldset": {
-                      borderColor: muiTheme.palette.secondary.main,
+                      borderColor: muiTheme.palette.primary.light,
                       borderWidth: "2px",
                     },
                   },

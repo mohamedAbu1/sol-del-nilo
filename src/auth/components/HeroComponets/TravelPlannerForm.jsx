@@ -35,13 +35,22 @@ export default function TravelPlannerForm() {
     handleDurationClick,
     handleDurationClose,
     duration,
+    date,
+    setDate,
     setDuration,
     selectedDestinationId,
     setSelectedDestinationId,
   } = useAppQueryContext();
   const router = useRouter();
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-  const [date, setDate] = useState("");
+  // const [date, setDate] = useState("");
+  console.log({
+    priceRange,
+    selectedDestinationId,
+    duration,
+    date,
+    selectedCategories,
+  });
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const today = new Date().toISOString().split("T")[0];
   const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي
@@ -75,19 +84,23 @@ export default function TravelPlannerForm() {
   };
 
   const handleSearch = () => {
-    if (!validateFields()) return; // ✅ يمنع البحث لو في حقل ناقص
-    const query = new URLSearchParams({
-      destination: selectedDestinationId.name || "", // ✅ استخدم id فقط
-      duration: duration.toString(),
-      category: selectedCategories || "", // ✅ استخدم id فقط
-      date: date || "",
-      minPrice: priceRange[0].toString(),
-      maxPrice: priceRange[1].toString(),
-      search: `${selectedDestinationId.name} ${selectedCategories}`,
-    }).toString();
+  console.log("Search clicked!");
 
-    router.push(`/tours?${query}`);
-  };
+  const query = new URLSearchParams({
+    destination: selectedDestinationId || "",
+    duration: duration?.toString() || "",
+    category: selectedCategories || "",
+    date: date || "",
+    minPrice: priceRange[0]?.toString() || "0",
+    maxPrice: priceRange[1]?.toString() || "14000",
+    search: `${selectedDestinationId} ${selectedCategories}`,
+  }).toString();
+
+  console.log("Query:", query); // ✅ اطبع الكويري للتأكد
+
+  router.push(`/tours?${query}`);
+};
+
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
   return (
@@ -384,13 +397,7 @@ export default function TravelPlannerForm() {
               onClick={handleSearch}
               variant="contained"
               size="large"
-              disabled={
-                !selectedDestinationId ||
-                !duration ||
-                !selectedCategories ||
-                !date ||
-                !priceRange
-              }
+              disabled={false}
               sx={{
                 backgroundColor: muiTheme.palette.primary.main, // ✅ برتقالي أساسي
                 color: muiTheme.palette.getContrastText(

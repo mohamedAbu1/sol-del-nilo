@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import { AdviceCard } from "@/lib/constants/FixedTexts";
+import { AdviceCard } from "@/constants/FixedTexts";
 import { motion } from "framer-motion";
-import { useScreenSize } from "../../hooks/screenSize";
+import { useScreenSize } from "../../../hooks/screenSize";
 import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم
 
 const GeneralAdvice = () => {

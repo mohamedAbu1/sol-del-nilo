@@ -1,48 +1,53 @@
-import Mission from "@/auth/components/About/Mission";
-import WhoWeAre from "@/auth/components/About/WhoWeAre";
-import WhySolDelNilo from "@/auth/components/About/WhySolDelNilo";
-import DecorativeBorder from "@/auth/components/About/DecorativeBorder";
-import Header from "@/auth/components/HeaderComponets/Header";
-import { generateMetadata } from "./metadata";
-export { generateMetadata }; //todo هذه من اجل محرك البحث في جوجل SEO
-import { cookies } from "next/headers";
-import { vrefyTokenForPage } from "@/lib/utils/veryfyToken";
-import SideDecor from "@/auth/components/SideDecor ";
-import RightSideDecor from "@/auth/components/RightSideDecor";
-import SectionSix from "@/auth/components/HeroComponets/SectionSix";
-import TopAboutPage from "@/auth/components/About/TopAboutPage";
-import FaceAboutPage from "@/auth/components/About/FaceAboutPage";
-import SocialFloatingButton from "@/auth/components/HeroComponets/SocialFloatingButton";
-// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-export default async function AboutUsPage() {
-  const cookieStore = await cookies(); // ✅ استخدم await
-  const token = cookieStore.get("jwttoken")?.value;
-  const user = vrefyTokenForPage(token);
+"use client";
+import React from "react";
+import { useTheme } from "@/context/ThemeContext";
+import Header from "@/auth/components/header/Header";
+import Footer from "@/components/layout/FooterSection";
+import EgyptianBackground from "@/components/layout/EgyptianBackground";
+// import LoginModal from "@/components/home/components/LoginModal";
+// import SignUpButton from "@/components/home/components/SignUpButton";
 
+// استدعاء الأقسام الجديدة
+import AboutHero from "@/auth/components/about/AboutHero";
+import MissionValues from "@/auth/components/about/MissionValues";
+import StatsSection from "@/auth/components/about/StatsSection";
+import HeritageSection from "@/auth/components/about/HeritageSection";
+import CTASection from "@/auth/components/about/CTASection";
+import ChatWidget from "@/components/layout/ChatWidget";
+import { useAuth } from "@/context/AuthContext";
+import Head from "next/head";
+import { useLanguage } from "@/context/LanguageContext";
+import { aboutMetadata } from "@/lib/metadata/about";
+export default function AboutPage() {
+  const { theme } = useTheme();
+  const { user } = useAuth(); // ✅ جلب المستخدم الحالي
+  const { lang } = useLanguage();
+  const meta = aboutMetadata[lang] || aboutMetadata.en;
   return (
-    <main className="flex flex-col items-center justify-center font-serif min-h-screen px-6 py-16 animate-fadeIn">
-      <SideDecor />
-      <FaceAboutPage user={user} />
+    <>
+      <Head>
+        <title>{meta.title}</title>
+        <meta name="description" content={meta.description} />
+        <meta name="keywords" content={meta.keywords} />
+      </Head>
+      <main
+        className={`relative w-full min-h-screen ${theme.background} ${theme.text} overflow-hidden pt-10`}
+      >
+        <Header />
+        <EgyptianBackground />
 
-      <div className="container flex flex-col items-center justify-center">
-        <TopAboutPage />
+        {/* الأقسام */}
+        <AboutHero />
+        <MissionValues />
+        <StatsSection />
+        <HeritageSection />
+        <CTASection />
 
-        <div className="animate-slideUp delay-300">
-          <Mission />
-        </div>
-        <div className="animate-slideUp delay-500">
-          <WhoWeAre />
-        </div>
-        <div className="animate-slideUp delay-700">
-          <WhySolDelNilo />
-        </div>
-        <div className="animate-slideUp delay-900">
-          <DecorativeBorder />
-        </div>
-      </div>
-      <SocialFloatingButton />
-      <RightSideDecor />
-      <SectionSix />
-    </main>
+        <Footer />
+        {/* <SignUpButton />
+        <LoginModal /> */}
+        {user && <ChatWidget />}
+      </main>
+    </>
   );
 }

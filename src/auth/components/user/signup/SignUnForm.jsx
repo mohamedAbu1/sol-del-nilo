@@ -1,26 +1,15 @@
 "use client";
-import {
-  TextField,
-  IconButton,
-  OutlinedInput,
-  InputLabel,
-  InputAdornment,
-  FormControl,
-  Typography,
-  Button,
-} from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import Image from "next/image";
 import axios from "axios";
 import { useState } from "react";
-import { Link } from "@/i18n/navigation";
-import { useTranslations } from "next-intl";
+import { useTranslation } from "react-i18next";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { ToastContainer, toast } from "react-toastify";
-import { signIn } from "next-auth/react";
-import { useSession } from "next-auth/react";
-import { useEffect } from "react";
+import Logo from "./components/Logo";
+import Title from "./components/Title";
+import Subtitle from "./components/Subtitle";
+import RegisterForm from "./components/RegisterForm";
+import Footer from "./components/Footer";
 import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const containerVariants = {
@@ -54,12 +43,13 @@ const SignUnForm = () => {
     name: "",
     email: "",
     password: "",
+    gender: "", // ✅ جديد
   });
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
-  const t = useTranslations("SignUnForm");
+  const {t} = useTranslation("");
   const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   const handleEmailBlur = (e) => {
@@ -134,7 +124,9 @@ const SignUnForm = () => {
     }
   };
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-
+  const handleGenderChange = (e) => {
+    setFormData({ ...formData, gender: e.target.value });
+  };
   return (
     <motion.section
       className="w-full h-full lg:w-1/2 flex items-center justify-center z-20"
@@ -142,253 +134,41 @@ const SignUnForm = () => {
       initial="hidden"
       animate="visible"
     >
+      {" "}
       <motion.div
         variants={itemVariants}
         style={{
           borderRadius: "25px",
           position: "relative",
-          height: "fit-contact",
-          paddingBottom:"15px"
+          paddingBottom: "15px",
         }}
         className="w-3/4 lg:h-3/4 formDiv"
       >
+        {" "}
         <motion.div
           variants={containerVariants}
           className="w-full h-full flex flex-col items-center justify-center gap-5"
           style={{ borderRadius: "25px" }}
         >
-          {/* Logo */}
-          <motion.div variants={itemVariants} style={{ zIndex: "9999" }}>
-            <Image
-              src={
-                muiTheme.palette.mode === "dark"
-                  ? "/assets/Copilot_20251209_142706-removebg-preview.webp"
-                  : "/assets/Copilot_20251209_142706-removebg-preview.webp"
-              } // ✅ صورة حسب الثيم
-              alt="Logo"
-              width={110}
-              height={110}
-              loading="eager"
-              priority
-              placeholder="blur"
-              blurDataURL="data:image/webp;base64,..."
-              className="flex lg:hidden"
-              style={{ zIndex: "9999" }}
-            />
-          </motion.div>
-
-          {/* Title */}
-          <motion.h1
-            variants={itemVariants}
-            style={{
-              color: muiTheme.palette.secondary.main, // ✅ من الثيم
-              zIndex: "999",
-              fontSize: "28px",
-            }}
-          >
-            {t("title")}
-          </motion.h1>
-
-          {/* Subtitle */}
-          <motion.h3
-            variants={itemVariants}
-            style={{ zIndex: "999" }}
-            className="text-center"
-          >
-            <Typography
-              variant="body1"
-              sx={{ color: muiTheme.palette.text.secondary }} // ✅ من الثيم
-            >
-              {t("p")}
-            </Typography>
-          </motion.h3>
-
-          {/* Form */}
-          <motion.div variants={itemVariants} style={{ width: "100%" }}>
-            <form
-              onSubmit={handleSubmit}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "20px",
-                margin: "auto",
-                zIndex: "99999",
-              }}
-            >
-              {/* Name */}
-              <TextField
-                label="Your Name"
-                name="name"
-                value={formData.name}
-                onChange={handleEnglishOnlyChange}
-                required
-                inputProps={{ minLength: 3, maxLength: 14 }}
-                sx={{
-                  zIndex: "99999",
-                  width: "80%",
-                  input: {
-                    color: muiTheme.palette.secondary.contrastText,
-                    fontSize: "18px",
-                    fontWeight: "bold",
-                    fontFamily: "Cairo, sans-serif",
-                  },
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: muiTheme.palette.primary.light,
-                    },
-                    "&:hover fieldset": {
-                      borderColor: muiTheme.palette.primary.main,
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: muiTheme.palette.primary.light,
-                      borderWidth: "2px",
-                    },
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: muiTheme.palette.primary.light,
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: muiTheme.palette.primary.main,
-                  },
-                }}
-              />
-
-              {/* Email */}
-              <TextField
-                label="E-Mail"
-                name="email"
-                value={formData.email}
-                onChange={handleEnglishOnlyChange}
-                onBlur={handleEmailBlur}
-                required
-                sx={{
-                  zIndex: "99999",
-                  width: "80%",
-                  input: {
-                    color: muiTheme.palette.secondary.contrastText,
-                    fontSize: "18px",
-                    fontWeight: "bold",
-                    fontFamily: "Cairo, sans-serif",
-                  },
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: muiTheme.palette.primary.light,
-                    },
-                    "&:hover fieldset": {
-                      borderColor: muiTheme.palette.primary.main,
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: muiTheme.palette.primary.light,
-                      borderWidth: "2px",
-                    },
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: muiTheme.palette.primary.light,
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: muiTheme.palette.primary.main,
-                  },
-                }}
-              />
-
-              {/* Password */}
-              <FormControl
-                variant="outlined"
-                required
-                sx={{
-                  width: "80%",
-                  zIndex: "99999",
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: muiTheme.palette.primary.light,
-                    },
-                    "&:hover fieldset": {
-                      borderColor: muiTheme.palette.primary.main,
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: muiTheme.palette.primary.light,
-                      borderWidth: "2px",
-                    },
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: muiTheme.palette.primary.light,
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: muiTheme.palette.primary.main,
-                  },
-                  input: {
-                    color: muiTheme.palette.secondary.contrastText,
-                    fontSize: "18px",
-                    fontWeight: "bold",
-                    fontFamily: "Cairo, sans-serif",
-                  },
-                }}
-              >
-                <InputLabel>Your password</InputLabel>
-                <OutlinedInput
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  value={formData.password}
-                  onChange={handleEnglishOnlyChange}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={() => setShowPassword((prev) => !prev)}
-                        edge="end"
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                  label="كلمة المرور"
-                />
-              </FormControl>
-
-              {/* Submit Button */}
-              <Button
-                type="submit"
-                variant="contained"
-                sx={{
-                  width: "80%",
-                  zIndex: "99999",
-                  mt: "22px",
-                  backgroundColor: muiTheme.palette.secondary.main,
-                  color: muiTheme.palette.getContrastText(
-                    muiTheme.palette.secondary.main
-                  ),
-                }}
-              >
-                Create account
-              </Button>
-            </form>
-          </motion.div>
-
-          {/* Footer Text */}
-          <motion.h3
-            variants={itemVariants}
-            style={{ zIndex: "9999", fontSize: "22px" }}
-          >
-            <Typography sx={{ color: muiTheme.palette.text.secondary }}>
-              {t("title2")}
-            </Typography>
-          </motion.h3>
-
-          {/* Login Button */}
-          <motion.div variants={itemVariants}>
-            <Link href={"/login"}>
-              <Button sx={{ zIndex: "9999" }} variant="contained">
-                {t("btn2")}
-              </Button>
-            </Link>
-          </motion.div>
-
-          {/* Home Link */}
-         
-        </motion.div>
-      </motion.div>
-      <ToastContainer />
+          {" "}
+          <Logo muiTheme={muiTheme} itemVariants={itemVariants} />{" "}
+          <Title muiTheme={muiTheme} t={t} itemVariants={itemVariants} />{" "}
+          <Subtitle muiTheme={muiTheme} t={t} itemVariants={itemVariants} />{" "}
+          <RegisterForm
+            muiTheme={muiTheme}
+            formData={formData}
+            handleEnglishOnlyChange={handleEnglishOnlyChange}
+            handleEmailBlur={handleEmailBlur}
+            handleSubmit={handleSubmit}
+            showPassword={showPassword}
+            setShowPassword={setShowPassword}
+            itemVariants={itemVariants}
+            handleGenderChange={handleGenderChange}
+          />{" "}
+          <Footer muiTheme={muiTheme} t={t} itemVariants={itemVariants} />{" "}
+        </motion.div>{" "}
+      </motion.div>{" "}
+      <ToastContainer />{" "}
     </motion.section>
   );
 };

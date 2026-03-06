@@ -1,7 +1,11 @@
-import withNextIntl from "next-intl/plugin";
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+  images: {
+    domains: [
+      "dxpbyrcbklqrjlytmkum.supabase.co", // دومين Supabase Storage
+    ],
+  },
+};
 
-const withIntl = withNextIntl();
-
-export default withIntl({
-  reactStrictMode: true
-});
+export default nextConfig;

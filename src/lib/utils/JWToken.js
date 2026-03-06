@@ -1,34 +1,32 @@
-import jwt from "jsonwebtoken";
-import { serialize } from "cookie";
-const SECRET = process.env.JWT_SECRET || "your-secret-key";
-console.log(SECRET)
-// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-// ✅ لإنشاء التوكن
-export function generateToken(payload) {
-  return jwt.sign(payload, SECRET, { expiresIn: "7d" });
+import { SignJWT, jwtVerify } from "jose";
+
+export async function createSessionCookie(payload) {
+  const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+  const token = await new SignJWT(payload)
+    .setProtectedHeader({ alg: "HS256" })
+    .setExpirationTime("7d")
+    .sign(secret);
+
+  const cookie = `sb_access=${token}; HttpOnly; Path=/; Max-Age=604800; Secure; SameSite=Strict`;
+  return { token, cookie };
 }
-// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-// ✅ للتحقق من التوكن
-export async function verifyToken(token) {
+
+export async function verifySessionToken(token) {
   try {
-    const decoded = jwt.verify(token, SECRET);
-    return decoded;
-  } catch (error) {
-    console.error("JWT verification error:", error.message);
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+    const { payload } = await jwtVerify(token, secret);
+    return payload;
+  } catch {
     return null;
   }
 }
-// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-export function setCookie(payload) {
-  const token = generateToken(payload);
 
-  const cookie = serialize("jwttoken", token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production", // يُرسل فقط عبر HTTPS في الإنتاج
-    sameSite: "lax", // يُرسل في التنقلات العادية، يحمي من CSRF
-    path: "/", // متاح في كل صفحات الموقع
-    maxAge: 60 * 60 * 24 * 30,
-  });
-  return cookie;
+export function decodeJwt(token) {
+  try {
+    const payload = token.split(".")[1];
+    const json = atob(payload.replace(/-/g, "+").replace(/_/g, "/"));
+    return JSON.parse(json);
+  } catch {
+    return null;
+  }
 }
-// ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$

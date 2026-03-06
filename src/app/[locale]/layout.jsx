@@ -1,48 +1,23 @@
-import "../../styles/globals.css";
-import { NextIntlClientProvider } from "next-intl";
+import "../../style/globals.css";
 import { notFound } from "next/navigation";
-import { routing } from "@/i18n/routing";
-import ClientLayout from "./ClientLayout";
-import { ThemeProvider as NextThemeProvider } from "next-themes"; // ✅ من next-themes
-import { ThemeContextProvider } from "@/context/ThemeContext"; // ✅ الكونتكست الخاص بالثيم
-import { SearchProvider } from "@/context/SearchContext"; // ✅ الكونتكست الخاص بالثيم
-import { CartProvider } from "@/context/CartContext"; // ✅ الكونتكست الخاص بالثيم
+import  Providers  from "../providers"; // استدعاء الـ Providers
 
 export function generateStaticParams() {
-  return ["en", "es", "fs", "de", "it", "ar"].map((locale) => ({ locale }));
+  return ["en", "es", "de", "it", "ar", "zh"].map((locale) => ({ locale }));
 }
 
-export default function LocaleLayout({ children, params }) {
-  const locale = params.locale;
+export default async function LocaleLayout({ children, params }) {
+  const locale = await params.locale;
 
-  if (!routing.locales.includes(locale)) {
-    notFound();
-  }
-
-  let messages;
-  try {
-    messages = require(`../../messages/${locale}.json`);
-  } catch {
+  // لو اللغة مش مدعومة → notFound
+  const supportedLocales = ["en", "es", "de", "it", "ar", "zh"];
+  if (!supportedLocales.includes(locale)) {
     notFound();
   }
 
   return (
-    <html lang={locale}>
-      <body>
-        {/* ✅ NextThemeProvider يضيف class light/dark على <html> */}
-        <NextThemeProvider attribute="class" defaultTheme="light">
-          {/* ✅ ThemeContextProvider يبدّل بين lightTheme و darkTheme */}
-          <ThemeContextProvider>
-            <NextIntlClientProvider locale={locale} messages={messages}>
-              <ClientLayout>
-                <CartProvider>
-                  <SearchProvider>{children}</SearchProvider>
-                </CartProvider>
-              </ClientLayout>
-            </NextIntlClientProvider>
-          </ThemeContextProvider>
-        </NextThemeProvider>
-      </body>
-    </html>
+    <Providers>
+      <main lang={locale}>{children}</main>{" "}
+    </Providers>
   );
 }

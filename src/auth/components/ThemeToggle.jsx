@@ -1,36 +1,45 @@
 "use client";
-import { useTheme as useNextTheme } from "next-themes";
-import { useTheme as useMuiTheme } from "@mui/material/styles";
-import { useEffect, useState } from "react";
-import { MdDarkMode } from "react-icons/md";
-import { AiFillSun } from "react-icons/ai";
-import { IconButton, Tooltip } from "@mui/material";
+import React from "react";
+import { BsSun, BsMoon } from "react-icons/bs";
+import { motion } from "framer-motion";
+import { Button } from "@mui/material";
+import { useTheme } from "@/context/ThemeContext";
+import { usePathname } from "next/navigation";
 
-export default function ThemeToggle() {
-  const { resolvedTheme, setTheme } = useNextTheme(); // من next-themes
-  const muiTheme = useMuiTheme(); // من MUI
-  const [mounted, setMounted] = useState(false);
+const ThemeToggle = ({ scrolled }) => {
+  const { themeName, toggleThemeFun } = useTheme();
+  const pathname = usePathname();
 
-  useEffect(() => setMounted(true), []);
-  if (!mounted) return null;
+  const segments = pathname.split("/").filter(Boolean);
+  const isHome =
+    segments.length === 0 ||
+    (segments.length === 1 &&
+      ["en", "fr", "de", "it", "es", "pt"].includes(segments[0]));
 
   return (
-    <Tooltip
-      title={`Switch to ${resolvedTheme === "light" ? "Dark" : "Light"} Mode`}
-    >
-      <IconButton
-        onClick={() => setTheme(resolvedTheme === "light" ? "dark" : "light")}
-        sx={{
-          color: muiTheme.palette.primary.main,
-          zIndex: 9999,
-          transition: "all 0.3s ease",
-          "&:hover": {
-            color: muiTheme.palette.secondary.main,
-          },
-        }}
+    <motion.div whileHover={{ scale: 1.1 }}>
+      <Button
+        sx={{ zIndex: 9999 }}
+        onClick={toggleThemeFun}
+        className={`
+          p-2 rounded-full border transition-all duration-300
+          ${
+            themeName === "dark"
+              ? "bg-yellow-500 border-yellow-600 hover:bg-yellow-600 hover:text-white"
+              : isHome
+                ? "bg-gray-200 border-gray-300 hover:bg-gray-300 hover:text-black" // ✅ ستايل قديم للهوم
+                : "bg-white border-gray-300 hover:bg-gray-100 hover:text-black" // ✅ ستايل جديد لغير الهوم
+          }
+        `}
       >
-        {resolvedTheme === "dark" ? <AiFillSun /> : <MdDarkMode />}
-      </IconButton>
-    </Tooltip>
+        {themeName === "dark" ? (
+          <BsSun size={20} color="#fff" />
+        ) : (
+          <BsMoon size={20} color={scrolled  ? "#999" : isHome  ? "#fff": "#999"} />
+        )}
+      </Button>
+    </motion.div>
   );
-}
+};
+
+export default ThemeToggle;

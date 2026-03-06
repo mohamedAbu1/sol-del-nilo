@@ -1,139 +1,82 @@
+/* eslint-disable react-hooks/static-components */
 "use client";
-import { Button, Divider, Typography } from "@mui/material";
-import React, { useState } from "react";
-import { FaHome } from "react-icons/fa";
-import { BsFillPersonFill } from "react-icons/bs";
-import { FiSettings } from "react-icons/fi";
-import { Link } from "@/i18n/navigation";
-import { HiOutlineInformationCircle } from "react-icons/hi";
-import { MdOutlineBrowserUpdated, MdOutlineCreate } from "react-icons/md";
-import { useTripsContext } from "@/context/TripsContext";
-import { useScreenSize } from "@/auth/hooks/screenSize";
-import { useTheme } from "@mui/material/styles";
+import ThemeToggle from "@/components/ThemeToggle";
+import React from "react";
+import Link from "next/link";
+import {
+  FaHome,
+  FaPlus,
+  FaSuitcase,
+  FaUsers,
+  FaClipboardList,
+  FaChartBar,
+  FaEnvelope,
+  FaEdit,
+} from "react-icons/fa";
+import EgyptianBackground from "@/components/layout/EgyptianBackground";
 
-const Sidebar = () => {
-  const { width } = useScreenSize();
-  const { setActiveSection, activeSection } = useTripsContext();
-  const [hover, setHover] = useState(null);
-  const muiTheme = useTheme();
+export default function Sidebar({ activeSection, setActiveSection }) {
+  // ✅ دالة لتوليد زر مع حالة Active
+  const NavButton = ({ section, icon, label }) => {
+    const isActive = activeSection === section;
+    return (
+      <button
+        onClick={() => setActiveSection(section)}
+        className={`flex items-center gap-3 px-4 py-2 rounded-lg font-semibold transition-all duration-300 relative cursor-pointer
+          ${
+            isActive
+              ? "bg-gradient-to-r from-yellow-400 to-yellow-600 text-black shadow-lg border-l-4 border-yellow-500"
+              : "text-gold hover:text-yellow-400 hover:bg-black/20"
+          }`}
+      >
+        {/* ✅ خط جانبي يوضح الزر النشط */}
+        {isActive && (
+          <span className="absolute left-0 top-0 h-full w-1 bg-yellow-500 rounded-r"></span>
+        )}
 
-  const activeColor = muiTheme.palette.secondary.main;
-  const defaultColor = muiTheme.palette.text.primary;
-  const bgColor = muiTheme.palette.background.paper;
+        {/* ✅ نقطة ذهبية صغيرة بجانب الزر النشط */}
+        {isActive && (
+          <span className="absolute -left-3 w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></span>
+        )}
 
-  const navItems = [
-    { key: "home", label: "Home", icon: <FaHome /> },
-    { key: "CreateTrip", label: "Create a trip", icon: <MdOutlineCreate /> },
-    {
-      key: "UserInformation",
-      label: "User information",
-      icon: <HiOutlineInformationCircle />,
-    },
-    {
-      key: "UpdateTrip",
-      label: "Update trip",
-      icon: <MdOutlineBrowserUpdated />,
-    },
-    {
-      key: "Reservation",
-      label: "Reservation information",
-      icon: <HiOutlineInformationCircle />,
-    },
-  ];
+        {/* ✅ أيقونة مع تأثير عند النشط */}
+        <span
+          className={`text-lg transition-transform ${
+            isActive ? "scale-110 text-yellow-800 drop-shadow-md" : ""
+          }`}
+        >
+          {icon}
+        </span>
+        {label}
+      </button>
+    );
+  };
 
   return (
-    <aside
-      style={{
-        width: width * 0.25,
-        height: "100vh",
-        borderTopRightRadius: "40px",
-        borderBottomRightRadius: "40px",
-        background: `linear-gradient(180deg, ${muiTheme.palette.background.default} 0%, ${muiTheme.palette.background.paper} 100%)`,
-        boxShadow: muiTheme.shadows[6],
-      }}
-      className="flex flex-col items-center py-6"
-    >
-      {/* User Info */}
-      <div style={{paddingTop:"25px"}} className="flex flex-row items-center justify-center gap-3 mb-6">
-        <BsFillPersonFill style={{ fontSize: "30px", color: activeColor }} />
-        <Typography
-          variant="h6"
-          sx={{ color: muiTheme.palette.text.primary, fontWeight: "600",}}
-        >
-          Mohamed Ahmed
-        </Typography>
-      </div>
+    <aside className="w-64 p-6 flex flex-col gap-6 bg-black/0 border-r border-gold/30">
+      <EgyptianBackground />
 
-      <Divider sx={{ width: "80%", mb: 4 }} />
+      <h2 className="text-2xl font-bold mb-6 flex flex-row items-center justify-between">
+        <span>WasetTravel</span> <ThemeToggle />
+      </h2>
 
-      {/* Navigation */}
-      <ul className="flex flex-col gap-2 w-full px-4">
-        {navItems.map((item) => (
-          <li
-            key={item.key}
-            onMouseEnter={() => setHover(item.key)}
-            onMouseLeave={() => setHover(null)}
-            className="flex items-center gap-3 px-3 py-2 rounded-md cursor-pointer"
-            style={{
-              width:"80%",
-              paddingLeft:"20px",
-              transition: "all 0.3s ease",
-              color:
-                hover === item.key || activeSection === item.key
-                  ? activeColor
-                  : defaultColor,
-            }}
-          >
-            <span style={{ fontSize: "22px" }}>{item.icon}</span>
-            <Button
-              variant="text" // ✅ زر بدون خلفية
-              sx={{
-                backgroundColor: "transparent", // ✅ بدون خلفية
-                justifyContent: "flex-start",
-                color:
-                  hover === item.key || activeSection === item.key
-                    ? activeColor
-                    : defaultColor,
-                fontWeight:
-                  hover === item.key || activeSection === item.key
-                    ? "700"
-                    : "500",
-                textTransform: "none",
-                fontSize: "15px",
-                "&:hover": {
-                  textDecoration: "underline", // ✅ تأثير أنيق عند المرور
-                  backgroundColor: "transparent", // ✅ بدون خلفية
-                },
-              }}
-              onClick={() => setActiveSection(item.key)}
-              fullWidth
-            >
-              {item.label}
-            </Button>
-          </li>
-        ))}
-      </ul>
-
-      <Divider sx={{ width: "80%", mt: "auto", mb: 3 }} />
-
-      {/* Footer */}
-      <div  style={{paddingBottom:"25px"}}  className="flex flex-row items-center justify-center gap-3">
-        <FiSettings style={{ fontSize: "22px", color: activeColor }} />
+      <nav className="flex flex-col gap-3">
         <Link
-          href={"/"}
-          style={{
-            color: hover === "SolDelNile" ? activeColor : defaultColor,
-            fontWeight: "600",
-            transition: "color 0.3s ease",
-          }}
-          onMouseEnter={() => setHover("SolDelNile")}
-          onMouseLeave={() => setHover(null)}
+          href="/"
+          className="flex items-center gap-3 font-bold text-gold hover:text-yellow-500 transition"
         >
-          Back to Luxor & Aswan
+          ⬅ Back to Home
         </Link>
-      </div>
+
+        <NavButton section="dashboard" icon={<FaHome />} label="Dashboard" />
+        <NavButton section="addTrip" icon={<FaPlus />} label="Add New Trip" />
+        <NavButton section="trips" icon={<FaSuitcase />} label="All Trips" />
+        <NavButton section="editTrip" icon={<FaEdit />} label="Edit Trips" />
+        <NavButton section="users" icon={<FaUsers />} label="Users" />
+        <NavButton section="bookings" icon={<FaClipboardList />} label="Bookings" />
+        <NavButton section="reports" icon={<FaChartBar />} label="Reports" />
+        <NavButton section="messages" icon={<FaEnvelope />} label="Messages" />
+      </nav>
     </aside>
   );
-};
-
-export default Sidebar;
+}

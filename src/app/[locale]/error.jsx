@@ -1,9 +1,9 @@
 "use client";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-import { useScreenSize } from "@/auth/hooks/screenSize";
+import { useScreenSize } from "@/hooks/screenSize";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useTranslation } from "react-i18next";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 const ErrorPage = () => {
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
@@ -11,7 +11,7 @@ const ErrorPage = () => {
   const locale = params?.locale || "en";
   const { width } = useScreenSize();
   const isMobile = width <= 768;
-  const t = useTranslations("Error");
+  const { t } = useTranslation();
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   return (
     <div
@@ -71,7 +71,7 @@ const ErrorPage = () => {
             textAlign: "center",
           }}
         >
-          {t("p")}
+          {t("Error.p")}
         </p>
 
         {/* زر Explore Tours */}
@@ -89,7 +89,7 @@ const ErrorPage = () => {
             display: "inline-block",
           }}
         >
-          {t("btn")}
+          {t("Error.btn")}
         </a>
       </div>
 

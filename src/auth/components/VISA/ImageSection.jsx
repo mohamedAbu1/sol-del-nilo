@@ -1,13 +1,13 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import { useScreenSize } from "@/auth/hooks/screenSize";
-import { useTranslations } from "next-intl";
+import { useScreenSize } from "@/hooks/screenSize";
+import { useTranslation } from "react-i18next";
 import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم
 
 const ImageSection = () => {
   const { width } = useScreenSize();
-  const t = useTranslations("Visa");
+  const {t} = useTranslation("");
   const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي (light/dark)
 
   return (
@@ -41,13 +41,13 @@ const ImageSection = () => {
           className="text-6xl font-bold tracking-wide animate-pulseSlow"
           style={{ color: muiTheme.palette.primary.contrastText }} // ✅ النص من الثيم
         >
-          {t("VISA")}
+          {t("Visa.VISA")}
         </h1>
         <p
           className="mt-4 text-2xl font-semibold animate-fadeIn delay-400"
           style={{ color: muiTheme.palette.text.primary }} // ✅ النصوص الثانوية من الثيم
         >
-          {t("VISA_P")}
+          {t("Visa.VISA_P")}
         </p>
       </div>
     </section>

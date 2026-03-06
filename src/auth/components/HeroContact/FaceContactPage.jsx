@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import Header from "@/auth/components/HeaderComponets/Header";
+import Header from "@/auth/components/Header/Header";
 import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم
 import { Typography } from "@mui/material";
 

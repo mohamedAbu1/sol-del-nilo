@@ -1,84 +1,48 @@
-// middleware.ts
-import { NextRequest, NextResponse } from "next/server";
-import { match } from "@formatjs/intl-localematcher";
-import { verifyToken } from "@/lib/utils/JWToken";
+// middleware.js
+import { NextResponse } from "next/server";
 
-// 🌐 إعدادات اللغة
-const locales = ["en", "es", "fr", "de", "it", "pt", "ar"];
-const defaultLocale = "en";
+export function middleware(req) {
+  const url = req.nextUrl.clone();
+  const segments = url.pathname.split("/").filter(Boolean);
 
-// ✅ تحديد لغة المتصفح
-function getLocale(request) {
-  const acceptLanguage = request.headers.get("accept-language");
-  const languages =
-    acceptLanguage?.split(",").map((lang) => lang.split(";")[0]) || [];
-
-  const matched = match(languages, locales, defaultLocale);
-  return locales.includes(matched) ? matched : defaultLocale;
-}
-
-// ✅ التحقق من صلاحية الوصول لمسارات محمية
-async function protectRoute(request) {
-  const authHeader = request.headers.get("authorization");
-
-  if (!authHeader) {
-    return NextResponse.json({ error: "غير مصرح" }, { status: 401 });
-  }
-
-  const token = authHeader.replace("Bearer ", "");
-  const session = await verifyToken(token);
-
-  if (!session || session.role?.toLowerCase() !== "admin") {
-    return NextResponse.json({ error: "ممنوع الوصول" }, { status: 403 });
-  }
-
-  return null; // ✅ المرور مسموح
-}
-
-export async function middleware(request) {
-  const pathname = request.nextUrl.pathname;
-
-  // ✅ استثناء مسارات API من التوجيه الدولي
-  if (pathname.startsWith("/api")) {
+  // استثناء مسارات النظام والملفات الثابتة
+  if (
+    url.pathname.startsWith("/_next") ||
+    url.pathname.startsWith("/favicon.ico") ||
+    url.pathname.startsWith("/api") ||
+    url.pathname.startsWith("/assets") ||
+    url.pathname.startsWith("/HomePageImage") ||
+    url.pathname.startsWith("/Aswan")||
+    url.pathname.startsWith("/Fayoum")||
+    url.pathname.startsWith("/Luxor")||
+    url.pathname.startsWith("/Cairo")||
+    url.pathname.startsWith("/Hurghada")||
+    url.pathname.startsWith("/Marsa_Alam")||
+    url.pathname.startsWith("/Sharm_El_Sheikh")||
+    url.pathname.startsWith("/Alexandria")||
+    url.pathname.startsWith("/Siwa")||
+    url.pathname.startsWith("/Historicaltourism")||
+    url.pathname.startsWith("/avater")
+  ) {
     return NextResponse.next();
   }
 
-  // ✅ التوجيه حسب اللغة
-  const localeFromPath = locales.find((locale) =>
-    pathname.startsWith(`/${locale}`)
-  );
-  const browserLocale = getLocale(request);
+  // اللغات المدعومة
+  const supportedLangs = ["en", "es", "fr", "de", "it", "zh"];
 
-  if (localeFromPath && localeFromPath !== browserLocale) {
-    const newPath = pathname.replace(
-      `/${localeFromPath}`,
-      `/${browserLocale}`
-    );
-    const url = request.nextUrl.clone();
-    url.pathname = newPath;
+  // اللغة المكتشفة من المتصفح
+  const browserLang =
+    req.headers.get("accept-language")?.split(",")[0].split("-")[0] || "en";
+
+  // لو أول جزء من المسار مش لغة مدعومة → أضف اللغة المكتشفة
+  if (!segments.length || !supportedLangs.includes(segments[0])) {
+    const langToUse = supportedLangs.includes(browserLang)
+      ? browserLang
+      : "en";
+    url.pathname = `/${langToUse}${url.pathname}`;
     return NextResponse.redirect(url);
   }
 
-  if (!localeFromPath) {
-    const url = request.nextUrl.clone();
-    url.pathname = `/${browserLocale}${pathname}`;
-    return NextResponse.redirect(url);
-  }
-
-  // ✅ حماية المسارات الإدارية فقط
-  if (pathname.startsWith("/admin") || pathname.startsWith("/api/admin")) {
-    const authResult = await protectRoute(request);
-    if (authResult instanceof NextResponse) return authResult;
-  }
-
+  // لو اللغة موجودة بالفعل → لا تعمل أي إعادة توجيه
   return NextResponse.next();
 }
-
-// ✅ Matcher
-export const config = {
-  matcher: [
-    "/((?!_next|favicon.ico|assets|vercel.svg).*)",
-    "/api/admin/:path*",
-    "/admin/:path*",
-  ],
-};

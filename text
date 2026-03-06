@@ -2628,3 +2628,635 @@ export const useAppQueryContext = () => useContext(AppQueryContext);
                   )}
                 </Box>
               </Modal>
+
+
+
+
+               const handleGuideLanguageChange = (language) => {
+                  setBookingData((prev) => {
+                    const current = prev.guideLanguages;
+                    const selectedCount = Object.values(current).filter(Boolean).length;
+              
+                    // إذا تم إلغاء التحديد
+                    if (current[language]) {
+                      return {
+                        ...prev,
+                        guideLanguages: {
+                          ...current,
+                          [language]: false,
+                        },
+                      };
+                    }
+              
+                    // إذا تم التحديد
+                    if (selectedCount < 2) {
+                      return {
+                        ...prev,
+                        guideLanguages: {
+                          ...current,
+                          [language]: true,
+                        },
+                      };
+                    }
+              
+                    toast.error("You can choose only one or two languages. ❌");
+                    return prev;
+                  });
+                };
+
+                  const handleChildrenCountChange = (value) => {
+                    setBookingData((prev) => {
+                      const updated = { ...prev, childrenCount: value };
+                
+                      if (value === "") {
+                        updated.childrenAges = [];
+                        return updated;
+                      }
+                
+                      const count = parseInt(value);
+                      if (!isNaN(count)) {
+                        if (count >= 1 && count <= 12) {
+                          updated.childrenAges = Array(count)
+                            .fill("")
+                            .map((_, i) => prev.childrenAges[i] || "");
+                        } else {
+                          updated.childrenAges = [];
+                        }
+                      }
+                
+                      return updated;
+                    });
+                  };
+                
+                  // ✅ دالة تعديل عمر طفل معين
+                  const handleChildAgeChange = (index, value) => {
+                    if (/^\d{0,2}$/.test(value)) {
+                      const updatedAges = [...bookingData.childrenAges];
+                      updatedAges[index] = value;
+                      setBookingData((prev) => ({
+                        ...prev,
+                        childrenAges: updatedAges,
+                      }));
+                    }
+                  };
+                
+                  const handleBookingChange = (e) => {
+                    const { name, value } = e.target;
+                    setBookingData((prev) => ({ ...prev, [name]: value }));
+                  };
+                
+
+
+                const [hasMounted, setHasMounted] = useState(false);
+                  const [showWelcomeText, setShowWelcomeText] = useState(true);
+                  const [showHero, setShowHero] = useState(false);
+                  const [heroMoved, setHeroMoved] = useState(false);
+                  const [showBubble, setShowBubble] = useState(false);
+                  const [currentIndex, setCurrentIndex] = useState(0);
+                  const [currentIndexMB, setCurrentIndexMB] = useState(0);
+                  const [isBottom, setIsBottom] = useState(false);
+                  const [showScrollTop, setShowScrollTop] = useState(false);
+                  const { openCart, setOpenCart, openBookingModal, setOpenBookingModal } =
+                    useAppContext(); // ✅ هنا في الأعلى
+                
+                  useEffect(() => {
+                    setHasMounted(true);
+                  }, []);
+                  const muiTheme = useTheme();
+                
+                  useEffect(() => {
+                    if (!hasMounted) return;
+                    const timer1 = setTimeout(() => setShowWelcomeText(false), 1000);
+                    const timer2 = setTimeout(() => setShowHero(true), 2100);
+                    const timer3 = setTimeout(() => setHeroMoved(true), 6000);
+                    const timer4 = setTimeout(() => setShowBubble(true), 7500);
+                
+                    return () => {
+                      clearTimeout(timer1);
+                      clearTimeout(timer2);
+                      clearTimeout(timer3);
+                      clearTimeout(timer4);
+                    };
+                  }, [hasMounted]);
+                  useEffect(() => {
+                    const handleScroll = () => {
+                      const scrollY = window.scrollY;
+                      const windowHeight = window.innerHeight;
+                      const fullHeight = document.body.scrollHeight;
+                
+                      setIsBottom(scrollY + windowHeight >= fullHeight - 50);
+                      setShowScrollTop(scrollY > 50); // ✅ يظهر زر الصعود بعد 50 بكسل
+                    };
+                
+                    window.addEventListener("scroll", handleScroll);
+                    return () => window.removeEventListener("scroll", handleScroll);
+                  }, []);
+                
+                  useEffect(() => {
+                    if (!hasMounted) return;
+                
+                    const interval = setInterval(() => {
+                      setCurrentIndex((prev) => (prev + 1) % desktopImages.length);
+                    }, 15000);
+                    return () => clearInterval(interval);
+                  }, [hasMounted]);
+                
+                  useEffect(() => {
+                    if (!hasMounted) return;
+                
+                    const interval = setInterval(() => {
+                      setCurrentIndexMB((prev) => (prev + 1) % desktopImagesMB.length);
+                    }, 15000);
+                    return () => clearInterval(interval);
+                  }, [hasMounted]);
+                
+                  useEffect(() => {
+                    const handleScroll = () => {
+                      const scrollY = window.scrollY;
+                      const windowHeight = window.innerHeight;
+                      const fullHeight = document.body.scrollHeight;
+                      setIsBottom(scrollY + windowHeight >= fullHeight - 50);
+                    };
+                
+                    window.addEventListener("scroll", handleScroll);
+                    return () => window.removeEventListener("scroll", handleScroll);
+                  }, []);
+                
+
+
+
+
+
+
+
+                 const ref = useRef(null);
+                  const [hasAnimated, setHasAnimated] = useState(false);
+                  const inView = useInView(ref, { amount: 0.3 });
+                
+                  React.useEffect(() => {
+                    if (inView && !hasAnimated) {
+                      setHasAnimated(true);
+                    }
+                  }, [inView, hasAnimated]);
+                  // ✅ لو الرحلة يوم واحد
+                
+                  return (
+                    <div ref={ref}>
+                      {hasAnimated && (
+                        <motion.div
+                          initial={{ opacity: 0, x: -100 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.6 }}
+                        >
+                          {children}
+                        </motion.div>
+                      )}
+                    </div>
+                  );
+                };
+                const InformationCard = ({
+                  tour,
+                  nan,
+                  finalPriceAfterRival,
+                  selectedOptions,
+                  selectedOptions2,
+                  bookingData,
+                  setBookingData,
+                }) => {
+                  const { width2 } = useScreenSize();
+                  const isOneDay = tour?.TripDuration <= 1;
+                
+                  // ✅ لو الرحلة عدة أيام → نجمع الأنشطة حسب اليوم
+                  let groupedProgram = {};
+                
+                  if (!isOneDay) {
+                    tour?.tripprogram?.forEach((item) => {
+                      if (!groupedProgram[item.day]) {
+                        groupedProgram[item.day] = [];
+                      }
+                      groupedProgram[item.day].push({
+                        time: item.time,
+                        program: item.program,
+                      });
+                    });
+                  }
+                
+                  const days = Object.keys(groupedProgram);
+                  const [currentDayIndex, setCurrentDayIndex] = useState(0);
+                
+                  const showPagination = days.length > 3;
+                
+                  const currentDay = days[currentDayIndex];
+                  const archaeologicalPlaces = [
+                    "Philae Temple",
+                    "Philae",
+                    "Karnak Temple",
+                    "Karnak",
+                    "sphinx",
+                    "Luxor Temple",
+                    "Luxor",
+                    "Abu Simbel Temple",
+                    "Abu Simbel",
+                    "Valley of the Kings",
+                    "Hatshepsut",
+                    "Pyramids",
+                    "Edfu",
+                    "the Sphinx",
+                    "Egyptian Museum",
+                    "catacombs of Kom El Shoqafa",
+                    "Qaitbay",
+                    "Lighthouse of Alexandria,",
+                  ];
+                  const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي
+                  const parseDescription = (text) => {
+                    let parts = text.split(
+                      /(Philae Temple|Lighthouse of Alexandria|Philae|Qaitbay|catacombs of Kom El Shoqafa|Egyptian Museum|Hatshepsut|the Sphinx|Pyramids|Edfu|Karnak Temple|Karnak|sphinx|Luxor Temple|Luxor|Valley of the Kings|Abu Simbel Temple|Abu Simbel)/g
+                    ); // Regex يلتقط أسماء الأماكن
+                    return parts.map((part, idx) => {
+                      if (archaeologicalPlaces.includes(part.trim())) {
+                        return <PlaceName key={idx} name={part.trim()} />;
+                      }
+                      return part;
+                    });
+                  };
+                  const paxOptions = [
+                    {
+                      title: "single",
+                      dec: "Price per person for single",
+                      prise: parseFloat(finalPriceAfterRival).toFixed(2),
+                    },
+                    {
+                      title: "2-3 pax",
+                      dec: "Price per person for 2-3 pax",
+                      prise: parseFloat(finalPriceAfterRival).toFixed(2) - 50,
+                    },
+                    {
+                      title: "4-8 pax",
+                      dec: "Price per person for 4-8 pax",
+                      prise: parseFloat(finalPriceAfterRival).toFixed(2) - 100,
+                    },
+                    {
+                      title: "9-15 pax",
+                      dec: "Price per person for 9-15 pax",
+                      prise: parseFloat(finalPriceAfterRival).toFixed(2) - 150,
+                    },
+                    {
+                      title: "16-50 pax",
+                      dec: "Price per person for 16-50 pax",
+                      prise: parseFloat(finalPriceAfterRival).toFixed(2) - 200,
+                    },
+                  ];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   const router = useRouter();
+                    const pathname = usePathname();
+                    const searchParams = useSearchParams();
+                    const locale = pathname.split("/")[1] || "en";
+                    const { tours } = useToursContext();
+                    // ------------------------------------------------------------
+                    // ✅ قراءة القيم من الكويري
+                    const cityFromQuery = searchParams.get("destination") || "";
+                    const categoryFromQuery = searchParams.get("category") || "";
+                    const dateFromQuery = searchParams.get("date") || "";
+                    const minPrice = parseInt(searchParams.get("minPrice") || "0");
+                    const maxPrice = parseInt(searchParams.get("maxPrice") || "14000");
+                    const durationFromQuery = parseInt(searchParams.get("duration") || "10");
+                    const searchFromQuery = searchParams.get("search") || "";
+                    // ------------------------------------------------------------
+                    // ✅ حالات الفلاتر
+                    const [openDrawer, setOpenDrawer] = useState(false);
+                    const [viewMode, setViewMode] = useState("grid");
+                    const [currentPage, setCurrentPage] = useState(1);
+                    const itemsPerPage = 6;
+                    const [sortBy, setSortBy] = useState("alphabetical");
+                    // ------------------------------------------------------------
+                    // ✅ حالة فتح/إغلاق الـ Accordion للوجهات
+                    const [expanded, setExpanded] = useState(false);
+                  
+                    const [selectedDestinations, setSelectedDestinations] = useState([]);
+                    const [selectedCategories, setSelectedCategories] = useState([]);
+                    const [priceRange, setPriceRange] = useState([minPrice, maxPrice]);
+                    const [durationRange, setDurationRange] = useState([0, durationFromQuery]);
+                    const [date, setDate] = useState(dateFromQuery);
+                    const [searchText, setSearchText] = useState(searchFromQuery);
+                    const [expandedCategories, setExpandedCategories] = useState(false);
+                  
+                    // ✅ Popover للمدة
+                    const [openDuration, setOpenDuration] = useState(false);
+                    const [anchorElDuration, setAnchorElDuration] = useState(null);
+                    const handleDurationClick = (event) => {
+                      setAnchorElDuration(event.currentTarget);
+                      setOpenDuration(true);
+                    };
+                    const handleDurationClose = () => {
+                      setAnchorElDuration(null);
+                      setOpenDuration(false);
+                    };
+                  
+                    // ✅ Popover للسعر
+                    const [openPrice, setOpenPrice] = useState(false);
+                    const [anchorElPrice, setAnchorElPrice] = useState(null);
+                    const handlePriceClick = (event) => {
+                      setAnchorElPrice(event.currentTarget);
+                      setOpenPrice(true);
+                    };
+                    const handlePriceClose = () => {
+                      setAnchorElPrice(null);
+                      setOpenPrice(false);
+                    };
+                  
+                    // ------------------------------------------------------------
+                    // ✅ تحديث الحالات من الكويري عند أول تحميل
+                    useEffect(() => {
+                      if (cityFromQuery && cityFromQuery.toLowerCase() !== "all") {
+                        setSelectedDestinations(
+                          cityFromQuery
+                            .split(",")
+                            .filter(Boolean)
+                            .map((c) => c.toLowerCase()),
+                        );
+                      }
+                      if (categoryFromQuery && categoryFromQuery.toLowerCase() !== "all") {
+                        setSelectedCategories(
+                          categoryFromQuery
+                            .split(",")
+                            .filter(Boolean)
+                            .map((c) => c.trim().toLowerCase()),
+                        );
+                      }
+                    }, [cityFromQuery, categoryFromQuery]);
+                  
+                    // ------------------------------------------------------------
+                    // ✅ التحقق من صحة الحقول
+                    const validateFields = () => {
+                      if (!selectedDestinations.length) {
+                        toast.error("❌ برجاء اختيار الوجهة (Destination)");
+                        return false;
+                      }
+                      if (!durationRange[1]) {
+                        toast.error("❌ برجاء اختيار مدة الرحلة (Duration)");
+                        return false;
+                      }
+                      if (!selectedCategories.length) {
+                        toast.error("❌ برجاء اختيار الفئة (Category)");
+                        return false;
+                      }
+                      if (!date) {
+                        toast.error("❌ برجاء اختيار التاريخ (Date)");
+                        return false;
+                      }
+                      if (!priceRange || priceRange.length !== 2) {
+                        toast.error("❌ برجاء تحديد نطاق السعر (Price Range)");
+                        return false;
+                      }
+                      return true;
+                    };
+                  
+                    // ------------------------------------------------------------
+                    // ✅ تحديث الكويري عند تغيير الفلاتر
+                    const updateQueryParams = () => {
+                      const query = new URLSearchParams({
+                        destination: selectedDestinations.join(","),
+                        category: selectedCategories.join(","),
+                        date,
+                        duration: durationRange[1].toString(),
+                        minPrice: priceRange[0].toString(),
+                        maxPrice: priceRange[1].toString(),
+                        search: searchText || "All",
+                      }).toString();
+                  
+                      router.push(`${pathname}?${query}`, { scroll: false });
+                    };
+                  
+                    // ------------------------------------------------------------
+                    // ✅ البحث
+                    const handleSearch = () => {
+                      if (!validateFields()) return;
+                  
+                      const query = new URLSearchParams({
+                        destination: selectedDestinations.join(","),
+                        duration: durationRange[1].toString(),
+                        category: selectedCategories.join(","),
+                        date,
+                        minPrice: priceRange[0].toString(),
+                        maxPrice: priceRange[1].toString(),
+                        search: `${selectedDestinations.join(" ")} ${selectedCategories.join(" ")}`,
+                      }).toString();
+                  
+                      router.push(`/tours?${query}`);
+                    };
+                  
+                    // ------------------------------------------------------------
+                    // ✅ دالة موحدة لتبديل الاختيارات
+                    const toggleSelection = (list, setList, value, allValues = []) => {
+                      const normalized = value.toLowerCase();
+                      let updated;
+                      if (value === "ALL") {
+                        updated = allValues.map((v) => v.toLowerCase());
+                      } else {
+                        updated = list.includes(normalized)
+                          ? list.filter((item) => item !== normalized)
+                          : [...list, normalized];
+                      }
+                      setList(updated);
+                      updateQueryParams();
+                    };
+                  
+                    const handleToggleCity = (cityNameObj) => {
+                      const englishName = normalizeToEnglish(cityNameObj);
+                      let updated;
+                      if (selectedDestinations.includes(englishName)) {
+                        updated = selectedDestinations.filter((d) => d !== englishName);
+                      } else {
+                        updated = [...selectedDestinations, englishName];
+                      }
+                      setSelectedDestinations(updated);
+                      updateQueryParams();
+                    };
+                  
+                    const handleToggleCategory = (categoryName, allCategories = []) =>
+                      toggleSelection(
+                        selectedCategories,
+                        setSelectedCategories,
+                        categoryName.trim().toLowerCase(),
+                        allCategories.map((c) => c.trim().toLowerCase()),
+                      );
+                  
+                    const handleToggle = (cityName) => {
+                      const normalized = cityName.toLowerCase();
+                      let updated;
+                      if (selectedDestinations.includes(normalized)) {
+                        updated = selectedDestinations.filter((d) => d !== normalized);
+                      } else {
+                        updated = [...selectedDestinations, normalized];
+                      }
+                      setSelectedDestinations(updated);
+                      updateQueryParams(); // ✅ مهم: حدّث الكويري بعد التبديل
+                    };
+                  
+                    // ------------------------------------------------------------
+                    // ✅ فلترة الرحلات مباشرة بناءً على الفلاتر
+                    const filteredTours = useMemo(() => {
+                      if (!tours || tours.length === 0) return [];
+                  
+                      const destinationsSet = new Set(selectedDestinations);
+                      const categoriesSet = new Set(selectedCategories);
+                  
+                      return tours.filter((tour) => {
+                        const tourCity = (tour.city?.name || tour.city || "").toLowerCase();
+                        const tourCategory = (
+                          tour.category?.name ||
+                          tour.category ||
+                          ""
+                        ).toLowerCase();
+                  
+                        const matchesSearch =
+                          !searchText ||
+                          searchText === "All" ||
+                          (typeof tour.title === "string"
+                            ? tour.title.toLowerCase().includes(searchText.toLowerCase())
+                            : (tour.title?.[locale] || tour.title?.en || "")
+                                .toLowerCase()
+                                .includes(searchText.toLowerCase()));
+                  
+                        const matchesCity =
+                          destinationsSet.size === 0 || destinationsSet.has(tourCity);
+                  
+                        const matchesCategory =
+                          categoriesSet.size === 0 || categoriesSet.has(tourCategory);
+                  
+                        return matchesCity && matchesCategory && matchesSearch;
+                      });
+                    }, [tours, selectedDestinations, selectedCategories, searchText, locale]);
+                  
+                    // ✅ ترتيب الرحلات بشكل آمن
+                    const sortedTours = useMemo(() => {
+                      let sorted = [...filteredTours];
+                      if (sortBy === "alphabetical") {
+                        sorted.sort((a, b) => {
+                          const aTitle =
+                            typeof a.title === "string"
+                              ? a.title
+                              : a.title?.[locale] || a.title?.en || "";
+                          const bTitle =
+                            typeof b.title === "string"
+                              ? b.title
+                              : b.title?.[locale] || b.title?.en || "";
+                          return aTitle.localeCompare(bTitle);
+                        });
+                      } else if (sortBy === "price") {
+                        sorted.sort((a, b) => a.price - b.price);
+                      } else if (sortBy === "duration") {
+                        sorted.sort((a, b) => a.duration - b.duration);
+                      } else if (sortBy === "popular") {
+                        sorted.sort((a, b) => (b.reviewsCount || 0) - (a.reviewsCount || 0));
+                      }
+                      return sorted;
+                    }, [filteredTours, sortBy, locale]);
+                    // ------------------------------------------------------------
+                    // ✅ حساب الصور الافتراضية
+                    const city = cityFromQuery;
+                    const category = categoryFromQuery;
+                  
+                    let imagePath;
+                    if (city === "All" && category === "All") {
+                      imagePath = defaultImage;
+                    } else if (city === "All") {
+                      imagePath = categoryImages[category] || defaultImage;
+                    } else if (category === "All") {
+                      imagePath = cityImages[city] || defaultImage;
+                    } else {
+                      imagePath = cityImages[city] || categoryImages[category] || defaultImage;
+                    }
+                  
+                    // ------------------------------------------------------------
+                    // ✅ حساب عدد الرحلات لكل مدينة وفئة
+                    const cityCounts = useMemo(() => {
+                      if (!tours || tours.length === 0) return {};
+                      const counts = {};
+                      tours.forEach((tour) => {
+                        (tour.cities || []).forEach((c) => {
+                          const englishName = normalizeToEnglish(c.name); // ✅ استخدم c.name مباشرة
+                          if (englishName) {
+                            counts[englishName] = (counts[englishName] || 0) + 1;
+                          }
+                        });
+                      });
+                      return counts;
+                    }, [tours]);
+                  
+                    const categoryCounts = useMemo(() => {
+                      if (!tours || tours.length === 0) return {};
+                      const counts = {};
+                      tours.forEach((tour) => {
+                        (tour.categories || []).forEach((cat) => {
+                          const englishKey = normalizeToEnglish(cat.name); // ✅ نفس منطق المدن
+                          if (englishKey) {
+                            counts[englishKey] = (counts[englishKey] || 0) + 1;
+                          }
+                        });
+                      });
+                      return counts;
+                    }, [tours]);
+                  
+                    useEffect(() => {
+                      if (tours && tours.length > 0) {
+                        const allCities = Array.from(
+                          new Set(
+                            tours
+                              .map((tour) => {
+                                const raw = tour?.city?.name ?? tour?.city ?? "";
+                                return typeof raw === "string" ? raw.trim().toLowerCase() : "";
+                              })
+                              .filter(Boolean),
+                          ),
+                        );
+                        setSelectedDestinations(allCities); // ✅ حط كل المدن في الـ state
+                      }
+                    }, [tours]);
+                    useEffect(() => {
+                      if (tours && tours.length > 0) {
+                        const allCategories = Array.from(
+                          new Set(
+                            tours
+                              .map((tour) => {
+                                const raw = tour?.category?.name ?? tour?.category ?? "";
+                                return typeof raw === "string" ? raw.trim().toLowerCase() : "";
+                              })
+                              .filter(Boolean),
+                          ),
+                        );
+                        // لو selectedCategories فاضي → املاه بكل الفئات
+                        if (selectedCategories.length === 0) {
+                          setSelectedCategories(allCategories);
+                        }
+                      }
+                    }, [tours]);
+                  
+                    // ------------------------------------------------------------
+                    let sortedVisibleTours = [...visibleTours];
+                  
+                    if (sortBy === "alphabetical") {
+                      sortedVisibleTours.sort((a, b) => a.title.localeCompare(b.title));
+                    } else if (sortBy === "price") {
+                      sortedVisibleTours.sort((a, b) => a.price - b.price);
+                    } else if (sortBy === "duration") {
+                      sortedVisibleTours.sort((a, b) => a.duration - b.duration);
+                    } else if (sortBy === "popular") {
+                      sortedVisibleTours.sort((a, b) => b.reviewsCount - a.reviewsCount);
+                    }
+                  
+                    // ------------------------------------------------------------
+                  

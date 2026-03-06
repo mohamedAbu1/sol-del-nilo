@@ -1,9 +1,9 @@
 "use client";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-import { useScreenSize } from "@/auth/hooks/screenSize";
+import { useScreenSize } from "@/hooks/screenSize";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useTranslation } from "react-i18next";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 export default function NotFound() {
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
@@ -11,7 +11,7 @@ export default function NotFound() {
   const locale = params?.locale || "en";
   const { width } = useScreenSize();
   const isMobile = width <= 768;
-  const t = useTranslations("NotFoundPage");
+  const { t } = useTranslation();
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   return (
     <div
@@ -71,7 +71,7 @@ export default function NotFound() {
             textAlign: "center",
           }}
         >
-          {t("p")}
+          {t("NotFoundPage.p")}
         </p>
 
         {/* زر Explore Tours */}
@@ -89,7 +89,7 @@ export default function NotFound() {
             display: "inline-block",
           }}
         >
-          {t("btn")}
+          {t("NotFoundPage.btn")}
         </a>
       </div>
 

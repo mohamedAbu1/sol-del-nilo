@@ -1,11 +1,11 @@
 "use client";
 
 import React from "react";
-import { useTranslations } from "next-intl";
+import { useTranslation } from "react-i18next";
 import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم
 
 const ContentSection = () => {
-  const t = useTranslations("Visa");
+  const {t} = useTranslation("");
   const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي (light/dark)
 
   return (
@@ -19,13 +19,13 @@ const ContentSection = () => {
           className="text-3xl font-bold mb-4"
           style={{ color: muiTheme.palette.primary.main }}
         >
-          {t("title1")}
+          {t("Visa.title1")}
         </h2>
         <p
           className="text-lg leading-relaxed"
           style={{ color: muiTheme.palette.text.primary }}
         >
-          {t("p2")}
+          {t("Visa.p2")}
         </p>
       </div>
 
@@ -35,7 +35,7 @@ const ContentSection = () => {
           className="text-3xl font-bold mb-4 animate-slideUp delay-600"
           style={{ color: muiTheme.palette.primary.main }}
         >
-          {t("title2")}
+          {t("Visa.title2")}
         </h2>
         <div className="overflow-x-auto">
           <table
@@ -54,26 +54,26 @@ const ContentSection = () => {
               }}
             >
               <tr>
-                <th className="px-4 py-2">{t("th")}</th>
-                <th className="px-4 py-2">{t("th2")}</th>
-                <th className="px-4 py-2">{t("th3")}</th>
+                <th className="px-4 py-2">{t("Visa.th")}</th>
+                <th className="px-4 py-2">{t("Visa.th2")}</th>
+                <th className="px-4 py-2">{t("Visa.th3")}</th>
               </tr>
             </thead>
             <tbody>
               <tr style={{ borderTop: `1px solid ${muiTheme.palette.divider}` }}>
-                <td className="px-4 py-2">{t("th4")}</td>
-                <td className="px-4 py-2">{t("th5")}</td>
-                <td className="px-4 py-2">{t("th6")}</td>
+                <td className="px-4 py-2">{t("Visa.th4")}</td>
+                <td className="px-4 py-2">{t("Visa.th5")}</td>
+                <td className="px-4 py-2">{t("Visa.th6")}</td>
               </tr>
               <tr style={{ borderTop: `1px solid ${muiTheme.palette.divider}` }}>
-                <td className="px-4 py-2">{t("th7")}</td>
-                <td className="px-4 py-2">{t("th8")}</td>
-                <td className="px-4 py-2">{t("th9")}</td>
+                <td className="px-4 py-2">{t("Visa.th7")}</td>
+                <td className="px-4 py-2">{t("Visa.th8")}</td>
+                <td className="px-4 py-2">{t("Visa.th9")}</td>
               </tr>
               <tr style={{ borderTop: `1px solid ${muiTheme.palette.divider}` }}>
-                <td className="px-4 py-2">{t("th10")}</td>
-                <td className="px-4 py-2">{t("th11")}</td>
-                <td className="px-4 py-2">{t("th12")}</td>
+                <td className="px-4 py-2">{t("Visa.th10")}</td>
+                <td className="px-4 py-2">{t("Visa.th11")}</td>
+                <td className="px-4 py-2">{t("Visa.th12")}</td>
               </tr>
             </tbody>
           </table>
@@ -92,11 +92,11 @@ const ContentSection = () => {
           className="list-disc list-inside space-y-2 text-lg"
           style={{ color: muiTheme.palette.text.primary }}
         >
-          <li>{t("li")}</li>
-          <li>{t("li2")}</li>
-          <li>{t("li3")}</li>
-          <li>{t("li4")}</li>
-          <li>{t("li5")}</li>
+          <li>{t("Visa.li")}</li>
+          <li>{t("Visa.li2")}</li>
+          <li>{t("Visa.li3")}</li>
+          <li>{t("Visa.li4")}</li>
+          <li>{t("Visa.li5")}</li>
         </ul>
       </div>
 
@@ -106,7 +106,7 @@ const ContentSection = () => {
           className="text-3xl font-bold mb-4"
           style={{ color: muiTheme.palette.primary.main }}
         >
-          {t("title4")}
+          {t("Visa.title4")}
         </h2>
         <table
           className="w-full text-left"
@@ -124,18 +124,18 @@ const ContentSection = () => {
             }}
           >
             <tr>
-              <th className="px-4 py-2">{t("th13")}</th>
-              <th className="px-4 py-2">{t("th14")}</th>
+              <th className="px-4 py-2">{t("Visa.th13")}</th>
+              <th className="px-4 py-2">{t("Visa.th14")}</th>
             </tr>
           </thead>
           <tbody>
             <tr style={{ borderTop: `1px solid ${muiTheme.palette.divider}` }}>
-              <td className="px-4 py-2">{t("th15")}</td>
-              <td className="px-4 py-2">{t("th16")}</td>
+              <td className="px-4 py-2">{t("Visa.th15")}</td>
+              <td className="px-4 py-2">{t("Visa.th16")}</td>
             </tr>
             <tr style={{ borderTop: `1px solid ${muiTheme.palette.divider}` }}>
-              <td className="px-4 py-2">{t("th17")}</td>
-              <td className="px-4 py-2">{t("th18")}</td>
+              <td className="px-4 py-2">{t("Visa.th17")}</td>
+              <td className="px-4 py-2">{t("Visa.th18")}</td>
             </tr>
           </tbody>
         </table>
@@ -147,17 +147,17 @@ const ContentSection = () => {
           className="text-3xl font-bold mb-4"
           style={{ color: muiTheme.palette.primary.main }}
         >
-          {t("title5")}
+          {t("Visa.title5")}
         </h2>
         <ol
           className="list-decimal list-inside space-y-2 text-lg"
           style={{ color: muiTheme.palette.text.primary }}
         >
-          <li>{t("li6")}</li>
-          <li>{t("li7")}</li>
-          <li>{t("li8")}</li>
-          <li>{t("li9")}</li>
-          <li>{t("li10")}</li>
+          <li>{t("Visa.li6")}</li>
+          <li>{t("Visa.li7")}</li>
+          <li>{t("Visa.li8")}</li>
+          <li>{t("Visa.li9")}</li>
+          <li>{t("Visa.li10")}</li>
         </ol>
         <div className="mt-4 space-x-4">
           <a
@@ -169,7 +169,7 @@ const ContentSection = () => {
               textDecoration: "underline",
             }}
           >
-            {t("link1")}
+            {t("Visa.link1")}
           </a>
           <a
             href="https://www.presidency.eg/en/projects/evisa/"
@@ -181,7 +181,7 @@ const ContentSection = () => {
               marginLeft: "20px",
             }}
           >
-            {t("link2")}
+            {t("Visa.link2")}
           </a>
         </div>
       </div>
@@ -192,16 +192,16 @@ const ContentSection = () => {
           className="text-3xl font-bold mb-4"
           style={{ color: muiTheme.palette.primary.main }}
         >
-          {t("title6")}
+          {t("Visa.title6")}
         </h2>
         <ul
           className="list-disc list-inside space-y-2 text-lg"
           style={{ color: muiTheme.palette.text.primary }}
         >
-          <li>{t("li11")}</li>
-          <li>{t("li12")}</li>
-          <li>{t("li13")}</li>
-          <li>{t("li14")}</li>
+          <li>{t("Visa.li11")}</li>
+          <li>{t("Visa.li12")}</li>
+          <li>{t("Visa.li13")}</li>
+          <li>{t("Visa.li14")}</li>
         </ul>
       </div>
 
@@ -211,7 +211,7 @@ const ContentSection = () => {
           className="text-3xl font-bold mb-4"
           style={{ color: muiTheme.palette.primary.main }}
         >
-          {t("title7")}
+          {t("Visa.title7")}
         </h2>
         <p className="text-lg" style={{ color: muiTheme.palette.text.primary }}>
           {t("p3")}

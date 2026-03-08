@@ -4,7 +4,7 @@ export default function RootLayout({ children }) {
   return (
     <html>
       <head>
-        <title>SolDelNilo - Discover Egypt</title>
+        <title>LUXOR𓂀ASWAN - Discover Egypt</title>
         <meta
           name="description"
           content="SolDelNilo is your gateway to Egypt's beauty. Explore tours, cities, and cultural experiences."

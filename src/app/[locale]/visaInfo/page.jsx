@@ -1,5 +1,5 @@
 "use client";
-import Header from "@/auth/components/Header/Header";
+import Header from "@/auth/components/header/Header";
 import ImageSection from "@/auth/components/VISA/ImageSection";
 import ContentSection from "@/auth/components/VISA/ContentSection";
 import GeneralAdvice from "@/auth/components/VISA/GeneralAdvice";

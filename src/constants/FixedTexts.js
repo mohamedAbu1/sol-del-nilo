@@ -1,7 +1,6 @@
 // todo هنا نقوم بكتابة العناصر الثابته في الموقع لاستخدمها في اكثر من مكان
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-import "../../styles/globals.css";
-import { BiLogoFacebook, BiLogoGmail } from "react-icons/bi";
+
 
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 export const DOMAIN = "http://localhost:3000";

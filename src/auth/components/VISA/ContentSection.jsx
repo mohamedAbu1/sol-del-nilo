@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم
 
 const ContentSection = () => {
-  const {t} = useTranslation("");
+  const { t } = useTranslation("visa");
   const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي (light/dark)
 
   return (
@@ -19,7 +19,7 @@ const ContentSection = () => {
           className="text-3xl font-bold mb-4"
           style={{ color: muiTheme.palette.primary.main }}
         >
-          {t("Visa.title1")}
+          {t("title1")}
         </h2>
         <p
           className="text-lg leading-relaxed"

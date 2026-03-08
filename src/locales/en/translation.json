@@ -58,8 +58,8 @@
     "SelectCategory": "SelectCategory",
     "p6": "No 5-star reviews yet",
     "h6": "What Our Travelers Say",
-    "p9":"Please log in and book your car now ✨",
-    "reviews":"reviews"
+    "p9": "Please log in and book your car now ✨",
+    "reviews": "reviews"
   },
   "trips": {
     "Searchtrips": "Search trips...",
@@ -120,5 +120,46 @@
   },
   "tripsId": {
     "submitReview": "Submit Review"
+  },
+  "visa": {
+    "VISA": "Egypt Visa",
+    "VISA_P": "Apply easily for your Egyptian visa",
+    "title1": "Who Can Apply",
+    "p2": "Citizens of eligible countries can apply online...",
+    "title2": "Types of Visas",
+    "th": "Visa Type",
+    "th2": "Duration",
+    "th3": "Requirements",
+    "th4": "Tourist Visa",
+    "th5": "30 Days",
+    "th6": "Passport, Photo",
+    "title3": "Basic Requirements",
+    "li": "Valid passport",
+    "li2": "Recent photo",
+    "li3": "Payment method",
+    "li4": "Completed form",
+    "li5": "Supporting documents",
+    "title4": "Fees",
+    "th13": "Visa Type",
+    "th14": "Fee",
+    "th15": "Tourist Visa",
+    "th16": "$25",
+    "th17": "Multiple Entry",
+    "th18": "$60",
+    "title5": "Application Steps",
+    "li6": "Fill out the form",
+    "li7": "Upload documents",
+    "li8": "Pay fees",
+    "li9": "Wait for approval",
+    "li10": "Receive visa",
+    "link1": "Apply via official portal",
+    "link2": "Presidency eVisa project",
+    "title6": "Important Notes",
+    "li11": "Visa is non-refundable",
+    "li12": "Processing time may vary",
+    "li13": "Keep a copy of your visa",
+    "li14": "Follow entry rules",
+    "title7": "Contact",
+    "p3": "For inquiries, contact:"
   }
 }

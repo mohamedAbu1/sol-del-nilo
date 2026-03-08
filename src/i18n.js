@@ -23,6 +23,7 @@ i18n
         trips: en.trips,
         about: en.about,
         contact: en.contact,
+        visaInfo: en.visaInfo,
       },
       es: {
         header: es.header,
@@ -31,6 +32,7 @@ i18n
         trips: es.trips,
         about: es.about,
         contact: es.contact,
+        visaInfo: es.visaInfo,
       },
       fr: {
         header: fr.header,
@@ -39,6 +41,7 @@ i18n
         trips: fr.trips,
         about: fr.about,
         contact: fr.contact,
+        visaInfo: fr.visaInfo,
       },
       de: {
         header: de.header,
@@ -47,6 +50,7 @@ i18n
         trips: de.trips,
         about: de.about,
         contact: de.contact,
+        visaInfo: de.visaInfo,
       },
       it: {
         header: it.header,
@@ -55,14 +59,16 @@ i18n
         trips: it.trips,
         about: it.about,
         contact: it.contact,
+        visaInfo: it.visaInfo,
       },
-      "zh": {
+      zh: {
         header: zhCN.header,
         home: zhCN.home,
         footer: zhCN.footer,
         trips: zhCN.trips,
         about: zhCN.about,
         contact: zhCN.contact,
+        visaInfo: zhCN.visaInfo,
       },
     },
     fallbackLng: "en", // اللغة الافتراضية لو اللغة غير موجودة

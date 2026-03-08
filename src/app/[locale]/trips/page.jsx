@@ -19,14 +19,70 @@ import { tripsMetadata } from "@/lib/metadata/trips";
 
 export default function TripsPage() {
   const trips = [
-    { title: "Nile Cruise", city: "Cairo", category: "Cruise", price: 500, popular: true, img: "/HomePageImage/pexels-radwa-magdy-1718930-21668633.webp" },
-    { title: "Desert Safari", city: "Siwa", category: "Adventure", price: 300, popular: false, img: "/HomePageImage/pexels-ozgomz-7566890.webp" },
-    { title: "Red Sea Diving", city: "Hurghada", category: "Diving", price: 700, popular: true, img: "/HomePageImage/pexels-ozgomz-7566888.webp" },
-    { title: "Nile Cruise", city: "Cairo", category: "Cruise", price: 500, popular: true, img: "/HomePageImage/pexels-oualid-soussi-2150533856-35050672.webp" },
-    { title: "Desert Safari", city: "Siwa", category: "Adventure", price: 300, popular: false, img: "/HomePageImage/pexels-furknsaglam-1596977-21348185.webp" },
-    { title: "Red Sea Diving", city: "Hurghada", category: "Diving", price: 700, popular: true, img: "/HomePageImage/pexels-yasmine-qasem-1054896-2034684.webp" },
-    { title: "Luxor Temples", city: "Luxor", category: "Historical", price: 400, popular: true, img: "/HomePageImage/luxor-temple.webp" },
-    { title: "Aswan Tour", city: "Aswan", category: "Historical", price: 350, popular: false, img: "/HomePageImage/aswan-tour.webp" },
+    {
+      title: "Nile Cruise",
+      city: "Cairo",
+      category: "Cruise",
+      price: 500,
+      popular: true,
+      img: "/HomePageImage/pexels-radwa-magdy-1718930-21668633.webp",
+    },
+    {
+      title: "Desert Safari",
+      city: "Siwa",
+      category: "Adventure",
+      price: 300,
+      popular: false,
+      img: "/HomePageImage/pexels-ozgomz-7566890.webp",
+    },
+    {
+      title: "Red Sea Diving",
+      city: "Hurghada",
+      category: "Diving",
+      price: 700,
+      popular: true,
+      img: "/HomePageImage/pexels-ozgomz-7566888.webp",
+    },
+    {
+      title: "Nile Cruise",
+      city: "Cairo",
+      category: "Cruise",
+      price: 500,
+      popular: true,
+      img: "/HomePageImage/pexels-oualid-soussi-2150533856-35050672.webp",
+    },
+    {
+      title: "Desert Safari",
+      city: "Siwa",
+      category: "Adventure",
+      price: 300,
+      popular: false,
+      img: "/HomePageImage/pexels-furknsaglam-1596977-21348185.webp",
+    },
+    {
+      title: "Red Sea Diving",
+      city: "Hurghada",
+      category: "Diving",
+      price: 700,
+      popular: true,
+      img: "/HomePageImage/pexels-yasmine-qasem-1054896-2034684.webp",
+    },
+    {
+      title: "Luxor Temples",
+      city: "Luxor",
+      category: "Historical",
+      price: 400,
+      popular: true,
+      img: "/HomePageImage/luxor-temple.webp",
+    },
+    {
+      title: "Aswan Tour",
+      city: "Aswan",
+      category: "Historical",
+      price: 350,
+      popular: false,
+      img: "/HomePageImage/aswan-tour.webp",
+    },
     // 🔥 أضف المزيد من الرحلات هنا للتجربة (مثلاً 20 أو 30 رحلة)
   ];
 
@@ -56,11 +112,21 @@ export default function TripsPage() {
       (trip.category && trip.category.toLowerCase().includes(lowerSearch));
 
     const matchesCity = filters.city ? trip.city === filters.city : true;
-    const matchesCategory = filters.category ? trip.category === filters.category : true;
-    const matchesPrice = filters.price ? trip.price <= parseInt(filters.price) : true;
+    const matchesCategory = filters.category
+      ? trip.category === filters.category
+      : true;
+    const matchesPrice = filters.price
+      ? trip.price <= parseInt(filters.price)
+      : true;
     const matchesPopular = filters.popular ? trip.popular : true;
 
-    return matchesSearch && matchesCity && matchesCategory && matchesPrice && matchesPopular;
+    return (
+      matchesSearch &&
+      matchesCity &&
+      matchesCategory &&
+      matchesPrice &&
+      matchesPopular
+    );
   });
 
   // ✅ الباجينيشن
@@ -68,10 +134,13 @@ export default function TripsPage() {
   const indexOfFirstTrip = indexOfLastTrip - tripsPerPage;
   const currentTrips = filteredTrips.slice(indexOfFirstTrip, indexOfLastTrip);
   const totalPages = Math.ceil(filteredTrips.length / tripsPerPage);
-console.log(currentTrips)
   const fadeUp = {
     hidden: { opacity: 0, y: 40 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
   };
 
   const staggerContainer = {
@@ -112,11 +181,18 @@ console.log(currentTrips)
               cardStyle={cardStyle}
               setCardStyle={setCardStyle}
             />
-            <TripsGrid trips={currentTrips} cardStyle={cardStyle} search={search} />
+            <TripsGrid
+              trips={currentTrips}
+              cardStyle={cardStyle}
+              search={search}
+            />
 
             {/* الباجينيشن */}
             {totalPages && (
-              <motion.div variants={fadeUp} className="flex justify-center gap-2 mt-4">
+              <motion.div
+                variants={fadeUp}
+                className="flex justify-center gap-2 mt-4"
+              >
                 {Array.from({ length: totalPages }, (_, i) => (
                   <button
                     key={i}

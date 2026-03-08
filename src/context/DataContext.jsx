@@ -126,7 +126,6 @@ export function DataProvider({ children }) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-console.log(images)
   return (
     <DataContext.Provider
       value={{

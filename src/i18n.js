@@ -56,7 +56,7 @@ i18n
         about: it.about,
         contact: it.contact,
       },
-      "zh-CN": {
+      "zh": {
         header: zhCN.header,
         home: zhCN.home,
         footer: zhCN.footer,

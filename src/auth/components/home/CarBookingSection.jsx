@@ -154,7 +154,7 @@ const CarBookingSection = () => {
               variants={fadeInUp}
               className="mt-8 text-lg font-semibold opacity-80 italic text-center lg:text-left"
             >
-              Please log in and book your car now ✨
+              {t("p9")} 
             </motion.p>
           )}
         </motion.div>

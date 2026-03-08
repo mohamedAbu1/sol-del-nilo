@@ -14,7 +14,6 @@ export default function HeroSection() {
   const { theme } = useTheme();
   const { images, index } = useData();
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-  console.log(images, index);
   return (
     <section
       className={`relative h-[100vh] w-full overflow-hidden ${theme.background} ${theme.text}`}

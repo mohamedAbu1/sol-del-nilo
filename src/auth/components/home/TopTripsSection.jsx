@@ -10,7 +10,8 @@ import { usePurchase } from "@/context/PurchaseContext"; // ✅ استدعاء P
 import { useRouter } from "next/navigation"; // ✅ استدعاء router
 const TopTripsSection = () => {
   const { themeName } = useTheme();
-  const { t } = useTranslation("home");
+    const { t, i18n } = useTranslation("home");
+  let lang = i18n.language;
   const router = useRouter();
   // ✅ جلب الرحلات من TripContext
   const { trips, fetchTrips, loadingTrips } = useTrip();
@@ -134,7 +135,7 @@ const TopTripsSection = () => {
               <h3
                 className={`text-xl font-bold tracking-wide mb-1 ${themeName === "dark" ? "text-white" : "text-white"}`}
               >
-                {trip.title?.en || "Untitled Trip"}
+                {trip.title?.[lang] || "Untitled Trip"}
               </h3>
 
               <div className="flex items-center gap-2 mb-2">
@@ -143,7 +144,7 @@ const TopTripsSection = () => {
                 </span>
                 <span className="text-sm opacity-80 text-white">
                   ({Array.isArray(trip.reviews) ? trip.reviews.length : 0}{" "}
-                  reviews)
+                  {t("reviews")})
                 </span>
               </div>
 

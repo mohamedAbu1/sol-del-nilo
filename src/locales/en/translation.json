@@ -57,7 +57,9 @@
     "OneDayTrips": "One Day Trips",
     "SelectCategory": "SelectCategory",
     "p6": "No 5-star reviews yet",
-    "h6": "What Our Travelers Say"
+    "h6": "What Our Travelers Say",
+    "p9":"Please log in and book your car now ✨",
+    "reviews":"reviews"
   },
   "trips": {
     "Searchtrips": "Search trips...",

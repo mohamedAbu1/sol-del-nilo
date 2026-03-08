@@ -54,7 +54,7 @@ export default function TopReviewsSection() {
 
   return (
     <section
-      className={`hidden lg:flex py-20 px-8 ${theme.background} ${theme.text} w-screen max-w-full`}
+      className={`hidden lg:flex flex-col py-20 px-8 ${theme.background} ${theme.text} w-screen max-w-full`}
     >
       <EgyptianBackground />
       <h2 className="text-5xl font-extrabold mb-14 text-center uppercase">

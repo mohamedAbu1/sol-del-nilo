@@ -86,6 +86,7 @@ export function AuthProvider({ children }) {
     setLoading(true);
     setError(null);
     try {
+      console.log({ name, email, password, gender });
       const res = await axios.post("/api/auth/register", {
         name,
         email,
@@ -99,8 +100,10 @@ export function AuthProvider({ children }) {
       toast.success("✅ Account created successfully!");
       return data.user; // فقط يرجع بيانات المستخدم الجديد بدون تسجيل دخول
     } catch (err) {
-      setError(err.message);
-      toast.error("❌ Error: " + err.message);
+  console.error(err.response?.data); // يوضح السبب الحقيقي من السيرفر
+  setError(err.message);
+  toast.error("❌ Error: " + err.message);
+
     } finally {
       setLoading(false);
     }

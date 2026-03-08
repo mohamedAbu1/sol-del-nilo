@@ -55,7 +55,9 @@
     "OneDayTrips": "Excursions d'une journée",
     "SelectCategory": "Sélectionner une catégorie",
     "p6": "Pas encore d’avis 5 étoiles",
-    "h6": "Ce que disent nos voyageurs"
+    "h6": "Ce que disent nos voyageurs",
+    "p9": "Veuillez vous connecter et réserver votre voiture dès maintenant ✨",
+    "reviews": "avis"
   },
   "trips": {
     "Searchtrips": "Rechercher des voyages...",

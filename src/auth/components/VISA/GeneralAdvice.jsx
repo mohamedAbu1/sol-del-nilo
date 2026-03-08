@@ -4,27 +4,25 @@ import Image from "next/image";
 import { AdviceCard } from "@/constants/FixedTexts";
 import { motion } from "framer-motion";
 import { useScreenSize } from "../../../hooks/screenSize";
-import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثيم
+import { useTheme } from "@/context/ThemeContext"; // ✅ استدعاء الثيم
+import { useTranslation } from "react-i18next"; // ✅ استدعاء الترجمة
 
 const GeneralAdvice = () => {
   const { width } = useScreenSize();
-  const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي
+  const { theme } = useTheme(); // ✅ جلب الثيم الحالي
+  const { t } = useTranslation("visa"); // ✅ جلب الترجمة
 
   return (
-    <div
-      style={{ padding: "10px" }}
-      className="w-full flex items-center flex-col px-4"
-    >
+    <div className={`w-full flex items-center flex-col px-4 ${theme.background}`}>
       <h1
+        className={theme.title}
         style={{
           fontSize: "clamp(2rem, 4vw, 3.5rem)",
           textTransform: "capitalize",
-          color: muiTheme.palette.primary.main, // ✅ العنوان من اللون الأساسي
-          fontWeight: "bold",
           marginBottom: "2rem",
         }}
       >
-        General Advice
+        {t("generalAdviceTitle")} {/* العنوان مترجم */}
       </h1>
 
       <div className="flex flex-row flex-wrap gap-6 items-center justify-center w-full">
@@ -35,67 +33,46 @@ const GeneralAdvice = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
             whileHover={{ scale: 1.02 }}
+            className={`${theme.card} ${theme.shadow}`}
             style={{
               display: "flex",
               flexDirection: width <= 1024 ? "column" : "row-reverse",
               alignItems: width <= 1024 ? "" : "center",
-              border: `1px solid ${muiTheme.palette.primary.main}`, // ✅ الحدود من الثيم
-              borderRadius: "20px",
-              boxShadow: `0 8px 24px ${muiTheme.palette.primary.main}30`, // ✅ ظل بنفس لون الثيم
               overflow: "hidden",
               maxWidth: "700px",
               width: "100%",
-              height: "100%",
               minHeight: "500px",
               transition: "box-shadow 0.3s ease",
-              backgroundColor: muiTheme.palette.background.paper, // ✅ خلفية الكارد من الثيم
             }}
           >
-            <div
-              style={{
-                flex: "0 0 300px",
-                position: "relative",
-                zIndex: "8888",
-              }}
-            >
+            {/* صورة الكارد */}
+            <div style={{ flex: "0 0 300px", position: "relative", zIndex: "10" }}>
               <Image
                 src={i.imageUrl}
-                alt={i.title}
+                alt={t(i.titleKey)} // ✅ العنوان مترجم
                 width={width <= 1024 ? 700 : 500}
                 height={250}
-                style={{ objectFit: "cover", zIndex: "9999" }}
+                className="object-cover"
               />
             </div>
 
+            {/* محتوى الكارد */}
             <div
+              className={`${theme.text}`}
               style={{
                 flex: 1,
                 padding: "1.5rem",
-                color: muiTheme.palette.text.primary, // ✅ النصوص من الثيم
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
                 height: "100%",
               }}
             >
-              <h2
-                style={{
-                  fontSize: "1.25rem",
-                  marginBottom: "0.75rem",
-                  color: muiTheme.palette.secondary.main, // ✅ العنوان من اللون الثانوي
-                  fontWeight: "600",
-                }}
-              >
-                {i.title}
+              <h2 className={theme.heading} style={{ fontSize: "1.25rem", marginBottom: "0.75rem" }}>
+                {t(i.titleKey)} {/* ✅ العنوان مترجم */}
               </h2>
-              <p
-                style={{
-                  fontSize: "1rem",
-                  lineHeight: "1.6",
-                  color: muiTheme.palette.text.secondary, // ✅ النصوص الثانوية من الثيم
-                }}
-              >
-                {i.description}
+              <p className={theme.subText} style={{ fontSize: "1rem", lineHeight: "1.6" }}>
+                {t(i.descriptionKey)} {/* ✅ الوصف مترجم */}
               </p>
             </div>
           </motion.div>

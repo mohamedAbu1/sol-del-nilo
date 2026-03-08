@@ -23,7 +23,7 @@ i18n
         trips: en.trips,
         about: en.about,
         contact: en.contact,
-        visaInfo: en.visaInfo,
+        visa: en.visa, // هنا تحط الـ visa keys
       },
       es: {
         header: es.header,
@@ -32,7 +32,7 @@ i18n
         trips: es.trips,
         about: es.about,
         contact: es.contact,
-        visaInfo: es.visaInfo,
+        visa: es.visa,
       },
       fr: {
         header: fr.header,
@@ -41,7 +41,7 @@ i18n
         trips: fr.trips,
         about: fr.about,
         contact: fr.contact,
-        visaInfo: fr.visaInfo,
+        visa: fr.visa,
       },
       de: {
         header: de.header,
@@ -50,7 +50,7 @@ i18n
         trips: de.trips,
         about: de.about,
         contact: de.contact,
-        visaInfo: de.visaInfo,
+        visa: de.visa,
       },
       it: {
         header: it.header,
@@ -59,7 +59,7 @@ i18n
         trips: it.trips,
         about: it.about,
         contact: it.contact,
-        visaInfo: it.visaInfo,
+        visa: it.visa,
       },
       zh: {
         header: zhCN.header,
@@ -68,7 +68,7 @@ i18n
         trips: zhCN.trips,
         about: zhCN.about,
         contact: zhCN.contact,
-        visaInfo: zhCN.visaInfo,
+        visa: zhCN.visa,
       },
     },
     fallbackLng: "en", // اللغة الافتراضية لو اللغة غير موجودة

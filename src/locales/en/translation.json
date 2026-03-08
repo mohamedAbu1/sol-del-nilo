@@ -160,6 +160,27 @@
     "li13": "Keep a copy of your visa",
     "li14": "Follow entry rules",
     "title7": "Contact",
-    "p3": "For inquiries, contact:"
+    "p3": "For inquiries, contact:",
+    "generalAdviceTitle": "General Advice",
+    "advice": {
+      "1": {
+        "title": "🧥 Wear modest clothing in public and religious places.",
+        "description": "It is preferable to wear clothing that covers the shoulders and knees, especially when visiting mosques or rural areas."
+      },
+      "2": { "title": "💵 Always carry small paper money.",
+        "description": "Tips are part of everyday culture, whether in restaurants, on tours, or even in public restrooms." },
+      "3": {
+        "title": "🚫 Avoid drinking tap water.",
+        "description": "Drink only bottled mineral water, even in hotels."
+      },
+      "4": {
+        "title": "🗣️ Learn some basic Arabic words",
+        "description": "Words like thank you, please, and how much? help you communicate and show respect for the local culture."
+      },
+      "8": {
+        "title": "📸 Respect the rules when photographing.",
+        "description": "Do not take photos of military or police installations."
+      }
+    }
   }
 }

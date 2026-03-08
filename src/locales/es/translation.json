@@ -116,7 +116,7 @@
     "Tours": "Tours",
     "Contact": "Contacto"
   },
-  
+
   "Visa": {
     "VISA": "Visa para Egipto",
     "VISA_P": "Solicite fácilmente su visa egipcia",
@@ -156,7 +156,29 @@
     "li13": "Mantenga una copia de su visa",
     "li14": "Siga las reglas de entrada",
     "title7": "Contacto",
-    "p3": "Para consultas, contacte:"
+    "p3": "Para consultas, contacte:",
+    "generalAdviceTitle": "Consejos generales",
+    "advice": {
+      "1": {
+        "title": "🧥 Viste ropa modesta en lugares públicos y religiosos.",
+        "description": "Es preferible usar ropa que cubra los hombros y las rodillas, especialmente al visitar mezquitas o áreas rurales."
+      },
+      "2": {
+        "title": "💵 Lleva siempre billetes pequeños.",
+        "description": "Las propinas son parte de la cultura diaria, ya sea en restaurantes, excursiones o incluso en baños públicos."
+      },
+      "3": {
+        "title": "🚫 Evita beber agua del grifo.",
+        "description": "Bebe solo agua mineral embotellada, incluso en hoteles."
+      },
+      "4": {
+        "title": "🗣️ Aprende algunas palabras básicas en árabe",
+        "description": "Palabras como gracias, por favor y ¿cuánto? te ayudan a comunicarte y mostrar respeto por la cultura local."
+      },
+      "8": {
+        "title": "📸 Respeta las reglas al fotografiar.",
+        "description": "No tomes fotos de instalaciones militares o policiales."
+      }
+    }
   }
-
 }

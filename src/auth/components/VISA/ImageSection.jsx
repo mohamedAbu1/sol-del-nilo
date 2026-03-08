@@ -7,7 +7,7 @@ import { useTheme } from "@mui/material/styles"; // ✅ استدعاء الثي�
 
 const ImageSection = () => {
   const { width } = useScreenSize();
-  const {t} = useTranslation("");
+const { t } = useTranslation("visa");
   const muiTheme = useTheme(); // ✅ يجيب الثيم الحالي (light/dark)
 
   return (
@@ -41,13 +41,13 @@ const ImageSection = () => {
           className="text-6xl font-bold tracking-wide animate-pulseSlow"
           style={{ color: muiTheme.palette.primary.contrastText }} // ✅ النص من الثيم
         >
-          {t("Visa.VISA")}
+          {t("VISA")}
         </h1>
         <p
           className="mt-4 text-2xl font-semibold animate-fadeIn delay-400"
           style={{ color: muiTheme.palette.text.primary }} // ✅ النصوص الثانوية من الثيم
         >
-          {t("Visa.VISA_P")}
+          {t("VISA_P")}
         </p>
       </div>
     </section>

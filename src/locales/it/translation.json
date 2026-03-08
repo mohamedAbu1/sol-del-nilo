@@ -155,7 +155,30 @@
     "li13": "Conserva una copia del visto",
     "li14": "Segui le regole di ingresso",
     "title7": "Contatto",
-    "p3": "Per domande, contatta:"
+    "p3": "Per domande, contatta:",
+    "generalAdviceTitle": "Consigli generali",
+     "advice": {
+      "1": {
+        "title": "🧥 Indossa abiti modesti nei luoghi pubblici e religiosi.",
+        "description": "È preferibile indossare abiti che coprano spalle e ginocchia, soprattutto quando si visitano moschee o aree rurali."
+      },
+      "2": {
+        "title": "💵 Porta sempre banconote di piccolo taglio.",
+        "description": "Le mance fanno parte della cultura quotidiana, nei ristoranti, nei tour o anche nei bagni pubblici."
+      },
+      "3": {
+        "title": "🚫 Evita di bere acqua del rubinetto.",
+        "description": "Bevi solo acqua minerale in bottiglia, anche negli hotel."
+      },
+      "4": {
+        "title": "🗣️ Impara alcune parole base in arabo",
+        "description": "Parole come grazie, per favore e quanto costa? ti aiutano a comunicare e a mostrare rispetto per la cultura locale."
+      },
+      "8": {
+        "title": "📸 Rispetta le regole quando fotografi.",
+        "description": "Non scattare foto di installazioni militari o di polizia."
+      }
+    }
   }
 
 }

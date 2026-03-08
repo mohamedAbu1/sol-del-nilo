@@ -116,7 +116,7 @@
     "Tours": "Excursions",
     "Contact": "Contact"
   },
-  
+
   "Visa": {
     "VISA": "Visa pour l'Égypte",
     "VISA_P": "Demandez facilement votre visa égyptien",
@@ -156,7 +156,29 @@
     "li13": "Conservez une copie de votre visa",
     "li14": "Respectez les règles d'entrée",
     "title7": "Contact",
-    "p3": "Pour toute demande, contactez :"
+    "p3": "Pour toute demande, contactez :",
+    "generalAdviceTitle": "Conseils généraux",
+    "advice": {
+      "1": {
+        "title": "🧥 Portez des vêtements modestes dans les lieux publics et religieux.",
+        "description": "Il est préférable de porter des vêtements qui couvrent les épaules et les genoux, surtout lors de la visite des mosquées ou des zones rurales."
+      },
+      "2": {
+        "title": "💵 Ayez toujours de petites coupures.",
+        "description": "Les pourboires font partie de la culture quotidienne, que ce soit dans les restaurants, les visites ou même les toilettes publiques."
+      },
+      "3": {
+        "title": "🚫 Évitez de boire l'eau du robinet.",
+        "description": "Buvez uniquement de l'eau minérale en bouteille, même dans les hôtels."
+      },
+      "4": {
+        "title": "🗣️ Apprenez quelques mots d'arabe de base",
+        "description": "Des mots comme merci, s'il vous plaît et combien ? vous aident à communiquer et à montrer du respect pour la culture locale."
+      },
+      "8": {
+        "title": "📸 Respectez les règles lors de la photographie.",
+        "description": "Ne prenez pas de photos des installations militaires ou policières."
+      }
+    }
   }
-
 }

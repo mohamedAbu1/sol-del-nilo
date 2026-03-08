@@ -4,11 +4,11 @@
 
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 export const DOMAIN = "http://localhost:3000";
-const img = "/assets/HomePage/Copilot_20251011_220928.webp";
-const img2 = "/assets/HomePage/Copilot_20251011_221403.webp";
-const img3 = "/assets/HomePage/Copilot_20251011_221703.webp";
-const img4 = "/assets/HomePage/Copilot_20251011_221802.webp";
-const img5 = "/assets/HomePage/Copilot_20251011_222046.webp";
+const img = "/assets/Copilot_20251011_220928.webp";
+const img2 = "/assets/Copilot_20251011_221403.webp";
+const img3 = "/assets/Copilot_20251011_221703.webp";
+const img4 = "/assets/Copilot_20251011_221802.webp";
+const img5 = "/assets/Copilot_20251011_222046.webp";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 export const getNavPath = (t) => [
   { label: t("Home"), path: "/" },
@@ -82,36 +82,33 @@ export const AdviceCard = [
   {
     id: "1",
     imageUrl: img,
-    title: "🧥 Wear modest clothing in public and religious places.",
-    description:
-      "It is preferable to wear clothing that covers the shoulders and knees, especially when visiting mosques or rural areas.",
+    titleKey: "advice.1.title",
+    descriptionKey: "advice.1.description",
   },
   {
     id: "2",
     imageUrl: img2,
-    title: "💵 Always carry small paper money.",
-    description:
-      "Tips are part of everyday culture, whether in restaurants, on tours, or even in public restrooms.",
+    titleKey: "advice.2.title",
+    descriptionKey: "advice.2.description",
   },
   {
     id: "3",
     imageUrl: img3,
-    title: "🚫 Avoid drinking tap water.",
-    description: "Drink only bottled mineral water, even in hotels.",
+    titleKey: "advice.3.title",
+    descriptionKey: "advice.3.description",
   },
   {
     id: "4",
     imageUrl: img4,
-    title: "🗣️ Learn some basic Arabic words",
-    description:
-      "Words like thank you, please, and how much? help you communicate and show respect for the local culture.",
+    titleKey: "advice.4.title",
+    descriptionKey: "advice.4.description",
   },
   {
     id: "8",
     imageUrl: img5,
-    title: "📸 Respect the rules when photographing.",
-    description: "Do not take photos of military or police installations.",
-  },
+    titleKey: "advice.8.title",
+    descriptionKey: "advice.8.description",
+  }
 ];
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 

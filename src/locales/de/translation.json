@@ -156,7 +156,30 @@
     "li13": "Kopie des Visums aufbewahren",
     "li14": "Einreisebestimmungen beachten",
     "title7": "Kontakt",
-    "p3": "Für Anfragen kontaktieren Sie:"
+    "p3": "Für Anfragen kontaktieren Sie:",
+    "generalAdviceTitle": "Allgemeine Ratschläge",
+     "advice": {
+      "1": {
+        "title": "🧥 Tragen Sie bescheidene Kleidung in öffentlichen und religiösen Orten.",
+        "description": "Es ist vorzuziehen, Kleidung zu tragen, die Schultern und Knie bedeckt, besonders beim Besuch von Moscheen oder ländlichen Gebieten."
+      },
+      "2": {
+        "title": "💵 Tragen Sie immer kleine Geldscheine.",
+        "description": "Trinkgelder sind Teil der täglichen Kultur, sei es in Restaurants, auf Touren oder sogar in öffentlichen Toiletten."
+      },
+      "3": {
+        "title": "🚫 Vermeiden Sie das Trinken von Leitungswasser.",
+        "description": "Trinken Sie nur abgefülltes Mineralwasser, auch in Hotels."
+      },
+      "4": {
+        "title": "🗣️ Lernen Sie einige grundlegende arabische Wörter",
+        "description": "Wörter wie Danke, Bitte und Wie viel? helfen Ihnen zu kommunizieren und Respekt für die lokale Kultur zu zeigen."
+      },
+      "8": {
+        "title": "📸 Beachten Sie die Regeln beim Fotografieren.",
+        "description": "Machen Sie keine Fotos von militärischen oder polizeilichen Einrichtungen."
+      }
+    }
   }
 
 }

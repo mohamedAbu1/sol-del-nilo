@@ -39,7 +39,7 @@ const Content = () => {
   };
 
   return (
-    <div className="hidden md:flex flex-col items-center justify-center text-center px-6 z-30">
+    <div className="flex flex-col items-center justify-center text-center px-6 z-30">
       <div className="w-[70%]">
         {/* Company Name */}
         <h1

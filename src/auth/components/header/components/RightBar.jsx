@@ -31,11 +31,11 @@ export default function RightBar({ scrolled }) {
       <ThemeToggle scrolled={scrolled} />
 
       {/* زر تسجيل الدخول/الخروج */}
-      <motion.div whileHover={{ scale: 1.1 }} className="hidden md:flex">
+      <motion.div whileHover={{ scale: 1.1 }} className="flex">
         <Button
           onClick={isLoggedIn ? logout : handleOpen}
           style={{
-            padding: "12px 24px",
+            padding: "12px 15px",
             background: "linear-gradient(to right, #ca8a04, #FF9800)",
             color: "#fff",
             fontWeight: "600",

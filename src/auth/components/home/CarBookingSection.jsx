@@ -49,7 +49,7 @@ const CarBookingSection = () => {
       whileInView="visible"
       viewport={{ once: true, amount: 0.3 }}
       variants={fadeInUp}
-      className={`hidden lg:flex relative w-full items-center justify-center py-24 px-6 transition-colors duration-500 overflow-hidden ${
+      className={`flex relative w-full items-center justify-center py-24 px-6 transition-colors duration-500 overflow-hidden ${
         themeName === "dark"
           ? "bg-[#0f0f0f] text-white"
           : "bg-[#F5F5F5] text-[#3a2c0a]"

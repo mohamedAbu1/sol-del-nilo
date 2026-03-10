@@ -16,6 +16,7 @@ export default function HeroSection() {
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   return (
     <section
+    style={{paddingBottom:"150px"}}
       className={`relative h-[100vh] w-full overflow-hidden ${theme.background} ${theme.text}`}
     >
       {/* Background Image */}
@@ -41,7 +42,7 @@ export default function HeroSection() {
       </div>
 
       {/* Overlay */}
-      <div className={`absolute inset-0 ${theme.overlay}`} />
+      {/* <div className={`absolute inset-0 ${theme.overlay}`} /> */}
 
       {/* Floating Halo Light */}
       <motion.div

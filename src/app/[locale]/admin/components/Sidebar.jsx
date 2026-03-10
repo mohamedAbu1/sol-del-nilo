@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/static-components */
 "use client";
-import ThemeToggle from "@/context/ThemeContext";
+import ThemeToggle from "@/auth/components/ThemeToggle";
 import React from "react";
 import Link from "next/link";
 import {

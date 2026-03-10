@@ -5,10 +5,11 @@ import { useTheme } from "@/context/ThemeContext";
 import Logo from "./components/Logo";
 import NavBar from "./components/NavBar";
 import RightBar from "./components/RightBar";
-// import AdminButton from "./components/AdminButton";
+import MobileNavBar from "./components/MobileNavBar";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
+  const [activeTab, setActiveTab] = useState(""); // ✅ الحالة لإدارة الـ active
   const { theme } = useTheme();
 
   useEffect(() => {
@@ -22,17 +23,17 @@ export default function Header() {
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 pt-5 lg:pt-0 ${
         scrolled
           ? `${theme.background} ${theme.border} ${theme.shadow}`
           : "bg-transparent"
       }`}
     >
       <div className="max-w-8xl container mx-auto px-6 py-4 flex items-center justify-between">
-        <Logo  scrolled={scrolled}/>
+        <Logo scrolled={scrolled}/>
         <NavBar scrolled={scrolled}/>
+        <MobileNavBar activeTab={activeTab} setActiveTab={setActiveTab} /> {/* ✅ نمرر الحالة */}
         <RightBar scrolled={scrolled}/>
-        {/* <AdminButton /> ✅ زر مستقل */}
       </div>
     </motion.header>
   );

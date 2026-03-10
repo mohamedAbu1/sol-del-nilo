@@ -16,75 +16,9 @@ import { useAuth } from "@/context/AuthContext";
 import Head from "next/head";
 import { useLanguage } from "@/context/LanguageContext";
 import { tripsMetadata } from "@/lib/metadata/trips";
-
+import MobileTripsFilter from "@/auth/components/trips/MobileTripsFilter";
+import {trips} from "@/constants/api"
 export default function TripsPage() {
-  const trips = [
-    {
-      title: "Nile Cruise",
-      city: "Cairo",
-      category: "Cruise",
-      price: 500,
-      popular: true,
-      img: "/HomePageImage/pexels-radwa-magdy-1718930-21668633.webp",
-    },
-    {
-      title: "Desert Safari",
-      city: "Siwa",
-      category: "Adventure",
-      price: 300,
-      popular: false,
-      img: "/HomePageImage/pexels-ozgomz-7566890.webp",
-    },
-    {
-      title: "Red Sea Diving",
-      city: "Hurghada",
-      category: "Diving",
-      price: 700,
-      popular: true,
-      img: "/HomePageImage/pexels-ozgomz-7566888.webp",
-    },
-    {
-      title: "Nile Cruise",
-      city: "Cairo",
-      category: "Cruise",
-      price: 500,
-      popular: true,
-      img: "/HomePageImage/pexels-oualid-soussi-2150533856-35050672.webp",
-    },
-    {
-      title: "Desert Safari",
-      city: "Siwa",
-      category: "Adventure",
-      price: 300,
-      popular: false,
-      img: "/HomePageImage/pexels-furknsaglam-1596977-21348185.webp",
-    },
-    {
-      title: "Red Sea Diving",
-      city: "Hurghada",
-      category: "Diving",
-      price: 700,
-      popular: true,
-      img: "/HomePageImage/pexels-yasmine-qasem-1054896-2034684.webp",
-    },
-    {
-      title: "Luxor Temples",
-      city: "Luxor",
-      category: "Historical",
-      price: 400,
-      popular: true,
-      img: "/HomePageImage/luxor-temple.webp",
-    },
-    {
-      title: "Aswan Tour",
-      city: "Aswan",
-      category: "Historical",
-      price: 350,
-      popular: false,
-      img: "/HomePageImage/aswan-tour.webp",
-    },
-    // 🔥 أضف المزيد من الرحلات هنا للتجربة (مثلاً 20 أو 30 رحلة)
-  ];
 
   const { lang } = useLanguage();
   const meta = tripsMetadata[lang] || tripsMetadata.en;
@@ -102,31 +36,22 @@ export default function TripsPage() {
   });
 
   // ✅ فلترة الرحلات
-  const filteredTrips = trips.filter((trip) => {
+// ✅ فلترة الرحلات باستخدام IDs
+const filteredTrips = trips.filter((trip) => {
     const lowerSearch = search.trim().toLowerCase();
 
     const matchesSearch =
       !lowerSearch ||
       (trip.title && trip.title.toLowerCase().includes(lowerSearch)) ||
-      (trip.city && trip.city.toLowerCase().includes(lowerSearch)) ||
-      (trip.category && trip.category.toLowerCase().includes(lowerSearch));
+      (trip.cityName && trip.cityName.toLowerCase().includes(lowerSearch)) ||
+      (trip.categoryName && trip.categoryName.toLowerCase().includes(lowerSearch));
 
-    const matchesCity = filters.city ? trip.city === filters.city : true;
-    const matchesCategory = filters.category
-      ? trip.category === filters.category
-      : true;
-    const matchesPrice = filters.price
-      ? trip.price <= parseInt(filters.price)
-      : true;
+    const matchesCity = filters.city ? trip.cityId === filters.city : true;
+    const matchesCategory = filters.category ? trip.categoryId === filters.category : true;
+    const matchesPrice = filters.price ? trip.price <= parseInt(filters.price) : true;
     const matchesPopular = filters.popular ? trip.popular : true;
 
-    return (
-      matchesSearch &&
-      matchesCity &&
-      matchesCategory &&
-      matchesPrice &&
-      matchesPopular
-    );
+    return matchesSearch && matchesCity && matchesCategory && matchesPrice && matchesPopular;
   });
 
   // ✅ الباجينيشن
@@ -155,7 +80,7 @@ export default function TripsPage() {
         <meta name="description" content={meta.description} />
         <meta name="keywords" content={meta.keywords} />
       </Head>
-      <main className="relative flex flex-col min-h-screen justify-center items-center">
+      <main className="relative flex flex-col min-h-screen justify-center items-center pt-9">
         <EgyptianBackground />
         <Header />
 
@@ -169,18 +94,22 @@ export default function TripsPage() {
           variants={staggerContainer}
         >
           {/* الفلتر */}
-          <motion.div variants={fadeUp} className="w-1/4">
+          <motion.div variants={fadeUp} className=" hidden lg:flex w-1/4">
             <TripsFilter filters={filters} setFilters={setFilters} />
           </motion.div>
 
           {/* البحث + الرحلات */}
           <motion.div variants={fadeUp} className="flex-1 flex flex-col gap-6">
             <TripsSearch
+              filters={filters}
+              setFilters={setFilters}
               search={search}
               setSearch={setSearch}
               cardStyle={cardStyle}
               setCardStyle={setCardStyle}
             />
+            <MobileTripsFilter filters={filters} setFilters={setFilters} />
+
             <TripsGrid
               trips={currentTrips}
               cardStyle={cardStyle}

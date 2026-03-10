@@ -87,7 +87,7 @@ const CitiesSection = () => {
   return (
     <section
       className={`
-        hidden lg:flex py-12 px-6 flex-col w-full mx-auto relative
+        flex py-12 px-6 flex-col w-full mx-auto relative
          ${
            themeName === "dark"
              ? "bg-[#0f0f0f] text-white"

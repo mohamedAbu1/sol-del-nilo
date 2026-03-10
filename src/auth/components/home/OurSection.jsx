@@ -49,7 +49,7 @@ const OurSection = () => {
     <section
       id="section-four"
       style={{ paddingBottom: "40px", paddingTop: "20px" }}
-      className={` hidden lg:flex relative w-full min-h-screen px-4 sm:py-10 md:py-12 lg:py-0 flex-col items-center justify-start ${theme.background} ${theme.text}`}
+      className={`flex relative w-full min-h-screen px-4 sm:py-10 md:py-12 lg:py-0 flex-col items-center justify-start ${theme.background} ${theme.text}`}
     >
       {/* خلفية الرموز الفرعونية */}
       <div className="absolute inset-0 pointer-events-none -z-10">
@@ -95,11 +95,22 @@ const OurSection = () => {
             className="w-full h-full"
           >
             {[
-              "/HomePageImage/pexels-furknsaglam-1596977-21348185.webp",
-              "/HomePageImage/pexels-oualid-soussi-2150533856-35050672.webp",
-              "/HomePageImage/pexels-ozgomz-7566890.webp",
-              "/HomePageImage/pexels-radwa-magdy-1718930-21668633.webp",
-              "/HomePageImage/pexels-yasmine-qasem-1054896-2034684.webp",
+              "/HomePageImage/WhatsApp Image 2026-02-23 at 10.06.57 PM.webp",
+              "/HomePageImage/WhatsApp Image 2026-02-23 at 10.06.58 PM (3).webp",
+              "/HomePageImage/WhatsApp Image 2026-02-23 at 10.06.58 PM.webp",
+              "/HomePageImage/WhatsApp Image 2026-02-23 at 10.06.59 PM (1).webp",
+              "/HomePageImage/WhatsApp Image 2026-02-23 at 10.06.59 PM.webp",
+              "/HomePageImage/WhatsApp Image 2026-02-23 at 10.07.00 PM (1).webp",
+              "/HomePageImage/WhatsApp Image 2026-02-23 at 10.07.03 PM (1).webp",
+              "/HomePageImage/WhatsApp Image 2026-02-23 at 10.07.03 PM (2).webp",
+              "/HomePageImage/WhatsApp Image 2026-02-23 at 10.07.04 PM (1).webp",
+              "/HomePageImage/WhatsApp Image 2026-02-23 at 10.07.04 PM.webp",
+              "/HomePageImage/WhatsApp Image 2026-02-23 at 10.07.05 PM (1).webp",
+              "/HomePageImage/WhatsApp Image 2026-02-23 at 10.07.05 PM.webp",
+              "/HomePageImage/WhatsApp Image 2026-02-23 at 10.07.06 PM (1).webp",
+              "/HomePageImage/WhatsApp Image 2026-02-23 at 10.07.06 PM.webp",
+              "/HomePageImage/WhatsApp Image 2026-02-23 at 10.07.08 PM (1).webp",
+              "/HomePageImage/WhatsApp Image 2026-02-23 at 10.07.04 PM.webp",
             ].map((imgSrc, index) => (
               <SwiperSlide key={index}>
                 <div className="w-full h-[85vh]">

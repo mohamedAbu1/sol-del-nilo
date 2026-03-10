@@ -40,7 +40,7 @@ function CategoryCard({ cat, themeName }) {
   return (
     <div
       onClick={handleClick}
-      className={`relative rounded-2xl overflow-hidden group cursor-pointer h-[320px]
+      className={`relative rounded-2xl overflow-hidden group cursor-pointer h-[360px]
         transition-all duration-500 hover:scale-[1.06] hover:shadow-2xl
         ${
           themeName === "dark"
@@ -141,7 +141,7 @@ const CategoriesSection = () => {
 
   return (
     <section
-      className={` hidden lg:flex flex-col py-24 px-6 w-full mx-auto relative transition-colors duration-500
+      className={`flex flex-col py-24 px-6 w-full mx-auto relative transition-colors duration-500
         ${
           themeName === "dark"
             ? "bg-[#0f0f0f] text-white"
@@ -185,7 +185,7 @@ const CategoriesSection = () => {
 
       <div className="relative overflow-hidden w-full max-w-7xl mx-auto">
         <motion.div
-          className="flex h-full"
+          className="flex h-full px-4 sm:px-0"
           drag="x"
           dragConstraints={{ left: -looped.length * cardWidth, right: 0 }}
           whileTap={{ cursor: "grabbing" }}
@@ -196,7 +196,7 @@ const CategoriesSection = () => {
           {looped.map((cat, i) => (
             <div
               key={i}
-              className="min-w-[100%] sm:min-w-[50%] md:min-w-[33.33%] lg:min-w-[20%] p-3"
+              className="min-w-[65%] sm:min-w-[40%] md:min-w-[33.33%] lg:min-w-[20%] p-3"
             >
               <CategoryCard cat={cat} themeName={themeName} />
             </div>

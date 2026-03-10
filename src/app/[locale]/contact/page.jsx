@@ -136,7 +136,7 @@ export default function ContactPage() {
                       themeName === "dark" ? "text-gold" : "text-[#FF9800]"
                     }
                   />
-                  <span>+20 1003888546</span>
+                  <span>+20 10 10104875</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <FaEnvelope

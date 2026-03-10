@@ -3,14 +3,15 @@ import React from "react";
 import { FaSearch, FaThLarge, FaBars } from "react-icons/fa";
 import { useTheme } from "@/context/ThemeContext";
 import { useTranslation } from "react-i18next";
+import MobileTripsFilter from "./MobileTripsFilter";
 
-export default function TripsSearch({ search, setSearch, cardStyle, setCardStyle }) {
+export default function TripsSearch({ search, setSearch, cardStyle, setCardStyle}) {
   const { themeName } = useTheme();
   const { t } = useTranslation("trips");
 
   return (
     <div
-      className={`flex w-full items-center gap-3 p-4 rounded-xl shadow transition ${
+      className={`flex w-[100%] items-center gap-3 p-4 rounded-xl shadow transition ${
         themeName === "dark"
           ? "bg-[#0f0f0f] border border-gold/30 text-white"
           : "bg-white/80 border border-[#c9a34a]/30 text-[#3a2c0a] backdrop-blur-sm"
@@ -31,7 +32,7 @@ export default function TripsSearch({ search, setSearch, cardStyle, setCardStyle
       />
 
       {/* أزرار تغيير الاستايل */}
-      <div className="flex gap-2">
+      <div className=" hidden lg:flex gap-2">
         <button
           onClick={() => setCardStyle("vertical")}
           className={`flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-bold transition ${

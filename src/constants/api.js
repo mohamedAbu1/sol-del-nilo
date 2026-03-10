@@ -49,3 +49,72 @@
       { key: "4", label: "🎭 Opera House show", price: 900 },
     ],
   }
+
+  export const trips = [
+      {
+        title: "Nile Cruise",
+        city: "Cairo",
+        category: "Cruise",
+        price: 500,
+        popular: true,
+        img: "/HomePageImage/pexels-radwa-magdy-1718930-21668633.webp",
+      },
+      {
+        title: "Desert Safari",
+        city: "Siwa",
+        category: "Adventure",
+        price: 300,
+        popular: false,
+        img: "/HomePageImage/pexels-ozgomz-7566890.webp",
+      },
+      {
+        title: "Red Sea Diving",
+        city: "Hurghada",
+        category: "Diving",
+        price: 700,
+        popular: true,
+        img: "/HomePageImage/pexels-ozgomz-7566888.webp",
+      },
+      {
+        title: "Nile Cruise",
+        city: "Cairo",
+        category: "Cruise",
+        price: 500,
+        popular: true,
+        img: "/HomePageImage/pexels-oualid-soussi-2150533856-35050672.webp",
+      },
+      {
+        title: "Desert Safari",
+        city: "Siwa",
+        category: "Adventure",
+        price: 300,
+        popular: false,
+        img: "/HomePageImage/pexels-furknsaglam-1596977-21348185.webp",
+      },
+      {
+        title: "Red Sea Diving",
+        city: "Hurghada",
+        category: "Diving",
+        price: 700,
+        popular: true,
+        img: "/HomePageImage/pexels-yasmine-qasem-1054896-2034684.webp",
+      },
+      {
+        title: "Luxor Temples",
+        city: "Luxor",
+        category: "Historical",
+        price: 400,
+        popular: true,
+        img: "/HomePageImage/luxor-temple.webp",
+      },
+      {
+        title: "Aswan Tour",
+        city: "Aswan",
+        category: "Historical",
+        price: 350,
+        popular: false,
+        img: "/HomePageImage/aswan-tour.webp",
+      },
+      // 🔥 أضف المزيد من الرحلات هنا للتجربة (مثلاً 20 أو 30 رحلة)
+    ];
+  

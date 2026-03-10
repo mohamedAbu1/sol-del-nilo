@@ -9,17 +9,17 @@ export default function MobileTripsFilter({ filters, setFilters }) {
   const { cities, categories, loading } = useCitiesCategories();
   const lang = i18n.language || "en";
 
-  const handleCityClick = (cityId) => {
+  const handleCityClick = (cityName) => {
     setFilters((prev) => ({
       ...prev,
-      city: prev.city === cityId ? "" : cityId,
+      city: prev.city === cityName ? "" : cityName,
     }));
   };
 
-  const handleCategoryClick = (catId) => {
+  const handleCategoryClick = (catName) => {
     setFilters((prev) => ({
       ...prev,
-      category: prev.category === catId ? "" : catId,
+      category: prev.category === catName ? "" : catName,
     }));
   };
 
@@ -31,7 +31,11 @@ export default function MobileTripsFilter({ filters, setFilters }) {
     }`;
 
   if (loading) {
-    return <p className="lg:hidden text-center text-gray-500 mb-6">{t("LoadingCategories")}</p>;
+    return (
+      <p className="lg:hidden text-center text-gray-500 mb-6">
+        {t("LoadingCategories")}
+      </p>
+    );
   }
 
   return (
@@ -45,17 +49,22 @@ export default function MobileTripsFilter({ filters, setFilters }) {
       <div>
         <h3 className="text-lg font-bold mb-2">{t("FilterByCity")}</h3>
         <div className="flex flex-wrap gap-2">
-          <span className={chipStyle(filters.city === "")} onClick={() => handleCityClick("")}>
+          <span
+            className={chipStyle(filters.city === "")}
+            onClick={() => handleCityClick("")}
+          >
             {t("All")}
           </span>
           {cities.map((city) => {
             const displayName =
-              typeof city.name === "object" ? city.name[lang] || city.name["en"] : city.name;
+              typeof city.name === "object"
+                ? city.name[lang] || city.name["en"]
+                : city.name;
             return (
               <span
                 key={city.id}
-                className={chipStyle(filters.city === city.id)}
-                onClick={() => handleCityClick(city.id)}
+                className={chipStyle(filters.city === displayName)}
+                onClick={() => handleCityClick(displayName)}
               >
                 {displayName}
               </span>
@@ -68,17 +77,22 @@ export default function MobileTripsFilter({ filters, setFilters }) {
       <div>
         <h3 className="text-lg font-bold mb-2">{t("FilterByCategory")}</h3>
         <div className="flex flex-wrap gap-2">
-          <span className={chipStyle(filters.category === "")} onClick={() => handleCategoryClick("")}>
+          <span
+            className={chipStyle(filters.category === "")}
+            onClick={() => handleCategoryClick("")}
+          >
             {t("All")}
           </span>
           {categories.map((cat) => {
             const displayName =
-              typeof cat.name === "object" ? cat.name[lang] || cat.name["en"] : cat.name;
+              typeof cat.name === "object"
+                ? cat.name[lang] || cat.name["en"]
+                : cat.name;
             return (
               <span
                 key={cat.id}
-                className={chipStyle(filters.category === cat.id)}
-                onClick={() => handleCategoryClick(cat.id)}
+                className={chipStyle(filters.category === displayName)}
+                onClick={() => handleCategoryClick(displayName)}
               >
                 {displayName}
               </span>

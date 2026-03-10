@@ -1,7 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable react-hooks/purity */
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TripsFilter from "@/auth/components/trips/TripsFilter";
 import TripsSearch from "@/auth/components/trips/TripsSearch";
 import TripsGrid from "@/auth/components/trips/TripsGrid";
@@ -16,49 +14,68 @@ import { useAuth } from "@/context/AuthContext";
 import Head from "next/head";
 import { useLanguage } from "@/context/LanguageContext";
 import { tripsMetadata } from "@/lib/metadata/trips";
-import MobileTripsFilter from "@/auth/components/trips/MobileTripsFilter";
-import {trips} from "@/constants/api"
-export default function TripsPage() {
+import { useTrip } from "@/context/TripContext";
 
+export default function TripsPage() {
   const { lang } = useLanguage();
   const meta = tripsMetadata[lang] || tripsMetadata.en;
   const { user } = useAuth();
+  const { trips, fetchTrips } = useTrip();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [cardStyle, setCardStyle] = useState("vertical");
-  const tripsPerPage = 9; // ✅ ثابت: 9 رحلات في كل صفحة
+  const tripsPerPage = 9;
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState({
-    city: "",
-    category: "",
-    price: "",
+    city: "",       // نخزن الـ city_id هنا
+    category: "",   // نخزن الـ category_id هنا
+    price: "Economy",
     popular: false,
   });
 
-  // ✅ فلترة الرحلات
-// ✅ فلترة الرحلات باستخدام IDs
-const filteredTrips = trips.filter((trip) => {
+  useEffect(() => {
+    fetchTrips();
+  }, []);
+
+  console.log("🔍 Current filters:", filters);
+
+  // الفلترة الأساسية بالـ IDs
+  const filteredTrips = trips.filter((trip) => {
     const lowerSearch = search.trim().toLowerCase();
 
     const matchesSearch =
       !lowerSearch ||
-      (trip.title && trip.title.toLowerCase().includes(lowerSearch)) ||
-      (trip.cityName && trip.cityName.toLowerCase().includes(lowerSearch)) ||
-      (trip.categoryName && trip.categoryName.toLowerCase().includes(lowerSearch));
+      (trip.title?.[lang] && trip.title[lang].toLowerCase().includes(lowerSearch)) ||
+      (trip.title?.en && trip.title.en.toLowerCase().includes(lowerSearch));
 
-    const matchesCity = filters.city ? trip.cityId === filters.city : true;
-    const matchesCategory = filters.category ? trip.categoryId === filters.category : true;
-    const matchesPrice = filters.price ? trip.price <= parseInt(filters.price) : true;
+    const matchesCity = filters.city
+      ? trip.trip_cities?.some((c) => c.city_id === filters.city)
+      : true;
+
+    const matchesCategory = filters.category
+      ? trip.trip_categories?.some((cat) => cat.category_id === filters.category)
+      : true;
+
+    const matchesPrice = filters.price
+      ? trip.priceLevel?.toLowerCase() === filters.price.toLowerCase()
+      : true;
+
     const matchesPopular = filters.popular ? trip.popular : true;
 
-    return matchesSearch && matchesCity && matchesCategory && matchesPrice && matchesPopular;
+    return (
+      matchesSearch &&
+      matchesCity &&
+      matchesCategory &&
+      matchesPrice &&
+      matchesPopular
+    );
   });
 
-  // ✅ الباجينيشن
   const indexOfLastTrip = currentPage * tripsPerPage;
   const indexOfFirstTrip = indexOfLastTrip - tripsPerPage;
   const currentTrips = filteredTrips.slice(indexOfFirstTrip, indexOfLastTrip);
   const totalPages = Math.ceil(filteredTrips.length / tripsPerPage);
+
   const fadeUp = {
     hidden: { opacity: 0, y: 40 },
     visible: {
@@ -84,7 +101,6 @@ const filteredTrips = trips.filter((trip) => {
         <EgyptianBackground />
         <Header />
 
-        {/* المحتوى الرئيسي */}
         <motion.section
           style={{ marginTop: "105px", paddingBottom: "20px" }}
           className="container flex flex-1 gap-6 px-6 relative z-10"
@@ -93,12 +109,10 @@ const filteredTrips = trips.filter((trip) => {
           viewport={{ once: true, amount: 0.2 }}
           variants={staggerContainer}
         >
-          {/* الفلتر */}
-          <motion.div variants={fadeUp} className=" hidden lg:flex w-1/4">
+          <motion.div variants={fadeUp} className="hidden lg:flex w-1/4">
             <TripsFilter filters={filters} setFilters={setFilters} />
           </motion.div>
 
-          {/* البحث + الرحلات */}
           <motion.div variants={fadeUp} className="flex-1 flex flex-col gap-6">
             <TripsSearch
               filters={filters}
@@ -108,16 +122,17 @@ const filteredTrips = trips.filter((trip) => {
               cardStyle={cardStyle}
               setCardStyle={setCardStyle}
             />
-            <MobileTripsFilter filters={filters} setFilters={setFilters} />
 
-            <TripsGrid
-              trips={currentTrips}
-              cardStyle={cardStyle}
-              search={search}
-            />
+          
+              <TripsGrid
+                trips={currentTrips}
+                cardStyle={cardStyle}
+                search={search}
+                filters={filters}
+              />
+            
 
-            {/* الباجينيشن */}
-            {totalPages && (
+            {totalPages > 1 && (
               <motion.div
                 variants={fadeUp}
                 className="flex justify-center gap-2 mt-4"

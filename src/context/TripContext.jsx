@@ -55,23 +55,42 @@ export function TripProvider({ children }) {
   };
 
   // ✅ جلب جميع الرحلات
-  const fetchTrips = async () => {
-    setLoadingTrips(true);
-    try {
-      const res = await fetch("/api/trips", {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
-      const result = await res.json();
-      if (result.success) {
-        setTrips(result.trips);
-      }
-    } catch (err) {
-      console.error("Error fetching trips:", err);
-    } finally {
-      setLoadingTrips(false);
+const fetchTrips = async () => {
+  setLoadingTrips(true);
+  try {
+    const res = await fetch("/api/trips", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    // تأكد إن الاستجابة صحيحة
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
     }
-  };
+
+    const result = await res.json();
+    console.log("Trips API result:", result);
+
+    // لو الـ API بيرجع { success: true, trips: [...] }
+    if (result.success && Array.isArray(result.trips)) {
+      setTrips(result.trips);
+    }
+    // لو الـ API بيرجع مصفوفة مباشرة
+    else if (Array.isArray(result)) {
+      setTrips(result);
+    }
+    // fallback لو البيانات مش بالصيغة المتوقعة
+    else {
+      console.warn("Unexpected trips format:", result);
+      setTrips([]);
+    }
+  } catch (err) {
+    console.error("Error fetching trips:", err);
+    setTrips([]); // علشان ما يفضلش فاضي
+  } finally {
+    setLoadingTrips(false); // ✅ يوقف اللودنج مهما حصل
+  }
+};
 
 const getTripById = (id) => {
   return trips.find((trip) => String(trip.id) === String(id));

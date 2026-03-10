@@ -4,7 +4,6 @@
 import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/ThemeContext";
 import { useTrip } from "@/context/TripContext";
-import { useCitiesCategories } from "@/context/CitiesCategoriesContext";
 import { useReviews } from "@/context/ReviewsContext";
 import { useEffect } from "react";
 import { FaStar, FaDollarSign, FaEuroSign } from "react-icons/fa";
@@ -14,8 +13,8 @@ import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { usePurchase } from "@/context/PurchaseContext";
 import { useQueryFilters } from "@/context/QueryContext";
-
-export default function TripsGrid({ cardStyle = "vertical", search }) {
+import { useCitiesCategories } from "@/context/CitiesCategoriesContext";
+export default function TripsGrid({ cardStyle = "vertical", search, filters }) {
   const { themeName } = useTheme();
   const { trips, fetchTrips, loadingTrips } = useTrip();
   const { lang } = useLanguage();
@@ -23,28 +22,61 @@ export default function TripsGrid({ cardStyle = "vertical", search }) {
   const { reviewsByTrip, fetchReviewsByTrip } = useReviews();
   const router = useRouter();
   const { currency } = usePurchase();
-  const { filterTrips } = useQueryFilters();
+  const { t } = useTranslation("trips");
+
   useEffect(() => {
     fetchTrips();
   }, []);
 
-  useEffect(() => {
-    if (trips.length > 0) {
-      trips.forEach((trip) => {
-        fetchReviewsByTrip(trip.id);
-      });
-    }
-  }, [trips]);
+useEffect(() => {
+  if (trips.length > 0) {
+    trips.forEach((trip) => {
+      console.log("Fetching reviews for trip:", trip.id);
+      fetchReviewsByTrip(trip.id);
+    });
+  }
+}, [trips]);
 
-  const getRandomStars = () => Math.floor(Math.random() * 3) + 3;
-  const { t } = useTranslation("trips");
 
   if (loadingTrips) {
     return <p className="text-center text-gray-500">Loading trips...</p>;
   }
+const getRandomStars = () => Math.floor(Math.random() * 3) + 3;
+  // فلترة بالـ IDs
+const filteredTrips = trips.filter((trip) => {
+  console.log("🔍 Checking trip:", trip.id, trip.title?.[lang] || trip.title?.en);
 
-  // فلترة الكويري
-  const filteredTrips = filterTrips(trips, allCategories, lang);
+  const matchesCity = filters.city
+    ? trip.trip_cities?.some((c) => {
+        console.log("City check:", c.city_id, "vs", filters.city);
+        return c.city_id === filters.city;
+      })
+    : true;
+
+  const matchesCategory = filters.category
+    ? trip.trip_categories?.some((cat) => {
+        console.log("Category check:", cat.category_id, "vs", filters.category);
+        return cat.category_id === filters.category;
+      })
+    : true;
+
+  const matchesPrice = filters.price
+    ? trip.priceLevel?.toLowerCase() === filters.price.toLowerCase()
+    : true;
+
+  console.log("Price check:", trip.priceLevel, "vs", filters.price);
+
+  const matchesPopular = filters.popular ? trip.popular : true;
+
+  console.log("Result for trip:", trip.id, {
+    matchesCity,
+    matchesCategory,
+    matchesPrice,
+    matchesPopular,
+  });
+
+  return matchesCity && matchesCategory && matchesPrice && matchesPopular;
+});
 
   // فلترة البحث النصي
   const searchedTrips =
@@ -54,15 +86,14 @@ export default function TripsGrid({ cardStyle = "vertical", search }) {
           const title = trip.title?.[lang] || trip.title?.en || "";
           const cityNames =
             trip.trip_cities?.map(
-              (c) =>
-                c.cities?.name?.[lang] || c.city?.name?.[lang] || c.city_name,
+              (c) => c.cities?.name?.[lang] || c.cities?.name?.en || ""
             ) || [];
           const categoryNames =
             trip.trip_categories?.map((cat) => {
               const catObj = allCategories.find(
-                (c) => c.id === cat.category_id,
+                (c) => c.id === cat.category_id
               );
-              return catObj?.name?.[lang] || catObj?.name?.en || catObj?.name;
+              return catObj?.name?.[lang] || catObj?.name?.en || "";
             }) || [];
 
           return (

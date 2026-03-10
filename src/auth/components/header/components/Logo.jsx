@@ -34,7 +34,7 @@ export default function Logo({ scrolled }) {
         <Image
           src={imageSrc}
           alt="Luxor Aswan Logo"
-          width={150}
+          width={140}
           height={50}
           priority
         />

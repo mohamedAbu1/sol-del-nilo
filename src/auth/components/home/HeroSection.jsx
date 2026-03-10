@@ -16,7 +16,7 @@ export default function HeroSection() {
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   return (
     <section
-    style={{paddingBottom:"150px"}}
+    style={{paddingBottom:"0px"}}
       className={`relative h-[100vh] w-full overflow-hidden ${theme.background} ${theme.text}`}
     >
       {/* Background Image */}

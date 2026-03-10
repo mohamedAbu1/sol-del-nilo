@@ -69,28 +69,28 @@ export default function SignUpModal() {
     },
   };
 
- const handleSubmit = async () => {
-  const nameError = validateField("Full Name", fullName);
-  const emailError = validateField("Email", email);
-  const passwordError = validateField("Password", password);
-  if (nameError || emailError || passwordError || !gender) {
-    toast.error(nameError || emailError || passwordError || "Gender is required");
-    return;
-  }
-  try {
-    await register(email, password, fullName, gender);
+  const handleSubmit = async () => {
+    const nameError = validateField("Full Name", fullName);
+    const emailError = validateField("Email", email);
+    const passwordError = validateField("Password", password);
+    if (nameError || emailError || passwordError || !gender) {
+      toast.error(
+        nameError || emailError || passwordError || "Gender is required",
+      );
+      return;
+    }
+    try {
+      await register(email, password, fullName, gender);
 
-    toast.success("✅ Account created successfully!");
+      toast.success("✅ Account created successfully!");
 
-    // ✅ أغلق نافذة التسجيل وافتح نافذة تسجيل الدخول
-    handleClose();
-    handleLoginOpen();
-
-  } catch (err) {
-    toast.error("❌ Error: " + err.message);
-  }
-};
-
+      // ✅ أغلق نافذة التسجيل وافتح نافذة تسجيل الدخول
+      handleClose();
+      handleLoginOpen();
+    } catch (err) {
+      toast.error("❌ Error: " + err.message);
+    }
+  };
 
   return (
     <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
@@ -112,9 +112,9 @@ export default function SignUpModal() {
         {/* Header */}
         <div style={{ textAlign: "center", padding: "32px 0 20px" }}>
           <h1
+          className="text-4xl lg:text-5xl"
             style={{
               fontFamily: "Cinzel, serif",
-              fontSize: "46px",
               fontWeight: "700",
               letterSpacing: "4px",
               textTransform: "uppercase",
@@ -245,13 +245,17 @@ export default function SignUpModal() {
             />
           </RadioGroup>
 
-          <Divider style={{ margin: "16px 0", color: "#FF9800" }}>
+          <Divider
+            style={{ margin: "16px 0", color: "#FF9800" }}
+            className="hidden lg:flex"
+          >
             {t("orsignupwith")}
           </Divider>
 
           {/* Social Buttons */}
           <div
-            style={{ display: "flex", gap: "16px", justifyContent: "center" }}
+            style={{ gap: "16px", justifyContent: "center" }}
+            className="hidden lg:flex"
           >
             <IconButton
               onClick={() => {

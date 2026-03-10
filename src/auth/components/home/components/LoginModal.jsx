@@ -155,7 +155,8 @@ const loginWithGoogle = async () => {
 
           {/* Social Buttons */}
           <div
-            style={{ display: "flex", gap: "16px", justifyContent: "center" }}
+            style={{  gap: "16px", justifyContent: "center" }}
+            className="hidden lg:flex"
           >
             <IconButton onClick={loginWithGoogle}>
               <FcGoogle size={26} />

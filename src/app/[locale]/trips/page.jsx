@@ -8,8 +8,8 @@ import TripsGrid from "@/auth/components/trips/TripsGrid";
 import Header from "@/auth/components/header/Header";
 import Footer from "@/components/layout/FooterSection";
 import EgyptianBackground from "@/components/layout/EgyptianBackground";
-// import LoginModal from "@/components/home/components/LoginModal";
-// import SignUpButton from "@/components/home/components/SignUpButton";
+import LoginModal from "@/auth/components/home/components/LoginModal";
+import SignUpButton from "@/auth/components/home/components/SignUpButton";
 import { motion } from "framer-motion";
 import ChatWidget from "@/components/layout/ChatWidget";
 import { useAuth } from "@/context/AuthContext";
@@ -141,8 +141,8 @@ const filteredTrips = trips.filter((trip) => {
         </motion.section>
 
         <Footer />
-        {/* <SignUpButton />
-        <LoginModal /> */}
+        <SignUpButton />
+        <LoginModal />
         {user && <ChatWidget />}
       </main>
     </>

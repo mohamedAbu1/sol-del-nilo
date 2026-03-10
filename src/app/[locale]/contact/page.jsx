@@ -7,8 +7,8 @@ import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
 import Header from "@/auth/components/header/Header";
 import Footer from "@/components/layout/FooterSection";
 import { useTranslation } from "react-i18next";
-// import LoginModal from "@/components/home/components/LoginModal";
-// import SignUpButton from "@/components/home/components/SignUpButton";
+import LoginModal from "@/auth/components/home/components/LoginModal";
+import SignUpButton from "@/auth/components/home/components/SignUpButton";
 import ChatWidget from "@/components/layout/ChatWidget";
 import { useAuth } from "@/context/AuthContext";
 import Head from "next/head";
@@ -264,8 +264,8 @@ export default function ContactPage() {
           </div>
         </section>
         <Footer />
-        {/* <SignUpButton />
-        <LoginModal /> */}
+        <SignUpButton />
+        <LoginModal />
         {user && <ChatWidget />}
       </main>
     </>

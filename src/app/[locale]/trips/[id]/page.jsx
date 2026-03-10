@@ -7,8 +7,8 @@ import { use } from "react";
 import Footer from "@/components/layout/FooterSection";
 import Header from "@/auth/components/header/Header";
 import EgyptianBackground from "@/components/layout/EgyptianBackground";
-// import LoginModal from "@/components/home/components/LoginModal";
-// import SignUpButton from "@/components/home/components/SignUpButton";
+import LoginModal from "@/auth/components/home/components/LoginModal";
+import SignUpButton from "@/auth/components/home/components/SignUpButton";
 // الكومبوننتات الجديدة
 import TripHeader from "./components/TripHeader";
 import TripCities from "./components/TripCities";
@@ -87,8 +87,8 @@ export default function TripPage({ params }) {
       </div>
 
       <Footer />
-      {/* <SignUpButton />
-      <LoginModal /> */}
+      <SignUpButton />
+      <LoginModal />
       {user && <ChatWidget />}
     </main>
   );

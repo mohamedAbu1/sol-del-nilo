@@ -107,6 +107,7 @@ export default function SignUpModal() {
           border: "1px solid #FF9800",
           boxShadow: "0 12px 40px rgba(0,0,0,0.15)",
           overflow: "hidden",
+          overflowY:"scroll"
         }}
       >
         {/* Header */}

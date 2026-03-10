@@ -4,8 +4,8 @@ import { useTheme } from "@/context/ThemeContext";
 import Header from "@/auth/components/header/Header";
 import Footer from "@/components/layout/FooterSection";
 import EgyptianBackground from "@/components/layout/EgyptianBackground";
-// import LoginModal from "@/components/home/components/LoginModal";
-// import SignUpButton from "@/components/home/components/SignUpButton";
+import LoginModal from "@/auth/components/home/components/LoginModal";
+import SignUpButton from "@/auth/components/home/components/SignUpButton";
 
 // استدعاء الأقسام الجديدة
 import AboutHero from "@/auth/components/about/AboutHero";
@@ -44,8 +44,8 @@ export default function AboutPage() {
         <CTASection />
 
         <Footer />
-        {/* <SignUpButton />
-        <LoginModal /> */}
+        <SignUpButton />
+        <LoginModal />
         {user && <ChatWidget />}
       </main>
     </>

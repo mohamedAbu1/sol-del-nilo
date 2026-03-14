@@ -8,6 +8,7 @@ import { useData } from "@/context/DataContext";
 import SocialMediaIcons from "./components/SocialMediaIcons";
 import LeftSocialIcons from "./components/LeftSocialIcons";
 import LogoLetter from "./components/LogoLetter";
+
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 export default function HeroSection() {
   // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
@@ -67,10 +68,10 @@ export default function HeroSection() {
       >
         <Content />
         <DownloadAppSection />
-
-        {/* Logo */}
+   {/* Logo */}
         <motion.div
           initial="hidden"
+          
           animate="visible"
           style={{ background: "rgba(0,0,0,0.4)", borderRadius: "6px" }}
           variants={{
@@ -80,7 +81,7 @@ export default function HeroSection() {
               transition: { staggerChildren: 0.2 },
             },
           }}
-          className="flex flex-wrap gap-4 justify-center font-[Cinzel] text-[32px] lg:text-[34px] xl:text-[60px]"
+          className="hidden lg:flex flex-wrap gap-4 justify-center font-[Cinzel] text-[32px] lg:text-[34px] xl:text-[60px]"
         >
           {["L", "U", "X", "O", "R", "𓂀", "A", "S", "W", "A", "N"].map(
             (char, i) => (
@@ -88,6 +89,7 @@ export default function HeroSection() {
             ),
           )}
         </motion.div>
+       
       </motion.div>
     </section>
   );

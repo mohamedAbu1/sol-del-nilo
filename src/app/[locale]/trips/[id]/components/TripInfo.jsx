@@ -6,12 +6,12 @@ import { motion } from "framer-motion";
 
 // كائن الترجمات
 const translations = {
-  en: { title: "Trip Info", price: "Price", duration: "Duration" },
-  de: { title: "Reiseinformationen", price: "Preis", duration: "Dauer" },
-  it: { title: "Informazioni sul viaggio", price: "Prezzo", duration: "Durata" },
-  es: { title: "Información del viaje", price: "Precio", duration: "Duración" },
-  zh: { title: "行程信息", price: "价格", duration: "时长" },
-  fr: { title: "Informations sur le voyage", price: "Prix", duration: "Durée" },
+  en: { title: "Trip Info", Adult: "Adult",Child:"Child", duration: "Duration" },
+  de: { title: "Reiseinformationen", Adult: "Erwachsene",Child:"Kind", duration: "Dauer" },
+  it: { title: "Informazioni sul viaggio", Adult: "Adulto",Child:"Bambino", duration: "Durata" },
+  es: { title: "Información del viaje", Adult: "Adulto",Child:"Niño", duration: "Duración" },
+  zh: { title: "行程信息", price: "价格", Adult: "成人",Child:"孩子", },
+  fr: { title: "Informations sur le voyage", Adult: "Adulte",Child:"Enfant", duration: "Durée" },
 };
 
 export default function TripInfo({ trip, lang }) {
@@ -67,19 +67,45 @@ export default function TripInfo({ trip, lang }) {
             {currency === "USD" ? (
               <FaDollarSign
                 className={
-                  themeName === "dark" ? "text-yellow-700" : "text-green-600"
+                  themeName === "dark" ? "text-yellow-300" : "text-green-600"
                 }
               />
             ) : (
               <FaEuroSign
                 className={
-                  themeName === "dark" ? "text-yellow-700" : "text-blue-600"
+                  themeName === "dark" ? "text-yellow-300" : "text-blue-600"
                 }
               />
             )}
           </motion.div>
           <span>
-            {t.price}: {displayedPrice} {currency}
+            {t.Adult}: {displayedPrice} {currency}
+          </span>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="flex items-center gap-2"
+        >
+          <motion.div whileHover={{ scale: 1.2, rotate: 10 }}>
+            {currency === "USD" ? (
+              <FaDollarSign
+                className={
+                  themeName === "dark" ? "text-yellow-300" : "text-green-600"
+                }
+              />
+            ) : (
+              <FaEuroSign
+                className={
+                  themeName === "dark" ? "text-yellow-300" : "text-blue-600"
+                }
+              />
+            )}
+          </motion.div>
+          <span>
+            {t.Child}: {displayedPrice/2} {currency}
           </span>
         </motion.div>
 
@@ -94,7 +120,7 @@ export default function TripInfo({ trip, lang }) {
           <motion.div whileHover={{ scale: 1.2, rotate: -10 }}>
             <FaClock
               className={
-                themeName === "dark" ? "text-yellow-700" : "text-[#FF9800]"
+                themeName === "dark" ? "text-yellow-300" : "text-[#c9a34a]"
               }
             />
           </motion.div>

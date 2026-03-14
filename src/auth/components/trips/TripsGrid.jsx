@@ -14,7 +14,9 @@ import { motion } from "framer-motion";
 import { usePurchase } from "@/context/PurchaseContext";
 import { useQueryFilters } from "@/context/QueryContext";
 import { useCitiesCategories } from "@/context/CitiesCategoriesContext";
+
 export default function TripsGrid({ cardStyle = "vertical", search, filters }) {
+  // ✅ كل الـ hooks هنا في الأعلى
   const { themeName } = useTheme();
   const { trips, fetchTrips, loadingTrips } = useTrip();
   const { lang } = useLanguage();
@@ -23,62 +25,64 @@ export default function TripsGrid({ cardStyle = "vertical", search, filters }) {
   const router = useRouter();
   const { currency } = usePurchase();
   const { t } = useTranslation("trips");
+  const { queryFilters } = useQueryFilters();
 
+  // ✅ مفيش شرط حوالين useEffect
   useEffect(() => {
     fetchTrips();
   }, []);
 
-useEffect(() => {
-  if (trips.length > 0) {
-    trips.forEach((trip) => {
-      console.log("Fetching reviews for trip:", trip.id);
-      fetchReviewsByTrip(trip.id);
-    });
-  }
-}, [trips]);
-
+  useEffect(() => {
+    if (trips.length > 0) {
+      trips.forEach((trip) => {
+        fetchReviewsByTrip(trip.id);
+      });
+    }
+  }, [trips]);
 
   if (loadingTrips) {
     return <p className="text-center text-gray-500">Loading trips...</p>;
   }
-const getRandomStars = () => Math.floor(Math.random() * 3) + 3;
-  // فلترة بالـ IDs
-const filteredTrips = trips.filter((trip) => {
-  console.log("🔍 Checking trip:", trip.id, trip.title?.[lang] || trip.title?.en);
 
-  const matchesCity = filters.city
-    ? trip.trip_cities?.some((c) => {
-        console.log("City check:", c.city_id, "vs", filters.city);
-        return c.city_id === filters.city;
-      })
-    : true;
+  const getRandomStars = () => Math.floor(Math.random() * 3) + 3;
 
-  const matchesCategory = filters.category
-    ? trip.trip_categories?.some((cat) => {
-        console.log("Category check:", cat.category_id, "vs", filters.category);
-        return cat.category_id === filters.category;
-      })
-    : true;
+  // ✅ فلترة الرحلات بالـ activeFilters
+  const filteredTrips = trips.filter((trip) => {
+    // فلترة المدن
+    const matchesCity = activeFilters.city
+      ? trip.trip_cities?.some((c) => {
+          const cityName = c.cities?.name?.[lang] || c.cities?.name?.en || "";
+          return (
+            c.city_id === activeFilters.city ||
+            cityName.toLowerCase() === activeFilters.city.toLowerCase()
+          );
+        })
+      : true;
 
-  const matchesPrice = filters.price
-    ? trip.priceLevel?.toLowerCase() === filters.price.toLowerCase()
-    : true;
+    // فلترة الفئات
+    const matchesCategory = activeFilters.category
+      ? trip.trip_categories?.some((cat) => {
+          const catObj = allCategories.find((c) => c.id === cat.category_id);
+          const catName = catObj?.name?.[lang] || catObj?.name?.en || "";
+          return (
+            cat.category_id === activeFilters.category ||
+            catName.toLowerCase() === activeFilters.category.toLowerCase()
+          );
+        })
+      : true;
 
-  console.log("Price check:", trip.priceLevel, "vs", filters.price);
+    // فلترة السعر
+    const matchesPrice = activeFilters.price
+      ? trip.priceLevel?.toLowerCase() === activeFilters.price.toLowerCase()
+      : true;
 
-  const matchesPopular = filters.popular ? trip.popular : true;
+    // فلترة الشعبية
+    const matchesPopular = activeFilters.popular ? trip.popular : true;
 
-  console.log("Result for trip:", trip.id, {
-    matchesCity,
-    matchesCategory,
-    matchesPrice,
-    matchesPopular,
+    return matchesCity && matchesCategory && matchesPrice && matchesPopular;
   });
 
-  return matchesCity && matchesCategory && matchesPrice && matchesPopular;
-});
-
-  // فلترة البحث النصي
+  // ✅ فلترة البحث النصي
   const searchedTrips =
     search && search.trim() !== ""
       ? filteredTrips.filter((trip) => {
@@ -86,12 +90,12 @@ const filteredTrips = trips.filter((trip) => {
           const title = trip.title?.[lang] || trip.title?.en || "";
           const cityNames =
             trip.trip_cities?.map(
-              (c) => c.cities?.name?.[lang] || c.cities?.name?.en || ""
+              (c) => c.cities?.name?.[lang] || c.cities?.name?.en || "",
             ) || [];
           const categoryNames =
             trip.trip_categories?.map((cat) => {
               const catObj = allCategories.find(
-                (c) => c.id === cat.category_id
+                (c) => c.id === cat.category_id,
               );
               return catObj?.name?.[lang] || catObj?.name?.en || "";
             }) || [];
@@ -112,6 +116,12 @@ const filteredTrips = trips.filter((trip) => {
           : "grid grid-cols-1 md:grid-cols-2 gap-6"
       }`}
     >
+      {searchedTrips.length === 0 && (
+        <p className="text-center text-gray-500 col-span-full">
+          No trips found for your filters.
+        </p>
+      )}
+
       {searchedTrips.map((trip, i) => {
         const tripReviews = reviewsByTrip[trip.id] || [];
         const reviewsCount = tripReviews.length;
@@ -184,7 +194,6 @@ const filteredTrips = trips.filter((trip) => {
               } 
               ${cardStyle === "horizontal" ? "h-86 flex" : "h-88"}`}
           >
-            {/* صورة الرحلة */}
             <Image
               src={trip.cover_image || "/default.jpg"}
               alt={trip.title?.[lang] || trip.title?.en || "Trip image"}
@@ -193,7 +202,6 @@ const filteredTrips = trips.filter((trip) => {
               className="object-cover w-full h-full rounded-lg"
               priority
             />
-            {/* Overlay */}
             <div
               className={`absolute inset-0 bg-gradient-to-t ${
                 themeName === "dark"
@@ -201,7 +209,6 @@ const filteredTrips = trips.filter((trip) => {
                   : "from-[#3a2c0a]/70 via-[#3a2c0a]/40 to-transparent"
               }`}
             />
-            {/* محتوى الكارد */}
             <div
               className={`absolute bottom-0 p-4 w-full flex flex-col gap-2 text-white ${
                 cardStyle === "horizontal" ? "justify-center" : ""
@@ -231,20 +238,16 @@ const filteredTrips = trips.filter((trip) => {
               </p>
 
               <div className="flex items-center gap-2">
-                {(() => {
-                  // ✅ توليد رقم عشوائي بين 3 و 5
-                  const randomStars = Math.floor(Math.random() * 3) + 3;
-                  return [...Array(5)].map((_, idx) => (
-                    <FaStar
-                      key={idx}
-                      className={`${
-                        idx < randomStars
-                          ? "text-yellow-400"
-                          : "text-gray-500 opacity-50"
-                      }`}
-                    />
-                  ));
-                })()}
+                {[...Array(5)].map((_, idx) => (
+                  <FaStar
+                    key={idx}
+                    className={`${
+                      idx < avgStars
+                        ? "text-yellow-400"
+                        : "text-gray-500 opacity-50"
+                    }`}
+                  />
+                ))}
                 <span className="text-sm opacity-80">
                   ({reviewsCount > 0 ? reviewsCount : "No"} {t("reviews")})
                 </span>

@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useCitiesCategories } from "@/context/CitiesCategoriesContext";
 import DividerWithIcon from "@/components/layout/DividerWithIcon";
 import { useRouter } from "next/navigation";
+import LogoLetter from "./components/LogoLetter";
 
 // دالة لتشفير الكويري
 const encodeData = (obj) => btoa(JSON.stringify(obj));
@@ -91,7 +92,7 @@ function CategoryCard({ cat, themeName }) {
 }
 
 const CategoriesSection = () => {
-  const { themeName } = useTheme();
+  const { theme,themeName } = useTheme();
   const { t } = useTranslation("home");
   const { categories, loading } = useCitiesCategories();
   const [index, setIndex] = useState(0);
@@ -149,6 +150,26 @@ const CategoriesSection = () => {
         }
       `}
     >
+       {/* Logo */}
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          style={{ background: "rgba(0,0,0,0.4)", borderRadius: "6px" }}
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: { staggerChildren: 0.2 },
+            },
+          }}
+          className="flex lg:hidden flex-wrap gap-4 justify-center font-[Cinzel] text-[32px] lg:text-[34px] xl:text-[60px]"
+        >
+          {["L", "U", "X", "O", "R", "𓂀", "A", "S", "W", "A", "N"].map(
+            (char, i) => (
+              <LogoLetter key={i} char={char} theme={theme} />
+            ),
+          )}
+        </motion.div>
       <div className="absolute inset-0 pointer-events-none">
         {Array.from({ length: 25 }).map((_, i) => (
           <span

@@ -15,66 +15,74 @@ import Head from "next/head";
 import { useLanguage } from "@/context/LanguageContext";
 import { tripsMetadata } from "@/lib/metadata/trips";
 import { useTrip } from "@/context/TripContext";
+import { useQueryFilters } from "@/context/QueryContext";
 
 export default function TripsPage() {
   const { lang } = useLanguage();
   const meta = tripsMetadata[lang] || tripsMetadata.en;
   const { user } = useAuth();
   const { trips, fetchTrips } = useTrip();
+  const { queryFilters } = useQueryFilters();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [cardStyle, setCardStyle] = useState("vertical");
-  const tripsPerPage = 9;
+  // const tripsPerPage = 16;
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState({
-    city: "",       // نخزن الـ city_id هنا
-    category: "",   // نخزن الـ category_id هنا
-    price: "Economy",
+    city: "", // نخزن الـ city_id هنا
+    category: "", // نخزن الـ category_id هنا
+    price: "",
     popular: false,
   });
 
   useEffect(() => {
     fetchTrips();
   }, []);
-
-  console.log("🔍 Current filters:", filters);
+  const activeFilters = {
+    ...filters,
+    ...queryFilters,
+  };
 
   // الفلترة الأساسية بالـ IDs
-  const filteredTrips = trips.filter((trip) => {
-    const lowerSearch = search.trim().toLowerCase();
-
-    const matchesSearch =
-      !lowerSearch ||
-      (trip.title?.[lang] && trip.title[lang].toLowerCase().includes(lowerSearch)) ||
-      (trip.title?.en && trip.title.en.toLowerCase().includes(lowerSearch));
-
-    const matchesCity = filters.city
-      ? trip.trip_cities?.some((c) => c.city_id === filters.city)
+   const filteredTrips = trips.filter((trip) => {
+    // فلترة المدن
+    const matchesCity = activeFilters.city
+      ? trip.trip_cities?.some((c) => {
+          const cityName = c.cities?.name?.[lang] || c.cities?.name?.en || "";
+          return (
+            c.city_id === activeFilters.city ||
+            cityName.toLowerCase() === activeFilters.city.toLowerCase()
+          );
+        })
       : true;
 
-    const matchesCategory = filters.category
-      ? trip.trip_categories?.some((cat) => cat.category_id === filters.category)
+    // فلترة الفئات
+    const matchesCategory = activeFilters.category
+      ? trip.trip_categories?.some((cat) => {
+          const catObj = allCategories.find((c) => c.id === cat.category_id);
+          const catName = catObj?.name?.[lang] || catObj?.name?.en || "";
+          return (
+            cat.category_id === activeFilters.category ||
+            catName.toLowerCase() === activeFilters.category.toLowerCase()
+          );
+        })
       : true;
 
-    const matchesPrice = filters.price
-      ? trip.priceLevel?.toLowerCase() === filters.price.toLowerCase()
+    // فلترة السعر
+    const matchesPrice = activeFilters.price
+      ? trip.priceLevel?.toLowerCase() === activeFilters.price.toLowerCase()
       : true;
 
-    const matchesPopular = filters.popular ? trip.popular : true;
+    // فلترة الشعبية
+    const matchesPopular = activeFilters.popular ? trip.popular : true;
 
-    return (
-      matchesSearch &&
-      matchesCity &&
-      matchesCategory &&
-      matchesPrice &&
-      matchesPopular
-    );
+    return matchesCity && matchesCategory && matchesPrice && matchesPopular;
   });
 
-  const indexOfLastTrip = currentPage * tripsPerPage;
-  const indexOfFirstTrip = indexOfLastTrip - tripsPerPage;
-  const currentTrips = filteredTrips.slice(indexOfFirstTrip, indexOfLastTrip);
-  const totalPages = Math.ceil(filteredTrips.length / tripsPerPage);
+  // const indexOfLastTrip = currentPage * tripsPerPage;
+  // const indexOfFirstTrip = indexOfLastTrip - tripsPerPage;
+  // const currentTrips = filteredTrips.slice(indexOfFirstTrip, indexOfLastTrip);
+  // const totalPages = Math.ceil(filteredTrips.length / tripsPerPage);
 
   const fadeUp = {
     hidden: { opacity: 0, y: 40 },
@@ -89,6 +97,7 @@ export default function TripsPage() {
     hidden: {},
     visible: { transition: { staggerChildren: 0.2 } },
   };
+  console.log("🔍 Current filters:", filters);
 
   return (
     <>
@@ -123,16 +132,14 @@ export default function TripsPage() {
               setCardStyle={setCardStyle}
             />
 
-          
-              <TripsGrid
-                trips={currentTrips}
-                cardStyle={cardStyle}
-                search={search}
-                filters={filters}
-              />
-            
+            <TripsGrid
+              trips={filteredTrips}
+              cardStyle={cardStyle}
+              search={search}
+              filters={filters}
+            />
 
-            {totalPages > 1 && (
+            {/* {totalPages > 1 && (
               <motion.div
                 variants={fadeUp}
                 className="flex justify-center gap-2 mt-4"
@@ -151,7 +158,7 @@ export default function TripsPage() {
                   </button>
                 ))}
               </motion.div>
-            )}
+            )} */}
           </motion.div>
         </motion.section>
 

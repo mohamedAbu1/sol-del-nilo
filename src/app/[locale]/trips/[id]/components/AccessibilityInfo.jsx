@@ -2,7 +2,7 @@
 import { FaWheelchair, FaHandsHelping, FaHeart } from "react-icons/fa";
 import { useTheme } from "@/context/ThemeContext";
 import { useLanguage } from "@/context/LanguageContext";
-import translations from "@/constants/images";
+import translations from "@/constants/api";
 import EgyptianBackground from "@/components/layout/EgyptianBackground";
 import { motion } from "framer-motion";
 export default function AccessibilityInfo() {

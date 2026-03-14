@@ -46,7 +46,7 @@ export default function TripPage({ params }) {
   const hasActivePurchase = purchases.some(
     (p) =>
       p.trip_id === trip.id &&
-      p.user_id === user.id &&
+      p.user_id === user?.id &&
       p.status !== "Cancelled",
   );
 

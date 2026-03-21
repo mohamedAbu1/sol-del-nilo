@@ -246,15 +246,15 @@ export default function SignUpModal() {
             />
           </RadioGroup>
 
-          <Divider
+          {/* <Divider
             style={{ margin: "16px 0", color: "#FF9800" }}
             className="hidden lg:flex"
           >
             {t("orsignupwith")}
-          </Divider>
+          </Divider> */}
 
           {/* Social Buttons */}
-          <div
+          {/* <div
             style={{ gap: "16px", justifyContent: "center" }}
             className="hidden lg:flex"
           >
@@ -269,7 +269,7 @@ export default function SignUpModal() {
             <IconButton style={{ color: "#1877f2" }}>
               <FaFacebook size={26} />
             </IconButton>
-          </div>
+          </div> */}
 
           {/* Sign Up Button */}
           <motion.div

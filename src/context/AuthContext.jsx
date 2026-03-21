@@ -52,85 +52,82 @@ export function AuthProvider({ children }) {
     });
     console.log("📌 نتيجة Supabase:", { data, error });
   };
- useEffect(() => {
-  const checkUser = async () => {
-    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+  // ✅ عند تحميل الصفحة تحقق من الجلسة عبر API /auth/me
+  useEffect(() => {
+    const checkUser = async () => {
+      try {
+        const res = await axios.get("/api/auth/me", { withCredentials: true });
+        const data = res.data;
+        if (data.user) {
+          setUser(data.user);
+          setIsLoggedIn(true);
+          updateValue("id", data.user.id);
+          updateValue("email", data.user.email);
+          updateValue("role", data.user.role);
+        } else {
+          setUser(null);
+          setIsLoggedIn(false);
+        }
+      } catch {
+        setUser(null);
+        setIsLoggedIn(false);
+      }
+    };
+    checkUser();
+  }, []);
 
-    if (sessionError || !session) {
-      // مفيش جلسة → المستخدم مش مسجل دخول
-      setUser(null);
-      setIsLoggedIn(false);
-      return;
-    }
 
-    const { data: { user }, error } = await supabase.auth.getUser();
-    if (error || !user) {
-      setUser(null);
-      setIsLoggedIn(false);
-      return;
-    }
+const register = async (email, password, name, gender) => {
+  setLoading(true);
+  setError(null);
 
-    // لو فيه مستخدم
-    setUser(user);
-    setIsLoggedIn(true);
-    updateValue("id", user.id);
-    updateValue("email", user.email);
-    // باقي القيم...
+  // ✅ تحويل الـ gender إلى الإنجليزية قبل الإرسال
+  const normalizeGender = (g) => {
+    if (!g) return "other";
+    const val = g.toLowerCase();
+    if (["male", "hombre","männlich", "男","uomo","homme"].includes(g)) return "male";
+  if (["female", "mujer","weiblich","女","donna","femme"].includes(g)) return "female";
+    return "other";
   };
 
-  checkUser();
-}, []);
+  try {
+    const res = await axios.post("/api/auth/register", {
+      name,
+      email,
+      password,
+      gender: normalizeGender(gender),
+    });
 
+    const data = res.data;
+    if (!data.user) throw new Error(data.error || "Registration failed");
 
-  const register = async (email, password, name, gender) => {
-    setLoading(true);
-    setError(null);
-    try {
-      console.log({ name, email, password, gender });
-      const res = await axios.post("/api/auth/register", {
-        name,
-        email,
-        password,
-        gender,
-      });
-      const data = res.data;
+    toast.success("✅ Account created successfully!");
+    return data.user;
+  } catch (err) {
+    setError(err.message);
+    toast.error("❌ Error: " + err.message);
+  } finally {
+    setLoading(false);
+  }
+};
 
-      if (!data.user) throw new Error(data.error || "Registration failed");
-
-      toast.success("✅ Account created successfully!");
-      return data.user; // فقط يرجع بيانات المستخدم الجديد بدون تسجيل دخول
-    } catch (err) {
-  console.error(err.response?.data); // يوضح السبب الحقيقي من السيرفر
-  setError(err.message);
-  toast.error("❌ Error: " + err.message);
-
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const login = async (email, password, onSuccess) => {
     setLoading(true);
     setError(null);
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      if (error) throw new Error(error.message);
-      const user = data.user;
-      setUser(user);
+      const res = await axios.post("/api/auth/login", { email, password }, { withCredentials: true });
+      const data = res.data;
+      if (!data.user) throw new Error(data.error || "Login failed");
+      setUser(data.user);
       setIsLoggedIn(true);
-      updateValue("id", user.id);
-      updateValue("email", user.email);
-      updateValue("role", user.user_metadata?.role);
-      updateValue("name", user.user_metadata?.name);
-      updateValue("avatar", user.user_metadata?.avatar);
-      updateValue("gender", user.user_metadata?.gender);
+      updateValue("id", data.user.id);
+      updateValue("email", data.user.email);
+      updateValue("role", data.user.role);
       if (onSuccess) onSuccess();
       const encodedQuery = getEncodedQuery();
       router.push(`/?data=${encodedQuery}`);
-      return user;
+      return data.user;
     } catch (err) {
       setError(err.message);
       toast.error("❌ Error: " + err.message);
@@ -138,16 +135,15 @@ export function AuthProvider({ children }) {
       setLoading(false);
     }
   };
+
   const logout = async () => {
     try {
       await axios.post("/api/auth/logout", {}, { withCredentials: true });
     } catch (err) {
       console.error("❌ Error clearing cookies on server:", err);
     }
-
     setUser(null);
     setIsLoggedIn(false);
-    removeToken();
     toast.info("🚪 Logged out successfully");
   };
   return (

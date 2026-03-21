@@ -149,12 +149,12 @@ const loginWithGoogle = async () => {
             }}
           />
 
-          <Divider style={{ margin: "16px 0", color: "#FF9800" }}>
+          {/* <Divider style={{ margin: "16px 0", color: "#FF9800" }}>
             {t("orcontinuewith")}
           </Divider>
 
           {/* Social Buttons */}
-          <div
+          {/* <div
             style={{  gap: "16px", justifyContent: "center" }}
             className="hidden lg:flex"
           >
@@ -165,7 +165,7 @@ const loginWithGoogle = async () => {
             <IconButton style={{ color: "#1877f2" }}>
               <FaFacebook size={26} />
             </IconButton>
-          </div>
+          </div> */} 
 
           {/* Login Button */}
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>

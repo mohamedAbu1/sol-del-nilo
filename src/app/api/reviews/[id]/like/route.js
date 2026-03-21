@@ -5,78 +5,65 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 );
-
 export async function POST(req, { params }) {
   console.log("➡️ API POST called with params:", params);
 
-  const authHeader = req.headers.get("authorization");
-  console.log("📥 Authorization header:", authHeader);
+  // قراءة البيانات من الـ body
+  const body = await req.json();
+  const { user_id,reviewId } = body;
 
-  const token = authHeader?.split(" ")[1];
-  console.log("📥 Extracted token:", token);
+  console.log("📥 User ID from frontend:", user_id);
+  console.log("📥 rev ID from frontend:", reviewId);
 
-  const { data: { user }, error } = await supabase.auth.getUser(token);
-  console.log("📥 Supabase getUser result:", user, error);
 
-  if (!user) {
-    console.log("⚠️ Unauthorized like attempt");
-    return NextResponse.json({ ok: false, error: "Unauthorized" }, { status: 401 });
-  }
 
-  const reviewId = params.id;
-  console.log("📥 Review ID:", reviewId);
-
-  if (!reviewId) {
-    console.log("⚠️ Missing reviewId");
-    return NextResponse.json({ ok: false, error: "Missing reviewId" }, { status: 400 });
+  if (!reviewId || !user_id ) {
+    console.log("⚠️ Missing required fields");
+    return NextResponse.json({ ok: false, error: "Missing reviewId, user_id or trip_id" }, { status: 400 });
   }
 
   const { error: insertError } = await supabase
     .from("review_likes")
-    .insert([{ review_id: reviewId, user_id: user.id }]);
+    .insert([{ review_id: reviewId, user_id, created_at: new Date().toISOString()}]);
 
   if (insertError) {
     console.error("❌ Supabase error (POST):", insertError.message);
     return NextResponse.json({ ok: false, error: insertError.message }, { status: 400 });
   }
 
-  console.log("✅ Like added successfully by user:", user.id);
+  console.log("✅ Like added successfully by user:", user_id);
   return NextResponse.json({ ok: true, message: "Like added successfully" });
 }
+
 
 // 🔴 إزالة لايك
 export async function DELETE(req, { params }) {
   console.log("➡️ API DELETE called with params:", params);
 
-  const authHeader = req.headers.get("authorization");
-  console.log("📥 Authorization header:", authHeader);
+  const body = await req.json();
+  const { user_id ,reviewId} = body;
 
-  const token = authHeader?.split(" ")[1];
-  console.log("📥 Extracted token:", token);
+  console.log("📥 User ID from frontend:", user_id);
 
-  const { data: { user }, error } = await supabase.auth.getUser(token);
-  console.log("📥 Supabase getUser result:", user, error);
 
-  if (!user) {
-    console.log("⚠️ Unauthorized unlike attempt");
-    return NextResponse.json({ ok: false, error: "Unauthorized" }, { status: 401 });
+
+  if (!reviewId || !user_id ) {
+    console.log("⚠️ Missing required fields");
+    return NextResponse.json({ ok: false, error: "Missing reviewId, user_id or trip_id" }, { status: 400 });
   }
-
-  const reviewId = params.id;
-  console.log("📥 Review ID:", reviewId);
 
   const { error: deleteError } = await supabase
     .from("review_likes")
     .delete()
     .eq("review_id", reviewId)
-    .eq("user_id", user.id);
+    .eq("user_id", user_id)
 
   if (deleteError) {
     console.error("❌ Supabase error (DELETE):", deleteError.message);
     return NextResponse.json({ ok: false, error: deleteError.message }, { status: 400 });
   }
 
-  console.log("✅ Like removed successfully by user:", user.id);
+  console.log("✅ Like removed successfully by user:", user_id);
   return NextResponse.json({ ok: true, message: "Like removed successfully" });
 }
 

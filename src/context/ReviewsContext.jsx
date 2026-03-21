@@ -3,6 +3,8 @@ import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "@/context/AuthContext"; // ✅ استدعاء المستخدم من useAuth
 import { supabase } from "@/lib/supabaseClient"; // ملف تهيئة Supabase
+import { toast } from "react-toastify";
+
 const ReviewsContext = createContext();
 
 export function ReviewsProvider({ children }) {
@@ -92,8 +94,8 @@ export function ReviewsProvider({ children }) {
           user_id: user.id, // ✅ من useAuth
           rating: review.rating,
           comment: review.comment,
-          name: review.name || user.email, // ✅ fallback على الإيميل لو الاسم مش موجود
-          avatar_url: review.avatar_url,
+          name: user.name || user.email, // ✅ fallback على الإيميل لو الاسم مش موجود
+          avatar_url: user.avatar,
           time: review.time,
         },
         { withCredentials: true },
@@ -135,85 +137,76 @@ export function ReviewsProvider({ children }) {
   };
 
   // ✅ إضافة لايك
- const addLike = async (reviewId) => {
-  if (!reviewId || !user?.id) {
-    console.log("⚠️ Missing reviewId or user.id");
-    return;
-  }
-
-  try {
-    // ✅ الحصول على التوكن من Supabase
-    const { data } = await supabase.auth.getSession();
-    const token = data.session?.access_token;
-    console.log("📥 Access token fetched:", token);
-
-    // ✅ إرسال الطلب للـ API
-    console.log("➡️ Sending POST request to API:", `/api/reviews/${reviewId}/like`);
-    const res = await axios.post(
-      `/api/reviews/${reviewId}/like`,
-      null,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    console.log("📥 Raw response from API:", res.data);
-
-    if (!res.data?.error) {
-      console.log("✅ Like added successfully in client state");
-      setLikes((prev) => ({
-        ...prev,
-        [reviewId]: {
-          count: (prev[reviewId]?.count || 0) + 1,
-          users: [...(prev[reviewId]?.users || []), user.id],
-        },
-      }));
+  const addLike = async ({ reviewId }) => {
+    // ✅ تحقق من القيم الأساسية
+    if (!reviewId || !user?.id) {
+      console.log("⚠️ Missing reviewId, tripId or user.id");
+      return;
     }
-  } catch (err) {
-    console.error("❌ Error adding like:", err);
-  }
-};
+
+    try {
+      // ✅ إرسال الطلب للـ API مع البيانات المطلوبة
+      const res = await axios.post(`/api/reviews/${reviewId}/like`, {
+        user_id: user.id, // يجي من الـ frontend (المستخدم الحالي)
+        reviewId: reviewId,
+      });
+
+      console.log("📥 Raw response from API:", res.data);
+
+      // ✅ تحديث الحالة في الـ frontend لو العملية نجحت
+      if (!res.data?.error) {
+        console.log("✅ Like added successfully in client state");
+        setLikes((prev) => ({
+          ...prev,
+          [reviewId]: {
+            count: (prev[reviewId]?.count || 0) + 1,
+            users: [...(prev[reviewId]?.users || []), user.id],
+          },
+        }));
+      }
+    } catch (err) {
+      console.error("❌ Error adding like:", err);
+      toast.error("❌ Error adding like: " + err.message);
+    }
+  };
 
   // ✅ إزالة لايك
- const removeLike = async (reviewId) => {
-  if (!user?.id) {
-    console.log("⚠️ No user found in context");
-    return;
-  }
-
-  try {
-    // ✅ الحصول على التوكن من Supabase
-    const { data } = await supabase.auth.getSession();
-    const token = data.session?.access_token;
-    console.log("📥 Access token fetched:", token);
-
-    // ✅ إرسال الطلب للـ API مع التوكن
-    console.log("➡️ Sending DELETE request to API:", `/api/reviews/${reviewId}/like`);
-    const res = await axios.delete(`/api/reviews/${reviewId}/like`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    console.log("📥 Raw response from API:", res.data);
-
-    if (!res.data?.error) {
-      console.log("✅ Like removed successfully in client state");
-      setLikes((prev) => ({
-        ...prev,
-        [reviewId]: {
-          count: Math.max((prev[reviewId]?.count || 1) - 1, 0),
-          users: (prev[reviewId]?.users || []).filter((id) => id !== user.id),
-        },
-      }));
+  const removeLike = async ({ reviewId }) => {
+    if (!reviewId || !user?.id) {
+      console.log("⚠️ Missing reviewId, tripId or user.id");
+      return;
     }
-  } catch (err) {
-    console.error("❌ Error removing like:", err);
-  }
-};
 
+    try {
+      console.log(
+        "➡️ Sending DELETE request to API:",
+        `/api/reviews/${reviewId}/like`,
+      );
+
+      const res = await axios.delete(`/api/reviews/${reviewId}/like`, {
+        data: {
+          user_id: user.id,
+          reviewId: reviewId,
+        },
+      });
+
+      console.log("📥 Raw response from API:", res.data);
+
+      if (!res.data?.error) {
+        console.log("✅ Like removed successfully in client state");
+        setLikes((prev) => ({
+          ...prev,
+          [reviewId]: {
+            count: Math.max((prev[reviewId]?.count || 1) - 1, 0),
+            users: (prev[reviewId]?.users || []).filter((id) => id !== user.id),
+          },
+        }));
+      }
+    } catch (err) {
+      console.error("❌ Error removing like:", err);
+      toast.error("❌ Error removing like: " + err.message);
+    }
+  };
 
   // ✅ جلب لايكات المستخدم
   const getUserLikes = (userId) => {

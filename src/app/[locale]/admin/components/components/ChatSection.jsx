@@ -40,7 +40,7 @@ const ChatSection = ({ activeUser, theme, themeName }) => {
 
     await sendMessage({
       user_id: activeUser.id,
-      user_name: user?.user_metadata?.name || "Admin",
+      user_name: user?.name || "Admin",
       user_image: "https://dxpbyrcbklqrjlytmkum.supabase.co/storage/v1/object/public/avatars/technical-writer-digital-avatar-generative-ai_934475-9098.webp",
       content: newMessage,
       sender_type: "admin",
@@ -91,8 +91,8 @@ const ChatSection = ({ activeUser, theme, themeName }) => {
 
     await sendMessage({
       user_id: activeUser.id,
-      user_name: user?.user_metadata?.name || "Admin",
-      user_image: user?.user_metadata?.avatar || "https://dxpbyrcbklqrjlytmkum.supabase.co/storage/v1/object/public/avatars/technical-writer-digital-avatar-generative-ai_934475-9098.webp",
+      user_name: user?.name || "Admin",
+      user_image: user?.avatar || "https://dxpbyrcbklqrjlytmkum.supabase.co/storage/v1/object/public/avatars/technical-writer-digital-avatar-generative-ai_934475-9098.webp",
       content: uploadedUrl,
       sender_type: "admin",
       admin_id: user.id,

@@ -3,7 +3,8 @@ const nextConfig = {
   reactStrictMode: true,
   images: {
     domains: [
-      "dxpbyrcbklqrjlytmkum.supabase.co", // دومين Supabase Storage
+      "dxpbyrcbklqrjlytmkum.supabase.co", // أول دومين
+      "pqeliprhapbghcczgyru.supabase.co", // الدومين الجديد اللي ظهر في الخطأ
     ],
   },
 };

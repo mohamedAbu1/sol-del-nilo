@@ -7,27 +7,30 @@ import { useTranslation } from "react-i18next";
 import { useCitiesCategories } from "@/context/CitiesCategoriesContext";
 import DividerWithIcon from "@/components/layout/DividerWithIcon";
 import { useRouter } from "next/navigation";
-import LogoLetter from "./components/LogoLetter";
 
 // دالة لتشفير الكويري
 const encodeData = (obj) => btoa(JSON.stringify(obj));
-
-function CategoryCard({ cat, themeName }) {
+function CategoryCard({ cat, themeName, language }) {
   const [imgIndex, setImgIndex] = useState(0);
   const router = useRouter();
-  const { i18n } = useTranslation();
-  let lang = i18n.language;
-  if (lang.startsWith("zh")) {
-    lang = "zh";
-  }
+
   useEffect(() => {
     const interval = setInterval(() => {
       setImgIndex((prev) => (prev + 1) % (cat.images?.length || 1));
     }, 4000);
     return () => clearInterval(interval);
   }, [cat.images]);
+
+  // هنا بنحدد الاسم المعروض حسب اللغة
   const displayName =
-    typeof cat.name === "object" ? cat.name?.[lang] || cat.name?.en : cat.name;
+    typeof cat.name === "object"
+      ? cat.name?.[language] || cat.name?.en || cat.name
+      : cat.name;
+
+  console.log("🔤 اللغة المستخدمة:", language);
+  console.log("📌 اسم الكاتيجري المعروض:", displayName);
+
+console.log(displayName)
   const handleClick = () => {
     const queryObj = {
       city: "all",
@@ -41,12 +44,12 @@ function CategoryCard({ cat, themeName }) {
   return (
     <div
       onClick={handleClick}
-      className={`relative rounded-2xl overflow-hidden group cursor-pointer h-[360px]
+      className={`relative rounded-2xl overflow-hidden group cursor-pointer h-[420px]
         transition-all duration-500 hover:scale-[1.06] hover:shadow-2xl
         ${
           themeName === "dark"
             ? "bg-[#1a1a1a] border border-gold/20 shadow-lg"
-            : "bg-[#F5F5F5] border border-[#c9a34a]/30 shadow-md"
+            : "bg-[#fff8e1] border border-[#c9a34a]/30 shadow-md"
         }
       `}
     >
@@ -92,10 +95,17 @@ function CategoryCard({ cat, themeName }) {
 }
 
 const CategoriesSection = () => {
-  const { theme,themeName } = useTheme();
-  const { t } = useTranslation("home");
+  const { themeName } = useTheme();
+  const { t, i18n } = useTranslation("home");
   const { categories, loading } = useCitiesCategories();
+  console.log(categories)
   const [index, setIndex] = useState(0);
+const getLangKey = (lang) => lang.split("-")[0];
+const normalizedLang = getLangKey(i18n.language);
+  // هنا بتاخد اللغة كاملة زي "zh-CN"
+  const langKey = i18n.language;
+  console.log("🌐 اللغة من i18n:", i18n.language);
+  console.log("🌐 المفتاح المستخدم:", langKey);
 
   const looped = [...categories, ...categories];
   const cardWidth = 220;
@@ -146,30 +156,10 @@ const CategoriesSection = () => {
         ${
           themeName === "dark"
             ? "bg-[#0f0f0f] text-white"
-            : "bg-[#F5F5F5] text-[#3a2c0a]"
+            : "bg-[#fdf6e3] text-[#3a2c0a]"
         }
       `}
     >
-       {/* Logo */}
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          style={{ background: "rgba(0,0,0,0.4)", borderRadius: "6px" }}
-          variants={{
-            hidden: { opacity: 0 },
-            visible: {
-              opacity: 1,
-              transition: { staggerChildren: 0.2 },
-            },
-          }}
-          className="flex lg:hidden flex-wrap gap-4 justify-center font-[Cinzel] text-[32px] lg:text-[34px] xl:text-[60px]"
-        >
-          {["L", "U", "X", "O", "R", "𓂀", "A", "S", "W", "A", "N"].map(
-            (char, i) => (
-              <LogoLetter key={i} char={char} theme={theme} />
-            ),
-          )}
-        </motion.div>
       <div className="absolute inset-0 pointer-events-none">
         {Array.from({ length: 25 }).map((_, i) => (
           <span
@@ -206,7 +196,7 @@ const CategoriesSection = () => {
 
       <div className="relative overflow-hidden w-full max-w-7xl mx-auto">
         <motion.div
-          className="flex h-full px-4 sm:px-0"
+          className="flex h-full"
           drag="x"
           dragConstraints={{ left: -looped.length * cardWidth, right: 0 }}
           whileTap={{ cursor: "grabbing" }}
@@ -217,9 +207,13 @@ const CategoriesSection = () => {
           {looped.map((cat, i) => (
             <div
               key={i}
-              className="min-w-[65%] sm:min-w-[40%] md:min-w-[33.33%] lg:min-w-[20%] p-3"
+              className="min-w-[65%] sm:min-w-[50%] md:min-w-[33.33%] lg:min-w-[20%] p-3"
             >
-              <CategoryCard cat={cat} themeName={themeName} />
+              <CategoryCard
+                cat={cat}
+                themeName={themeName}
+                language={normalizedLang}
+              />
             </div>
           ))}
         </motion.div>

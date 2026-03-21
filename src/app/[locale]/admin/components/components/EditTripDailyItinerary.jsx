@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { FaTrash } from "react-icons/fa";
 import { useTheme } from "@/context/ThemeContext";
 import { useTripID } from "../../context/TripIDContext";
 
@@ -7,10 +8,7 @@ const EditTripDailyItinerary = () => {
   const { themeName } = useTheme();
   const { tripData, updateTripField } = useTripID();
 
-  // اللغات المدعومة
   const languages = ["en", "es", "fr", "de", "it", "zh"];
-
-  // ضمان وجود مصفوفة الأيام
   const safeItinerary = Array.isArray(tripData?.itinerary) ? tripData.itinerary : [];
 
   // ✅ تحديث نشاط معين
@@ -19,23 +17,22 @@ const EditTripDailyItinerary = () => {
     const activities = [...(updatedDays[dayIndex]?.activities || [])];
 
     if (field === "activity") {
-      const updatedActivity = {
+      activities[actIndex] = {
         ...activities[actIndex],
         activity_translations: {
           ...activities[actIndex].activity_translations,
           [lang]: value,
         },
       };
-      activities[actIndex] = updatedActivity;
     } else {
       activities[actIndex] = { ...activities[actIndex], [field]: value };
     }
 
     updatedDays[dayIndex] = { ...updatedDays[dayIndex], activities };
-    updateTripField("itinerary", updatedDays); // ✅ الحقل الصحيح
+    updateTripField("itinerary", updatedDays);
   };
 
-  // ✅ إضافة نشاط جديد ليوم معين
+  // ✅ إضافة نشاط جديد
   const addActivity = (dayIndex) => {
     const updatedDays = [...safeItinerary];
     const activities = [...(updatedDays[dayIndex]?.activities || [])];
@@ -44,19 +41,31 @@ const EditTripDailyItinerary = () => {
       activity_translations: { en: "", es: "", fr: "", de: "", it: "", zh: "" },
     });
     updatedDays[dayIndex] = { ...updatedDays[dayIndex], activities };
-    updateTripField("itinerary", updatedDays); // ✅ الحقل الصحيح
+    updateTripField("itinerary", updatedDays);
+  };
+
+  // ✅ إزالة نشاط
+  const removeActivity = (dayIndex, actIndex) => {
+    const updatedDays = [...safeItinerary];
+    const activities = [...(updatedDays[dayIndex]?.activities || [])];
+    activities.splice(actIndex, 1); // حذف النشاط
+    updatedDays[dayIndex] = { ...updatedDays[dayIndex], activities };
+    updateTripField("itinerary", updatedDays);
   };
 
   // ✅ إضافة يوم جديد
   const addDay = () => {
     const updatedDays = [
       ...safeItinerary,
-      {
-        day_number: safeItinerary.length + 1,
-        activities: [],
-      },
+      { day_number: safeItinerary.length + 1, activities: [] },
     ];
-    updateTripField("itinerary", updatedDays); // ✅ الحقل الصحيح
+    updateTripField("itinerary", updatedDays);
+  };
+
+  // ✅ إزالة يوم كامل
+  const removeDay = (dayIndex) => {
+    const updatedDays = safeItinerary.filter((_, i) => i !== dayIndex);
+    updateTripField("itinerary", updatedDays);
   };
 
   return (
@@ -86,25 +95,49 @@ const EditTripDailyItinerary = () => {
                   : "bg-[#fdf6e3] border-[#c9a34a]/40 text-[#3a2c0a]"
               }`}
             >
-              <h4 className="font-semibold mb-2">Day {day?.day_number ?? dayIndex + 1}</h4>
+              <div className="flex items-center justify-between mb-2">
+                <h4 className="font-semibold">Day {day?.day_number ?? dayIndex + 1}</h4>
+                <button
+                  type="button"
+                  onClick={() => removeDay(dayIndex)}
+                  className={`flex items-center gap-1 px-2 py-1 rounded text-sm font-bold ${
+                    themeName === "dark"
+                      ? "bg-red-600 text-white hover:bg-red-700"
+                      : "bg-red-500 text-white hover:bg-red-600"
+                  }`}
+                >
+                  <FaTrash /> Remove Day
+                </button>
+              </div>
 
               {activities.map((act, actIndex) => (
                 <div key={actIndex} className="space-y-2 mb-4">
-                  {/* وقت النشاط */}
-                  <input
-                    type="time"
-                    value={act?.time ?? ""}
-                    onChange={(e) =>
-                      updateActivity(dayIndex, actIndex, "time", e.target.value)
-                    }
-                    className={`p-2 rounded-lg border ${
-                      themeName === "dark"
-                        ? "bg-[#1a1a1a] border-gold/30 text-white"
-                        : "bg-white border-[#c9a34a]/40 text-[#3a2c0a]"
-                    }`}
-                  />
+                  <div className="flex items-center justify-between">
+                    <input
+                      type="time"
+                      value={act?.time ?? ""}
+                      onChange={(e) =>
+                        updateActivity(dayIndex, actIndex, "time", e.target.value)
+                      }
+                      className={`p-2 rounded-lg border ${
+                        themeName === "dark"
+                          ? "bg-[#1a1a1a] border-gold/30 text-white"
+                          : "bg-white border-[#c9a34a]/40 text-[#3a2c0a]"
+                      }`}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeActivity(dayIndex, actIndex)}
+                      className={`flex items-center gap-1 px-2 py-1 rounded text-sm font-bold ${
+                        themeName === "dark"
+                          ? "bg-red-600 text-white hover:bg-red-700"
+                          : "bg-red-500 text-white hover:bg-red-600"
+                      }`}
+                    >
+                      <FaTrash /> Remove Activity
+                    </button>
+                  </div>
 
-                  {/* النشاط مترجم بست لغات */}
                   <div className="grid grid-cols-2 gap-2">
                     {languages.map((lang) => (
                       <input
@@ -112,13 +145,7 @@ const EditTripDailyItinerary = () => {
                         type="text"
                         value={act?.activity_translations?.[lang] ?? ""}
                         onChange={(e) =>
-                          updateActivity(
-                            dayIndex,
-                            actIndex,
-                            "activity",
-                            e.target.value,
-                            lang
-                          )
+                          updateActivity(dayIndex, actIndex, "activity", e.target.value, lang)
                         }
                         placeholder={`Activity (${lang.toUpperCase()})`}
                         className={`p-2 rounded-lg border ${
@@ -132,7 +159,7 @@ const EditTripDailyItinerary = () => {
                 </div>
               ))}
 
-                           <button
+              <button
                 type="button"
                 onClick={() => addActivity(dayIndex)}
                 className={`px-3 py-1 rounded font-bold ${

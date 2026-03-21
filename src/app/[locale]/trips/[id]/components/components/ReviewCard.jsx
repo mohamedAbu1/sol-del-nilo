@@ -20,6 +20,7 @@ export default function ReviewCard({
   deleteReview,
   updateReview,
   user,
+  tripId,
 }) {
   const isOwner = user && String(user.id) === String(rev.users?.id);
   const isAdmin = user && user?.user_metadata?.role === "ADMIN";
@@ -44,7 +45,7 @@ export default function ReviewCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.6, delay: idx * 0.1 }}
-      className={`w-[48%] p-5 rounded-xl shadow-lg border ${
+      className={`w-full lg:w-[48%] p-5 rounded-xl shadow-lg border ${
         themeName === "dark"
           ? "bg-gradient-to-br from-black/70 to-black/40 text-gold border-yellow-700"
           : "bg-gradient-to-br from-[#fffaf0] to-[#fdf6e3] text-[#3a2c0a] border-[#e0c97f]"
@@ -118,14 +119,15 @@ export default function ReviewCard({
       {/* أزرار التحكم */}
       <div className="flex flex-wrap items-center gap-3 mt-2">
         {/* زر لايك */}
-        <motion.button
-          whileTap={{ scale: 0.9 }}
-          whileHover={{ scale: 1.1 }}
-          onClick={() => addLike(rev.id)}
-          className="flex items-center gap-1 px-3 py-1 rounded-md text-sm bg-blue-100 text-blue-700 hover:bg-blue-200"
-        >
-          <FaThumbsUp /> {likes[rev.id]?.count || 0}
-        </motion.button>
+       <motion.button
+  whileTap={{ scale: 0.9 }}
+  whileHover={{ scale: 1.1 }}
+  onClick={() => addLike({ reviewId: rev.id })}
+  className="flex items-center gap-1 px-3 py-1 rounded-md text-sm bg-blue-100 text-blue-700 hover:bg-blue-200"
+>
+  <FaThumbsUp /> {likes[rev.id]?.count || 0}
+</motion.button>
+
 
         {/* زر إزالة لايك */}
         <motion.button

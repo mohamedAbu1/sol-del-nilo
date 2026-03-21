@@ -88,7 +88,7 @@ export default function TripHeader({ trip, lang }) {
       </motion.div>
 
       {/* ✅ الصور الجانبية المصغرة */}
-      <div className="flex gap-4 flex-wrap">
+      <div className="flex gap-4 overflow-x-scroll lg:flex-wrap">
         {trip.gallery_images.map((img, index) => (
           <div
             key={index}

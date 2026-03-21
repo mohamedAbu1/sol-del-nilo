@@ -3,9 +3,10 @@ import React from "react";
 import { FaUserCircle } from "react-icons/fa";
 
 const UsersSidebar = ({ users, activeUser, setActiveUser, theme, themeName, markMessageSeen, messages }) => {
+  console.log(users)
   // فلترة المستخدمين بحيث نستبعد الـ Admin
   const nonAdminUsers = users.filter(
-    (user) => user?.user_metadata?.role?.toUpperCase() !== "ADMIN"
+    (user) => user?.role?.toUpperCase() !== "ADMIN"
   );
 
   return (
@@ -58,10 +59,10 @@ const UsersSidebar = ({ users, activeUser, setActiveUser, theme, themeName, mark
                 }`}
             >
               {/* صورة المستخدم أو أيقونة افتراضية */}
-              {user?.user_metadata?.avatar ? (
+              {user?.avatar ? (
                 <img
-                  src={user?.user_metadata?.avatar }
-                  alt={user?.user_metadata?.name}
+                  src={user?.avatar }
+                  alt={user?.name}
                   className="w-10 h-10 rounded-full border object-cover"
                 />
               ) : (
@@ -69,7 +70,7 @@ const UsersSidebar = ({ users, activeUser, setActiveUser, theme, themeName, mark
               )}
 
               {/* الاسم */}
-              <span className="flex-1 font-medium capitalize">{user?.user_metadata?.name}</span>
+              <span className="flex-1 font-medium capitalize">{user?.name}</span>
 
               {/* Badge لو فيه جديد */}
               {hasNew && (

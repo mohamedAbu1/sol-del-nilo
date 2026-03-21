@@ -13,7 +13,7 @@ export default function RightBar({ scrolled }) {
   const { isLoggedIn, logout, user, handleOpen } = useAuth();
   const { themeName } = useTheme();
   const { t } = useTranslation("header");
-
+console.log(user)
   const { currency, setCurrency } = usePurchase();
   const pathname = usePathname();
   // ✅ حالة العملة
@@ -95,8 +95,8 @@ export default function RightBar({ scrolled }) {
         <div className="hidden lg:flex items-center gap-2">
           {" "}
           <img
-            alt={`${user?.user_metadata?.name}` || "User Avatar"}
-            src={`${user?.user_metadata?.avatar}` || "/default-avatar.png"}
+            alt={`${user?.name}` || "User Avatar"}
+            src={`${user?.avatar}` || "/default-avatar.png"}
             width={40}
             height={40}
             style={{ border: "2px solid #d4af37", borderRadius: "50%" }}
@@ -117,7 +117,7 @@ export default function RightBar({ scrolled }) {
             }}
           >
             {" "}
-            {user?.user_metadata?.name}{" "}
+            {user?.name}{" "}
           </Typography>{" "}
         </div>
       )}

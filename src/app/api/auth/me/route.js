@@ -4,15 +4,13 @@ import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 
 export async function GET() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("sb_access")?.value;
+  const token = cookies().get("jwt_token")?.value;
   if (!token) return NextResponse.json({ user: null });
 
   try {
-    const decoded = jwt.decode(token);
-    return NextResponse.json({ user: decoded || null });
-  } catch (err) {
-    console.error("JWT decode error:", err.message);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    return NextResponse.json({ user: decoded });
+  } catch {
     return NextResponse.json({ user: null });
   }
 }

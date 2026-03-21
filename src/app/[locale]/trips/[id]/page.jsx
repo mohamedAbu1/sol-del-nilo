@@ -49,6 +49,7 @@ export default function TripPage({ params }) {
       p.user_id === user?.id &&
       p.status !== "Cancelled",
   );
+  
 
   return (
     <main
@@ -63,7 +64,7 @@ export default function TripPage({ params }) {
 
       <div
         style={{ paddingTop: "110px" }}
-        className="w-full lg:max-w-7xl mx-auto p-6 relative z-10 grid gap-8 
+        className="w-full lg:max-w-7xl mt-9 lg:mt-0 mx-auto p-6 relative z-10 grid gap-8 
              grid-cols-1 lg:grid-cols-2 auto-rows-min"
       >
         <EgyptianBackground />

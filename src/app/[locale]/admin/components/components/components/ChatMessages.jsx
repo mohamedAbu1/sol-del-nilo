@@ -54,9 +54,7 @@ export default function ChatMessages({ messages, userTyping, themeName }) {
               }`}
             >
               <img
-                src={
-                  "https://dxpbyrcbklqrjlytmkum.supabase.co/storage/v1/object/public/avatars/technical-writer-digital-avatar-generative-ai_934475-9098.webp"
-                }
+                src={msg.user_image}
                 alt={msg.user_name}
                 className={`w-12 h-12 rounded-full border ${
                   msg.sender_type === "admin" ? "border-yellow-500" : ""

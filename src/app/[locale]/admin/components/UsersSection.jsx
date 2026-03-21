@@ -9,7 +9,6 @@ import UserCard from "./components/UserCard";
 import UserActions from "./components/UserActions";
 import UserDetails from "./components/UserDetails";
 import EgyptianBackground from "@/components/layout/EgyptianBackground";
-import { supabase } from "@/lib/supabaseClient";
 
 const UsersSection = () => {
   const { users, fetchUsers, setUsers } = useUsers(); // ✅ تأكد أن context يسمح بتحديث users
@@ -29,7 +28,7 @@ const UsersSection = () => {
 
   // ✅ تغيير الدور (USER ⇄ ADMIN)
  const handleToggleRole = async (user) => {
-  const newRole = user?.user_metadata?.role === "ADMIN" ? "USER" : "ADMIN";
+  const newRole = user?.role === "ADMIN" ? "USER" : "ADMIN";
 
   const res = await fetch("/api/updateRole", {
     method: "POST",
@@ -111,7 +110,7 @@ const UsersSection = () => {
 
             {/* ✅ عرض الدور الحالي */}
             <p className="text-sm font-medium mt-2">
-              Role: {user?.user_metadata?.role || "USER"}
+              Role: {user?.role || "USER"}
             </p>
 
             {/* ✅ زر لتغيير الدور */}

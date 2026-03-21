@@ -1,6 +1,5 @@
 import { supabase } from "@/lib/supabaseClient";
 
-
 export async function POST(req) {
   const body = await req.json();
   const {
@@ -54,6 +53,7 @@ export async function POST(req) {
         reply_to,
         admin_id,
         status: "sent",
+        created_at: new Date(), // ✅ إضافة التوقيت هنا
       },
     ])
     .select();
@@ -67,7 +67,6 @@ export async function POST(req) {
   return new Response(JSON.stringify(data[0]), { status: 201 });
 }
 
-
 // جلب الرسائل
 export async function GET(req) {
   const { searchParams } = new URL(req.url);
@@ -75,7 +74,9 @@ export async function GET(req) {
 
   let query = supabase
     .from("messages")
-    .select("id, content, sender_type, created_at, user_name, user_image, reply_to, admin_id, status");
+    .select(
+      "id, content, sender_type, created_at, user_name, user_image, reply_to, admin_id, status",
+    );
 
   if (userId) {
     query = query.eq("user_id", userId); // ✅ فلترة حسب المستخدم الحالي
@@ -84,12 +85,13 @@ export async function GET(req) {
   const { data, error } = await query.order("created_at", { ascending: true });
 
   if (error) {
-    return new Response(JSON.stringify({ error: error.message }), { status: 400 });
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 400,
+    });
   }
 
   return new Response(JSON.stringify(data), { status: 200 });
 }
-
 
 // تحديث حالة الرسالة إلى "seen"
 export async function PUT(req) {
@@ -116,4 +118,3 @@ export async function PUT(req) {
 
   return new Response(JSON.stringify(data[0] ?? {}), { status: 200 });
 }
-

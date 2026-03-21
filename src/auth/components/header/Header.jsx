@@ -6,7 +6,7 @@ import Logo from "./components/Logo";
 import NavBar from "./components/NavBar";
 import RightBar from "./components/RightBar";
 import MobileNavBar from "./components/MobileNavBar";
-
+import AdminButton from "./components/AdminButton"
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [activeTab, setActiveTab] = useState(""); // ✅ الحالة لإدارة الـ active
@@ -34,6 +34,7 @@ export default function Header() {
         <NavBar scrolled={scrolled}/>
         <MobileNavBar activeTab={activeTab} setActiveTab={setActiveTab} /> {/* ✅ نمرر الحالة */}
         <RightBar scrolled={scrolled}/>
+        <AdminButton />
       </div>
     </motion.header>
   );

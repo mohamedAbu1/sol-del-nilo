@@ -1,13 +1,30 @@
+// app/api/auth/users/route.js
 import { NextResponse } from "next/server";
-import { supabaseAdmin } from "@/lib/supabaseClient";
-
+import { supabase } from "@/lib/supabaseClient";
 
 export async function GET() {
-  const { data, error } = await supabaseAdmin.auth.admin.listUsers();
+  try {
+    // ✅ جلب كل المستخدمين من جدول user
+    const { data: users, error } = await supabase
+      .from("user")
+      .select("id, name, email, gender, role, avatar");
 
-  if (error) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 400 });
+    if (error) {
+      return NextResponse.json(
+        { success: false, error: error.message },
+        { status: 400 }
+      );
+    }
+
+    return NextResponse.json(
+      { success: true, users },
+      { status: 200 }
+    );
+  } catch (e) {
+    console.error("❌ خطأ داخلي:", e);
+    return NextResponse.json(
+      { success: false, error: "خطأ داخلي" },
+      { status: 500 }
+    );
   }
-
-  return NextResponse.json({ success: true, users: data.users }, { status: 200 });
 }

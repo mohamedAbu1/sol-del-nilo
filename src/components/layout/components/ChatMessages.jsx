@@ -22,13 +22,13 @@ export default function ChatMessages({ messages, adminTyping, themeName }) {
           saveAs(newBlob, `chat-image-${id}.jpg`);
         },
         "image/jpeg",
-        0.7
+        0.7,
       );
     };
   };
 
   return (
-    <div className="flex-1 overflow-x-hidden p-4 overflow-y-auto space-y-4">
+    <div className="flex-1 overflow-x-hidden p-4 overflow-y-scroll space-y-4">
       <AnimatePresence>
         {messages.length > 0 ? (
           messages.map((msg) => (
@@ -45,7 +45,10 @@ export default function ChatMessages({ messages, adminTyping, themeName }) {
               }`}
             >
               <img
-                src={msg.user_image || "https://dxpbyrcbklqrjlytmkum.supabase.co/storage/v1/object/public/avatars/technical-writer-digital-avatar-generative-ai_934475-9098.webp"}
+                src={
+                  msg.user_image ||
+                  "https://dxpbyrcbklqrjlytmkum.supabase.co/storage/v1/object/public/avatars/technical-writer-digital-avatar-generative-ai_934475-9098.webp"
+                }
                 alt={msg.user_name}
                 className={`w-12 h-12 rounded-full border ${
                   msg.sender_type === "admin" ? "border-yellow-500" : ""
@@ -58,12 +61,12 @@ export default function ChatMessages({ messages, adminTyping, themeName }) {
                       ? "bg-gray-700 text-white"
                       : "bg-gray-200 text-black"
                     : themeName === "dark"
-                    ? "bg-yellow-500 text-black"
-                    : "bg-yellow-400 text-white"
+                      ? "bg-yellow-500 text-black"
+                      : "bg-yellow-400 text-white"
                 }`}
               >
                 <p className="text-sm font-semibold mb-1 capitalize">
-                  {msg.sender_type === "admin" ? "👑 Admin" : msg.user_name} 
+                  {msg.sender_type === "admin" ? "👑 Admin" : msg.user_name}
                 </p>
 
                 {msg.content.startsWith("http") &&
@@ -107,6 +110,7 @@ export default function ChatMessages({ messages, adminTyping, themeName }) {
                     {msg.created_at
                       ? formatDistanceToNow(new Date(msg.created_at), {
                           addSuffix: true,
+                          includeSeconds: true,
                         })
                       : ""}
                   </span>

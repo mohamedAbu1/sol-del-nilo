@@ -16,6 +16,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { tripsMetadata } from "@/lib/metadata/trips";
 import { useTrip } from "@/context/TripContext";
 import { useQueryFilters } from "@/context/QueryContext";
+import { useCitiesCategories } from "@/context/CitiesCategoriesContext";
 
 export default function TripsPage() {
   const { lang } = useLanguage();
@@ -23,7 +24,7 @@ export default function TripsPage() {
   const { user } = useAuth();
   const { trips, fetchTrips } = useTrip();
   const { queryFilters } = useQueryFilters();
-
+const { category: allCategories =[] }= useCitiesCategories()
   const [currentPage, setCurrentPage] = useState(1);
   const [cardStyle, setCardStyle] = useState("vertical");
   // const tripsPerPage = 16;
@@ -58,15 +59,16 @@ export default function TripsPage() {
 
     // فلترة الفئات
     const matchesCategory = activeFilters.category
-      ? trip.trip_categories?.some((cat) => {
-          const catObj = allCategories.find((c) => c.id === cat.category_id);
-          const catName = catObj?.name?.[lang] || catObj?.name?.en || "";
-          return (
-            cat.category_id === activeFilters.category ||
-            catName.toLowerCase() === activeFilters.category.toLowerCase()
-          );
-        })
-      : true;
+  ? trip.trip_categories?.some((cat) => {
+      const catObj = allCategories?.find((c) => c.id === cat.category_id);
+      const catName = catObj?.name?.[lang] || catObj?.name?.en || "";
+      return (
+        cat.category_id === activeFilters.category ||
+        catName.toLowerCase() === activeFilters.category.toLowerCase()
+      );
+    })
+  : true;
+
 
     // فلترة السعر
     const matchesPrice = activeFilters.price

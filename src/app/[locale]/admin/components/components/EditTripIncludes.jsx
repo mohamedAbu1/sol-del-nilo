@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { FaCheckCircle } from "react-icons/fa";
+import { FaCheckCircle, FaTrash } from "react-icons/fa";
 import { useTheme } from "@/context/ThemeContext";
 import { useTripID } from "../../context/TripIDContext";
 
@@ -21,7 +21,7 @@ const EditTripIncludes = () => {
         [lang]: value,
       },
     };
-    updateTripField("includes", updatedIncludes); // ✅ الحقل الصحيح
+    updateTripField("includes", updatedIncludes);
   };
 
   // ✅ إضافة include جديد
@@ -40,7 +40,15 @@ const EditTripIncludes = () => {
         },
       },
     ];
-    updateTripField("includes", updatedIncludes); // ✅ الحقل الصحيح
+    updateTripField("includes", updatedIncludes);
+  };
+
+  // ✅ إزالة include
+  const removeInclude = (index) => {
+    const updatedIncludes = (tripData?.includes || []).filter(
+      (_, i) => i !== index
+    );
+    updateTripField("includes", updatedIncludes);
   };
 
   return (
@@ -62,13 +70,27 @@ const EditTripIncludes = () => {
               : "bg-[#fdf6e3] border-[#c9a34a]/40 text-[#3a2c0a]"
           }`}
         >
-          <div className="flex items-center gap-2 mb-2">
-            <FaCheckCircle
-              className={`text-xl ${
-                themeName === "dark" ? "text-gold" : "text-[#c9a34a]"
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-2">
+              <FaCheckCircle
+                className={`text-xl ${
+                  themeName === "dark" ? "text-gold" : "text-[#c9a34a]"
+                }`}
+              />
+              <span className="font-semibold">Include {i + 1}</span>
+            </div>
+            {/* زر إزالة */}
+            <button
+              type="button"
+              onClick={() => removeInclude(i)}
+              className={`flex items-center gap-1 px-2 py-1 rounded text-sm font-bold ${
+                themeName === "dark"
+                  ? "bg-red-600 text-white hover:bg-red-700"
+                  : "bg-red-500 text-white hover:bg-red-600"
               }`}
-            />
-            <span className="font-semibold">Include {i + 1}</span>
+            >
+              <FaTrash /> Remove
+            </button>
           </div>
 
           {/* حقول إدخال لكل لغة */}

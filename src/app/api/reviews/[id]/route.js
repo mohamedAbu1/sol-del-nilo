@@ -12,7 +12,7 @@ const supabase = createClient(
 async function getUserFromCookies() {
   console.log("➡️ Reading cookies...");
   const cookieStore = cookies();
-  const token = cookieStore.get("sb-access-token")?.value;
+  const token = cookieStore.get("sb-access")?.value;
 
   console.log("📥 Token from cookies:", token);
 

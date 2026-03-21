@@ -108,90 +108,106 @@ export async function PUT(req, context) {
     const body = await req.json();
 
     console.log("➡️ [PUT] Trip ID:", id);
-    console.log("➡️ [PUT] Request body:", JSON.stringify(body, null, 2));
 
-    const tripPayload = {
-      title: body.title,
-      description: body.description,
-      price: Number(body.price),
-      duration: body.duration,
-      priceLevel: body.priceLevel,
-      cover_image: body.cover_image,
-      gallery_images: body.gallery_images,
-    };
+    // ✅ تحديث بيانات الرحلة الأساسية فقط لو اتغيرت
+    const tripPayload = {};
+    const fields = ["title","description","price","duration","priceLevel","cover_image","gallery_images"];
+    fields.forEach(f => {
+      if (body[f] !== undefined) tripPayload[f] = body[f];
+    });
 
-    console.log("➡️ [PUT] Trip payload:", tripPayload);
-
-    // ✅ تحديث بيانات الرحلة الأساسية
-    const { data, error } = await supabase
-      .from("trips")
-      .update(tripPayload)
-      .eq("id", id)
-      .select()
-      .single();
-
-    console.log("➡️ [PUT] Updated trip:", data);
-
-    if (error) {
-      console.error("❌ [PUT] Error updating trip:", error.message);
-      return NextResponse.json(
-        { success: false, error: error.message },
-        { status: 400 },
-      );
+    if (Object.keys(tripPayload).length > 0) {
+      const { error } = await supabase
+        .from("trips")
+        .update(tripPayload)
+        .eq("id", id);
+      if (error) {
+        return NextResponse.json({ success: false, error: error.message }, { status: 400 });
+      }
     }
 
-    // ✅ تحديث الفئات
+    // ✅ تحديث الفئات بدون تكرار
     if (Array.isArray(body.categories)) {
-      console.log("➡️ [PUT] Updating categories:", body.categories);
-      await supabase.from("trip_categories").delete().eq("trip_id", id);
-      const categoriesData = body.categories.map((catId) => ({
-        trip_id: id,
-        category_id: catId,
-      }));
-      console.log("➡️ [PUT] Categories payload:", categoriesData);
-      if (categoriesData.length > 0) {
-        await supabase.from("trip_categories").insert(categoriesData);
+      const { data: oldCategories } = await supabase
+        .from("trip_categories")
+        .select("category_id")
+        .eq("trip_id", id);
+
+      const oldCategoryIds = oldCategories.map(c => c.category_id);
+      const newCategories = [...new Set(body.categories)];
+
+      const toAdd = newCategories.filter(c => !oldCategoryIds.includes(c));
+      const toRemove = oldCategoryIds.filter(c => !newCategories.includes(c));
+
+      if (toAdd.length > 0) {
+        await supabase.from("trip_categories").insert(toAdd.map(catId => ({ trip_id: id, category_id: catId })));
+      }
+      if (toRemove.length > 0) {
+        await supabase.from("trip_categories").delete().eq("trip_id", id).in("category_id", toRemove);
       }
     }
 
-    // ✅ تحديث المدن
+    // ✅ تحديث المدن بدون تكرار
     if (Array.isArray(body.cities)) {
-      console.log("➡️ [PUT] Updating cities:", body.cities);
-      await supabase.from("trip_cities").delete().eq("trip_id", id);
-      const citiesData = body.cities.map((cityId) => ({
-        trip_id: id,
-        city_id: cityId,
-      }));
-      console.log("➡️ [PUT] Cities payload:", citiesData);
-      if (citiesData.length > 0) {
-        await supabase.from("trip_cities").insert(citiesData);
+      const { data: oldCities } = await supabase
+        .from("trip_cities")
+        .select("city_id")
+        .eq("trip_id", id);
+
+      const oldCityIds = oldCities.map(c => c.city_id);
+      const newCities = [...new Set(body.cities)];
+
+      const toAdd = newCities.filter(c => !oldCityIds.includes(c));
+      const toRemove = oldCityIds.filter(c => !newCities.includes(c));
+
+      if (toAdd.length > 0) {
+        await supabase.from("trip_cities").insert(toAdd.map(cityId => ({ trip_id: id, city_id: cityId })));
+      }
+      if (toRemove.length > 0) {
+        await supabase.from("trip_cities").delete().eq("trip_id", id).in("city_id", toRemove);
       }
     }
 
-    // ✅ تحديث الـ includes
+    // ✅ تحديث الـ includes بدون تكرار نصوص
     if (Array.isArray(body.includes)) {
-      console.log("➡️ [PUT] Updating includes:", body.includes);
+      const { data: oldIncludes } = await supabase
+        .from("includes")
+        .select("include_translations")
+        .eq("trip_id", id);
+
+      const seen = new Set();
+      const uniqueIncludes = body.includes.filter(inc => {
+        const key = JSON.stringify(inc.include_translations);
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+
+      // احذف القديم كله وأدخل الجديد النظيف
       await supabase.from("includes").delete().eq("trip_id", id);
-      const includesData = body.includes.map((inc) => ({
-        trip_id: id,
-        include_translations: inc.include_translations, // ✅ استخدم البنية الصحيحة
-      }));
-      console.log("➡️ [PUT] Includes payload:", includesData);
-      if (includesData.length > 0) {
-        await supabase.from("includes").insert(includesData);
+      if (uniqueIncludes.length > 0) {
+        await supabase.from("includes").insert(uniqueIncludes.map(inc => ({
+          trip_id: id,
+          include_translations: inc.include_translations
+        })));
       }
     }
 
-    // ✅ تحديث الأيام والأنشطة اليومية
+    // ✅ تحديث الأيام والأنشطة اليومية بدون تكرار
     if (Array.isArray(body.itinerary)) {
-      console.log("➡️ [PUT] Updating itinerary:", body.itinerary);
       await supabase.from("trip_days").delete().eq("trip_id", id);
 
-      const daysData = body.itinerary.map((day, index) => ({
+      const seenDays = new Set();
+      const uniqueDays = body.itinerary.filter(day => {
+        if (seenDays.has(day.day_number)) return false;
+        seenDays.add(day.day_number);
+        return true;
+      });
+
+      const daysData = uniqueDays.map((day, index) => ({
         trip_id: id,
         day_number: day.day_number || index + 1,
       }));
-      console.log("➡️ [PUT] Days payload:", daysData);
 
       const { data: insertedDays, error: daysError } = await supabase
         .from("trip_days")
@@ -199,25 +215,25 @@ export async function PUT(req, context) {
         .select();
 
       if (daysError) throw daysError;
-      console.log("✅ [PUT] Inserted days:", insertedDays);
 
       const activitiesData = [];
       insertedDays.forEach((dayRow, index) => {
-        const activities = body.itinerary[index].activities || [];
-        console.log(
-          `➡️ [PUT] Activities for day ${dayRow.day_number}:`,
-          activities,
-        );
-        activities.forEach((act) => {
+        const activities = uniqueDays[index].activities || [];
+        const seenActs = new Set();
+        const uniqueActs = activities.filter(act => {
+          const key = `${act.time}-${JSON.stringify(act.activity_translations)}`;
+          if (seenActs.has(key)) return false;
+          seenActs.add(key);
+          return true;
+        });
+        uniqueActs.forEach(act => {
           activitiesData.push({
             day_id: dayRow.id,
             time: act.time,
-            activity_translations: act.activity_translations, // ✅ استخدم البنية الصحيحة
+            activity_translations: act.activity_translations,
           });
         });
       });
-
-      console.log("➡️ [PUT] Activities payload:", activitiesData);
 
       if (activitiesData.length > 0) {
         await supabase.from("day_activities").insert(activitiesData);
@@ -225,19 +241,15 @@ export async function PUT(req, context) {
     }
 
     console.log("✅ [PUT] Trip update complete");
-
-    return NextResponse.json(
-      { success: true, updatedTrip: data },
-      { status: 200 },
-    );
+    return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {
     console.error("❌ [PUT] Exception:", error.message);
-    return NextResponse.json(
-      { success: false, error: error.message },
-      { status: 500 },
-    );
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }
+
+
+
 // ================== DELETE ==================
 export async function DELETE(req, context) {
   try {

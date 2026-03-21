@@ -174,6 +174,7 @@ export default function TripReviews({ trip, lang }) {
         {currentComments.map((rev, idx) => (
           <ReviewCard
             key={rev.id || idx}
+            tripId={trip.id}
             rev={rev}
             idx={idx}
             user={user}

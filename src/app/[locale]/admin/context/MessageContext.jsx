@@ -26,9 +26,9 @@ export function MessageProvider({ children }) {
   }) => {
     const payload = {
       user_id,
-      user_name: user?.user_metadata?.name || "Unknown User",
+      user_name: user?.name || "Unknown User",
       user_image:
-        user?.user_metadata?.avatar ||
+        user?.avatar ||
         "https://dxpbyrcbklqrjlytmkum.supabase.co/storage/v1/object/public/avatars/technical-writer-digital-avatar-generative-ai_934475-9098.webp",
       content,
       sender_type,

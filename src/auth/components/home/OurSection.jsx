@@ -109,7 +109,7 @@ const OurSection = () => {
               "/HomePageImage/WhatsApp Image 2026-02-23 at 10.07.05 PM.webp",
               "/HomePageImage/WhatsApp Image 2026-02-23 at 10.07.06 PM (1).webp",
               "/HomePageImage/WhatsApp Image 2026-02-23 at 10.07.06 PM.webp",
-              "/HomePageImage/WhatsApp Image 2026-02-23 at 10.07.08 PM (1).webp",
+              "/HomePageImage/pexels-diego-f-parra-33199-15127140.webp",
               "/HomePageImage/WhatsApp Image 2026-02-23 at 10.07.04 PM.webp",
             ].map((imgSrc, index) => (
               <SwiperSlide key={index}>

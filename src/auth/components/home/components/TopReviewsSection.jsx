@@ -33,7 +33,7 @@ export default function TopReviewsSection() {
   const [expandedIds, setExpandedIds] = useState([]);
   const toggleExpand = (id) => {
     setExpandedIds((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
     );
   };
 
@@ -41,14 +41,24 @@ export default function TopReviewsSection() {
     dots: true,
     infinite: true,
     speed: 700,
-    slidesToShow: 3,
+    slidesToShow: 3, // شاشات كبيرة
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 5000,
     arrows: false,
     responsive: [
-      { breakpoint: 1024, settings: { slidesToShow: 2 } },
-      { breakpoint: 640, settings: { slidesToShow: 1 } },
+      {
+        breakpoint: 1024, // شاشات متوسطة
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 640, // شاشات صغيرة
+        settings: {
+          slidesToShow: 1,
+        },
+      },
     ],
   };
 

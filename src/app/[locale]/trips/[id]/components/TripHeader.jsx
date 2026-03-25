@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useTheme } from "@/context/ThemeContext";
 import { motion } from "framer-motion";
 import { sites } from "@/constants/images";
-import Highlighter from "react-highlight-words"; // ✅ المكتبة الجديدة
+import Highlighter from "react-highlight-words";
 
 export default function TripHeader({ trip, lang }) {
   const { themeName } = useTheme();
@@ -30,7 +30,6 @@ export default function TripHeader({ trip, lang }) {
     );
   }
 
-  // ✅ الكلمات المراد تمييزها
   const searchWords = sites.map((site) => site.name);
 
   return (
@@ -87,8 +86,13 @@ export default function TripHeader({ trip, lang }) {
         )}
       </motion.div>
 
-      {/* ✅ الصور الجانبية المصغرة */}
-      <div className="flex gap-4 overflow-x-scroll lg:flex-wrap">
+      {/* ✅ الصور الجانبية المصغرة مع Drag */}
+      <motion.div
+        className="flex gap-4 lg:flex-wrap cursor-grab active:cursor-grabbing"
+        drag="x"
+        dragConstraints={{ left: -200, right: 0 }}
+        dragElastic={0.1}
+      >
         {trip.gallery_images.map((img, index) => (
           <div
             key={index}
@@ -117,9 +121,9 @@ export default function TripHeader({ trip, lang }) {
             )}
           </div>
         ))}
-      </div>
+      </motion.div>
 
-      {/* ✅ الوصف مع تمييز المعابد والمقابر */}
+      {/* ✅ الوصف مع تمييز الكلمات */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -127,26 +131,13 @@ export default function TripHeader({ trip, lang }) {
         transition={{ duration: 0.7, delay: 0.3 }}
         className="leading-relaxed text-lg mt-6"
       >
-       <Highlighter
-  highlightClassName="bg-yellow-200"
-  searchWords={[trip?.title?.[lang] || trip?.title?.en || ""]}
-  autoEscape={true}
-  textToHighlight={trip?.description?.[lang] || trip?.description?.en || ""}
- />
-
+        <Highlighter
+          highlightClassName="bg-yellow-200"
+          searchWords={[trip?.title?.[lang] || trip?.title?.en || ""]}
+          autoEscape={true}
+          textToHighlight={trip?.description?.[lang] || trip?.description?.en || ""}
+        />
       </motion.div>
-
-      <style jsx>{`
-        .highlighted-text {
-          color: #FF9800;
-          font-weight: bold;
-          text-decoration: none;
-        }
-        .highlighted-text:hover {
-          text-decoration: underline;
-          color: #FF9800;
-        }
-      `}</style>
     </motion.section>
   );
 }

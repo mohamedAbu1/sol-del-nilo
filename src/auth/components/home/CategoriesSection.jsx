@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useTheme } from "@/context/ThemeContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
@@ -10,27 +10,46 @@ import { useRouter } from "next/navigation";
 
 // دالة لتشفير الكويري
 const encodeData = (obj) => btoa(JSON.stringify(obj));
+
+// دالة لتحسين الصور من Supabase
+const optimize = (url) => {
+  if (!url) return "/fallback.jpg";
+  if (!url.startsWith("http")) return url;
+  return `${url}?width=600&quality=70&format=webp`;
+};
+
 function CategoryCard({ cat, themeName, language }) {
   const [imgIndex, setImgIndex] = useState(0);
   const router = useRouter();
+  const cardRef = useRef(null);
+  const [visible, setVisible] = useState(false);
 
+  // Lazy load عبر Intersection Observer
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) setVisible(true);
+      },
+      { threshold: 0.2 }
+    );
+    if (cardRef.current) observer.observe(cardRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  // تغيير الصور فقط عندما يكون الكارد ظاهر
+  useEffect(() => {
+    if (!visible) return;
     const interval = setInterval(() => {
       setImgIndex((prev) => (prev + 1) % (cat.images?.length || 1));
     }, 4000);
     return () => clearInterval(interval);
-  }, [cat.images]);
+  }, [visible, cat.images]);
 
-  // هنا بنحدد الاسم المعروض حسب اللغة
   const displayName =
     typeof cat.name === "object"
       ? cat.name?.[language] || cat.name?.en || cat.name
       : cat.name;
 
-  console.log("🔤 اللغة المستخدمة:", language);
-  console.log("📌 اسم الكاتيجري المعروض:", displayName);
-
-console.log(displayName)
   const handleClick = () => {
     const queryObj = {
       city: "all",
@@ -38,11 +57,12 @@ console.log(displayName)
       price: "Economy",
       popular: false,
     };
-    const encoded = encodeData(queryObj);
-    router.push(`/trips?data=${encoded}`);
+    router.push(`/trips?data=${encodeData(queryObj)}`);
   };
+
   return (
     <div
+      ref={cardRef}
       onClick={handleClick}
       className={`relative rounded-2xl overflow-hidden group cursor-pointer h-[420px]
         transition-all duration-500 hover:scale-[1.06] hover:shadow-2xl
@@ -54,27 +74,25 @@ console.log(displayName)
       `}
     >
       <AnimatePresence mode="sync">
-        <motion.div
-          key={imgIndex}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1 }}
-          className="absolute inset-0"
-        >
-          <Image
-            src={
-              cat.images?.[imgIndex]?.startsWith("/")
-                ? cat.images[imgIndex]
-                : cat.images?.[imgIndex]?.startsWith("http")
-                  ? cat.images[imgIndex]
-                  : "/fallback.jpg"
-            }
-            alt={displayName}
-            fill
-            className="object-cover rounded-lg"
-          />
-        </motion.div>
+        {visible && (
+          <motion.div
+            key={imgIndex}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1 }}
+            className="absolute inset-0"
+          >
+            <Image
+              src={optimize(cat.images?.[imgIndex])}
+              alt={displayName}
+              fill
+              loading="lazy"
+              sizes="(max-width: 768px) 100vw, 33vw"
+              className="object-cover rounded-lg"
+            />
+          </motion.div>
+        )}
       </AnimatePresence>
 
       <div
@@ -98,53 +116,30 @@ const CategoriesSection = () => {
   const { themeName } = useTheme();
   const { t, i18n } = useTranslation("home");
   const { categories, loading } = useCitiesCategories();
-  console.log(categories)
-  const [index, setIndex] = useState(0);
-const getLangKey = (lang) => lang.split("-")[0];
-const normalizedLang = getLangKey(i18n.language);
-  // هنا بتاخد اللغة كاملة زي "zh-CN"
-  const langKey = i18n.language;
-  console.log("🌐 اللغة من i18n:", i18n.language);
-  console.log("🌐 المفتاح المستخدم:", langKey);
 
-  const looped = [...categories, ...categories];
+  const normalizedLang = i18n.language.split("-")[0];
+
+  const original = categories;
+  const looped = [...original, ...original, ...original];
+
   const cardWidth = 220;
+  const middleIndex = original.length;
 
+  const [index, setIndex] = useState(middleIndex);
+
+  // حركة تلقائية محسّنة
   useEffect(() => {
     const interval = setInterval(() => {
-      setIndex((prev) => (prev + 1) % categories.length);
+      setIndex((prev) => prev + 1);
     }, 3000);
     return () => clearInterval(interval);
-  }, [categories.length]);
+  }, []);
 
-  const handleDragEnd = (event, info) => {
-    const offset = info.offset.x;
-    const direction = offset > 0 ? -1 : 1;
-    const newIndex = Math.min(
-      Math.max(index + direction, 0),
-      categories.length - 1,
-    );
-    setIndex(newIndex);
-  };
-
-  const symbols = [
-    "𓂀",
-    "𓋹",
-    "𓆣",
-    "𓇼",
-    "𓇯",
-    "𓏏",
-    "𓎛",
-    "𓊽",
-    "𓃾",
-    "𓅓",
-    "𓈇",
-    "𓉐",
-    "𓊹",
-    "𓌙",
-    "𓍿",
-    "𓎟",
-  ];
+  useEffect(() => {
+    if (index >= original.length * 2) {
+      setIndex(original.length);
+    }
+  }, [index, original.length]);
 
   if (loading) {
     return <p className="text-center text-gray-500">Loading categories...</p>;
@@ -160,24 +155,6 @@ const normalizedLang = getLangKey(i18n.language);
         }
       `}
     >
-      <div className="absolute inset-0 pointer-events-none">
-        {Array.from({ length: 25 }).map((_, i) => (
-          <span
-            key={i}
-            className={`absolute ${
-              themeName === "dark" ? "text-gray-700" : "text-[#c9a34a]"
-            } opacity-60 text-7xl animate-pulse`}
-            style={{
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              transform: `rotate(${Math.random() * 360}deg)`,
-            }}
-          >
-            {symbols[Math.floor(Math.random() * symbols.length)]}
-          </span>
-        ))}
-      </div>
-
       <div className="max-w-7xl mx-auto mb-10 text-start">
         <h2
           className={`text-5xl font-extrabold tracking-wide drop-shadow-md text-left
@@ -197,12 +174,8 @@ const normalizedLang = getLangKey(i18n.language);
       <div className="relative overflow-hidden w-full max-w-7xl mx-auto">
         <motion.div
           className="flex h-full"
-          drag="x"
-          dragConstraints={{ left: -looped.length * cardWidth, right: 0 }}
-          whileTap={{ cursor: "grabbing" }}
           animate={{ x: -index * cardWidth }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
-          onDragEnd={handleDragEnd}
+          transition={{ duration: 1.2, ease: "linear" }}
         >
           {looped.map((cat, i) => (
             <div

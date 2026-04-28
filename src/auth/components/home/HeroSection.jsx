@@ -18,7 +18,7 @@ const optimize = (url) => {
 };
 
 export default function HeroSection() {
-  const { theme } = useTheme();
+  const { theme ,themeName } = useTheme();
   const { images, index } = useData();
 
   const [visible, setVisible] = useState(false);
@@ -48,7 +48,7 @@ export default function HeroSection() {
       {/* Background Image للموبايل (ثابتة) */}
       <div className="absolute inset-0 block lg:hidden">
         <Image
-          src="/HomePageImage/sadsaqqwwwrrr.webp" // صورة ثابتة للموبايل
+          src={themeName === "dark" ? "/HomePageImage/swwqqqas.webp": "/HomePageImage/sadsaqqwwwrrr.webp"}
           alt="Hero Mobile"
           fill
           loading="lazy"

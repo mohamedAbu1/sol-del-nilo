@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect } from "react";
 import { useTheme } from "@/context/ThemeContext";
 import { motion, useMotionValue } from "framer-motion";
 import { useTranslation } from "react-i18next";
@@ -17,10 +17,9 @@ const optimize = (url) => {
 
 const encodeData = (obj) => btoa(JSON.stringify(obj));
 
-function CityCard({ city, themeName, theme, language, t }) {
+function CityCard({ city, index, themeName, theme, language, t, x, cardWidth }) {
   const router = useRouter();
-  const cityName =
-    city.name?.[language] || city.name?.en || city.name || "";
+  const cityName = city.name?.[language] || city.name?.en || city.name || "";
 
   const handleExplore = () => {
     const queryObj = {
@@ -29,6 +28,11 @@ function CityCard({ city, themeName, theme, language, t }) {
       price: "Economy",
       popular: false,
     };
+
+    // حفظ مكان السليدر والكارد المختار
+    sessionStorage.setItem("citiesScrollX", x.get());
+    sessionStorage.setItem("selectedCityIndex", index);
+
     router.push(`/trips?data=${encodeData(queryObj)}`);
   };
 
@@ -88,10 +92,24 @@ export default function CitiesSection() {
   const normalizedLang = i18n.language.split("-")[0];
 
   const original = cities || [];
-  const looped = [...original, ...original, ...original];
 
   const x = useMotionValue(0);
   const speed = 0.6; // سرعة الحركة
+  const cardWidth = 340; // عرض الكارت الواحد
+
+  // استرجاع المكان والكارد عند العودة
+  useEffect(() => {
+    const savedX = sessionStorage.getItem("citiesScrollX");
+    const selectedIndex = sessionStorage.getItem("selectedCityIndex");
+
+    if (selectedIndex) {
+      const centerOffset = window.innerWidth / 2 - cardWidth / 2;
+      const targetX = -(parseInt(selectedIndex) * cardWidth - centerOffset);
+      x.set(targetX);
+    } else if (savedX) {
+      x.set(parseFloat(savedX));
+    }
+  }, [x]);
 
   // Auto scroll
   useEffect(() => {
@@ -100,9 +118,10 @@ export default function CitiesSection() {
     const animate = () => {
       x.set(x.get() - speed);
 
-      // إعادة التمركز بدون قفزة
-      if (Math.abs(x.get()) >= original.length * 340) {
-        x.set(0);
+      // إيقاف الحركة عند آخر كارت
+      if (Math.abs(x.get()) >= (original.length - 1) * cardWidth) {
+        cancelAnimationFrame(animationFrame);
+        return;
       }
 
       animationFrame = requestAnimationFrame(animate);
@@ -111,7 +130,7 @@ export default function CitiesSection() {
     animationFrame = requestAnimationFrame(animate);
 
     return () => cancelAnimationFrame(animationFrame);
-  }, [original.length]);
+  }, [original.length, x]);
 
   if (loading) {
     return <p className="text-center text-gray-500">Loading cities...</p>;
@@ -149,24 +168,28 @@ export default function CitiesSection() {
           className="flex h-full"
           style={{ x }}
           drag="x"
-          dragConstraints={{ left: -Infinity, right: Infinity }}
-          dragElastic={0.1}
+          dragConstraints={{
+            left: -(original.length * cardWidth - window.innerWidth),
+            right: 0,
+          }}
+          dragElastic={0.05}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
           onDragStart={() => {
             // إيقاف الحركة أثناء السحب
             x.stop();
           }}
-          onDragEnd={() => {
-            // بعد السحب، الحركة ترجع تلقائيًا
-          }}
         >
-          {looped.map((city, i) => (
+          {original.map((city, i) => (
             <CityCard
               key={i}
+              index={i}
               city={city}
               t={t}
               themeName={themeName}
               theme={theme}
               language={normalizedLang}
+              x={x}
+              cardWidth={cardWidth}
             />
           ))}
         </motion.div>

@@ -42,8 +42,20 @@ export default function HeroSection() {
       style={{ paddingBottom: "0px" }}
       className={`relative h-[100vh] w-full overflow-hidden ${theme.background} ${theme.text}`}
     >
-      {/* Background Image */}
-      <div className="absolute inset-0">
+      {/* Background Image للموبايل (ثابتة) */}
+      <div className="absolute inset-0 block lg:hidden">
+        <Image
+          src="/HomePageImage/sadsaqqwwwrrr.webp" // صورة ثابتة للموبايل
+          alt="Hero Mobile"
+          fill
+          loading="lazy"
+          sizes="100vw"
+          className="object-cover"
+        />
+      </div>
+
+      {/* Background Image للديسكتوب (متغيرة) */}
+      <div className="absolute inset-0 hidden lg:block">
         <AnimatePresence>
           {visible && (
             <motion.div

@@ -7,24 +7,20 @@ import { useTranslation } from "react-i18next";
 import { useCitiesCategories } from "@/context/CitiesCategoriesContext";
 import DividerWithIcon from "@/components/layout/DividerWithIcon";
 import { useRouter } from "next/navigation";
-
-// دالة لتشفير الكويري
+import { useMotionValue } from "framer-motion";
 const encodeData = (obj) => btoa(JSON.stringify(obj));
-
-// دالة لتحسين الصور من Supabase
 const optimize = (url) => {
   if (!url) return "/fallback.jpg";
   if (!url.startsWith("http")) return url;
   return `${url}?width=600&quality=70&format=webp`;
 };
 
-function CategoryCard({ cat, theme, themeName, language, isMobile }) {
+function CategoryCard({ cat, theme, themeName, language, isMobile, index ,x}) {
   const [imgIndex, setImgIndex] = useState(0);
   const router = useRouter();
   const cardRef = useRef(null);
   const [visible, setVisible] = useState(false);
 
-  // Lazy load عبر Intersection Observer
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -36,7 +32,6 @@ function CategoryCard({ cat, theme, themeName, language, isMobile }) {
     return () => observer.disconnect();
   }, []);
 
-  // تغيير الصور فقط عندما يكون الكارد ظاهر وفي الشاشات الكبيرة
   useEffect(() => {
     if (!visible || isMobile) return;
     const interval = setInterval(() => {
@@ -57,6 +52,11 @@ function CategoryCard({ cat, theme, themeName, language, isMobile }) {
       price: "Economy",
       popular: false,
     };
+
+    // حفظ الكارد اللي ضغطت عليه
+   sessionStorage.setItem("citiesScrollX", x.get());
+    sessionStorage.setItem("selectedCityIndex", index);
+
     router.push(`/trips?data=${encodeData(queryObj)}`);
   };
 
@@ -72,7 +72,7 @@ function CategoryCard({ cat, theme, themeName, language, isMobile }) {
       <AnimatePresence mode="sync">
         {visible && (
           <motion.div
-            key={isMobile ? 0 : imgIndex} // في الموبايل دايمًا الصورة الأولى
+            key={isMobile ? 0 : imgIndex}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -93,7 +93,7 @@ function CategoryCard({ cat, theme, themeName, language, isMobile }) {
 
       <div
         className={`absolute inset-0 bg-gradient-to-t ${
-          themeName === "dark" ? "from-black/60" : "from-[#fdf6e3]/70"
+          themeName === "dark" ? "from-black/60" : "from-[#fdf6e3]/0"
         } via-transparent to-transparent flex items-end justify-center pb-4`}
       >
         <p
@@ -114,16 +114,14 @@ const CategoriesSection = () => {
   const { categories, loading } = useCitiesCategories();
 
   const normalizedLang = i18n.language.split("-")[0];
-  const original = categories;
-  const looped = [...original, ...original, ...original]; // للتكرار واللانهاية
+  const original = categories || [];
+  const looped = [...original, ...original, ...original];
 
   const cardWidth = 290;
-  const middleIndex = original.length; // نبدأ من منتصف النسخة
+  const x = useMotionValue(0); // قيمة متحركة
 
-  const [index, setIndex] = useState(middleIndex);
   const [isMobile, setIsMobile] = useState(false);
 
-  // تحديد إذا الشاشة موبايل
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
@@ -131,23 +129,37 @@ const CategoriesSection = () => {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-// حركة تلقائية (loop)
-useEffect(() => {
-  const interval = setInterval(() => {
-    setIndex((prev) => prev + 1);
-  }, isMobile ? 4000 : 3000); // ممكن تخلي الموبايل أبطأ شوية
-  return () => clearInterval(interval);
-}, [isMobile]);
+  // حركة تلقائية بطيئة
+    useEffect(() => {
+      const savedX = sessionStorage.getItem("citiesScrollX");
+      const selectedIndex = sessionStorage.getItem("selectedCityIndex");
+  
+      if (selectedIndex) {
+        const centerOffset = window.innerWidth / 2 - cardWidth / 2;
+        const targetX = -(parseInt(selectedIndex) * cardWidth - centerOffset);
+        x.set(targetX);
+      } else if (savedX) {
+        x.set(parseFloat(savedX));
+      }
+    }, [x]);
+  useEffect(() => {
+    let animationFrame;
+    const speed = isMobile ? 0.4 : 0.5; // سرعة أبطأ للموبايل
 
+    const animate = () => {
+      x.set(x.get() - speed);
 
-// إعادة ضبط عند الوصول للنهاية
-useEffect(() => {
-  if (index >= original.length * 2) {
-    // نرجع للمنتصف علشان يبان وكأنه مستمر
-    setIndex(original.length);
-  }
-}, [index, original.length]);
+      // لو وصلنا للنهاية نرجع للبداية
+      if (Math.abs(x.get()) >= (original.length * cardWidth)) {
+        x.set(0);
+      }
 
+      animationFrame = requestAnimationFrame(animate);
+    };
+
+    animationFrame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationFrame);
+  }, [isMobile, original.length, x]);
 
   if (loading) {
     return <p className="text-center text-gray-500">Loading categories...</p>;
@@ -156,21 +168,14 @@ useEffect(() => {
   return (
     <section
       className={`flex flex-col py-24 px-6 w-full mx-auto relative transition-colors duration-500
-        ${
-          themeName === "dark"
-            ? "bg-[#0f0f0f] text-white"
-            : "bg-[#fdf6e3] text-[#3a2c0a]"
-        }
+        ${themeName === "dark" ? "bg-[#0f0f0f] text-white" : "bg-[#fdf6e3] text-[#3a2c0a]"}
       `}
     >
       <div className="max-w-7xl mx-auto mb-10 text-start">
-        <h2
-          className={`text-5xl font-extrabold tracking-wide drop-shadow-md text-left
-            ${
-              themeName === "dark"
-                ? "text-gold"
-                : "bg-gradient-to-r from-[#c9a34a] to-[#eab308] bg-clip-text text-transparent"
-            }
+        <h2 className={`text-5xl font-extrabold tracking-wide drop-shadow-md text-left
+            ${themeName === "dark"
+              ? "text-gold"
+              : "bg-gradient-to-r from-[#c9a34a] to-[#eab308] bg-clip-text text-transparent"}
           `}
         >
           {t("ExploreCategories")}
@@ -181,15 +186,15 @@ useEffect(() => {
 
       <div className="relative overflow-hidden w-full max-w-7xl mx-auto h-[480px]">
         <motion.div
-          className="flex h-full cursor-grab active:cursor-grabbing"
+          className="flex h-full"
+          style={{ x }}
           drag="x"
-          dragConstraints={{ left: -looped.length * cardWidth, right: 0 }}
-          animate={isMobile ? {} : { x: -index * cardWidth }}
+          dragConstraints={{ left: -(looped.length * cardWidth - window.innerWidth), right: 0 }}
+          dragElastic={0.05}
           transition={{ duration: 0.8, ease: "easeInOut" }}
-          onDragEnd={(event, info) => {
-            const offset = info.offset.x;
-            const newIndex = index - Math.round(offset / cardWidth);
-            setIndex(newIndex);
+          onDragStart={() => {
+            // إيقاف الحركة أثناء السحب
+            x.stop();
           }}
         >
           {looped.map((cat, i) => (
@@ -203,9 +208,12 @@ useEffect(() => {
             >
               <CategoryCard
                 cat={cat}
+                index={i}
                 themeName={themeName}
                 language={normalizedLang}
                 theme={theme}
+                              x={x}
+
                 isMobile={isMobile}
               />
             </div>

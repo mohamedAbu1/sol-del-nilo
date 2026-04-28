@@ -24,13 +24,16 @@ export default function HeroSection() {
   const [visible, setVisible] = useState(false);
   const heroRef = useRef(null);
 
+  // حالة القائمة
+  const [showOptions, setShowOptions] = useState(false);
+
   // Lazy load للـ HeroSection نفسه
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) setVisible(true);
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
     if (heroRef.current) observer.observe(heroRef.current);
     return () => observer.disconnect();
@@ -122,9 +125,61 @@ export default function HeroSection() {
           {["L", "U", "X", "O", "R", "𓂀", "A", "S", "W", "A", "N"].map(
             (char, i) => (
               <LogoLetter key={i} char={char} theme={theme} />
-            )
+            ),
           )}
         </motion.div>
+
+        {/* Title + Paragraph + Button */}
+        <div className="text-left mt-36 p-6 rounded-lg max-w-lg lg:hidden">
+          <h1 className="text-2xl md:text-3xl font-bold text-gold">
+            Book your next adventure
+          </h1>
+          <p className="mt-4 text-base md:text-lg text-white">
+            Embark on an unforgettable journey through the land of Pharaohs and
+            Pyramids.
+          </p>
+          <button
+            onClick={() => setShowOptions(!showOptions)}
+            className="mt-6 px-6 py-2 bg-gold bg-amber-600 red text-black font-semibold rounded hover:bg-yellow-500 transition"
+          >
+            One day trip
+          </button>
+
+          {/* خيارات الرحلة */}
+          {showOptions && (
+            <AnimatePresence>
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.4, ease: "easeInOut" }}
+                className="mt-4 w-[180px] flex flex-col gap-2 bg-black/60 p-4 rounded-lg shadow-lg"
+              >
+                <motion.button
+                  style={{ fontWeight: "600" }}
+                  whileHover={{ scale: 1.05, backgroundColor: "#facc15" }}
+                  className="px-4 py-2 bg-amber-500 text-black rounded transition"
+                >
+                  Luxor
+                </motion.button>
+                <motion.button
+                  style={{ fontWeight: "600" }}
+                  whileHover={{ scale: 1.05, backgroundColor: "#facc15" }}
+                  className="px-4 py-2 bg-amber-500 text-black rounded transition"
+                >
+                  Aswan
+                </motion.button>
+                <motion.button
+                  style={{ fontWeight: "600" }}
+                  whileHover={{ scale: 1.05, backgroundColor: "#facc15" }}
+                  className="px-4 py-2 bg-amber-500 text-black rounded transition"
+                >
+                  Cairo
+                </motion.button>
+              </motion.div>
+            </AnimatePresence>
+          )}
+        </div>
       </motion.div>
     </section>
   );

@@ -12,28 +12,24 @@ import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { usePurchase } from "@/context/PurchaseContext";
-import { useQueryFilters } from "@/context/QueryContext";
 import { useCitiesCategories } from "@/context/CitiesCategoriesContext";
+import { useState } from "react";
 
 export default function TripsGrid({ cardStyle = "vertical", search, filters }) {
-  // ✅ كل الـ hooks هنا في الأعلى
   const { themeName } = useTheme();
   const { trips, fetchTrips, loadingTrips } = useTrip();
   const { lang } = useLanguage();
-  const { categories: allCategories } = useCitiesCategories();
+  const { categories: allCategories, cities: allCities } = useCitiesCategories();
   const { reviewsByTrip, fetchReviewsByTrip } = useReviews();
   const router = useRouter();
   const { currency } = usePurchase();
   const { t } = useTranslation("trips");
-  const { queryFilters } = useQueryFilters();
 
-  // ✅ دمج الفلاتر العادية مع فلاتر الكويري
-  const activeFilters = {
-    ...filters,
-    ...queryFilters,
-  };
+  const activeFilters = filters;
+  const [isDesktop, setIsDesktop] = useState(false);
+// دالة لإرجاع عدد نجوم عشوائي بين 3 و 5
+const getRandomStars = () => Math.floor(Math.random() * 3) + 3;
 
-  // ✅ مفيش شرط حوالين useEffect
   useEffect(() => {
     fetchTrips();
   }, []);
@@ -46,51 +42,53 @@ export default function TripsGrid({ cardStyle = "vertical", search, filters }) {
     }
   }, [trips]);
 
+  // تحديد نوع الجهاز
+  useEffect(() => {
+    const checkScreen = () => setIsDesktop(window.innerWidth >= 1024);
+    checkScreen();
+    window.addEventListener("resize", checkScreen);
+    return () => window.removeEventListener("resize", checkScreen);
+  }, []);
+
   if (loadingTrips) {
     return <p className="text-center text-gray-500">Loading trips...</p>;
   }
 
-  const getRandomStars = () => Math.floor(Math.random() * 3) + 3;
-
-  // ✅ فلترة الرحلات بالـ activeFilters
+  // فلترة الرحلات بالـ filters
   const filteredTrips = trips.filter((trip) => {
-    // فلترة المدن
     const matchesCity = activeFilters.city
       ? trip.trip_cities?.some((c) => {
           const cityName = c.cities?.name?.[lang] || c.cities?.name?.en || "";
           return (
-            c.city_id === activeFilters.city ||
-            cityName.toLowerCase() === activeFilters.city.toLowerCase()
+            String(c.city_id) === String(activeFilters.city) ||
+            cityName.toLowerCase() === String(activeFilters.city).toLowerCase()
           );
         })
       : true;
 
-    // فلترة الفئات
     const matchesCategory = activeFilters.category
       ? trip.trip_categories?.some((cat) => {
           const catObj = allCategories.find((c) => c.id === cat.category_id);
           const catName = catObj?.name?.[lang] || catObj?.name?.en || "";
           return (
-            cat.category_id === activeFilters.category ||
-            catName.toLowerCase() === activeFilters.category.toLowerCase()
+            String(cat.category_id) === String(activeFilters.category) ||
+            catName.toLowerCase() === String(activeFilters.category).toLowerCase()
           );
         })
       : true;
 
-    // فلترة السعر
     const matchesPrice = activeFilters.price
       ? trip.priceLevel?.toLowerCase() === activeFilters.price.toLowerCase()
       : true;
 
-    // فلترة الشعبية
     const matchesPopular = activeFilters.popular ? trip.popular : true;
 
     return matchesCity && matchesCategory && matchesPrice && matchesPopular;
   });
 
-  // ✅ فلترة البحث النصي
+  // البحث يطبق فقط على الكمبيوتر
   const searchedTrips =
-    search && search.trim() !== ""
+    isDesktop && search && search.trim() !== ""
       ? filteredTrips.filter((trip) => {
           const lowerSearch = search.toLowerCase();
           const title = trip.title?.[lang] || trip.title?.en || "";
@@ -100,9 +98,7 @@ export default function TripsGrid({ cardStyle = "vertical", search, filters }) {
             ) || [];
           const categoryNames =
             trip.trip_categories?.map((cat) => {
-              const catObj = allCategories.find(
-                (c) => c.id === cat.category_id
-              );
+              const catObj = allCategories.find((c) => c.id === cat.category_id);
               return catObj?.name?.[lang] || catObj?.name?.en || "";
             }) || [];
 
@@ -113,75 +109,73 @@ export default function TripsGrid({ cardStyle = "vertical", search, filters }) {
           );
         })
       : filteredTrips;
+return (
+  <div
+    className={`flex-1 ${
+      cardStyle === "vertical"
+        ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        : "grid grid-cols-1 md:grid-cols-2 gap-6"
+    }`}
+  >
+    {(isDesktop ? searchedTrips : filteredTrips).length === 0 && (
+      <p className="text-center text-gray-500 col-span-full">
+        No trips found for your filters.
+      </p>
+    )}
 
-  return (
-    <div
-      className={`flex-1 ${
-        cardStyle === "vertical"
-          ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-          : "grid grid-cols-1 md:grid-cols-2 gap-6"
-      }`}
-    >
-      {searchedTrips.length === 0 && (
-        <p className="text-center text-gray-500 col-span-full">
-          No trips found for your filters.
-        </p>
-      )}
+    {(isDesktop ? searchedTrips : filteredTrips).map((trip, i) => {
+      const tripReviews = reviewsByTrip[trip.id] || [];
+      const reviewsCount = tripReviews.length;
 
-      {searchedTrips.map((trip, i) => {
-        const tripReviews = reviewsByTrip[trip.id] || [];
-        const reviewsCount = tripReviews.length;
+      const avgStars =
+        reviewsCount > 0
+          ? Math.round(
+              tripReviews.reduce((sum, r) => sum + (r.stars || 0), 0) /
+                reviewsCount
+            )
+          : getRandomStars();
 
-        const avgStars =
-          reviewsCount > 0
-            ? Math.round(
-                tripReviews.reduce((sum, r) => sum + (r.stars || 0), 0) /
-                  reviewsCount
+      const getLocalizedText = (obj, lang) => {
+        if (!obj) return "Unknown";
+        if (typeof obj === "string") return obj;
+        return obj[lang] || obj["en"] || "Unknown";
+      };
+
+      const tripCities =
+        trip.trip_cities?.length > 0
+          ? trip.trip_cities
+              .map(
+                (c) =>
+                  getLocalizedText(c.cities?.name, lang) ||
+                  getLocalizedText(c.city?.name, lang) ||
+                  getLocalizedText(c.city_name, lang)
               )
-            : getRandomStars();
+              .join(" • ")
+          : "Unknown";
 
-        const getLocalizedText = (obj, lang) => {
-          if (!obj) return "Unknown";
-          if (typeof obj === "string") return obj;
-          return obj[lang] || obj["en"] || "Unknown";
-        };
+      const tripCategories =
+        trip.trip_categories?.length > 0
+          ? trip.trip_categories
+              .map((cat) => {
+                const catObj = allCategories.find(
+                  (category) => category.id === cat.category_id
+                );
+                return (
+                  catObj?.name?.[lang] ||
+                  catObj?.name?.["en"] ||
+                  catObj?.name ||
+                  "General"
+                );
+              })
+              .join(" • ")
+          : "General";
 
-        const tripCities =
-          trip.trip_cities?.length > 0
-            ? trip.trip_cities
-                .map(
-                  (c) =>
-                    getLocalizedText(c.cities?.name, lang) ||
-                    getLocalizedText(c.city?.name, lang) ||
-                    getLocalizedText(c.city_name, lang)
-                )
-                .join(" • ")
-            : "Unknown";
-
-        const tripCategories =
-          trip.trip_categories?.length > 0
-            ? trip.trip_categories
-                .map((cat) => {
-                  const catObj = allCategories.find(
-                    (category) => category.id === cat.category_id
-                  );
-                  return (
-                    catObj?.name?.[lang] ||
-                    catObj?.name?.["en"] ||
-                    catObj?.name ||
-                    "General"
-                  );
-                })
-                .join(" • ")
-            : "General";
-
-        let displayedPrice = trip.price;
-        if (currency === "EUR" && trip.currency === "USD") {
-          displayedPrice = (trip.price * 0.85).toFixed(2);
-        } else if (currency === "USD" && trip.currency === "EUR") {
-          displayedPrice = (trip.price * 1.18).toFixed(2);
-        }
-
+      let displayedPrice = trip.price;
+      if (currency === "EUR" && trip.currency === "USD") {
+        displayedPrice = (trip.price * 0.85).toFixed(2);
+      } else if (currency === "USD" && trip.currency === "EUR") {
+        displayedPrice = (trip.price * 1.18).toFixed(2);
+      }
         return (
           <motion.div
             key={trip.id || i}
@@ -232,7 +226,7 @@ export default function TripsGrid({ cardStyle = "vertical", search, filters }) {
                 {tripCities} • {tripCategories}
               </p>
 
-             <p className="text-md font-semibold flex items-center gap-2">
+              <p className="text-md font-semibold flex items-center gap-2">
                 <span
                   className={`px-2 py-1 rounded flex items-center gap-1 text-white ${
                     themeName === "dark" ? "bg-[#FF9800]" : "bg-[#FF9800]"
@@ -242,7 +236,8 @@ export default function TripsGrid({ cardStyle = "vertical", search, filters }) {
                   {displayedPrice} {currency}
                 </span>
               </p>
-                            <div className="flex items-center gap-2">
+
+              <div className="flex items-center gap-2">
                 {[...Array(5)].map((_, idx) => (
                   <FaStar
                     key={idx}

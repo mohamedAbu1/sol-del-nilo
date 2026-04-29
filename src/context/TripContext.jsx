@@ -69,7 +69,6 @@ const fetchTrips = async () => {
     }
 
     const result = await res.json();
-    console.log("Trips API result:", result);
 
     // لو الـ API بيرجع { success: true, trips: [...] }
     if (result.success && Array.isArray(result.trips)) {

@@ -42,7 +42,6 @@ export function AuthProvider({ children }) {
     return cookieToken || null;
   };
   const loginWithGoogle = async () => {
-    console.log("🚀 بدء تسجيل الدخول عبر Google...");
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {

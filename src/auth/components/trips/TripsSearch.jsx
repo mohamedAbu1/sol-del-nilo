@@ -1,6 +1,6 @@
 "use client";
-import React from "react";
-import { FaSearch, FaThLarge, FaBars } from "react-icons/fa";
+import React, { useEffect } from "react";
+import { FaSearch } from "react-icons/fa";
 import { useTheme } from "@/context/ThemeContext";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
@@ -19,12 +19,38 @@ export default function TripsSearch({
   const { cities, categories, loading } = useCitiesCategories();
   const lang = i18n.language || "en";
 
+  // عند mount أو تحديث الفلاتر، لو القيم نصوص نحولها لـ IDs
+  useEffect(() => {
+    if (filters.city && typeof filters.city === "string") {
+      const cityObj = cities.find(
+        (c) =>
+          c.name?.[lang]?.toLowerCase() === filters.city.toLowerCase() ||
+          c.name?.en?.toLowerCase() === filters.city.toLowerCase(),
+      );
+      if (cityObj && filters.city !== cityObj.id) {
+        setFilters((prev) => ({ ...prev, city: cityObj.id }));
+      }
+    }
+  }, [filters.city, cities, lang]);
+
+  useEffect(() => {
+    if (filters.category && typeof filters.category === "string") {
+      const catObj = categories.find(
+        (c) =>
+          c.name?.[lang]?.toLowerCase() === filters.category.toLowerCase() ||
+          c.name?.en?.toLowerCase() === filters.category.toLowerCase(),
+      );
+      if (catObj && filters.category !== catObj.id) {
+        setFilters((prev) => ({ ...prev, category: catObj.id }));
+      }
+    }
+  }, [filters.category, categories, lang]);
+
   const handleCityClick = (cityId) => {
     setFilters((prev) => ({
       ...prev,
       city: prev.city === cityId ? "" : cityId,
     }));
-    console.log("City filter updated:", cityId);
   };
 
   const handleCategoryClick = (catId) => {
@@ -32,7 +58,6 @@ export default function TripsSearch({
       ...prev,
       category: prev.category === catId ? "" : catId,
     }));
-    console.log("Category filter updated:", catId);
   };
 
   const chipStyle = (active) =>
@@ -49,7 +74,6 @@ export default function TripsSearch({
       </p>
     );
   }
-
   return (
     <>
       {/* شريط البحث */}
@@ -96,6 +120,7 @@ export default function TripsSearch({
             {cities.map((city) => {
               const displayName =
                 typeof city.name === "object"
+                
                   ? city.name[lang] || city.name["en"]
                   : city.name;
               return (
@@ -129,7 +154,7 @@ export default function TripsSearch({
               return (
                 <span
                   key={cat.id}
-                  className={chipStyle(filters.category === cat.id)}
+                  className={chipStyle(filters.category === cat.name)}
                   onClick={() => handleCategoryClick(cat.id)}
                 >
                   {displayName}

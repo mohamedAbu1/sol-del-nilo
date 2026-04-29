@@ -13,7 +13,6 @@ export default function RightBar({ scrolled }) {
   const { isLoggedIn, logout, user, handleOpen } = useAuth();
   const { themeName } = useTheme();
   const { t } = useTranslation("header");
-console.log(user)
   const { currency, setCurrency } = usePurchase();
   const pathname = usePathname();
   // ✅ حالة العملة

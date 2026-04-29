@@ -9,6 +9,7 @@ import SocialMediaIcons from "./components/SocialMediaIcons";
 import LeftSocialIcons from "./components/LeftSocialIcons";
 import LogoLetter from "./components/LogoLetter";
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 
 // تحسين الصور عبر CDN
 const optimize = (url) => {
@@ -17,17 +18,19 @@ const optimize = (url) => {
   return `${url}?width=1600&quality=70&format=webp`;
 };
 
+// دالة لتشفير الكويري
+const encodeData = (obj) => btoa(JSON.stringify(obj));
+
 export default function HeroSection() {
-  const { theme ,themeName } = useTheme();
+  const { theme, themeName } = useTheme();
   const { images, index } = useData();
+  const router = useRouter();
 
   const [visible, setVisible] = useState(false);
   const heroRef = useRef(null);
 
-  // حالة القائمة
   const [showOptions, setShowOptions] = useState(false);
 
-  // Lazy load للـ HeroSection نفسه
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -39,16 +42,31 @@ export default function HeroSection() {
     return () => observer.disconnect();
   }, []);
 
+  // دالة للتحويل مع الكويري
+  const goToTours = (cityName) => {
+    const queryObj = {
+      city: [cityName],
+      category: ["One Day Trips"],
+      price: "Economy",
+      popular: false,
+    };
+    router.push(`/trips?data=${encodeData(queryObj)}`);
+  };
+
   return (
     <section
       ref={heroRef}
       style={{ paddingBottom: "0px" }}
       className={`relative h-[100vh] w-full overflow-hidden ${theme.background} ${theme.text}`}
     >
-      {/* Background Image للموبايل (ثابتة) */}
+      {/* Background Image للموبايل */}
       <div className="absolute inset-0 block lg:hidden">
         <Image
-          src={themeName === "dark" ? "/HomePageImage/swwqqqas.webp": "/HomePageImage/sadsaqqwwwrrr.webp"}
+          src={
+            themeName === "dark"
+              ? "/HomePageImage/swwqqqas.webp"
+              : "/HomePageImage/sadsaqqwwwrrr.webp"
+          }
           alt="Hero Mobile"
           fill
           loading="lazy"
@@ -57,7 +75,7 @@ export default function HeroSection() {
         />
       </div>
 
-      {/* Background Image للديسكتوب (متغيرة) */}
+      {/* Background Image للديسكتوب */}
       <div className="absolute inset-0 hidden lg:block">
         <AnimatePresence>
           {visible && (
@@ -84,7 +102,7 @@ export default function HeroSection() {
         </AnimatePresence>
       </div>
 
-      {/* Floating Halo Light */}
+      {/* Halo Light */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1, scale: [1, 1.1, 1] }}
@@ -92,10 +110,7 @@ export default function HeroSection() {
         className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-gold/10 blur-[120px] rounded-full"
       />
 
-      {/* Social Media Icons */}
       <SocialMediaIcons />
-
-      {/* Left Social Icons */}
       <LeftSocialIcons />
 
       {/* Content + Logo */}
@@ -140,7 +155,7 @@ export default function HeroSection() {
           </p>
           <button
             onClick={() => setShowOptions(!showOptions)}
-            className="mt-6 px-6 py-2 bg-gold bg-amber-600 red text-black font-semibold rounded hover:bg-yellow-500 transition"
+            className="mt-6 px-6 py-2 bg-gold bg-amber-600 text-black font-semibold rounded hover:bg-yellow-500 transition"
           >
             One day trip
           </button>
@@ -157,22 +172,25 @@ export default function HeroSection() {
               >
                 <motion.button
                   style={{ fontWeight: "600" }}
-                  whileHover={{ scale: 1.05, backgroundColor: "#facc15" }}
+                  whileHover={{ scale: 1.05 }}
                   className="px-4 py-2 bg-amber-500 text-black rounded transition"
+                  onClick={() => goToTours("Luxor")}
                 >
                   Luxor
                 </motion.button>
                 <motion.button
                   style={{ fontWeight: "600" }}
-                  whileHover={{ scale: 1.05, backgroundColor: "#facc15" }}
+                  whileHover={{ scale: 1.05 }}
                   className="px-4 py-2 bg-amber-500 text-black rounded transition"
+                  onClick={() => goToTours("Aswan")}
                 >
                   Aswan
                 </motion.button>
                 <motion.button
                   style={{ fontWeight: "600" }}
-                  whileHover={{ scale: 1.05, backgroundColor: "#facc15" }}
+                  whileHover={{ scale: 1.05 }}
                   className="px-4 py-2 bg-amber-500 text-black rounded transition"
+                  onClick={() => goToTours("Cairo")}
                 >
                   Cairo
                 </motion.button>

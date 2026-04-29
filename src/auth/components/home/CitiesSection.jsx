@@ -8,7 +8,6 @@ import { useCitiesCategories } from "@/context/CitiesCategoriesContext";
 import DividerWithIcon from "@/components/layout/DividerWithIcon";
 import { useRouter } from "next/navigation";
 
-// تحسين الصور عبر CDN
 const optimize = (url) => {
   if (!url) return "/fallback.jpg";
   if (!url.startsWith("http")) return url;
@@ -29,7 +28,6 @@ function CityCard({ city, index, themeName, theme, language, t, x, cardWidth }) 
       popular: false,
     };
 
-    // حفظ مكان السليدر والكارد المختار
     sessionStorage.setItem("citiesScrollX", x.get());
     sessionStorage.setItem("selectedCityIndex", index);
 
@@ -92,12 +90,12 @@ export default function CitiesSection() {
   const normalizedLang = i18n.language.split("-")[0];
 
   const original = cities || [];
+  const looped = [...original, ...original, ...original]; // تكرار الكروت
 
   const x = useMotionValue(0);
-  const speed = 0.6; // سرعة الحركة
-  const cardWidth = 340; // عرض الكارت الواحد
+  const speed = 0.6;
+  const cardWidth = 340;
 
-  // استرجاع المكان والكارد عند العودة
   useEffect(() => {
     const savedX = sessionStorage.getItem("citiesScrollX");
     const selectedIndex = sessionStorage.getItem("selectedCityIndex");
@@ -109,28 +107,25 @@ export default function CitiesSection() {
     } else if (savedX) {
       x.set(parseFloat(savedX));
     }
-  }, [x]);
+  }, [x, cardWidth]);
 
-  // Auto scroll
+  // حركة مستمرة (marquee style)
   useEffect(() => {
     let animationFrame;
-
     const animate = () => {
       x.set(x.get() - speed);
 
-      // إيقاف الحركة عند آخر كارت
-      if (Math.abs(x.get()) >= (original.length - 1) * cardWidth) {
-        cancelAnimationFrame(animationFrame);
-        return;
+      // إعادة الضبط عند الوصول للنهاية
+      if (Math.abs(x.get()) >= (original.length * cardWidth)) {
+        x.set(0);
       }
 
       animationFrame = requestAnimationFrame(animate);
     };
 
     animationFrame = requestAnimationFrame(animate);
-
     return () => cancelAnimationFrame(animationFrame);
-  }, [original.length, x]);
+  }, [original.length, x, cardWidth]);
 
   if (loading) {
     return <p className="text-center text-gray-500">Loading cities...</p>;
@@ -169,17 +164,16 @@ export default function CitiesSection() {
           style={{ x }}
           drag="x"
           dragConstraints={{
-            left: -(original.length * cardWidth - window.innerWidth),
+            left: -(looped.length * cardWidth - window.innerWidth),
             right: 0,
           }}
           dragElastic={0.05}
           transition={{ duration: 0.8, ease: "easeInOut" }}
           onDragStart={() => {
-            // إيقاف الحركة أثناء السحب
             x.stop();
           }}
         >
-          {original.map((city, i) => (
+          {looped.map((city, i) => (
             <CityCard
               key={i}
               index={i}

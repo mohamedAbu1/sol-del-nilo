@@ -17,6 +17,7 @@ import { tripsMetadata } from "@/lib/metadata/trips";
 import { useTrip } from "@/context/TripContext";
 import { useQueryFilters } from "@/context/QueryContext";
 import { useCitiesCategories } from "@/context/CitiesCategoriesContext";
+import { useSearchParams } from "next/navigation";
 
 export default function TripsPage() {
   const { lang } = useLanguage();
@@ -24,29 +25,74 @@ export default function TripsPage() {
   const { user } = useAuth();
   const { trips, fetchTrips } = useTrip();
   const { queryFilters } = useQueryFilters();
-const { category: allCategories =[] }= useCitiesCategories()
+
+  // جلب المدن والفئات من الـ context
+  const { cities: allCities = [], category: allCategories = [] } = useCitiesCategories();
+
+  const searchParams = useSearchParams();
+
   const [currentPage, setCurrentPage] = useState(1);
   const [cardStyle, setCardStyle] = useState("vertical");
-  // const tripsPerPage = 16;
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState({
-    city: "", // نخزن الـ city_id هنا
-    category: "", // نخزن الـ category_id هنا
+    city: "",
+    category: "",
     price: "",
     popular: false,
   });
 
+  // قراءة الكويري وتخزينه في الفلاتر
+useEffect(() => {
+  const dataParam = searchParams.get("data"); // خزن القيمة مرة واحدة
+  if (!dataParam) return;
+
+  try {
+    const decoded = JSON.parse(atob(dataParam));
+
+    let cityId = "";
+    if (decoded.city?.[0]) {
+      const cityObj = allCities.find(
+        (c) =>
+          c.name?.[lang]?.toLowerCase() === decoded.city[0].toLowerCase() ||
+          c.name?.en?.toLowerCase() === decoded.city[0].toLowerCase()
+      );
+      cityId = cityObj?.id || decoded.city[0];
+    }
+
+    let categoryId = "";
+    if (decoded.category?.[0]) {
+      const catObj = allCategories.find(
+        (c) =>
+          c.name?.[lang]?.toLowerCase() === decoded.category[0].toLowerCase() ||
+          c.name?.en?.toLowerCase() === decoded.category[0].toLowerCase()
+      );
+      categoryId = catObj?.id || decoded.category[0];
+    }
+
+    setFilters({
+      city: cityId,
+      category: categoryId,
+      price: decoded.price || "",
+      popular: decoded.popular || false,
+    });
+  } catch (err) {
+    console.error("❌ Error decoding query:", err);
+  }
+}, [allCities, allCategories, lang]); // لاحظ إننا شلنا searchParams
+
   useEffect(() => {
     fetchTrips();
   }, []);
+
+
+
   const activeFilters = {
     ...filters,
     ...queryFilters,
   };
 
-  // الفلترة الأساسية بالـ IDs
-   const filteredTrips = trips.filter((trip) => {
-    // فلترة المدن
+  // فلترة الرحلات
+  const filteredTrips = trips.filter((trip) => {
     const matchesCity = activeFilters.city
       ? trip.trip_cities?.some((c) => {
           const cityName = c.cities?.name?.[lang] || c.cities?.name?.en || "";
@@ -57,34 +103,25 @@ const { category: allCategories =[] }= useCitiesCategories()
         })
       : true;
 
-    // فلترة الفئات
     const matchesCategory = activeFilters.category
-  ? trip.trip_categories?.some((cat) => {
-      const catObj = allCategories?.find((c) => c.id === cat.category_id);
-      const catName = catObj?.name?.[lang] || catObj?.name?.en || "";
-      return (
-        cat.category_id === activeFilters.category ||
-        catName.toLowerCase() === activeFilters.category.toLowerCase()
-      );
-    })
-  : true;
+      ? trip.trip_categories?.some((cat) => {
+          const catObj = allCategories?.find((c) => c.id === cat.category_id);
+          const catName = catObj?.name?.[lang] || catObj?.name?.en || "";
+          return (
+            cat.category_id === activeFilters.category ||
+            catName.toLowerCase() === activeFilters.category.toLowerCase()
+          );
+        })
+      : true;
 
-
-    // فلترة السعر
     const matchesPrice = activeFilters.price
       ? trip.priceLevel?.toLowerCase() === activeFilters.price.toLowerCase()
       : true;
 
-    // فلترة الشعبية
     const matchesPopular = activeFilters.popular ? trip.popular : true;
 
     return matchesCity && matchesCategory && matchesPrice && matchesPopular;
   });
-
-  // const indexOfLastTrip = currentPage * tripsPerPage;
-  // const indexOfFirstTrip = indexOfLastTrip - tripsPerPage;
-  // const currentTrips = filteredTrips.slice(indexOfFirstTrip, indexOfLastTrip);
-  // const totalPages = Math.ceil(filteredTrips.length / tripsPerPage);
 
   const fadeUp = {
     hidden: { opacity: 0, y: 40 },
@@ -99,7 +136,6 @@ const { category: allCategories =[] }= useCitiesCategories()
     hidden: {},
     visible: { transition: { staggerChildren: 0.2 } },
   };
-  console.log("🔍 Current filters:", filters);
 
   return (
     <>
@@ -140,27 +176,6 @@ const { category: allCategories =[] }= useCitiesCategories()
               search={search}
               filters={filters}
             />
-
-            {/* {totalPages > 1 && (
-              <motion.div
-                variants={fadeUp}
-                className="flex justify-center gap-2 mt-4"
-              >
-                {Array.from({ length: totalPages }, (_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setCurrentPage(i + 1)}
-                    className={`px-3 py-1 rounded-lg font-bold transition ${
-                      currentPage === i + 1
-                        ? "bg-[#FF9800] text-white"
-                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                    }`}
-                  >
-                    {i + 1}
-                  </button>
-                ))}
-              </motion.div>
-            )} */}
           </motion.div>
         </motion.section>
 

@@ -16,30 +16,24 @@ export function ReviewsProvider({ children }) {
 
   // ✅ جلب التعليقات الخاصة برحلة معينة
   const fetchReviewsByTrip = async (tripId) => {
-    console.log(tripId);
     if (!tripId) {
       console.log("⚠️ No tripId provided to fetchReviewsByTrip");
       return;
     }
     setLoading(true);
     try {
-      console.log("➡️ Fetching reviews for trip:", tripId);
       const res = await axios.get(`/api/reviews?tripId=${tripId}`, {
         withCredentials: true,
       });
-      console.log("📥 Raw response from API:", res.data);
 
       const data = res.data?.reviews || [];
-      console.log("📦 Extracted reviews array:", data);
 
       const filtered = data.filter((review) => review.trip_id === tripId);
-      console.log("✅ Filtered reviews for trip:", tripId, filtered);
 
       setReviewsByTrip((prev) => ({ ...prev, [tripId]: filtered }));
 
       filtered.forEach((review) => {
         if (review?.id) {
-          console.log("➡️ Fetching likes for review:", review.id);
           fetchLikes(review.id);
         }
       });
@@ -103,7 +97,6 @@ export function ReviewsProvider({ children }) {
 
       const data = res.data;
       if (data.success) {
-        console.log("✅ Review successfully saved in DB:", data.review);
         setReviewsByTrip((prev) => ({
           ...prev,
           [review.trip_id]: [...(prev[review.trip_id] || []), data.review],
@@ -140,7 +133,6 @@ export function ReviewsProvider({ children }) {
   const addLike = async ({ reviewId }) => {
     // ✅ تحقق من القيم الأساسية
     if (!reviewId || !user?.id) {
-      console.log("⚠️ Missing reviewId, tripId or user.id");
       return;
     }
 
@@ -151,11 +143,9 @@ export function ReviewsProvider({ children }) {
         reviewId: reviewId,
       });
 
-      console.log("📥 Raw response from API:", res.data);
 
       // ✅ تحديث الحالة في الـ frontend لو العملية نجحت
       if (!res.data?.error) {
-        console.log("✅ Like added successfully in client state");
         setLikes((prev) => ({
           ...prev,
           [reviewId]: {
@@ -190,10 +180,8 @@ export function ReviewsProvider({ children }) {
         },
       });
 
-      console.log("📥 Raw response from API:", res.data);
 
       if (!res.data?.error) {
-        console.log("✅ Like removed successfully in client state");
         setLikes((prev) => ({
           ...prev,
           [reviewId]: {

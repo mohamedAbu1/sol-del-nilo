@@ -3,7 +3,7 @@ import { FaStar } from "react-icons/fa";
 
 export default function ReviewsHeader({ title, averageRating, reviewsCount, themeName }) {
   return (
-    <div className="flex items-center justify-between mb-6 border-b pb-2">
+    <div className="flex flex-col lg:flex-row items-center justify-between mb-6 border-b pb-2">
       <h2 className="text-2xl font-bold flex items-center gap-2">{title}</h2>
       {reviewsCount > 0 && (
         <div className="flex items-center gap-2">

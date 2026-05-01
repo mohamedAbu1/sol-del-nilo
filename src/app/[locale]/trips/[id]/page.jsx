@@ -73,7 +73,7 @@ export default function TripPage({ params }) {
           <TripHeader trip={trip} lang={lang} />
         </div>
 
-        <div className="col-span-3 flex flex-row gap-8">
+        <div className="col-span-3 flex flex-col lg:flex-row gap-8">
           <div className="col-span-3 ">
             <TripInfo trip={trip} lang={lang} />
             <TripCities trip={trip} lang={lang} />

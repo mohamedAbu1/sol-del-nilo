@@ -14,7 +14,7 @@ export default function AccessibilityInfo() {
 
   return (
     <div
-      className={`flex w-[40%] flex-col gap-6 p-8 rounded-2xl shadow-lg transition 
+      className={`flex w-[100%] lg:w-[40%] flex-col gap-6 p-8 rounded-2xl shadow-lg transition 
         ${
           isDark
             ? "bg-gradient-to-r from-gray-900 to-gray-800 text-gray-100"

@@ -115,7 +115,7 @@ export default function TripHeader({ trip, lang }) {
             />
 
             {img.name && (
-              <div className="absolute bottom-2 left-2 text-xs font-bold bg-black/50 text-white px-2 py-1 rounded">
+              <div className="hidden lg:flex absolute bottom-2 left-2 text-xs font-bold bg-black/50 text-white px-2 py-1 rounded">
                 {img.name?.[lang] || img.name?.en}
               </div>
             )}

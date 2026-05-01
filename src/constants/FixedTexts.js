@@ -4,11 +4,11 @@
 
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 export const DOMAIN = "http://localhost:3000";
-const img = "/assets/Copilot_20251011_220928.webp";
-const img2 = "/assets/Copilot_20251011_221403.webp";
-const img3 = "/assets/Copilot_20251011_221703.webp";
-const img4 = "/assets/Copilot_20251011_221802.webp";
-const img5 = "/assets/Copilot_20251011_222046.webp";
+const img = "/HomePageImage/Copilot_20251011_220928.webp";
+const img2 = "/HomePageImage/Copilot_20251011_221403.webp";
+const img3 = "/HomePageImage/Copilot_20251011_221703.webp";
+const img4 = "/HomePageImage/Copilot_20251011_221802.webp";
+const img5 = "/HomePageImage/Copilot_20251011_222046.webp";
 // ? $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 export const getNavPath = (t) => [
   { label: t("Home"), path: "/" },

@@ -108,7 +108,7 @@ const ContentSection = () => {
           <li>{t("li9")}</li>
           <li>{t("li10")}</li>
         </ol>
-        <div className="mt-4 space-x-4">
+        <div className="mt-4 space-x-4 flex">
           <a
             href="https://www.visa2egypt.gov.eg/eVisa/en/"
             target="_blank"

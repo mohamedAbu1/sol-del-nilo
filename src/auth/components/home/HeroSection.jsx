@@ -9,7 +9,7 @@ import SocialMediaIcons from "./components/SocialMediaIcons";
 import LeftSocialIcons from "./components/LeftSocialIcons";
 import LogoLetter from "./components/LogoLetter";
 import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation"; // أضفنا usePathname لمعرفة اللغة الحالية
 
 // تحسين الصور عبر CDN
 const optimize = (url) => {
@@ -25,11 +25,14 @@ export default function HeroSection() {
   const { theme, themeName } = useTheme();
   const { images, index } = useData();
   const router = useRouter();
+  const pathname = usePathname(); // استخراج المسار الحالي
 
   const [visible, setVisible] = useState(false);
   const heroRef = useRef(null);
-
   const [showOptions, setShowOptions] = useState(false);
+
+  // استخراج كود اللغة من الرابط (مثلاً "en" أو "ar")
+  const langPrefix = pathname.split("/")[1] || "en";
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -50,7 +53,12 @@ export default function HeroSection() {
       price: "Economy",
       popular: false,
     };
-    router.push(`/trips?data=${encodeData(queryObj)}`);
+    router.push(`/${langPrefix}/trips?data=${encodeData(queryObj)}`);
+  };
+
+  // دالة التحويل لصفحة الفيزا
+  const goToVisa = () => {
+    router.push(`/${langPrefix}/visaInfo`);
   };
 
   return (
@@ -93,8 +101,6 @@ export default function HeroSection() {
                 fill
                 loading="lazy"
                 sizes="100vw"
-                placeholder="blur"
-                blurDataURL="/blur-placeholder.jpg"
                 className="object-cover"
               />
             </motion.div>
@@ -144,7 +150,7 @@ export default function HeroSection() {
           )}
         </motion.div>
 
-        {/* Title + Paragraph + Button */}
+        {/* Title + Paragraph + Buttons */}
         <div className="text-left mt-36 p-6 rounded-lg max-w-lg lg:hidden">
           <h1 className="text-2xl md:text-3xl font-bold text-gold">
             Book your next adventure
@@ -153,12 +159,22 @@ export default function HeroSection() {
             Embark on an unforgettable journey through the land of Pharaohs and
             Pyramids.
           </p>
-          <button
-            onClick={() => setShowOptions(!showOptions)}
-            className="mt-6 px-6 py-2 bg-gold bg-amber-600 text-black font-semibold rounded hover:bg-yellow-500 transition"
-          >
-            One day trip
-          </button>
+          
+          <div className="flex gap-4 flex-wrap">
+              <button
+                onClick={() => setShowOptions(!showOptions)}
+                className="mt-6 px-6 py-2 bg-amber-600 text-black font-semibold rounded hover:bg-yellow-500 transition shadow-lg"
+              >
+                One day trip
+              </button>
+
+              <button
+                onClick={goToVisa} // هنا تم التعديل للتحويل المباشر
+                className="mt-6 px-6 py-2 capitalize bg-amber-600 text-black font-semibold rounded hover:bg-yellow-500 transition shadow-lg"
+              >
+                visa Info
+              </button>
+          </div>
 
           {/* خيارات الرحلة */}
           {showOptions && (
@@ -170,30 +186,17 @@ export default function HeroSection() {
                 transition={{ duration: 0.4, ease: "easeInOut" }}
                 className="mt-4 w-[180px] flex flex-col gap-2 bg-black/60 p-4 rounded-lg shadow-lg"
               >
-                <motion.button
-                  style={{ fontWeight: "600" }}
-                  whileHover={{ scale: 1.05 }}
-                  className="px-4 py-2 bg-amber-500 text-black rounded transition"
-                  onClick={() => goToTours("Luxor")}
-                >
-                  Luxor
-                </motion.button>
-                <motion.button
-                  style={{ fontWeight: "600" }}
-                  whileHover={{ scale: 1.05 }}
-                  className="px-4 py-2 bg-amber-500 text-black rounded transition"
-                  onClick={() => goToTours("Aswan")}
-                >
-                  Aswan
-                </motion.button>
-                <motion.button
-                  style={{ fontWeight: "600" }}
-                  whileHover={{ scale: 1.05 }}
-                  className="px-4 py-2 bg-amber-500 text-black rounded transition"
-                  onClick={() => goToTours("Cairo")}
-                >
-                  Cairo
-                </motion.button>
+                {["Luxor", "Aswan", "Cairo"].map((city) => (
+                  <motion.button
+                    key={city}
+                    style={{ fontWeight: "600" }}
+                    whileHover={{ scale: 1.05 }}
+                    className="px-4 py-2 bg-amber-500 text-black rounded transition"
+                    onClick={() => goToTours(city)}
+                  >
+                    {city}
+                  </motion.button>
+                ))}
               </motion.div>
             </AnimatePresence>
           )}

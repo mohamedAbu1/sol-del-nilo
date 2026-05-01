@@ -20,8 +20,8 @@ const { t } = useTranslation("visa");
       <Image
         src={
           width <= 911
-            ? "/assets/Copilot_20250922_151508.webp"
-            : "/assets/Copilot_20250922_151913.webp"
+            ? "/HomePageImage/Copilot_20250922_151508.webp"
+            : "/HomePageImage/Copilot_20250922_151913.webp"
         }
         alt="Egypt Visa Banner"
         fill

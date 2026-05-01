@@ -41,25 +41,12 @@ export default function TopReviewsSection() {
     dots: true,
     infinite: true,
     speed: 700,
-    slidesToShow: 3, // شاشات كبيرة
+    slidesToShow: 1, // الكمبيوتر (شاشات كبيرة)
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 5000,
     arrows: false,
-    responsive: [
-      {
-        breakpoint: 1024, // شاشات متوسطة
-        settings: {
-          slidesToShow: 2,
-        },
-      },
-      {
-        breakpoint: 640, // شاشات صغيرة
-        settings: {
-          slidesToShow: 1,
-        },
-      },
-    ],
+   
   };
 
   return (
@@ -87,7 +74,14 @@ export default function TopReviewsSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className={`flex flex-col gap-6 p-8 mx-4 ${theme.card} ${theme.shadow} rounded-2xl min-h-[220px]`}
+                className="flex flex-col gap-6 p-8 mx-4 rounded-2xl min-h-[220px]"
+                style={{
+                  background: "rgba(255, 255, 255, 0.15)",
+                  backdropFilter: "blur(12px)",
+                  WebkitBackdropFilter: "blur(12px)",
+                  border: "1px solid rgba(255, 255, 255, 0.2)",
+                  boxShadow: "0 8px 24px rgba(0,0,0,0.2)",
+                }}
               >
                 {/* Header */}
                 <div className="flex items-center gap-4 border-b pb-3">

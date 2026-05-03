@@ -17,12 +17,12 @@ export default function Logo({ scrolled }) {
 
   const imageSrc =
     themeName === "dark"
-      ? "/HomePageImage/Copilot_20260503_222315.webp"
+      ? "/Copilot_20260503_222315.webp"
       : !isHome
-      ? "/HomePageImage/Copilot_20260503_222315.webp"
+      ? "/Copilot_20260503_222315.webp"
       : scrolled
-      ? "/HomePageImage/Copilot_20260503_222315.webp"
-      : "/HomePageImage/Copilot_20260503_222315.webp";
+      ? "/Copilot_20260503_222315.webp"
+      : "/Copilot_20260503_222315.webp";
 
   return (
     <motion.div

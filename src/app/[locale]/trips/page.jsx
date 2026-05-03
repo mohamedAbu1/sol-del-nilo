@@ -38,7 +38,7 @@ export default function TripsPage() {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
 
   // ✅ القيم من الكويري كونتكست
-  const { city, category, price, popular,updateValue  } = useQueryFilters();
+  const { city, category, price, popular, updateValue } = useQueryFilters();
 
   useEffect(() => {
     fetchTrips();
@@ -143,19 +143,18 @@ export default function TripsPage() {
           </div>
 
           <div className="flex-1 flex flex-col gap-6">
-<TripsSearch
-  search={search}
-  setSearch={setSearch}
-  cardStyle={cardStyle}
-  setCardStyle={setCardStyle}
-  cities={allCities}
-  categories={allCategories}
-  city={city}          // ✅ مرر القيمة مباشرة
-  category={category}  // ✅ مرر القيمة مباشرة
-  updateValue={updateValue} // ✅ مرر الدالة مباشرة
-  loading={loading}
-/>
-
+            <TripsSearch
+              search={search}
+              setSearch={setSearch}
+              cardStyle={cardStyle}
+              setCardStyle={setCardStyle}
+              cities={allCities}
+              categories={allCategories}
+              city={city} // ✅ مرر القيمة مباشرة
+              category={category} // ✅ مرر القيمة مباشرة
+              updateValue={updateValue} // ✅ مرر الدالة مباشرة
+              loading={loading}
+            />
 
             <TripsGrid trips={currentTrips} cardStyle={cardStyle} />
 
@@ -164,7 +163,10 @@ export default function TripsPage() {
                 {Array.from({ length: totalPages }, (_, i) => (
                   <button
                     key={i}
-                    onClick={() => setCurrentPage(i + 1)}
+                    onClick={() => {
+                      setCurrentPage(i + 1);
+                      window.scrollTo({ top: 30, behavior: "smooth" }); // ✅ يرجع الاسكرول عند 30
+                    }}
                     className={`px-3 py-1 rounded-lg font-bold cursor-pointer transition ${
                       currentPage === i + 1
                         ? "bg-[#c9a34a] text-white"

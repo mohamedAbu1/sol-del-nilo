@@ -38,31 +38,30 @@ export default function Header() {
         <MobileNavBar activeTab={activeTab} setActiveTab={setActiveTab} />{" "}
         {/* ✅ نمرر الحالة */}
         <RightBar scrolled={scrolled} />
-       <motion.div whileHover={{ scale: 1.1 }} className="hidden lg:flex">
-  <Button
-    onClick={isLoggedIn ? logout : handleOpen}
-    style={{
-      padding: "12px 24px",
-      background: "linear-gradient(to right, #ca8a04, #eab308)",
-      color: "#fff",
-      fontWeight: "600",
-      letterSpacing: "0.05em",
-      borderRadius: "0.5rem",
-      boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
-      transition: "all 0.3s ease",
-      display: "flex",
-      alignItems: "center",
-      gap: "8px",
-    }}
-  >
-    {isLoggedIn ? (
-      <FaSignOutAlt size={20} /> // أيقونة خروج
-    ) : (
-      <FaUserPlus size={20} /> // أيقونة تسجيل
-    )}
-  </Button>
-</motion.div>
-
+        <motion.div whileHover={{ scale: 1.1 }} className="hidden lg:flex">
+          <Button
+            onClick={isLoggedIn ? logout : handleOpen}
+            style={{
+              padding: "12px 24px",
+              background: "linear-gradient(to right, #ca8a04, #eab308)",
+              color: "#fff",
+              fontWeight: "600",
+              letterSpacing: "0.05em",
+              borderRadius: "0.5rem",
+              boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
+              transition: "all 0.3s ease",
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+            }}
+          >
+            {isLoggedIn ? (
+              <FaSignOutAlt size={20} /> // أيقونة خروج
+            ) : (
+              <FaUserPlus size={20} /> // أيقونة تسجيل
+            )}
+          </Button>
+        </motion.div>
       </div>
     </motion.header>
   );

@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import { usePurchase } from "@/context/PurchaseContext";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
+import CurrencySelector from "@/components/layout/CurrencySelector";
 
 export default function RightBar({ scrolled }) {
   const { isLoggedIn, logout, user, handleOpen } = useAuth();
@@ -28,6 +29,7 @@ export default function RightBar({ scrolled }) {
     <div className="flex items-center gap-4">
       {/* Theme Toggle */}
       <ThemeToggle scrolled={scrolled} />
+      <CurrencySelector />
 
       {/* عرض المستخدم */}
       {isLoggedIn && user && (

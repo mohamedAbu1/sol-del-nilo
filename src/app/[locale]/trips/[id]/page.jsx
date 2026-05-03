@@ -53,7 +53,7 @@ export default function TripPage({ params }) {
 
   return (
     <main
-      className={`min-h-screen ${
+      className={`min-h-screen w-full ${
         themeName === "dark"
           ? "bg-gradient-to-b from-black via-gray-900 to-black text-gold"
           : "bg-gradient-to-b from-[#fdf6e3] via-[#f5deb3] to-[#fdf6e3] text-[#3a2c0a]"
@@ -64,12 +64,11 @@ export default function TripPage({ params }) {
 
       <div
         style={{ paddingTop: "110px" }}
-        className="w-full lg:max-w-7xl mt-9 lg:mt-0 mx-auto p-6 relative z-10 grid gap-8 
-             grid-cols-1 lg:grid-cols-2 auto-rows-min"
+        className="w-full mt-9 lg:mt-0 mx-auto relative z-10 gap-8 auto-rows-min"
       >
         <EgyptianBackground />
 
-        <div className="col-span-3 lg:col-span-3">
+        <div className="w-full">
           <TripHeader trip={trip} lang={lang} />
         </div>
 

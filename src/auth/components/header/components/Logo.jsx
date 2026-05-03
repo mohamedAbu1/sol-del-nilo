@@ -17,18 +17,19 @@ export default function Logo({ scrolled }) {
 
   const imageSrc =
     themeName === "dark"
-      ? "/HomePageImage/Copilot_20260309_150019.png"
+      ? "/HomePageImage/Copilot_20260503_222315.webp"
       : !isHome
-      ? "/HomePageImage/Copilot_20260309_150019.png"
+      ? "/HomePageImage/Copilot_20260503_222315.webp"
       : scrolled
-      ? "/HomePageImage/Copilot_20260309_150339.png"
-      : "/HomePageImage/Copilot_20260309_150019.png";
+      ? "/HomePageImage/Copilot_20260503_222315.webp"
+      : "/HomePageImage/Copilot_20260503_222315.webp";
 
   return (
     <motion.div
       initial={{ scale: 0.8, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ duration: 0.6 }}
+      className="mt-3"
     >
       <Link href="/" className="flex items-center gap-2">
         <Image

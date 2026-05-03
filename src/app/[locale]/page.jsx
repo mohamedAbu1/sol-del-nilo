@@ -16,7 +16,6 @@ import { useLanguage } from "@/context/LanguageContext";
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import AdminDashboardButton from "@/components/layout/AdminDashboardButton";
-import CurrencySelector from "@/components/layout/CurrencySelector";
 
 function ScrollSaver() {
   const pathname = usePathname();
@@ -77,7 +76,6 @@ export default function Home() {
       <LoginModal />
       {user && <ChatWidget />}
       {user && <AdminDashboardButton />}
-      <CurrencySelector />
     </main>
   );
 }

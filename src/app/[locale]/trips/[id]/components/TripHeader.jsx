@@ -38,7 +38,7 @@ export default function TripHeader({ trip, lang }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
-      className={`w-full p-6 rounded-xl shadow-lg transition ${
+      className={`w-full rounded-xl shadow-lg transition ${
         themeName === "dark"
           ? "bg-black/40 text-gold"
           : "bg-white/90 text-[#3a2c0a]"
@@ -88,7 +88,7 @@ export default function TripHeader({ trip, lang }) {
 
       {/* ✅ الصور الجانبية المصغرة مع Drag */}
       <motion.div
-        className="flex gap-4 lg:flex-wrap cursor-grab active:cursor-grabbing"
+        className="hidden lg:flex gap-4 lg:flex-wrap cursor-grab active:cursor-grabbing"
         drag="x"
         dragConstraints={{ left: -200, right: 0 }}
         dragElastic={0.1}
@@ -129,7 +129,7 @@ export default function TripHeader({ trip, lang }) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.7, delay: 0.3 }}
-        className="leading-relaxed text-lg mt-6"
+        className="leading-relaxed text-lg mt-6  pl-3 "
       >
         <Highlighter
           highlightClassName="bg-yellow-200"

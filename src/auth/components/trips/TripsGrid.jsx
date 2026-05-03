@@ -49,7 +49,7 @@ export default function TripsGrid({ trips, cardStyle = "vertical" }) {
               scale: 1.05,
               boxShadow: "0px 8px 20px rgba(0,0,0,0.3)",
             }}
-            className={`relative rounded-xl shadow-lg overflow-hidden transform transition border border-[#c9a34a]/30 ${cardStyle === "vertical" ? "h-[400px]" : " h-[300px]"}`}
+            className={`relative rounded-xl shadow-lg overflow-hidden z-[0] transform transition border border-[#c9a34a]/30 ${cardStyle === "vertical" ? "h-[400px]" : " h-[300px]"}`}
           >
             <Image
               src={trip.cover_image || "/default.jpg"}

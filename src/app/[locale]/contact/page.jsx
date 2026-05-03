@@ -91,7 +91,11 @@ export default function ContactPage() {
         <meta name="keywords" content={meta.keywords} />
       </Head>
       <main
-        className={`relative w-full min-h-screen ${theme.background} ${theme.text} overflow-hidden pt-7`}
+        className={`
+               w-full flex flex-col items-center justify-center
+               min-h-screen font-sans transition-colors duration-300
+               overflow-hidden
+             `}
       >
         <Header />
         {/* خلفية الرموز الفرعونية */}
@@ -114,7 +118,7 @@ export default function ContactPage() {
         </div>
 
         {/* المحتوى */}
-        <section className="relative z-10 pt-20 px-6">
+        <section className="relative z-10 pt-20 px-6 mt-16">
           <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
             {/* معلومات التواصل */}
             <motion.div
@@ -269,8 +273,8 @@ export default function ContactPage() {
         <SignUpButton />
         <LoginModal />
         {user && <ChatWidget />}
-         {user && <AdminDashboardButton />}
-              <CurrencySelector />
+        {user && <AdminDashboardButton />}
+        <CurrencySelector />
       </main>
     </>
   );

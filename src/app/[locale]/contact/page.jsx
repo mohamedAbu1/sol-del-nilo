@@ -15,6 +15,8 @@ import Head from "next/head";
 import { useLanguage } from "@/context/LanguageContext";
 import { contactMetadata } from "@/lib/metadata/contact";
 import DividerWithIcon from "@/components/layout/DividerWithIcon";
+import AdminDashboardButton from "@/components/layout/AdminDashboardButton";
+import CurrencySelector from "@/components/layout/CurrencySelector";
 
 const symbols = [
   "𓂀",
@@ -267,6 +269,8 @@ export default function ContactPage() {
         <SignUpButton />
         <LoginModal />
         {user && <ChatWidget />}
+         {user && <AdminDashboardButton />}
+              <CurrencySelector />
       </main>
     </>
   );

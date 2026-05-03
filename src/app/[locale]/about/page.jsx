@@ -18,6 +18,8 @@ import { useAuth } from "@/context/AuthContext";
 import Head from "next/head";
 import { useLanguage } from "@/context/LanguageContext";
 import { aboutMetadata } from "@/lib/metadata/about";
+import AdminDashboardButton from "@/components/layout/AdminDashboardButton";
+import CurrencySelector from "@/components/layout/CurrencySelector";
 export default function AboutPage() {
   const { theme } = useTheme();
   const { user } = useAuth(); // ✅ جلب المستخدم الحالي
@@ -47,6 +49,8 @@ export default function AboutPage() {
         <SignUpButton />
         <LoginModal />
         {user && <ChatWidget />}
+        {user && <AdminDashboardButton />}
+        <CurrencySelector />
       </main>
     </>
   );

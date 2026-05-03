@@ -16,6 +16,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import AdminDashboardButton from "@/components/layout/AdminDashboardButton";
+import CurrencySelector from "@/components/layout/CurrencySelector";
 
 function ScrollSaver() {
   const pathname = usePathname();
@@ -40,7 +41,7 @@ function ScrollSaver() {
     if (savedY) {
       // استرجاع المكان بعد تحميل الصفحة بالكامل
       setTimeout(() => {
-        window.scrollTo({ top: parseInt(savedY)/2, behavior: "instant" });
+        window.scrollTo({ top: parseInt(savedY) / 2, behavior: "instant" });
         console.log("📌 Restored scroll:", savedY);
       }, 0);
     }
@@ -74,7 +75,9 @@ export default function Home() {
       <Footer />
       <SignUpButton />
       <LoginModal />
-        {user && <ChatWidget /> && <AdminDashboardButton/>}
+      {user && <ChatWidget />}
+      {user && <AdminDashboardButton />}
+      <CurrencySelector />
     </main>
   );
 }

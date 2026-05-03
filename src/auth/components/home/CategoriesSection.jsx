@@ -98,7 +98,7 @@ function CategoryCard({ cat, theme, themeName, language, isMobile, index ,x}) {
       >
         <p
           className={`text-lg font-bold tracking-wide drop-shadow-lg ${
-            themeName === "dark" ? "text-white" : "text-[#3a2c0a]"
+            themeName === "dark" ? "text-white" : "text-white"
           }`}
         >
           {displayName}

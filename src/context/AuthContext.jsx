@@ -42,6 +42,7 @@ export function AuthProvider({ children }) {
     return cookieToken || null;
   };
   const loginWithGoogle = async () => {
+    console.log("🚀 بدء تسجيل الدخول عبر Google...");
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
@@ -51,27 +52,40 @@ export function AuthProvider({ children }) {
     });
     console.log("📌 نتيجة Supabase:", { data, error });
   };
-  // ✅ عند تحميل الصفحة تحقق من الجلسة عبر API /auth/me
   useEffect(() => {
     const checkUser = async () => {
-      try {
-        const res = await axios.get("/api/auth/me", { withCredentials: true });
-        const data = res.data;
-        if (data.user) {
-          setUser(data.user);
-          setIsLoggedIn(true);
-          updateValue("id", data.user.id);
-          updateValue("email", data.user.email);
-          updateValue("role", data.user.role);
-        } else {
-          setUser(null);
-          setIsLoggedIn(false);
-        }
-      } catch {
+      const {
+        data: { user },
+        error,
+      } = await supabase.auth.getUser();
+
+      if (error) {
+        console.error("Error fetching user:", error.message);
+        setUser(null);
+        setIsLoggedIn(false);
+        return;
+      }
+
+      if (user) {
+        setUser(user);
+        setIsLoggedIn(true);
+
+        // ✅ تحديث القيم في QueryContext
+        updateValue("id", user.id);
+        updateValue("email", user.email);
+        updateValue("role", user.user_metadata?.role);
+        updateValue("name", user.user_metadata?.name);
+        updateValue("avatar", user.user_metadata?.avatar);
+        updateValue("gender", user.user_metadata?.gender);
+
+        const encodedQuery = getEncodedQuery();
+        router.push(`/?data=${encodedQuery}`);
+      } else {
         setUser(null);
         setIsLoggedIn(false);
       }
     };
+
     checkUser();
   }, []);
 
@@ -110,30 +124,48 @@ const register = async (email, password, name, gender) => {
   }
 };
 
+const login = async (email, password, onSuccess) => {
+  setLoading(true);
+  setError(null);
+  try {
+    const res = await axios.post("/api/auth/login", { email, password }, { withCredentials: true });
+    const data = res.data;
 
-  const login = async (email, password, onSuccess) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await axios.post("/api/auth/login", { email, password }, { withCredentials: true });
-      const data = res.data;
-      if (!data.user) throw new Error(data.error || "Login failed");
-      setUser(data.user);
-      setIsLoggedIn(true);
-      updateValue("id", data.user.id);
-      updateValue("email", data.user.email);
-      updateValue("role", data.user.role);
-      if (onSuccess) onSuccess();
-      const encodedQuery = getEncodedQuery();
-      router.push(`/?data=${encodedQuery}`);
-      return data.user;
-    } catch (err) {
-      setError(err.message);
-      toast.error("❌ Error: " + err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+    if (res.status !== 200) throw new Error(data.error || "Login failed");
+
+    const user = data.user;
+    const session = data.session;
+
+    // ✅ تهيئة الجلسة داخل Supabase
+    await supabase.auth.setSession({
+      access_token: session.access_token,
+      refresh_token: session.refresh_token,
+    });
+
+    setUser(user);
+    setIsLoggedIn(true);
+
+    // تحديث QueryContext
+    updateValue("id", user.id);
+    updateValue("email", user.email);
+    updateValue("role", user.user_metadata?.role);
+    updateValue("name", user.user_metadata?.name);
+    updateValue("avatar", user.user_metadata?.avatar);
+    updateValue("gender", user.user_metadata?.gender);
+
+    if (onSuccess) onSuccess();
+    const encodedQuery = getEncodedQuery();
+    router.push(`/?data=${encodedQuery}`);
+
+    toast.success("✅ Logged in successfully!");
+    return user;
+  } catch (err) {
+    setError(err.message);
+    toast.error("❌ Error: " + err.message);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const logout = async () => {
     try {
@@ -141,8 +173,10 @@ const register = async (email, password, name, gender) => {
     } catch (err) {
       console.error("❌ Error clearing cookies on server:", err);
     }
+
     setUser(null);
     setIsLoggedIn(false);
+    removeToken();
     toast.info("🚪 Logged out successfully");
   };
   return (

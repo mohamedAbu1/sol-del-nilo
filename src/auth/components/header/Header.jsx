@@ -6,11 +6,14 @@ import Logo from "./components/Logo";
 import NavBar from "./components/NavBar";
 import RightBar from "./components/RightBar";
 import MobileNavBar from "./components/MobileNavBar";
-import AdminButton from "./components/AdminButton"
+import { FaSignOutAlt, FaUserPlus } from "react-icons/fa";
+import { Button } from "@mui/material";
+import { useAuth } from "@/context/AuthContext";
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [activeTab, setActiveTab] = useState(""); // ✅ الحالة لإدارة الـ active
   const { theme } = useTheme();
+  const { isLoggedIn, logout, handleOpen } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -30,11 +33,36 @@ export default function Header() {
       }`}
     >
       <div className="max-w-8xl container mx-auto px-6 py-4 flex items-center justify-between">
-        <Logo scrolled={scrolled}/>
-        <NavBar scrolled={scrolled}/>
-        <MobileNavBar activeTab={activeTab} setActiveTab={setActiveTab} /> {/* ✅ نمرر الحالة */}
-        <RightBar scrolled={scrolled}/>
-        <AdminButton />
+        <Logo scrolled={scrolled} />
+        <NavBar scrolled={scrolled} />
+        <MobileNavBar activeTab={activeTab} setActiveTab={setActiveTab} />{" "}
+        {/* ✅ نمرر الحالة */}
+        <RightBar scrolled={scrolled} />
+       <motion.div whileHover={{ scale: 1.1 }} className="hidden lg:flex">
+  <Button
+    onClick={isLoggedIn ? logout : handleOpen}
+    style={{
+      padding: "12px 24px",
+      background: "linear-gradient(to right, #ca8a04, #eab308)",
+      color: "#fff",
+      fontWeight: "600",
+      letterSpacing: "0.05em",
+      borderRadius: "0.5rem",
+      boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
+      transition: "all 0.3s ease",
+      display: "flex",
+      alignItems: "center",
+      gap: "8px",
+    }}
+  >
+    {isLoggedIn ? (
+      <FaSignOutAlt size={20} /> // أيقونة خروج
+    ) : (
+      <FaUserPlus size={20} /> // أيقونة تسجيل
+    )}
+  </Button>
+</motion.div>
+
       </div>
     </motion.header>
   );

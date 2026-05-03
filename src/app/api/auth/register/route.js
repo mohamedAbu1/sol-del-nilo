@@ -3,23 +3,15 @@ import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabaseClient";
 import { UserSchema } from "@/lib/schemas/userSchema";
 import { maleAvatars, femaleAvatars } from "@/constants/images";
-import bcrypt from "bcryptjs";
 
-// ✅ دالة لتحويل الـ gender إلى الإنجليزية
-function normalizeGender(gender) {
-  if (!gender) return "other";
-  const g = gender.toLowerCase();
-  if (["male", "hombre","männlich", "男","uomo","homme"].includes(g)) return "male";
-  if (["female", "mujer","weiblich","女","donna","femme"].includes(g)) return "female";
-  return "other";
-}
-
+// ✅ دالة لاختيار صورة عشوائية حسب الجنس
 function getAvatarByGender(gender) {
   let randomFile;
-  if (gender === "male") {
+  if (gender?.toLowerCase() === "male") {
     randomFile = maleAvatars[Math.floor(Math.random() * maleAvatars.length)];
-  } else if (gender === "female") {
-    randomFile = femaleAvatars[Math.floor(Math.random() * femaleAvatars.length)];
+  } else if (gender?.toLowerCase() === "female") {
+    randomFile =
+      femaleAvatars[Math.floor(Math.random() * femaleAvatars.length)];
   } else {
     randomFile = "default.webp";
   }
@@ -30,43 +22,49 @@ function getAvatarByGender(gender) {
 export async function POST(request) {
   try {
     const body = await request.json();
+    console.log("📩 بيانات الطلب:", body);
+
+    // ✅ التحقق من البيانات باستخدام UserSchema
     const parsed = UserSchema.safeParse(body);
-console.log(body)
     if (!parsed.success) {
-      return NextResponse.json({ error: "البيانات غير صالحة" }, { status: 400 });
+      console.error("❌ UserSchema validation error:", parsed.error);
+      return NextResponse.json(
+        { error: "البيانات غير صالحة" },
+        { status: 400 },
+      );
     }
 
-    let { name, email, password, gender } = parsed.data;
+    const { name, email, password, gender } = parsed.data;
+    console.log("Register payload:", { name, email, password, gender });
 
-    // ✅ تحويل الـ gender إلى الإنجليزية
-    gender = normalizeGender(gender);
-
+    // ✅ الحصول على صورة عشوائية
     const avatarUrl = getAvatarByGender(gender);
 
-    // ✅ تشفير الباسورد
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // ✅ إدخال المستخدم في جدول user
-    const { data, error } = await supabase
-      .from("user")
-      .insert([
-        {
+    // ✅ تسجيل المستخدم في Supabase Auth
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
           name,
-          email,
-          password: hashedPassword,
           gender,
           role: "USER",
           avatar: avatarUrl,
         },
-      ])
-      .select()
-      .single();
+      },
+    });
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      console.error("❌ Supabase signUp error:", error.message);
+      return NextResponse.json({ error: error.message }, { status: 400 });
     }
 
-    return NextResponse.json({ message: "تم إنشاء الحساب بنجاح", user: data });
+    // ✅ الاستجابة النهائية
+    return NextResponse.json({
+      message: "تم إنشاء الحساب بنجاح",
+      user: data.user,
+      session: data.session,
+    });
   } catch (e) {
     console.error("❌ خطأ داخلي:", e);
     return NextResponse.json({ error: "خطأ داخلي" }, { status: 500 });

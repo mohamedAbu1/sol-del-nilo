@@ -15,6 +15,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
+import AdminDashboardButton from "@/components/layout/AdminDashboardButton";
 
 function ScrollSaver() {
   const pathname = usePathname();
@@ -73,7 +74,7 @@ export default function Home() {
       <Footer />
       <SignUpButton />
       <LoginModal />
-      {user && <ChatWidget />}
+        {user && <ChatWidget /> && <AdminDashboardButton/>}
     </main>
   );
 }

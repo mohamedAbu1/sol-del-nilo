@@ -1,66 +1,47 @@
-// app/api/auth/login/route.js
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabaseClient";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import { cookies } from "next/headers";
 
 export async function POST(request) {
   try {
     const { email, password } = await request.json();
 
-    const { data: user, error } = await supabase
-      .from("user")
-      .select("*")
-      .eq("email", email)
-      .single();
+    // تسجيل الدخول عبر Supabase
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
-    if (error || !user) {
-      return NextResponse.json(
-        { error: "المستخدم غير موجود" },
-        { status: 404 },
-      );
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 401 });
     }
 
-    const match = await bcrypt.compare(password, user.password);
-    if (!match) {
-      return NextResponse.json(
-        { error: "كلمة السر غير صحيحة" },
-        { status: 401 },
-      );
-    }
+    const user = data.user;
+    const session = data.session;
 
-    const token = jwt.sign(
-      {
-        id: user.id,
-        email: user.email,
-        role: user.role,
-        name: user.name,
-        avatar: user.avatar,
-      },
-      process.env.JWT_SECRET,
-      { expiresIn: "1h" },
-    );
+    // حفظ التوكينات في الكوكيز
+    const response = NextResponse.json({
+      message: "تم تسجيل الدخول بنجاح",
+      user,
+      session, // نرجع الـ session للـ client
+    });
 
-    cookies().set("jwt_token", token, {
+    response.cookies.set("sb_access", session.access_token, {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       path: "/",
-      maxAge: 60 * 60 * 24,
+      maxAge: 60 * 15, // 15 دقيقة
     });
 
-    return NextResponse.json({
-      message: "تم تسجيل الدخول بنجاح",
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        gender: user.gender,
-        role: user.role,
-        avatar: user.avatar,
-      },
+    response.cookies.set("sb_refresh", session.refresh_token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 30, // 30 يوم
     });
+
+    return response;
   } catch (e) {
     return NextResponse.json({ error: "خطأ داخلي" }, { status: 500 });
   }

@@ -56,8 +56,8 @@ export default function ChatWidget({ setShowEmojiPicker, showEmojiPicker }) {
     if (text.trim() !== "") {
       await sendMessage({
         user_id: user.id,
-        user_name: user?.name,
-        user_image: user?.avatar,
+        user_name: user.user_metadata?.name,
+        user_image: user.user_metadata?.avatar,
         content: text,
         sender_type: "user",
         status: "sent",
@@ -84,7 +84,7 @@ export default function ChatWidget({ setShowEmojiPicker, showEmojiPicker }) {
     return () => window.removeEventListener("openCarBookingChat", handler);
   }, [user]);
 
-  const isAdmin = user?.role === "ADMIN";
+  const isAdmin = user?.user_metadata?.role === "ADMIN";
 
   const handleSendImage = async (file) => {
     const fileName = `${user.id}-${Date.now()}-${file.name}`;
@@ -101,8 +101,8 @@ export default function ChatWidget({ setShowEmojiPicker, showEmojiPicker }) {
     const uploadedUrl = publicUrlData.publicUrl;
     await sendMessage({
       user_id: user.id,
-      user_name: user?.name,
-      user_image: user?.avatar,
+      user_name: user.user_metadata?.name,
+      user_image: user.user_metadata?.avatar,
       content: uploadedUrl,
       sender_type: "user",
       status: "sent",
@@ -117,7 +117,7 @@ export default function ChatWidget({ setShowEmojiPicker, showEmojiPicker }) {
           onClick={() => setOpen(!open)}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
-          className={`fixed bottom-6 right-6 p-4 rounded-full z-50 shadow-lg flex items-center justify-center ${theme.buttonPrimary}`}
+          className={`fixed bottom-6 right-6 p-4 rounded-full shadow-lg flex items-center justify-center ${theme.buttonPrimary}`}
         >
           <FaComments size={22} color="#fff" />
         </motion.button>
@@ -129,7 +129,7 @@ export default function ChatWidget({ setShowEmojiPicker, showEmojiPicker }) {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
-            className={`fixed overflow-hidden bottom-20 right-6 w-110 h-125 rounded-xl shadow-xl flex flex-col z-50 ${theme.card} ${theme.text}`}
+            className={`fixed overflow-x-hidden bottom-20 right-6 w-110 h-125 rounded-xl shadow-xl flex flex-col z-50 ${theme.card} ${theme.text}`}
           >
             <EgyptianBackground />
             <ChatHeader onClose={() => setOpen(false)} theme={theme} />
@@ -170,8 +170,8 @@ export default function ChatWidget({ setShowEmojiPicker, showEmojiPicker }) {
                   onClick={async () => {
                     await sendMessage({
                       user_id: user.id,
-                      user_name: user?.name,
-                      user_image: user?.avatar,
+                      user_name: user.user_metadata?.name,
+                      user_image: user.user_metadata?.avatar,
                       content: `Car booking request: from ${from} to ${to}`,
                       sender_type: "user",
                       status: "sent",

@@ -143,3 +143,17 @@
           </motion.div>
         );
       })}
+
+
+
+
+         <p className="text-md font-semibold flex items-center gap-2">
+                <span
+                  className={`px-2 py-1 rounded flex items-center gap-1 text-white ${
+                    themeName === "dark" ? "bg-[#FF9800]" : "bg-[#FF9800]"
+                  }`}
+                >
+                  {currency === "USD" ? <FaDollarSign /> : <FaEuroSign />}
+                  {displayedPrice} {currency}
+                </span>
+              </p>

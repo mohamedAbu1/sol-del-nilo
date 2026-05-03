@@ -1,63 +1,31 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import { FaSearch } from "react-icons/fa";
 import { useTheme } from "@/context/ThemeContext";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
-import { useCitiesCategories } from "@/context/CitiesCategoriesContext";
 
 export default function TripsSearch({
   search,
   setSearch,
-  cardStyle,
-  setCardStyle,
-  filters,
-  setFilters,
+  cities,
+  categories,
+  city,
+  category,
+  updateValue,
+  loading,
 }) {
   const { themeName } = useTheme();
   const { t, i18n } = useTranslation("trips");
-  const { cities, categories, loading } = useCitiesCategories();
   const lang = i18n.language || "en";
-
-  // عند mount أو تحديث الفلاتر، لو القيم نصوص نحولها لـ IDs
-  useEffect(() => {
-    if (filters.city && typeof filters.city === "string") {
-      const cityObj = cities.find(
-        (c) =>
-          c.name?.[lang]?.toLowerCase() === filters.city.toLowerCase() ||
-          c.name?.en?.toLowerCase() === filters.city.toLowerCase(),
-      );
-      if (cityObj && filters.city !== cityObj.id) {
-        setFilters((prev) => ({ ...prev, city: cityObj.id }));
-      }
-    }
-  }, [filters.city, cities, lang]);
-
-  useEffect(() => {
-    if (filters.category && typeof filters.category === "string") {
-      const catObj = categories.find(
-        (c) =>
-          c.name?.[lang]?.toLowerCase() === filters.category.toLowerCase() ||
-          c.name?.en?.toLowerCase() === filters.category.toLowerCase(),
-      );
-      if (catObj && filters.category !== catObj.id) {
-        setFilters((prev) => ({ ...prev, category: catObj.id }));
-      }
-    }
-  }, [filters.category, categories, lang]);
-
+  console.log(city);
+  console.log(cities);
   const handleCityClick = (cityId) => {
-    setFilters((prev) => ({
-      ...prev,
-      city: prev.city === cityId ? "" : cityId,
-    }));
+    updateValue("city", cityId);
   };
 
   const handleCategoryClick = (catId) => {
-    setFilters((prev) => ({
-      ...prev,
-      category: prev.category === catId ? "" : catId,
-    }));
+    updateValue("category", catId);
   };
 
   const chipStyle = (active) =>
@@ -74,11 +42,12 @@ export default function TripsSearch({
       </p>
     );
   }
+
   return (
     <>
-      {/* شريط البحث */}
+      {/* ✅ شريط البحث (يظهر على الشاشات الكبيرة) */}
       <div
-        className={`hidden lg:flex w-[100%] items-center gap-3 p-4 rounded-xl shadow transition ${
+        className={`hidden lg:flex w-full items-center gap-3 p-4 rounded-xl shadow transition ${
           themeName === "dark"
             ? "bg-[#0f0f0f] border border-gold/30 text-white"
             : "bg-white/80 border border-[#c9a34a]/30 text-[#3a2c0a] backdrop-blur-sm"
@@ -100,7 +69,7 @@ export default function TripsSearch({
         />
       </div>
 
-      {/* فلترة المدن والفئات */}
+      {/* ✅ فلترة المدن والفئات (يظهر على الموبايل) */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -112,22 +81,25 @@ export default function TripsSearch({
           <h3 className="text-lg font-bold mb-2">{t("FilterByCity")}</h3>
           <div className="flex flex-wrap gap-2">
             <span
-              className={chipStyle(filters.city === "")}
-              onClick={() => handleCityClick("")}
+              className={chipStyle(city === "" || city === "all")}
+              onClick={() => handleCityClick("all")}
             >
               {t("All")}
             </span>
-            {cities.map((city) => {
+            {cities.map((c) => {
               const displayName =
-                typeof city.name === "object"
-                
-                  ? city.name[lang] || city.name["en"]
-                  : city.name;
+                typeof c.name === "object"
+                  ? c.name[lang] || c.name["en"]
+                  : c.name;
               return (
                 <span
-                  key={city.id}
-                  className={chipStyle(filters.city === city.id)}
-                  onClick={() => handleCityClick(city.id)}
+                  key={c.id}
+                  className={chipStyle(
+                    Array.isArray(city)
+                      ? city.includes(displayName)
+                      : city === displayName,
+                  )}
+                  onClick={() => handleCityClick(displayName)}
                 >
                   {displayName}
                 </span>
@@ -141,8 +113,8 @@ export default function TripsSearch({
           <h3 className="text-lg font-bold mb-2">{t("FilterByCategory")}</h3>
           <div className="flex flex-wrap gap-2">
             <span
-              className={chipStyle(filters.category === "")}
-              onClick={() => handleCategoryClick("")}
+              className={chipStyle(category === "" || category === "all")}
+              onClick={() => handleCategoryClick("all")}
             >
               {t("All")}
             </span>
@@ -154,8 +126,12 @@ export default function TripsSearch({
               return (
                 <span
                   key={cat.id}
-                  className={chipStyle(filters.category === cat.name)}
-                  onClick={() => handleCategoryClick(cat.id)}
+                  className={chipStyle(
+                    Array.isArray(category)
+                      ? category.includes(displayName)
+                      : category === displayName,
+                  )}
+                  onClick={() => handleCategoryClick(displayName)}
                 >
                   {displayName}
                 </span>

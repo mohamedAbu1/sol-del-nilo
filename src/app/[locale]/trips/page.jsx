@@ -15,127 +15,108 @@ import Head from "next/head";
 import { useLanguage } from "@/context/LanguageContext";
 import { tripsMetadata } from "@/lib/metadata/trips";
 import { useTrip } from "@/context/TripContext";
-import { useQueryFilters } from "@/context/QueryContext";
 import { useCitiesCategories } from "@/context/CitiesCategoriesContext";
-import { useSearchParams } from "next/navigation";
+import { useQueryFilters } from "@/context/QueryContext";
+import { useRouter } from "next/navigation";
 
 export default function TripsPage() {
+  const { trips, fetchTrips, loadingTrips } = useTrip();
+  const {
+    cities: allCities,
+    categories: allCategories,
+    loading,
+  } = useCitiesCategories();
   const { lang } = useLanguage();
   const meta = tripsMetadata[lang] || tripsMetadata.en;
   const { user } = useAuth();
-  const { trips, fetchTrips } = useTrip();
-  const { queryFilters } = useQueryFilters();
-
-  // جلب المدن والفئات من الـ context
-  const { cities: allCities = [], category: allCategories = [] } = useCitiesCategories();
-
-  const searchParams = useSearchParams();
+  const router = useRouter();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [cardStyle, setCardStyle] = useState("vertical");
+  const tripsPerPage = cardStyle === "vertical" ? 9 : 8;
   const [search, setSearch] = useState("");
-  const [filters, setFilters] = useState({
-    city: "",
-    category: "",
-    price: "",
-    popular: false,
-  });
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
 
-  // قراءة الكويري وتخزينه في الفلاتر
-useEffect(() => {
-  const dataParam = searchParams.get("data"); // خزن القيمة مرة واحدة
-  if (!dataParam) return;
-
-  try {
-    const decoded = JSON.parse(atob(dataParam));
-
-    let cityId = "";
-    if (decoded.city?.[0]) {
-      const cityObj = allCities.find(
-        (c) =>
-          c.name?.[lang]?.toLowerCase() === decoded.city[0].toLowerCase() ||
-          c.name?.en?.toLowerCase() === decoded.city[0].toLowerCase()
-      );
-      cityId = cityObj?.id || decoded.city[0];
-    }
-
-    let categoryId = "";
-    if (decoded.category?.[0]) {
-      const catObj = allCategories.find(
-        (c) =>
-          c.name?.[lang]?.toLowerCase() === decoded.category[0].toLowerCase() ||
-          c.name?.en?.toLowerCase() === decoded.category[0].toLowerCase()
-      );
-      categoryId = catObj?.id || decoded.category[0];
-    }
-
-    setFilters({
-      city: cityId,
-      category: categoryId,
-      price: decoded.price || "",
-      popular: decoded.popular || false,
-    });
-  } catch (err) {
-    console.error("❌ Error decoding query:", err);
-  }
-}, [allCities, allCategories, lang]); // لاحظ إننا شلنا searchParams
+  // ✅ القيم من الكويري كونتكست
+  const { city, category, price, popular,updateValue  } = useQueryFilters();
 
   useEffect(() => {
     fetchTrips();
   }, []);
 
+  // ✅ مراقبة حجم الشاشة
+  useEffect(() => {
+    const checkScreen = () => setIsSmallScreen(window.innerWidth <= 1024);
+    checkScreen();
+    window.addEventListener("resize", checkScreen);
+    return () => window.removeEventListener("resize", checkScreen);
+  }, []);
 
+  if (loadingTrips)
+    return <p className="text-center text-gray-500">Loading trips...</p>;
 
-  const activeFilters = {
-    ...filters,
-    ...queryFilters,
-  };
-
-  // فلترة الرحلات
+  // ✅ فلترة الرحلات
   const filteredTrips = trips.filter((trip) => {
-    const matchesCity = activeFilters.city
-      ? trip.trip_cities?.some((c) => {
-          const cityName = c.cities?.name?.[lang] || c.cities?.name?.en || "";
-          return (
-            c.city_id === activeFilters.city ||
-            cityName.toLowerCase() === activeFilters.city.toLowerCase()
-          );
-        })
-      : true;
+    const lowerSearch = search.trim().toLowerCase();
+    const matchesSearch =
+      !lowerSearch ||
+      (trip.title?.[lang] &&
+        trip.title[lang].toLowerCase().includes(lowerSearch));
 
-    const matchesCategory = activeFilters.category
-      ? trip.trip_categories?.some((cat) => {
-          const catObj = allCategories?.find((c) => c.id === cat.category_id);
-          const catName = catObj?.name?.[lang] || catObj?.name?.en || "";
-          return (
-            cat.category_id === activeFilters.category ||
-            catName.toLowerCase() === activeFilters.category.toLowerCase()
-          );
-        })
-      : true;
+    const tripCities =
+      trip.trip_cities
+        ?.map((c) => c?.cities?.name?.[lang] || c?.cities?.name?.en || "")
+        .filter((n) => n !== "") || [];
 
-    const matchesPrice = activeFilters.price
-      ? trip.priceLevel?.toLowerCase() === activeFilters.price.toLowerCase()
-      : true;
+    const matchesCity =
+      city === "all"
+        ? true
+        : Array.isArray(city)
+          ? tripCities.some((c) =>
+              city.map((x) => x.toLowerCase()).includes(c.toLowerCase()),
+            )
+          : tripCities.some((c) => c.toLowerCase() === city.toLowerCase());
 
-    const matchesPopular = activeFilters.popular ? trip.popular : true;
+    const tripCategories =
+      trip.trip_categories?.map((cat) => {
+        const catObj = allCategories.find((c) => c.id === cat.category_id);
+        return catObj?.name?.[lang] || catObj?.name?.en || catObj?.name;
+      }) || [];
+    const matchesCategory =
+      category === "all"
+        ? true
+        : Array.isArray(category)
+          ? tripCategories.some((c) => category.includes(c))
+          : tripCategories.includes(category);
 
-    return matchesCity && matchesCategory && matchesPrice && matchesPopular;
+    const ranges = {
+      Economy: { min: 0, max: 199 },
+      Standard: { min: 200, max: 599 },
+      Luxury: { min: 600, max: Infinity },
+    };
+    const selectedRange = ranges[price];
+    const matchesPrice =
+      price === "All" || !price
+        ? true
+        : selectedRange
+          ? trip.price >= selectedRange.min && trip.price <= selectedRange.max
+          : true;
+
+    const matchesPopular = popular ? trip.isPopular : true;
+
+    return (
+      matchesSearch &&
+      matchesCity &&
+      matchesCategory &&
+      matchesPrice &&
+      matchesPopular
+    );
   });
 
-  const fadeUp = {
-    hidden: { opacity: 0, y: 40 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
-    },
-  };
-
-  const staggerContainer = {
-    hidden: {},
-    visible: { transition: { staggerChildren: 0.2 } },
-  };
+  const indexOfLastTrip = currentPage * tripsPerPage;
+  const indexOfFirstTrip = indexOfLastTrip - tripsPerPage;
+  const currentTrips = filteredTrips.slice(indexOfFirstTrip, indexOfLastTrip);
+  const totalPages = Math.ceil(filteredTrips.length / tripsPerPage);
 
   return (
     <>
@@ -144,39 +125,58 @@ useEffect(() => {
         <meta name="description" content={meta.description} />
         <meta name="keywords" content={meta.keywords} />
       </Head>
-      <main className="relative flex flex-col min-h-screen justify-center items-center pt-9">
+
+      <main className="relative flex flex-col min-h-screen justify-center items-center">
         <EgyptianBackground />
         <Header />
 
         <motion.section
-          style={{ marginTop: "105px", paddingBottom: "20px" }}
+          style={{ marginTop: "190px", paddingBottom: "20px" }}
           className="container flex flex-1 gap-6 px-6 relative z-10"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={staggerContainer}
         >
-          <motion.div variants={fadeUp} className="hidden lg:flex w-1/4">
-            <TripsFilter filters={filters} setFilters={setFilters} />
-          </motion.div>
-
-          <motion.div variants={fadeUp} className="flex-1 flex flex-col gap-6">
-            <TripsSearch
-              filters={filters}
-              setFilters={setFilters}
-              search={search}
-              setSearch={setSearch}
-              cardStyle={cardStyle}
-              setCardStyle={setCardStyle}
+          <div className="w-1/4 hidden lg:flex">
+            <TripsFilter
+              allCities={allCities}
+              allCategories={allCategories}
+              loading={loading}
             />
+          </div>
 
-            <TripsGrid
-              trips={filteredTrips}
-              cardStyle={cardStyle}
-              search={search}
-              filters={filters}
-            />
-          </motion.div>
+          <div className="flex-1 flex flex-col gap-6">
+<TripsSearch
+  search={search}
+  setSearch={setSearch}
+  cardStyle={cardStyle}
+  setCardStyle={setCardStyle}
+  cities={allCities}
+  categories={allCategories}
+  city={city}          // ✅ مرر القيمة مباشرة
+  category={category}  // ✅ مرر القيمة مباشرة
+  updateValue={updateValue} // ✅ مرر الدالة مباشرة
+  loading={loading}
+/>
+
+
+            <TripsGrid trips={currentTrips} cardStyle={cardStyle} />
+
+            {totalPages > 1 && (
+              <div className="flex justify-center gap-2 mt-4">
+                {Array.from({ length: totalPages }, (_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setCurrentPage(i + 1)}
+                    className={`px-3 py-1 rounded-lg font-bold cursor-pointer transition ${
+                      currentPage === i + 1
+                        ? "bg-[#c9a34a] text-white"
+                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    }`}
+                  >
+                    {i + 1}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </motion.section>
 
         <Footer />

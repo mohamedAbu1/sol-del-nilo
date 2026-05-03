@@ -63,7 +63,7 @@ export function QueryProvider({ children }) {
     return trips.filter((trip) => {
       if (queryState.city !== "all" && Array.isArray(queryState.city)) {
         const tripCities = trip.trip_cities?.map(
-          (c) => c.cities?.name?.[lang] || c.city?.name?.[lang] || c.city_name
+          (c) => c.cities?.name?.[lang] || c.cities?.name?.[lang] || c.city_name
         ) || [];
         if (!tripCities.some((c) => queryState.city.includes(c))) return false;
       }

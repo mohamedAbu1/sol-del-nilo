@@ -46,7 +46,7 @@ export default function MobileNavBar({ activeTab, setActiveTab }) {
           <button
             key={item.id}
             onClick={() => router.push(item.path)}
-            className={`flex flex-col items-center text-xs font-semibold transition-all cursor-pointer ${
+            className={`flex flex-col items-center text-[18px] font-semibold transition-all cursor-pointer ${
               activeTab === item.id ? "text-[#FF9800]" : theme.text
             }`}
           >

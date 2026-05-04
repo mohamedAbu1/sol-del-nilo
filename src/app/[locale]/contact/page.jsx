@@ -274,7 +274,6 @@ export default function ContactPage() {
         <LoginModal />
         {user && <ChatWidget />}
         {user && <AdminDashboardButton />}
-        <CurrencySelector />
       </main>
     </>
   );

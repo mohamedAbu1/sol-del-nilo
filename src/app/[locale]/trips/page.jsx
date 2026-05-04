@@ -188,7 +188,6 @@ export default function TripsPage() {
         <LoginModal />
         {user && <ChatWidget />}
          {user && <AdminDashboardButton />}
-              <CurrencySelector />
       </main>
     </>
   );

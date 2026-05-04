@@ -55,7 +55,6 @@ export default function AboutPage() {
         <LoginModal />
         {user && <ChatWidget />}
         {user && <AdminDashboardButton />}
-        <CurrencySelector />
       </main>
     </>
   );

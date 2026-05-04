@@ -15,7 +15,7 @@ const optimize = (url) => {
   return `${url}?width=600&quality=70&format=webp`;
 };
 
-function CategoryCard({ cat, theme, themeName, language, isMobile, index ,x}) {
+function CategoryCard({ cat, theme, themeName, language, isMobile, index, x }) {
   const [imgIndex, setImgIndex] = useState(0);
   const router = useRouter();
   const cardRef = useRef(null);
@@ -46,15 +46,27 @@ function CategoryCard({ cat, theme, themeName, language, isMobile, index ,x}) {
       : cat.name;
 
   const handleClick = () => {
+    // قائمة أسماء الكاتجري الخاصة بالـ Luxury
+    const luxuryNames = [
+      "Luxusreisen", // de
+      "Luxury Tours", // en
+      "Tours de lujo", // es
+      "Voyages de luxe", // fr
+      "Tour di lusso", // it
+      "豪华旅游", // zh
+    ];
+
     const queryObj = {
       city: "all",
       category: [displayName],
-      price: "Economy",
+      // ✅ لو الكاتجري موجود في قائمة الـ Luxury → السعر = "Luxury"
+      // غير ذلك → السعر = "All"
+      price: luxuryNames.includes(displayName) ? "Luxury" : "All",
       popular: false,
     };
 
     // حفظ الكارد اللي ضغطت عليه
-   sessionStorage.setItem("citiesScrollX", x.get());
+    sessionStorage.setItem("citiesScrollX", x.get());
     sessionStorage.setItem("selectedCityIndex", index);
 
     router.push(`/trips?data=${encodeData(queryObj)}`);
@@ -130,18 +142,18 @@ const CategoriesSection = () => {
   }, []);
 
   // حركة تلقائية بطيئة
-    useEffect(() => {
-      const savedX = sessionStorage.getItem("citiesScrollX");
-      const selectedIndex = sessionStorage.getItem("selectedCityIndex");
-  
-      if (selectedIndex) {
-        const centerOffset = window.innerWidth / 2 - cardWidth / 2;
-        const targetX = -(parseInt(selectedIndex) * cardWidth - centerOffset);
-        x.set(targetX);
-      } else if (savedX) {
-        x.set(parseFloat(savedX));
-      }
-    }, [x]);
+  useEffect(() => {
+    const savedX = sessionStorage.getItem("citiesScrollX");
+    const selectedIndex = sessionStorage.getItem("selectedCityIndex");
+
+    if (selectedIndex) {
+      const centerOffset = window.innerWidth / 2 - cardWidth / 2;
+      const targetX = -(parseInt(selectedIndex) * cardWidth - centerOffset);
+      x.set(targetX);
+    } else if (savedX) {
+      x.set(parseFloat(savedX));
+    }
+  }, [x]);
   useEffect(() => {
     let animationFrame;
     const speed = isMobile ? 0.4 : 0.5; // سرعة أبطأ للموبايل
@@ -150,7 +162,7 @@ const CategoriesSection = () => {
       x.set(x.get() - speed);
 
       // لو وصلنا للنهاية نرجع للبداية
-      if (Math.abs(x.get()) >= (original.length * cardWidth)) {
+      if (Math.abs(x.get()) >= original.length * cardWidth) {
         x.set(0);
       }
 
@@ -172,10 +184,13 @@ const CategoriesSection = () => {
       `}
     >
       <div className="max-w-7xl mx-auto mb-10 text-start">
-        <h2 className={`text-5xl font-extrabold tracking-wide drop-shadow-md text-left
-            ${themeName === "dark"
-              ? "text-gold"
-              : "bg-gradient-to-r from-[#c9a34a] to-[#eab308] bg-clip-text text-transparent"}
+        <h2
+          className={`text-5xl font-extrabold tracking-wide drop-shadow-md text-left
+            ${
+              themeName === "dark"
+                ? "text-gold"
+                : "bg-gradient-to-r from-[#c9a34a] to-[#eab308] bg-clip-text text-transparent"
+            }
           `}
         >
           {t("ExploreCategories")}
@@ -189,7 +204,10 @@ const CategoriesSection = () => {
           className="flex h-full"
           style={{ x }}
           drag="x"
-          dragConstraints={{ left: -(looped.length * cardWidth - window.innerWidth), right: 0 }}
+          dragConstraints={{
+            left: -(looped.length * cardWidth - window.innerWidth),
+            right: 0,
+          }}
           dragElastic={0.05}
           transition={{ duration: 0.8, ease: "easeInOut" }}
           onDragStart={() => {
@@ -212,8 +230,7 @@ const CategoriesSection = () => {
                 themeName={themeName}
                 language={normalizedLang}
                 theme={theme}
-                              x={x}
-
+                x={x}
                 isMobile={isMobile}
               />
             </div>

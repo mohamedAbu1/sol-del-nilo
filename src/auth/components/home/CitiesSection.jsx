@@ -24,7 +24,7 @@ function CityCard({ city, index, themeName, theme, language, t, x, cardWidth }) 
     const queryObj = {
       city: [cityName],
       category: "all",
-      price: "Economy",
+      price: "All",
       popular: false,
     };
 

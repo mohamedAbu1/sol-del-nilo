@@ -53,7 +53,7 @@ export default function TripPage({ params }) {
 
   return (
     <main
-      className={`min-h-screen w-full ${
+      className={`min-h-screen w-full lg:container flex items-center justify-center flex-col lg:m-auto ${
         themeName === "dark"
           ? "bg-gradient-to-b from-black via-gray-900 to-black text-gold"
           : "bg-gradient-to-b from-[#fdf6e3] via-[#f5deb3] to-[#fdf6e3] text-[#3a2c0a]"
@@ -63,8 +63,8 @@ export default function TripPage({ params }) {
       <EgyptianBackground />
 
       <div
-        style={{ paddingTop: "110px" }}
-        className="w-full mt-9 lg:mt-0 mx-auto relative z-10 gap-8 auto-rows-min"
+        style={{ paddingTop: "190px" }}
+        className="w-full mt-9 lg:mt-0 mx-auto relative z-10 gap-8 auto-rows-min "
       >
         <EgyptianBackground />
 

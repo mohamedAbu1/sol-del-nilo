@@ -10,7 +10,7 @@ export default function AboutHero() {
   const { t } = useTranslation("about");
 
   return (
-    <section className="relative z-10 py-20 px-6 mt-18">
+    <section className="relative z-10 py-20 px-6 mt-28">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <motion.div
           initial={{ opacity: 0, x: -60 }}

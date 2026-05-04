@@ -53,7 +53,7 @@ export default function TripPage({ params }) {
 
   return (
     <main
-      className={`min-h-screen w-full lg:container flex items-center justify-center flex-col lg:m-auto ${
+      className={`min-h-screen w-full lg:container lg:flex lg:items-center lg:justify-center flex-col lg:m-auto ${
         themeName === "dark"
           ? "bg-gradient-to-b from-black via-gray-900 to-black text-gold"
           : "bg-gradient-to-b from-[#fdf6e3] via-[#f5deb3] to-[#fdf6e3] text-[#3a2c0a]"

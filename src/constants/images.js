@@ -1,9 +1,9 @@
 export const desktopImages = [
-  "/HomePageImage/pexels-sahilcaptures-35645491.webp",
-  "/Marsa_Alam/peter-hansen-MeGmdPNe36w-unsplash.webp",
-  "/Marsa_Alam/nacho-diaz-latorre-W4Oc4NIL5_U-unsplash.webp",
-  "/Marsa_Alam/thales-botelho-de-sousa-hk76erm7_Xc-unsplash.webp",
-  "/Sharm_El_Sheikh/spencer-davis-ONVA6s03hg8-unsplash.webp",
+  "/Nile_Cruise/pexels-sahilcaptures-35645491.webp",
+  "/Nile_Cruise/peter-hansen-MeGmdPNe36w-unsplash.webp",
+  "/Nile_Cruise/nacho-diaz-latorre-W4Oc4NIL5_U-unsplash.webp",
+  "/Aswan/thales-botelho-de-sousa-hk76erm7_Xc-unsplash.webp",
+  "/Cairo/spencer-davis-ONVA6s03hg8-unsplash.webp",
   "/Aswan/pexels-axp-photography-500641970-18934565.webp",
 ];
 

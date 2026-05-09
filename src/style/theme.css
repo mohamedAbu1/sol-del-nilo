@@ -7,8 +7,8 @@
 :root[data-theme="light"] {
   --background: #ffffff;
   --foreground: #171717;
-  --color: #c9a34a; /* gold */
-  --color-hover: #b9972f; /* gold hover */
+  --color: #FF9800; /* gold */
+  --color-hover: #FF9800; /* gold hover */
   --input-glass-bg: rgba(255, 255, 255, 0.08);
   --input-text: #2c2c2c;
   --focus-ring: rgba(201, 163, 74, 0.25);
@@ -18,7 +18,7 @@
   --background: #0a0a0a;
   --foreground: #ededed;
   --color: #fff; /* brighter gold for dark */
-  --color-hover: #e6c200;
+  --color-hover: #FF9800;
   --input-glass-bg: rgba(255, 255, 255, 0.06);
   --input-text: #e6e6e6;
   --focus-ring: rgba(255, 215, 0, 0.25);

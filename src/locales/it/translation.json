@@ -72,6 +72,10 @@
     "reviews": "Recensioni",
     "btn": "Prenota ora"
   },
+    "tripsId": {
+    "submitReview": "Invia una recensione",
+    "noticeTitle":"Avviso di accettazione e disclaimer – Turismo inclusivo"
+  },
   "about": {
     "AboutWasetTravel": "Informazioni su WasetTravel",
     "h1": "Viaggi di lusso creati con cuore e tradizione",

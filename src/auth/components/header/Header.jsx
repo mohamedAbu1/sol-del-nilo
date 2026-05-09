@@ -38,7 +38,7 @@ export default function Header() {
         <MobileNavBar activeTab={activeTab} setActiveTab={setActiveTab} />{" "}
         {/* ✅ نمرر الحالة */}
         <RightBar scrolled={scrolled} />
-        <motion.div whileHover={{ scale: 1.1 }} className="hidden lg:flex">
+        <motion.div whileHover={{ scale: 1.1 }} className="flex">
           <Button
             onClick={isLoggedIn ? logout : handleOpen}
             style={{

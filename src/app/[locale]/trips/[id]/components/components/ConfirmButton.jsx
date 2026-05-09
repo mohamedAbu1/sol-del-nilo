@@ -40,7 +40,6 @@ export default function ConfirmButton({
       status: "Pending",
       platform: "web",
     };
-console.log(bookingData)
     const result = await purchaseTrip(bookingData);
 
     if (result.success) {

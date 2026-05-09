@@ -23,6 +23,7 @@ i18n
         trips: en.trips,
         about: en.about,
         contact: en.contact,
+        TripsPage: en.TripsPage,
         visa: en.visa, // هنا تحط الـ visa keys
       },
       es: {

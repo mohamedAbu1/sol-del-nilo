@@ -16,9 +16,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import AdminDashboardButton from "@/components/layout/AdminDashboardButton";
-import { motion } from "framer-motion";
-import { Button } from "@mui/material";
-import { FaSignOutAlt, FaUserPlus } from "react-icons/fa";
+
 
 function ScrollSaver() {
   const pathname = usePathname();
@@ -55,7 +53,6 @@ function ScrollSaver() {
 export default function Home() {
   const { user } = useAuth();
   const { lang } = useLanguage();
-  const { isLoggedIn, logout, handleOpen } = useAuth();
 
   return (
     <main
@@ -80,34 +77,7 @@ export default function Home() {
       <LoginModal />
       {user && <ChatWidget />}
       {user && <AdminDashboardButton />}
-      <div
-        className={`fixed bottom-2 left-6 p-4 rounded-full shadow-lg flex items-center justify-center`}
-      >
-        <motion.div whileHover={{ scale: 1.1 }} className="flex lg:hidden">
-          <Button
-            onClick={isLoggedIn ? logout : handleOpen}
-            style={{
-              padding: "12px 24px",
-              background: "linear-gradient(to right, #FF9800, #eab308)",
-              color: "#fff",
-              fontWeight: "600",
-              letterSpacing: "0.05em",
-              borderRadius: "0.5rem",
-              boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
-              transition: "all 0.3s ease",
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-            }}
-          >
-            {isLoggedIn ? (
-              <FaSignOutAlt size={20} /> // أيقونة خروج
-            ) : (
-              <FaUserPlus size={20} /> // أيقونة تسجيل
-            )}
-          </Button>
-        </motion.div>
-      </div>
+     
     </main>
   );
 }

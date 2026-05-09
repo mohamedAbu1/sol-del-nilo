@@ -72,6 +72,10 @@
     "reviews": "Bewertungen",
     "btn": "Jetzt buchen"
   },
+  "tripsId": {
+    "submitReview": "Einen Kommentar abgeben",
+    "noticeTitle":"Annahmeerklärung und Haftungsausschluss – Inklusivreisen"
+  },
   "about": {
     "AboutWasetTravel": "Über WasetTravel",
     "h1": "Luxusreisen mit Herz und Tradition",

@@ -28,7 +28,7 @@ export default function TripPage({ params }) {
   const { trips, fetchTrips, getTripById, loadingTrips } = useTrip();
   const { lang } = useLanguage();
   const { themeName } = useTheme();
-  const { user } = useAuth();
+  const { user, openLoginModal ,handleOpen,isLoggedIn} = useAuth();
   const { purchases } = usePurchase(); // ✅ جلب الحجوزات
 
   useEffect(() => {
@@ -49,7 +49,6 @@ export default function TripPage({ params }) {
       p.user_id === user?.id &&
       p.status !== "Cancelled",
   );
-  
 
   return (
     <main
@@ -91,12 +90,15 @@ export default function TripPage({ params }) {
 
         <div className="col-span-3 lg:col-span-3">
           <TripReviews trip={trip} lang={lang} />
-          {user &&
-            (hasActivePurchase ? (
-              <CancelButton trip={trip} /> // ✅ زر إلغاء الحجز
-            ) : (
-              <PurchaseButton trip={trip} /> // ✅ زر شراء الرحلة
-            ))}
+
+          {/* زر الإلغاء يظهر فقط إذا كان فيه شراء */}
+          {hasActivePurchase && <CancelButton trip={trip} />}
+
+          {/* زر الشراء يظهر دائمًا */}
+          <PurchaseButton
+            trip={trip}
+          
+          />
         </div>
       </div>
 

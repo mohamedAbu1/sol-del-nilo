@@ -17,7 +17,6 @@ const translations = {
 export default function TripCities({ trip, lang }) {
   const { themeName } = useTheme();
   const { cities: allCities } = useCitiesCategories();
-  console.log(trip);
   // لو اللغة مش موجودة، نرجع للإنجليزية
   const t = translations[lang] || translations.en;
 
@@ -27,8 +26,6 @@ export default function TripCities({ trip, lang }) {
     if (typeof obj === "string") return obj;
     return obj?.[lang] || obj?.en || "Unknown";
   };
-console.log("Trip Cities:", trip.trip_cities);
-console.log("All Cities:", allCities);
 
   return (
     <motion.section
@@ -61,8 +58,6 @@ console.log("All Cities:", allCities);
       {/* المدن */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {trip.trip_cities?.map((c, idx) => {
-          console.log("Trip Cities:", trip.trip_cities);
-          console.log("All Cities:", allCities);
 
           // نجيب المدينة من allCities بالـ id
           const cityObj = allCities.find((city) => city.id === c.city_id);

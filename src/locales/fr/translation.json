@@ -72,6 +72,10 @@
     "reviews": "Avis",
     "btn": "Réserver maintenant"
   },
+     "tripsId": {
+    "submitReview": "Soumettre un avis",
+    "noticeTitle":"Avis d’acceptation et clause de non-responsabilité – Tourisme inclusif"
+  },
   "about": {
     "AboutWasetTravel": "À propos de WasetTravel",
     "h1": "Voyages de luxe façonnés par l’héritage et le cœur",

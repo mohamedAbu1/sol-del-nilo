@@ -74,7 +74,10 @@
     "reviews": "评论",
     "btn": "立即预订"
   },
-
+ "tripsId": {
+    "submitReview": "提交评论",
+    "noticeTitle":"接受聲明和免責聲明 – 包容性旅遊"
+  },
   "about": {
     "AboutWasetTravel": "关于 WasetTravel",
     "h1": "以传承与真心打造的奢华旅程",
@@ -119,10 +122,6 @@
     "Tours": "旅游",
     "Contact": "联系我们"
   },
-  "tripsId": {
-    "submitReview": "提交评论"
-  },
-  
   "Visa": {
     "VISA": "埃及签证",
     "VISA_P": "轻松申请您的埃及签证",

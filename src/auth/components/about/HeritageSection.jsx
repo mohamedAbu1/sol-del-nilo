@@ -64,7 +64,7 @@ export default function HeritageSection() {
           className="flex-1 relative w-full h-56"
         >
           <Image
-            src="/HomePageImage/pexels-axp-photography-500641970-18934598.webp"
+            src="/Luxor/pexels-axp-photography-500641970-18934598.webp"
             alt="Egyptian Heritage"
             fill
             className="object-cover rounded-2xl"

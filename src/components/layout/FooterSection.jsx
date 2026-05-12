@@ -2,10 +2,11 @@
 "use client";
 import React from "react";
 import { useTheme } from "@/context/ThemeContext";
-import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
+import { FaFacebookF, FaInstagram, FaTwitter, FaWhatsapp, FaYoutube } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import Link from "next/link"; // ✅ استخدم Link من Next.js
+import { MdEmail } from "react-icons/md";
 
 const Footer = () => {
   const { theme, themeName } = useTheme();
@@ -100,7 +101,7 @@ const Footer = () => {
 
       {/* أيقونات السوشيال ميديا */}
       <motion.div variants={fadeUp} className="flex gap-5 mt-8 relative z-10">
-        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
+        <a href="https://www.facebook.com/share/1bV7LrYNZz/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer"
           className={`p-3 rounded-full transition ${
             themeName === "dark"
               ? "bg-gold/20 hover:bg-gold/40 text-gold"
@@ -108,7 +109,7 @@ const Footer = () => {
           }`}>
           <FaFacebookF />
         </a>
-        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"
+        <a href="https://www.instagram.com/luxor__asuan_excursiones?utm_source=qr&igsh=MXF0azJzdzdyNTVibA==" target="_blank" rel="noopener noreferrer"
           className={`p-3 rounded-full transition ${
             themeName === "dark"
               ? "bg-gold/20 hover:bg-gold/40 text-gold"
@@ -116,21 +117,21 @@ const Footer = () => {
           }`}>
           <FaInstagram />
         </a>
-        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
+        <a href="https://wa.me/message/WNWUM7QNPIIKN1" target="_blank" rel="noopener noreferrer"
           className={`p-3 rounded-full transition ${
             themeName === "dark"
               ? "bg-gold/20 hover:bg-gold/40 text-gold"
               : "bg-[#c9a34a]/20 hover:bg-[#c9a34a]/40 text-[#c9a34a]"
           }`}>
-          <FaTwitter />
+          <FaWhatsapp />
         </a>
-        <a href="https://youtube.com" target="_blank" rel="noopener noreferrer"
+        <a href="https://mail.google.com/mail/u/2/#inbox" target="_blank" rel="noopener noreferrer"
           className={`p-3 rounded-full transition ${
             themeName === "dark"
               ? "bg-gold/20 hover:bg-gold/40 text-gold"
               : "bg-[#c9a34a]/20 hover:bg-[#c9a34a]/40 text-[#c9a34a]"
           }`}>
-          <FaYoutube />
+          <MdEmail />
         </a>
       </motion.div>
     </motion.footer>

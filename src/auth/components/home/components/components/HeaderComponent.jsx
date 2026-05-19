@@ -15,7 +15,7 @@ export default function HeaderComponent({ isDark }) {
           WebkitTextFillColor: "transparent",
         }}
       >
-        WasetTravel
+        LUXOR & ASWAN
       </h1>
     </div>
   );

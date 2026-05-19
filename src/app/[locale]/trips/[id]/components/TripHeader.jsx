@@ -40,7 +40,7 @@ export default function TripHeader({ trip, lang }) {
       transition={{ duration: 0.8, ease: "easeOut" }}
       className={`w-full rounded-xl shadow-lg transition ${
         themeName === "dark"
-          ? "bg-amber-800 text-gold"
+          ? "bg-black/40 text-gold"
           : "bg-white/90 text-[#3a2c0a]"
       }`}
     >

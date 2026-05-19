@@ -30,14 +30,11 @@ export default function TripPage({ params }) {
   const { user } = useAuth();
   const { purchases } = usePurchase();
 
-
   useEffect(() => {
     if (!trips.length) {
       fetchTrips();
     }
   }, []);
-
-
 
   const trip = getTripById(id);
   if (!trip) {
@@ -53,7 +50,7 @@ export default function TripPage({ params }) {
 
   return (
     <main
-      className={`min-h-screen ${
+      className={`w-full min-h-screen ${
         themeName === "dark"
           ? "bg-gradient-to-b from-black via-gray-900 to-black text-gold"
           : "bg-gradient-to-b from-[#fdf6e3] via-[#f5deb3] to-[#fdf6e3] text-[#3a2c0a]"
@@ -64,15 +61,15 @@ export default function TripPage({ params }) {
 
       <div
         style={{ paddingTop: "110px" }}
-        className="max-w-7xl mx-auto p-6 relative z-10 grid gap-8 
-             grid-cols-1 lg:grid-cols-2 auto-rows-min"
+        className="lg:mx-auto lg:p-6 relative z-10 flex flex-col w-full gap-8 
+             lg:max-w-7xl lg:grid lg:grid-cols-2 lg:auto-rows-min"
       >
-        <div className="col-span-1 lg:col-span-3">
+        <div className="w-full flex lg:col-span-3">
           <TripHeader trip={trip} lang={lang} />
         </div>
 
-        <div className="col-span-3 flex flex-row gap-8">
-          <div className="col-span-3 flex flex-col gap-2.5">
+        <div className="flex flex-col w-full gap-8 lg:flex-row lg:col-span-3">
+          <div className="flex flex-col w-full gap-2.5 lg:col-span-3">
             <TripInfo trip={trip} lang={lang} />
             <TripCities trip={trip} lang={lang} />
             <TripCategories trip={trip} lang={lang} />

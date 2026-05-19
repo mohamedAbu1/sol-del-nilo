@@ -17,12 +17,12 @@ export default function Logo({ scrolled }) {
 
   const imageSrc =
     themeName === "dark"
-      ? "/HomePageImage/Copilot_20260504_004608.webp"
+      ? "/HomePageImage/Copilot_20260519_191959.webp"
       : !isHome
-      ? "/HomePageImage/Copilot_20260504_004608.webp"
+      ? "/HomePageImage/Copilot_20260519_191959.webp"
       : scrolled
-      ? "/HomePageImage/Copilot_20260504_004608.webp"
-      : "/HomePageImage/Copilot_20260504_004608.webp";
+      ? "/HomePageImage/Copilot_20260519_191959.webp"
+      : "/HomePageImage/Copilot_20260519_191959.webp";
 
   return (
     <motion.div
@@ -35,8 +35,8 @@ export default function Logo({ scrolled }) {
         <Image
           src={imageSrc}
           alt="Luxor Aswan Logo"
-          width={140}
-          height={50}
+          width={80}
+          height={80}
           priority
         />
       </Link>

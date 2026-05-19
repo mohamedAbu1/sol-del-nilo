@@ -40,7 +40,7 @@ export default function TripHeader({ trip, lang }) {
       transition={{ duration: 0.8, ease: "easeOut" }}
       className={`w-full rounded-xl shadow-lg transition ${
         themeName === "dark"
-          ? "bg-black/40 text-gold"
+          ? "bg-amber-800 text-gold"
           : "bg-white/90 text-[#3a2c0a]"
       }`}
     >
@@ -50,7 +50,7 @@ export default function TripHeader({ trip, lang }) {
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6, delay: 0.1 }}
-        className={`text-3xl font-extrabold mb-6 border-b pb-3 ${
+        className={`text-1xl lg:text-2xl font-extrabold mb-6 border-b pb-3 ${
           themeName === "dark" ? "border-gold/50" : "border-[#c9a34a]/50"
         }`}
       >

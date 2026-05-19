@@ -28,7 +28,12 @@ const sendMessage = async ({
   const payload = {
     user_id,
     user_name: user?.name || "Unknown User",
-    user_image: user?.avatar || "/default-avatar.png",
+     user_image:
+        user?.user_metadata?.picture || // صورة جوجل
+        user?.user_metadata?.avatar_url || // صورة من Supabase
+        user?.user_metadata?.avatar || // صورة من التسجيل العادي
+        "/default-avatar.png", // صورة افتراضية
+
     content,
     sender_type,
     status,

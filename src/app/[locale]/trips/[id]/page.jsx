@@ -2,8 +2,7 @@
 import { useTrip } from "@/context/TripContext";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/ThemeContext";
-import { useEffect } from "react";
-import { use } from "react";
+import { useEffect, useState } from "react";
 import Footer from "@/components/layout/FooterSection";
 import Header from "@/auth/components/header/Header";
 import EgyptianBackground from "@/components/layout/EgyptianBackground";
@@ -19,17 +18,22 @@ import TripReviews from "./components/TripReviews";
 import ChatWidget from "@/components/layout/ChatWidget";
 import { useAuth } from "@/context/AuthContext";
 import PurchaseButton from "./components/PurchaseButton";
-import CancelButton from "./components/CancelButton"; // ✅ زر جديد للإلغاء
-import { usePurchase } from "@/context/PurchaseContext"; // ✅ جلب الحجوزات
+import CancelButton from "./components/CancelButton";
+import { usePurchase } from "@/context/PurchaseContext";
 import AccessibilityInfo from "./components/AccessibilityInfo";
+import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 export default function TripPage({ params }) {
-  const { id } = use(params);
-  const { trips, fetchTrips, getTripById, loadingTrips } = useTrip();
+  const { id } = params; // ✅ استخدم params مباشرة بدل use()
+  const { trips, fetchTrips, getTripById } = useTrip();
   const { lang } = useLanguage();
   const { themeName } = useTheme();
-  const { user, openLoginModal ,handleOpen,isLoggedIn} = useAuth();
-  const { purchases } = usePurchase(); // ✅ جلب الحجوزات
+  const { user } = useAuth();
+  const { purchases } = usePurchase();
+  const router = useRouter();
+
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
 
   useEffect(() => {
     if (!trips.length) {
@@ -37,12 +41,19 @@ export default function TripPage({ params }) {
     }
   }, []);
 
+  // ✅ مراقبة حجم الشاشة
+  useEffect(() => {
+    const checkScreen = () => setIsSmallScreen(window.innerWidth <= 1024);
+    checkScreen();
+    window.addEventListener("resize", checkScreen);
+    return () => window.removeEventListener("resize", checkScreen);
+  }, []);
+
   const trip = getTripById(id);
   if (!trip) {
     return <p>Trip not found</p>;
   }
 
-  // تحقق إذا كان المستخدم اشترى الرحلة ولم يقم بإلغائها
   const hasActivePurchase = purchases.some(
     (p) =>
       p.trip_id === trip.id &&
@@ -52,7 +63,7 @@ export default function TripPage({ params }) {
 
   return (
     <main
-      className={`min-h-screen w-full lg:container lg:flex lg:items-center lg:justify-center flex-col lg:m-auto ${
+      className={`min-h-screen ${
         themeName === "dark"
           ? "bg-gradient-to-b from-black via-gray-900 to-black text-gold"
           : "bg-gradient-to-b from-[#fdf6e3] via-[#f5deb3] to-[#fdf6e3] text-[#3a2c0a]"
@@ -61,46 +72,66 @@ export default function TripPage({ params }) {
       <Header />
       <EgyptianBackground />
 
-      <div
-        style={{ paddingTop: "190px" }}
-        className="w-full mt-9 lg:mt-0 mx-auto relative z-10 gap-8 auto-rows-min "
-      >
-        <EgyptianBackground />
-
-        <div className="w-full">
-          <TripHeader trip={trip} lang={lang} />
-        </div>
-
-        <div className="col-span-3 flex flex-col lg:flex-row gap-8">
-          <div className="col-span-3 ">
-            <TripInfo trip={trip} lang={lang} />
-            <TripCities trip={trip} lang={lang} />
-            <TripCategories trip={trip} lang={lang} />
+      {isSmallScreen ? (
+        // ✅ واجهة بديلة للهواتف والشاشات الصغيرة
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8, rotateY: 90 }}
+          animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="flex flex-col items-center justify-center h-[70vh] text-center gap-6"
+        >
+          <h2 className="text-4xl font-extrabold text-[#c9a34a] drop-shadow-lg">
+            🚫 This page is not available on phones.🚫 
+          </h2>
+          <p className="text-lg text-gray-600">
+            You should go to the homepage to follow your trips
+          </p>
+          <button
+            onClick={() => router.push("/")}
+            className="px-6 py-3 rounded-lg bg-[#c9a34a] text-white font-bold shadow-lg hover:bg-yellow-600 transition"
+          >
+            Return to home page
+          </button>
+        </motion.div>
+      ) : (
+        // ✅ التصميم العادي لصفحة الرحلة
+        <div
+          style={{ paddingTop: "110px" }}
+          className="max-w-7xl mx-auto p-6 relative z-10 grid gap-8 
+             grid-cols-1 lg:grid-cols-2 auto-rows-min"
+        >
+          <div className="col-span-1 lg:col-span-3">
+            <TripHeader trip={trip} lang={lang} />
           </div>
-          <AccessibilityInfo theme="dark" />
+
+          <div className="col-span-3 flex flex-row gap-8">
+            <div className="col-span-3 flex flex-col gap-2.5">
+              <TripInfo trip={trip} lang={lang} />
+              <TripCities trip={trip} lang={lang} />
+              <TripCategories trip={trip} lang={lang} />
+            </div>
+            <AccessibilityInfo theme="dark" />
+          </div>
+
+          <div className="col-span-3 flex flex-row gap-8">
+            <TripIncludes trip={trip} lang={lang} />
+          </div>
+
+          <div className="col-span-1 lg:col-span-3">
+            <TripItinerary trip={trip} lang={lang} />
+          </div>
+
+          <div className="col-span-1 lg:col-span-3">
+            <TripReviews trip={trip} lang={lang} />
+            {user &&
+              (hasActivePurchase ? (
+                <CancelButton trip={trip} />
+              ) : (
+                <PurchaseButton trip={trip} />
+              ))}
+          </div>
         </div>
-
-        <div className="col-span-3 flex flex-row gap-8">
-          <TripIncludes trip={trip} lang={lang} />
-        </div>
-
-        <div className="col-span-3 lg:col-span-3">
-          <TripItinerary trip={trip} lang={lang} />
-        </div>
-
-        <div className="col-span-3 lg:col-span-3">
-          <TripReviews trip={trip} lang={lang} />
-
-          {/* زر الإلغاء يظهر فقط إذا كان فيه شراء */}
-          {hasActivePurchase && <CancelButton trip={trip} />}
-
-          {/* زر الشراء يظهر دائمًا */}
-          <PurchaseButton
-            trip={trip}
-          
-          />
-        </div>
-      </div>
+      )}
 
       <Footer />
       <SignUpButton />

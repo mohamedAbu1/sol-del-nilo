@@ -89,7 +89,12 @@ export function ReviewsProvider({ children }) {
           rating: review.rating,
           comment: review.comment,
           name: user.name || user.email, // ✅ fallback على الإيميل لو الاسم مش موجود
-          avatar_url: user.avatar,
+          avatar_url:
+            user?.user_metadata?.picture ||
+            user?.user_metadata?.avatar_url ||
+            user?.user_metadata?.avatar ||
+            "/default-avatar.png",
+
           time: review.time,
         },
         { withCredentials: true },

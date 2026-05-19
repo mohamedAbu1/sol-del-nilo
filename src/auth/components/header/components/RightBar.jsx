@@ -37,7 +37,12 @@ export default function RightBar({ scrolled }) {
           {" "}
           <img
             alt={`${user?.user_metadata?.name}` || "User Avatar"}
-            src={`${user?.user_metadata?.avatar}` || "/default-avatar.png"}
+            src={
+              user?.user_metadata?.picture || // صورة جوجل
+              user?.user_metadata?.avatar_url || // صورة من Supabase
+              user?.user_metadata?.avatar || // صورة من التسجيل العادي
+              "/default-avatar.png" // صورة افتراضية
+            }
             width={40}
             height={40}
             style={{ border: "2px solid #d4af37", borderRadius: "50%" }}

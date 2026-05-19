@@ -55,7 +55,12 @@ export default function ReviewCard({
       <div className="flex items-center gap-4 mb-3">
         {rev.avatar_url ? (
           <img
-            src={rev.avatar_url}
+             src={
+              rev.picture ||
+              rev.avatar_url ||
+              rev.avatar ||
+              "/default-avatar.png"
+            }
             alt={rev.name}
             className="w-16 h-16 rounded-full object-cover border-2 border-yellow-500"
           />

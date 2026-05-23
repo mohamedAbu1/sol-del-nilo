@@ -45,8 +45,6 @@ export default function ConfirmButton({
       });
       const data = await res.json();
       if (data.token) {
-        const iframeId = process.env.NEXT_PUBLIC_PAYMOB_IFRAME_ID;
-        // ✅ التوجيه الصحيح للسيرفر الجديد الخاص بحسابك
         window.location.href = `https://accept.paymob.com/api/acceptance/iframes/${process.env.NEXT_PUBLIC_PAYMOB_IFRAME_ID}?payment_token=${data.token}`;
       } else {
         toast.error("Failed to get payment token.");
@@ -87,22 +85,33 @@ export default function ConfirmButton({
   };
 
   return (
-    <div className="flex flex-col gap-2 w-full">
+    <div className="flex flex-col sm:flex-row gap-3 w-full mt-4">
+      {/* زر الحجز */}
       <button
         onClick={handlePurchase}
         disabled={loading || loadingPay}
-        className={`mt-4 w-full py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition cursor-pointer text-white ${loading ? "opacity-50 cursor-not-allowed" : "bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"}`}
+        className={`w-full sm:w-1/2 py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition cursor-pointer text-white ${
+          loading
+            ? "opacity-50 cursor-not-allowed"
+            : "bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
+        }`}
       >
         <FaCheckCircle className="w-5 h-5" />
         {loading ? "Processing..." : "Book Now (Pay Later)"}
       </button>
+
+      {/* زر الدفع */}
       <button
         onClick={handlePayment}
         disabled={loadingPay || loading}
-        className={`w-full py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition cursor-pointer text-white ${loadingPay ? "opacity-50 cursor-not-allowed" : "bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700"}`}
+        className={`w-full sm:w-1/2 py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition cursor-pointer text-white ${
+          loadingPay
+            ? "opacity-50 cursor-not-allowed"
+            : "bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700"
+        }`}
       >
         <FaCreditCard className="w-5 h-5" />
-        {loadingPay ? "Payment is being processed..." : "Pay online now"}
+        {loadingPay ? "Payment is being processed..." : "Pay Online Now"}
       </button>
     </div>
   );

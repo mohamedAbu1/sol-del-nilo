@@ -4,24 +4,22 @@ import TravelerInfo from "./TravelerInfo";
 import AdditionalDetails from "./AdditionalDetails";
 import TripDetails from "./TripDetails";
 import ConfirmButton from "./ConfirmButton";
-import TripSchedule from "./TripSchedule"; // ✅ الكومبوننت الجديد
+import TripSchedule from "./TripSchedule";
 import { useTheme } from "@/context/ThemeContext";
 import { useState } from "react";
 
 export default function PurchaseModal({ trip, onClose }) {
   const { themeName } = useTheme();
 
-  // ✅ State للجدول الزمني
+  // ✅ State
   const [arrivalDate, setArrivalDate] = useState("");
   const [departureDate, setDepartureDate] = useState("");
   const [hasChildren, setHasChildren] = useState(false);
   const [childrenCount, setChildrenCount] = useState(0);
   const [hasGuide, setHasGuide] = useState(false);
   const [guideLanguages, setGuideLanguages] = useState([]);
-
   const [hasPets, setHasPets] = useState(false);
-  const [pets, setPets] = useState([]); // ممكن تكون ["cat", "dog"]
-
+  const [pets, setPets] = useState([]);
   const [groupSize, setGroupSize] = useState(1);
 
   const modalClasses =
@@ -30,9 +28,9 @@ export default function PurchaseModal({ trip, onClose }) {
       : "bg-gradient-to-b from-white via-gray-100 to-white text-gray-900 z-55";
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/70 backdrop-blur-sm z-54 transition-opacity animate-fadeIn overflow-y-scroll">
+    <div className="fixed inset-0 flex items-center justify-center bg-black/70 backdrop-blur-sm z-50 transition-opacity animate-fadeIn overflow-y-auto">
       <div
-        className={`rounded-2xl shadow-2xl p-8 w-[100%] max-w-[1000px] mt-25 relative transform animate-slideUp ${modalClasses}`}
+        className={`rounded-2xl shadow-2xl p-6 sm:p-8 w-full max-w-[95%] sm:max-w-[800px] lg:max-w-[1000px] mt-10 sm:mt-20 relative transform animate-slideUp ${modalClasses}`}
       >
         {/* زر الإغلاق */}
         <button

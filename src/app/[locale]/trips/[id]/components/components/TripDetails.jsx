@@ -21,17 +21,17 @@ export default function TripDetails({ trip, groupSize }) {
   return (
     <div className="mb-6">
       <h2
-        className={`text-[16px] mb-4 flex items-center gap-2 ${
+        className={`text-sm sm:text-base lg:text-lg mb-4 flex items-center gap-2 ${
           themeName === "dark" ? "text-white" : "text-[#11111186]"
         }`}
       >
-        <FaShoppingCart className="w-6 h-6 text-[#c9a34a]" />
+        <FaShoppingCart className="w-5 h-5 sm:w-6 sm:h-6 text-[#c9a34a]" />
         {trip.title.en}
       </h2>
 
       {/* السعر للفرد */}
       <p
-        className={`mb-2 font-medium flex items-center gap-2 ${
+        className={`mb-2 font-medium flex items-center gap-2 text-sm sm:text-base ${
           themeName === "dark" ? "text-white" : "text-[#11111186]"
         }`}
       >
@@ -41,7 +41,7 @@ export default function TripDetails({ trip, groupSize }) {
 
       {/* عدد الأشخاص */}
       <p
-        className={`mb-2 font-medium flex items-center gap-2 ${
+        className={`mb-2 font-medium flex items-center gap-2 text-sm sm:text-base ${
           themeName === "dark" ? "text-white" : "text-[#11111186]"
         }`}
       >
@@ -51,7 +51,7 @@ export default function TripDetails({ trip, groupSize }) {
 
       {/* السعر النهائي */}
       <p
-        className={`mb-2 font-bold flex items-center gap-2 ${
+        className={`mb-2 font-bold flex items-center gap-2 text-base sm:text-lg ${
           themeName === "dark" ? "text-yellow-300" : "text-[#11111194]"
         }`}
       >

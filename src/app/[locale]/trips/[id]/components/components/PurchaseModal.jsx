@@ -28,7 +28,7 @@ export default function PurchaseModal({ trip, onClose }) {
       : "bg-gradient-to-b from-white via-gray-100 to-white text-gray-900 z-55";
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/70 backdrop-blur-sm z-50 transition-opacity animate-fadeIn overflow-y-auto">
+    <div className="fixed inset-0 flex items-center justify-center bg-black/70 backdrop-blur-sm z-50 transition-opacity animate-fadeIn overflow-y-scroll mt-7">
       <div
         className={`rounded-2xl shadow-2xl p-6 sm:p-8 w-full max-w-[95%] sm:max-w-[800px] lg:max-w-[1000px] mt-10 sm:mt-20 relative transform animate-slideUp ${modalClasses}`}
       >

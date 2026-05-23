@@ -1,109 +1,87 @@
 "use client";
-import { FaCheckCircle, FaCreditCard } from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
+import TravelerInfo from "./TravelerInfo";
+import AdditionalDetails from "./AdditionalDetails";
+import TripDetails from "./TripDetails";
+import ConfirmButton from "./ConfirmButton";
+import TripSchedule from "./TripSchedule"; // ✅ الكومبوننت الجديد
+import { useTheme } from "@/context/ThemeContext";
 import { useState } from "react";
-import { usePurchase } from "@/context/PurchaseContext";
-import { useAuth } from "@/context/AuthContext";
-import { toast } from "react-toastify";
 
-export default function ConfirmButton({
-  trip,
-  onClose,
-  arrivalDate,
-  departureDate,
-  hasChildren,
-  childrenCount,
-  hasPets,
-  pets,
-  groupSize,
-  hasGuide,
-  guideLanguages,
-}) {
-  const { purchaseTrip } = usePurchase();
-  const [loading, setLoading] = useState(false);
-  const [loadingPay, setLoadingPay] = useState(false);
-  const { user } = useAuth();
+export default function PurchaseModal({ trip, onClose }) {
+  const { themeName } = useTheme();
 
-  const handlePayment = async () => {
-    if (!user) {
-      toast.error("Please log in to complete the payment.");
-      return;
-    }
-    setLoadingPay(true);
-    try {
-      const res = await fetch("/api/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          amount: trip?.price || 400,
-          userDetails: {
-            email: user.email,
-            firstName: user.firstName || user.name?.split(" ")[0],
-            lastName: user.lastName || user.name?.split(" ")[1],
-            phone: user.phone || "+201000000000",
-          },
-        }),
-      });
-      const data = await res.json();
-      if (data.token) {
-        const iframeId = process.env.NEXT_PUBLIC_PAYMOB_IFRAME_ID;
-        // ✅ التوجيه الصحيح للسيرفر الجديد الخاص بحسابك
-        window.location.href = `https://accept.paymob.com/api/acceptance/iframes/${process.env.NEXT_PUBLIC_PAYMOB_IFRAME_ID}?payment_token=${data.token}`;
-      } else {
-        toast.error("Failed to get payment token.");
-      }
-    } catch (err) {
-      toast.error("Payment gateway error.");
-    } finally {
-      setLoadingPay(false);
-    }
-  };
+  // ✅ State للجدول الزمني
+  const [arrivalDate, setArrivalDate] = useState("");
+  const [departureDate, setDepartureDate] = useState("");
+  const [hasChildren, setHasChildren] = useState(false);
+  const [childrenCount, setChildrenCount] = useState(0);
+  const [hasGuide, setHasGuide] = useState(false);
+  const [guideLanguages, setGuideLanguages] = useState([]);
 
-  const handlePurchase = async () => {
-    setLoading(true);
-    const bookingData = {
-      tripId: trip,
-      numPersons: groupSize,
-      hasChildren,
-      numChildren: childrenCount,
-      hasPets,
-      petTypes: pets,
-      hasGuide,
-      selectedLanguages: guideLanguages,
-      arrivalDate,
-      departureDate,
-      userId: user?.id,
-      status: "Pending",
-      platform: "web",
-    };
-    const result = await purchaseTrip(bookingData);
-    if (result.success) {
-      toast.success("✅ Trip booked successfully!");
-      toast.info("💡 You can pay later from your dashboard.");
-      onClose();
-    } else {
-      toast.error("❌ " + result.error);
-    }
-    setLoading(false);
-  };
+  const [hasPets, setHasPets] = useState(false);
+  const [pets, setPets] = useState([]); // ممكن تكون ["cat", "dog"]
+
+  const [groupSize, setGroupSize] = useState(1);
+
+  const modalClasses =
+    themeName === "dark"
+      ? "bg-gradient-to-b from-gray-800 via-gray-900 to-black text-yellow-300 z-55"
+      : "bg-gradient-to-b from-white via-gray-100 to-white text-gray-900 z-55";
 
   return (
-    <div className="flex flex-col gap-2 w-full">
-      <button
-        onClick={handlePurchase}
-        disabled={loading || loadingPay}
-        className={`mt-4 w-full py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition cursor-pointer text-white ${loading ? "opacity-50 cursor-not-allowed" : "bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"}`}
+    <div className="fixed inset-0 flex items-center justify-center bg-black/70 backdrop-blur-sm z-54 transition-opacity animate-fadeIn overflow-y-scroll">
+      <div
+        className={`rounded-2xl shadow-2xl p-8 w-[100%] max-w-[1000px] mt-25 relative transform animate-slideUp ${modalClasses}`}
       >
-        <FaCheckCircle className="w-5 h-5" />
-        {loading ? "Processing..." : "Book Now (Pay Later)"}
-      </button>
-      <button
-        onClick={handlePayment}
-        disabled={loadingPay || loading}
-        className={`w-full py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition cursor-pointer text-white ${loadingPay ? "opacity-50 cursor-not-allowed" : "bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700"}`}
-      >
-        <FaCreditCard className="w-5 h-5" />
-        {loadingPay ? "جاري تحضير الدفع..." : "ادفع الآن أونلاين"}
-      </button>
+        {/* زر الإغلاق */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-gray-400 hover:text-red-500 cursor-pointer transition"
+        >
+          <FaTimes className="w-6 h-6" />
+        </button>
+
+        {/* الأقسام */}
+        <TravelerInfo />
+        <TripSchedule
+          arrivalDate={arrivalDate}
+          setArrivalDate={setArrivalDate}
+          departureDate={departureDate}
+          setDepartureDate={setDepartureDate}
+        />
+        <AdditionalDetails
+          hasChildren={hasChildren}
+          setHasChildren={setHasChildren}
+          childrenCount={childrenCount}
+          setChildrenCount={setChildrenCount}
+          hasPets={hasPets}
+          setHasPets={setHasPets}
+          pets={pets}
+          setPets={setPets}
+          groupSize={groupSize}
+          setGroupSize={setGroupSize}
+          hasGuide={hasGuide}
+          setHasGuide={setHasGuide}
+          guideLanguages={guideLanguages}
+          setGuideLanguages={setGuideLanguages}
+        />
+
+        <TripDetails trip={trip} groupSize={groupSize} />
+        <ConfirmButton
+          trip={trip.id}
+          onClose={onClose}
+          arrivalDate={arrivalDate}
+          departureDate={departureDate}
+          hasChildren={hasChildren}
+          childrenCount={childrenCount}
+          hasPets={hasPets}
+          pets={pets}
+          groupSize={groupSize}
+          hasGuide={hasGuide}
+          guideLanguages={guideLanguages}
+        />
+      </div>
     </div>
   );
 }

@@ -28,7 +28,7 @@ export default function TravelerInfo() {
               themeName === "dark" ? "text-yellow-300" : "text-[#c9a34a]"
             }`}
           />
-          {user?.name}
+          {user?.user_metadata?.name}
         </p>
 
         <p
